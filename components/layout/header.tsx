@@ -38,6 +38,10 @@ export const Header = (props: HtmlHTMLAttributes<any>) => {
       path: "/launch",
       title: "Launch",
     },
+    {
+      path: "/price",
+      title: "price",
+    },
   ];
   return (
     <Navbar
@@ -67,20 +71,19 @@ export const Header = (props: HtmlHTMLAttributes<any>) => {
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         {menuList.map((m) => (
-          <NavbarItem key={m.title} isActive={router.pathname === m.path}  className={cn(
-            "flex items-center justify-center  px-5 py-2.5 text-base font-normal leading-[normal]",
-            router.pathname === m.path
-              ? router.pathname === "/launch"
-                ? "font-bold"
-                : " [background:#271A0C] border-[color:var(--button-stroke,rgba(247,147,26,0.20))] border rounded-[100px] border-solid"
-              : "hover:opacity-100 opacity-60"
-          )}>
-            <Link
-              href={m.path}
-          
-            >
-              {m.title}
-            </Link>
+          <NavbarItem
+            key={m.title}
+            isActive={router.pathname === m.path}
+            className={cn(
+              "flex items-center justify-center  px-5 py-2.5 text-base font-normal leading-[normal]",
+              router.pathname === m.path
+                ? router.pathname === "/launch"
+                  ? "font-bold"
+                  : " [background:#271A0C] border-[color:var(--button-stroke,rgba(247,147,26,0.20))] border rounded-[100px] border-solid"
+                : "hover:opacity-100 opacity-60"
+            )}
+          >
+            <Link href={m.path}>{m.title}</Link>
           </NavbarItem>
         ))}
       </NavbarContent>
@@ -92,7 +95,16 @@ export const Header = (props: HtmlHTMLAttributes<any>) => {
       </NavbarContent>
       <NavbarMenu>
         {menuList.map((m, index) => (
-          <NavbarMenuItem key={m.title} className={cn("p-[8px]", router.pathname === m.path ? "[background:rgba(225,138,32,0.40)] border-2 border-solid border-[rgba(225,138,32,0.60)]" : "")} isActive={router.pathname === m.path}> 
+          <NavbarMenuItem
+            key={m.title}
+            className={cn(
+              "p-[8px]",
+              router.pathname === m.path
+                ? "[background:rgba(225,138,32,0.40)] border-2 border-solid border-[rgba(225,138,32,0.60)]"
+                : ""
+            )}
+            isActive={router.pathname === m.path}
+          >
             <Link className={cn("w-full inline-block")} href={m.path}>
               {m.title}
             </Link>
