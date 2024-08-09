@@ -9,9 +9,10 @@ import { Copy } from "@/components/copy";
 import { PeddingSvg } from "@/components/svg/Pedding";
 import { RocketSvg } from "@/components/svg/Rocket";
 import { truncate } from "@/lib/format";
-import { trpc } from "@/lib/trpc";
+import { trpc, trpcClient } from "@/lib/trpc";
 import { networksMap } from "@/services/chain";
 import { PairContract } from "@/services/contract/pair-contract";
+import { GhostPair } from "@/services/indexer/indexerTypes";
 import launchpad from "@/services/launchpad";
 import { liquidity } from "@/services/liquidity";
 import { wallet } from "@/services/wallet";
@@ -24,38 +25,46 @@ import { useAccount } from "wagmi";
 
 export const Profile = observer(() => {
   const { chainId } = useAccount();
-  const { data: pairsMap, isLoading } = trpc.pair.getPairs.useQuery(
-    {
-      chainId: chainId as number,
-      blockAddress: networksMap[chainId as number].blacklist?.poolBlacklist,
-    },
-    {
-      enabled: !!chainId,
-      refetchOnWindowFocus: false,
-    }
-  );
+  const [pairsMap, setPairsMap] = useState<GhostPair[]>();
+
   useEffect(() => {
-    wallet.currentChain?.faucetTokens?.forEach((token) => {
-      token.init();
+    trpcClient.indexerFeedRouter.getAllPairs.query().then((data) => {
+      setPairsMap(data.data);
     });
   }, []);
 
   useEffect(() => {
     if (pairsMap) {
       liquidity.initPool(
-        Object.values(pairsMap),
-        wallet?.currentChain?.validatedTokensInfo
+        pairsMap.map((pair: any) => ({
+          address: pair.id,
+          token0: {
+            address: pair.token0.id,
+            name: pair.token0.name,
+            symbol: pair.token0.symbol,
+            decimals: pair.token0.decimals,
+          },
+          token1: {
+            address: pair.token1.id,
+            name: pair.token1.name,
+            symbol: pair.token1.symbol,
+            decimals: pair.token1.decimals,
+          },
+        }))
       );
     }
-  }, [pairsMap, wallet?.currentChain]);
+  }, [pairsMap]);
 
   useEffect(() => {
     if (!wallet.isInit) {
       return;
     }
     launchpad.showNotValidatedPairs = true;
-    launchpad.getFtoPairs.call();
-    launchpad.getMyFtoPairs.call();
+    launchpad.ftoPairs.call({
+      page: launchpad.ftoPairsPagination.page,
+      limit: launchpad.ftoPairsPagination.limit,
+    });
+    launchpad.myFtoPairs.call();
     launchpad.getMyFtoParticipatedPairs.call();
   }, [wallet.isInit]);
 
@@ -128,7 +137,7 @@ export const Profile = observer(() => {
                 {launchpad.ftoPairs.loading ? (
                   <LoadingDisplay />
                 ) : (
-                  launchpad.getMyFtoPairs.value?.map((project) => (
+                  launchpad.myFtoPairs.value?.data.map((project) => (
                     <LaunchCard
                       key={project.address}
                       pair={project}

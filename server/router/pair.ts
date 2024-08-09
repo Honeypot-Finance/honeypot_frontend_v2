@@ -11,6 +11,22 @@ import { getCacheKey } from "@/lib/cache";
 import { networksMap } from "@/services/chain";
 import { kv } from "@/lib/kv";
 import { pairQueryOutput } from "@/types/pair";
+import {indexer} from "@/services/indexer/indexer";
+
+interface Pair {
+  id: string;
+  token0: Token;
+  token1: Token;
+  reserve0: string;
+  reserve1: string;
+}
+
+interface Token {
+  id: string;
+  name: string;
+  symbol: string;
+  decimals: number;
+}
 
 const queue = new PQueue({ concurrency: 10 });
 
@@ -33,20 +49,37 @@ export const pairRouter = router({
         token0Address: z.string(),
         token1Address: z.string(),
       })
-    )
+    ).output(z.object({
+      address: z.string(),
+      token0: z.object({
+        address: z.string(),
+        name: z.string(),
+        symbol: z.string(),
+        decimals: z.number(),
+      }),
+      token1: z.object({
+        address: z.string(),
+        name: z.string(),
+        symbol: z.string(),
+        decimals: z.number(),
+      }),
+      reserve0: z.string(),
+      reserve1: z.string(),
+    }))
     .query(async ({ input }) => {
       const { token0Address, token1Address, chainId } = input;
-      return pairByTokensLoader.load({
-        token0Address,
-        token1Address,
-        chainId,
+      const res = await  indexer.getPairByTokens({
+        token0: token0Address,
+        token1: token1Address,
       });
+      console.log('res', res)
+      return res
     }),
   getPairs: publicProcedure
     .input(
       z.object({
         chainId: z.number(),
-        blockAddress: z.array(z.string().startsWith("0x")).optional(),
+        blackListAddress: z.array(z.string().startsWith("0x")).optional(),
       })
     )
     .query(async ({ input }): Promise<pairQueryOutput> => {
@@ -110,9 +143,9 @@ export const pairRouter = router({
               };
 
               if (
-                input.blockAddress?.includes(pair.address) ||
-                input.blockAddress?.includes(pair.token0.address) ||
-                input.blockAddress?.includes(pair.token1.address)
+                input.blackListAddress?.includes(pair.address) ||
+                input.blackListAddress?.includes(pair.token0.address) ||
+                input.blackListAddress?.includes(pair.token1.address)
               ) {
                 return null;
               }

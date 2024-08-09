@@ -11,6 +11,25 @@ import Link from "next/link";
 import { HTMLAttributes } from "react";
 import { cn } from "@/lib/tailwindcss";
 import TokenStatusDisplay from "../atoms/TokenStatusDisplay/TokenStatusDisplay";
+import { WatchAsset } from "../atoms/WatchAsset/WatchAsset";
+import Image from "next/image";
+import { SlOptions, SlShare } from "react-icons/sl";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@nextui-org/react";
+import {
+  OptionsDropdown,
+  optionsPresets,
+} from "../OptionsDropdown/OptionsDropdown";
+import { WalletSvg } from "../svg/wallet";
+import { BiWallet } from "react-icons/bi";
+import ShareSocialMedialPopUp, {
+  shareMediaToast,
+} from "../ShareSocialMedialPopUp/ShareSocialMedialPopUp";
+import { toast } from "react-toastify";
 
 const Actions = () => {};
 
@@ -35,22 +54,41 @@ export const LaunchCard = observer(
         {...props}
       >
         <TokenStatusDisplay pair={pair} />
-        <div className="w-14 flex items-center justify-center rounded-lg bg-gold-primary aspect-square">
-          <div className="w-8">
-            <Logo width={29} />
-          </div>
+        <OptionsDropdown
+          className="absolute left-[0.5rem] top-[0.5rem] "
+          options={[
+            optionsPresets.copy({
+              copyText: pair?.launchedToken.address ?? "",
+              displayText: "Copy Token address",
+              copysSuccessText: "Token address copied",
+            }),
+            {
+              icon: <BiWallet />,
+              display: "Import token to wallet",
+              onClick: () => {
+                pair?.launchedToken.watch();
+              },
+            },
+            optionsPresets.share({
+              shareUrl: `${window.location.origin}/launch-detail/${pair?.address}`,
+              displayText: "Share this project",
+              shareText: "Checkout this Token: " + pair?.projectName,
+            }),
+          ]}
+        />
+        <div className="w-14 flex items-center justify-center rounded-lg bg-gold-primary aspect-square overflow-hidden">
+          <Image
+            src={!!pair?.logoUrl ? pair.logoUrl : "/images/project_honey.png"}
+            alt="honey"
+            width={100}
+            height={100}
+          ></Image>
         </div>
         <h4 className="text-white text-center text-[1rem] font-bold flex items-center h-[1.5em]">
           <div className=" relative">
-            {pair?.launchedToken.displayName}
-            {pair?.launchedToken.displayName && (
-              <Copy
-                className=" absolute ml-[8px] top-[50%] translate-y-[-50%]"
-                value={pair.launchedToken.address}
-              ></Copy>
-            )}
-          </div>
-        </h4>
+            {pair?.launchedToken.name} ({pair?.launchedToken.symbol})
+          </div>{" "}
+        </h4>{" "}
         <div
           className={cn(
             "grid  items-start gap-6 text-white mt-2 justify-between w-full break-all ",

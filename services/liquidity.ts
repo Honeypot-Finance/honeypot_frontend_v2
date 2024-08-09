@@ -8,7 +8,7 @@ import { exec } from "~/lib/contract";
 import { trpcClient } from "@/lib/trpc";
 import { makeAutoObservable, reaction, when } from "mobx";
 import { AsyncState, ValueState } from "./utils";
-import { debounce } from "lodash";
+import { add, debounce } from "lodash";
 import dayjs from "dayjs";
 
 class Liquidity {
@@ -243,44 +243,41 @@ class Liquidity {
         symbol: string;
         decimals: number;
       };
-    }[],
-    tokens?: Partial<Record<string, { name: string }>>
+    }[]
   ) {
-    this.pairs = pairs.map((pair) => {
-      const token0 = new Token(pair.token0);
-      const token1 = new Token(pair.token1);
-      const pairContract = new PairContract({
-        address: pair.address,
-        token0,
-        token1,
-      });
-      if (!this.tokensMap[token0.address]) {
-        this.tokensMap[token0.address] = token0;
-        token0.init();
-      }
-      if (!this.tokensMap[token1.address]) {
-        this.tokensMap[token1.address] = token1;
-        token1.init();
-      }
-      this.pairsByToken[`${token0.address}-${token1.address}`] = pairContract;
-      pairContract.init();
-      return pairContract;
-    });
+    debounce(async () => {
+      this.pairs = pairs.map((pair) => {
+        const token0 = new Token(pair.token0);
+        const token1 = new Token(pair.token1);
+        const pairContract = new PairContract({
+          address: pair.address,
+          token0,
+          token1,
+        });
+        if (!this.tokensMap[token0.address]) {
+          this.tokensMap[token0.address] = token0;
 
-    if (tokens) {
-      Object.keys(tokens).forEach((address) => {
-        if (!this.tokensMap[address]) {
-          const token = new Token({
-            address,
-            ...wallet.currentChain.validatedTokensInfo[address],
-          });
-          this.tokensMap[address] = token;
-          token.init();
+          token0.init();
         }
-      });
-    }
+        if (!this.tokensMap[token1.address]) {
+          this.tokensMap[token1.address] = token1;
 
-    this.isInit = true;
+          token1.init();
+        }
+        this.pairsByToken[`${token0.address}-${token1.address}`] = pairContract;
+        pairContract.init();
+        return pairContract;
+      });
+
+      //show logoURI token first, because it means its a validated token
+      this.tokensMap = Object.fromEntries(
+        Object.entries(this.tokensMap).sort((a, b) =>
+          a[1].logoURI ? -1 : b[1].logoURI ? 1 : 0
+        )
+      );
+
+      this.isInit = true;
+    }, 300)();
   }
 
   async getPairByTokens(token0Address: string, token1Address: string) {
@@ -291,18 +288,39 @@ class Liquidity {
       memoryPair.init();
       return memoryPair;
     }
+    console.log("getPairByTokens", token0Address, token1Address);
     const pair = await trpcClient.pair.getPairByTokens.query({
       chainId: wallet.currentChainId,
       token0Address,
       token1Address,
     });
     if (pair) {
-      const pairContract = new PairContract({ ...pair });
+      const pairContract = new PairContract({
+        address: pair.address,
+        token0: new Token(pair.token0),
+        token1: new Token(pair.token1),
+      });
       pairContract.init();
 
       this.pairsByToken[`${token0Address}-${token1Address}`] = pairContract;
       return pairContract;
     }
+  }
+
+  async getTokenFtoPair(token: Token): Promise<Token[]> {
+    const pairTokens: Token[] = [];
+
+    wallet.currentChain.contracts.ftoTokens.forEach(async (ftoToken) => {
+      const pair = await this.getPairByTokens(
+        token.address,
+        ftoToken.address ?? ""
+      );
+      if (pair) {
+        pairTokens.push(ftoToken as Token);
+      }
+    });
+
+    return pairTokens;
   }
 }
 

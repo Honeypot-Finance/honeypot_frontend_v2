@@ -1,8 +1,8 @@
 import { NextLayoutPage } from "@/types/nextjs";
 import { SwapSvg } from "@/components/svg/swap";
 import { Tab, Tabs } from "@nextui-org/react";
-import { trpc } from "@/lib/trpc";
-import { useEffect } from "react";
+import { trpc, trpcClient } from "@/lib/trpc";
+import { useEffect, useState } from "react";
 import { liquidity } from "@/services/liquidity";
 import { useAccount } from "wagmi";
 import { SwapCard } from "@/components/SwapCard";
@@ -15,9 +15,11 @@ import Link from "next/link";
 import TransactionPendingToastify from "../CustomToastify/TransactionPendingToastify/TransactionPendingToastify";
 import { toast } from "react-toastify";
 import { wallet } from "@/services/wallet";
+import { GhostPair, GhostPairResponse } from "@/services/indexer/indexerTypes";
 
 export const Swap = observer(({ activeTab }: { activeTab?: "swap" | "lp" }) => {
   const { chainId } = useAccount();
+  const [pairsMap, setPairsMap] = useState<GhostPair[]>();
   const state = useLocalObservable(() => ({
     activeTab: activeTab || "swap",
     get isSwap() {
@@ -30,24 +32,34 @@ export const Swap = observer(({ activeTab }: { activeTab?: "swap" | "lp" }) => {
       this.activeTab = tab;
     },
   }));
-  const { data: pairsMap } = trpc.pair.getPairs.useQuery(
-    {
-      chainId: chainId as number,
-    },
-    {
-      enabled: !!chainId,
-      refetchOnWindowFocus: false,
-    }
-  );
 
   useEffect(() => {
-    if (pairsMap) {
+    trpcClient.indexerFeedRouter.getAllPairs.query().then((data) => {
+      setPairsMap(data.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (pairsMap && wallet.isInit) {
       liquidity.initPool(
-        Object.values(pairsMap),
-        wallet.currentChain.validatedTokensInfo
+        pairsMap.map((pair: any) => ({
+          address: pair.id,
+          token0: {
+            address: pair.token0.id,
+            name: pair.token0.name,
+            symbol: pair.token0.symbol,
+            decimals: pair.token0.decimals,
+          },
+          token1: {
+            address: pair.token1.id,
+            name: pair.token1.name,
+            symbol: pair.token1.symbol,
+            decimals: pair.token1.decimals,
+          },
+        }))
       );
     }
-  }, [pairsMap]);
+  }, [pairsMap, wallet.isInit]);
   //   useEffect(() => {
   //     window.onhashchange = () => {
   //       const hash = getHash();

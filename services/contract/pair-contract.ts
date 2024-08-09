@@ -106,17 +106,23 @@ export class PairContract implements BaseContract {
   }
 
   async getReserves() {
-    const reserves = await this.contract?.read.getReserves();
-    const [reserve0, reserve1] = (reserves as any[]) || [];
-    if (reserve0 && reserve1) {
-      this.reserves = {
-        reserve0: new BigNumber(reserve0.toString()).div(
-          new BigNumber(10).pow(this.token0.decimals)
-        ),
-        reserve1: new BigNumber(reserve1.toString()).div(
-          new BigNumber(10).pow(this.token1.decimals)
-        ),
-      };
+    try {
+      const reserves = await this.contract?.read.getReserves();
+
+      const [reserve0, reserve1] = (reserves as any[]) || [];
+      if (reserve0 && reserve1) {
+        this.reserves = {
+          reserve0: new BigNumber(reserve0.toString()).div(
+            new BigNumber(10).pow(this.token0.decimals)
+          ),
+          reserve1: new BigNumber(reserve1.toString()).div(
+            new BigNumber(10).pow(this.token1.decimals)
+          ),
+        };
+      }
+    } catch (e) {
+      console.log("this", this);
+      console.log("error", e);
     }
   }
   getAmountOut = new AsyncState(
@@ -136,14 +142,18 @@ export class PairContract implements BaseContract {
           .toFixed(0)
       );
 
-      console.log(this);
-
       const reserveIn =
-        fromToken.address === this.token0.address ? reserve0 : reserve1;
+        fromToken.address.toLowerCase() === this.token0.address.toLowerCase()
+          ? reserve0
+          : reserve1;
       const reserveOut =
-        fromToken.address === this.token0.address ? reserve1 : reserve0;
+        fromToken.address.toLowerCase() === this.token0.address.toLowerCase()
+          ? reserve1
+          : reserve0;
       const toToken =
-        fromToken.address === this.token0.address ? this.token1 : this.token0;
+        fromToken.address.toLowerCase() === this.token0.address.toLowerCase()
+          ? this.token1
+          : this.token0;
       const amountOut = await this.routerV2Contract.contract.read.getAmountOut([
         BigInt(
           new BigNumber(fromAmount)
@@ -153,6 +163,7 @@ export class PairContract implements BaseContract {
         reserveIn,
         reserveOut,
       ]);
+      console.log("amountOut", toToken);
       console.log("toToken.decimals", toToken.decimals);
       console.log(
         new BigNumber(amountOut.toString())

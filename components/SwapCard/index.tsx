@@ -1,4 +1,4 @@
-import { observer } from "mobx-react-lite";
+import { observer, useLocalObservable } from "mobx-react-lite";
 import { TokenSelector } from "@/components/TokenSelector";
 import { SwapAmount } from "../SwapAmount/index";
 import { swap } from "@/services/swap";
@@ -18,30 +18,53 @@ import SwapPriceFeedGraph from "../PriceFeedGraph/SwapPriceFeedGraph";
 import { liquidity } from "@/services/liquidity";
 import { chart } from "@/services/chart";
 import LoadingDisplay from "../LoadingDisplay/LoadingDisplay";
-import { trpc } from "@/lib/trpc";
+import { trpc, trpcClient } from "@/lib/trpc";
+import { GhostPair } from "@/services/indexer/indexerTypes";
+import { ItemSelect, SelectItem, SelectState } from "../ItemSelect";
 
 export const SwapCard = observer(() => {
   const router = useRouter();
+  const [pairsMap, setPairsMap] = useState<GhostPair[]>();
+  const state = useLocalObservable(() => ({
+    selectState: new SelectState({
+      value: 0,
+      onSelectChange: (value) => {
+        swap.setFromAmount(
+          (swap.fromToken as Token).balance.times(value).toFixed()
+        );
+      },
+    }),
+  }));
+
   const { inputCurrency, outputCurrency } = router.query as {
     inputCurrency: string;
     outputCurrency: string;
   };
 
-  const { data: pairsMap } = trpc.pair.getPairs.useQuery(
-    {
-      chainId: wallet.currentChainId as number,
-    },
-    {
-      enabled: !!wallet.currentChainId,
-      refetchOnWindowFocus: false,
-    }
-  );
+  useEffect(() => {
+    trpcClient.indexerFeedRouter.getAllPairs.query().then((data) => {
+      setPairsMap(data.data);
+    });
+  }, []);
 
   useEffect(() => {
     if (pairsMap) {
       liquidity.initPool(
-        Object.values(pairsMap),
-        wallet.currentChain.validatedTokensInfo
+        pairsMap.map((pair: any) => ({
+          address: pair.id,
+          token0: {
+            address: pair.token0.id,
+            name: pair.token0.name,
+            symbol: pair.token0.symbol,
+            decimals: pair.token0.decimals,
+          },
+          token1: {
+            address: pair.token1.id,
+            name: pair.token1.name,
+            symbol: pair.token1.symbol,
+            decimals: pair.token1.decimals,
+          },
+        }))
       );
     }
   }, [pairsMap]);
@@ -53,10 +76,18 @@ export const SwapCard = observer(() => {
       return;
     }
     if (inputCurrency && isEthAddress(inputCurrency)) {
-      swap.setFromToken(liquidity.tokensMap[inputCurrency]);
+      swap.setFromToken(
+        new Token({
+          address: inputCurrency,
+        })
+      );
     }
     if (outputCurrency && isEthAddress(outputCurrency)) {
-      swap.setToToken(liquidity.tokensMap[outputCurrency]);
+      swap.setToToken(
+        new Token({
+          address: outputCurrency,
+        })
+      );
     }
   }, [inputCurrency, outputCurrency, isinit]);
   return (
@@ -75,7 +106,7 @@ export const SwapCard = observer(() => {
             >
               <ChartData></ChartData>
             </div>
-            <div className="flex justify-between items-center w-full">
+            <div className="flex flex-col lg:flex-row justify-between items-center w-full">
               <SwapAmount
                 label="From"
                 inputProps={{
@@ -91,7 +122,7 @@ export const SwapCard = observer(() => {
                   },
                 }}
               ></SwapAmount>
-              <div className="flex flex-col items-end">
+              <div className="flex flex-col items-end w-full lg:w-[unset]">
                 {!!swap.fromToken && (
                   <div className="flex items-center">
                     <div className="text-sub">
@@ -100,7 +131,7 @@ export const SwapCard = observer(() => {
                     <div
                       onClick={() => {
                         swap.setFromAmount(
-                          (swap.fromToken as Token).balance?.toFixed()
+                          (swap.fromToken as Token).balance.toFixed()
                         );
                       }}
                       className="  cursor-pointer text-[color:var(--Button-Gradient,#F7931A)] text-base ml-[8px] font-bold leading-3 tracking-[0.16px] underline"
@@ -127,7 +158,7 @@ export const SwapCard = observer(() => {
               ></ExchangeSvg>
               <div className=" h-px flex-[1_0_0] [background:rgba(247,147,26,0.20)] rounded-[100px]"></div>
             </div>
-            <div className="flex justify-between  items-center w-full">
+            <div className="flex flex-col lg:flex-row justify-between items-center w-full">
               <SwapAmount
                 label="To"
                 inputProps={{
@@ -139,7 +170,7 @@ export const SwapCard = observer(() => {
                   },
                 }}
               ></SwapAmount>
-              <div className="flex flex-col items-end">
+              <div className="flex flex-col items-end w-full lg:w-[unset]">
                 {!!swap.toToken && (
                   <div className="flex items-center">
                     <div className="text-sub">
@@ -155,9 +186,8 @@ export const SwapCard = observer(() => {
                 ></TokenSelector>
               </div>
             </div>
-
             {!!swap.price && (
-              <div className="flex w-[529px] max-w-full h-[71px] justify-between items-center border [background:#291C0A] px-5 py-2.5 rounded-2xl border-solid border-[rgba(247,147,26,0.20)]">
+              <div className="flex  w-full lg:w-[529px] max-w-full h-[71px] justify-between items-center border [background:#291C0A] px-5 py-2.5 rounded-2xl border-solid border-[rgba(247,147,26,0.20)]">
                 <div>
                   <div>
                     <AmountFormat amount={swap.price?.toFixed()}></AmountFormat>
@@ -178,6 +208,25 @@ export const SwapCard = observer(() => {
                   <div>Minimum Received</div>
                 </div>
               </div>
+            )}{" "}
+            {swap.fromToken && swap.toToken && (
+              <ItemSelect
+                selectState={state.selectState}
+                className="gap-[16px] flex justify-between w-full flex-wrap"
+              >
+                <SelectItem className="rounded-[30px] px-[24px]" value={0.25}>
+                  25%
+                </SelectItem>
+                <SelectItem className="rounded-[30px] px-[24px]" value={0.5}>
+                  50%
+                </SelectItem>
+                <SelectItem className="rounded-[30px] px-[24px]" value={0.75}>
+                  75%
+                </SelectItem>
+                <SelectItem className="rounded-[30px] px-[24px]" value={1}>
+                  100%
+                </SelectItem>
+              </ItemSelect>
             )}
             <Button
               isDisabled={swap.isDisabled}

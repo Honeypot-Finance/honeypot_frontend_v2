@@ -6,7 +6,7 @@ import { Button } from "@/components/button";
 import { Token } from "@/services/contract/token";
 import { SpinnerContainer } from "../Spinner";
 import { PlusSvg } from "../svg/plus";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { isEthAddress } from "@/lib/address";
 import { wallet } from "@/services/wallet";
@@ -17,7 +17,8 @@ import { SelectItem } from "../ItemSelect/index";
 import { MouseEvent } from "react";
 import _ from "lodash";
 import LoadingDisplay from "../LoadingDisplay/LoadingDisplay";
-import { trpc } from "@/lib/trpc";
+import { trpc, trpcClient } from "@/lib/trpc";
+import { GhostPair } from "@/services/indexer/indexerTypes";
 
 const AddLiquidity = observer(() => {
   return (
@@ -54,7 +55,7 @@ const AddLiquidity = observer(() => {
                 <div
                   onClick={() => {
                     liquidity.setFromAmount(
-                      (liquidity.fromToken as Token).balance?.toFixed()
+                      (liquidity.fromToken as Token).balance.toFixed()
                     );
                   }}
                   className="  cursor-pointer text-[color:var(--Button-Gradient,#F7931A)] text-base ml-[8px] font-bold leading-3 tracking-[0.16px] underline"
@@ -145,11 +146,11 @@ export const RemoveLiquidity = observer(
     }));
     return liquidity.currentRemovePair ? (
       <div className="flex justify-center">
-        <div className="flex flex-col gap-[24px] items-center w-[360px]">
+        <div className="flex flex-col gap-[24px] items-center lg:w-[360px]">
           <div className="w-full"></div>
           <ItemSelect
             selectState={state.selectState}
-            className="gap-[16px] justify-between w-full"
+            className="gap-[16px] justify-around w-full flex flex-wrap"
           >
             <SelectItem className="rounded-[30px] px-[24px]" value={0.25}>
               25%
@@ -177,8 +178,8 @@ export const RemoveLiquidity = observer(
               <div>{liquidity.currentRemovePair?.token1.displayName}</div>
               <div>
                 {liquidity.currentRemovePair?.token1LpBalance
-                  ?.multipliedBy(state.selectState.value as number)
-                  ?.toFixed(3)}
+                  .multipliedBy(state.selectState.value as number)
+                  .toFixed(3)}
               </div>
             </div>
           </div>
@@ -243,27 +244,38 @@ export const RemoveLiquidity = observer(
 
 export const LPCard = observer(() => {
   const router = useRouter();
+  const [pairsMap, setPairsMap] = useState<GhostPair[]>();
   const { inputCurrency, outputCurrency } = router.query as {
     inputCurrency: string;
     outputCurrency: string;
   };
+
   const isinit = wallet.isInit && liquidity.isInit;
 
-  const { data: pairsMap } = trpc.pair.getPairs.useQuery(
-    {
-      chainId: wallet.currentChainId as number,
-    },
-    {
-      enabled: !!wallet.currentChainId,
-      refetchOnWindowFocus: false,
-    }
-  );
+  useEffect(() => {
+    trpcClient.indexerFeedRouter.getAllPairs.query().then((data) => {
+      setPairsMap(data.data);
+    });
+  }, []);
 
   useEffect(() => {
     if (pairsMap) {
       liquidity.initPool(
-        Object.values(pairsMap),
-        wallet.currentChain.validatedTokensInfo
+        pairsMap.map((pair: any) => ({
+          address: pair.id,
+          token0: {
+            address: pair.token0.id,
+            name: pair.token0.name,
+            symbol: pair.token0.symbol,
+            decimals: pair.token0.decimals,
+          },
+          token1: {
+            address: pair.token1.id,
+            name: pair.token1.name,
+            symbol: pair.token1.symbol,
+            decimals: pair.token1.decimals,
+          },
+        }))
       );
     }
   }, [pairsMap]);

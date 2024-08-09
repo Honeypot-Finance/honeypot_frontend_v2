@@ -7,6 +7,7 @@ import {
   polygonMumbaiChain,
   //sepolia,
 } from "@/lib/chain";
+import { NativeFaucetContract } from "./contract/faucet-contract";
 
 export class Network {
   get chainId() {
@@ -20,10 +21,16 @@ export class Network {
     ftoTokens: Partial<Token>[];
   };
   faucetTokens: Token[] = [];
+  nativeFaucet?: {
+    address: string;
+    name: string;
+    requirements: string;
+  };
   chain!: Chain;
-  faucets?: {
+  officialFaucets?: {
     url: string;
     name: string;
+    logoURI?: string;
   }[];
   blacklist?: {
     poolBlacklist: string[];
@@ -32,6 +39,8 @@ export class Network {
     string,
     {
       name: string;
+      symbol: string;
+      decimals: number;
       logoURI?: string;
     }
   > = {};
@@ -84,17 +93,24 @@ export class Network {
 
 export const berachainBartioTestnetNetwork = new Network({
   chain: berachainBartioTestnet,
-  faucets: [
+  officialFaucets: [
     {
       url: "https://bartio.faucet.berachain.com",
       name: "Official Faucet",
+      logoURI:
+        "https://res.cloudinary.com/duv0g402y/raw/upload/src/assets/bera.png",
     },
   ],
+  nativeFaucet: {
+    address: "0x57E2814Bd03B0b01B46d5112A238687a43E38271",
+    name: "Daily Faucet",
+    requirements: "You can claim 100 BERA tokens every 24 hours.",
+  },
   contracts: {
     routerV2: "0x482270069fF98a0dF528955B651494759b3B2F8C",
     factory: "0x2f795195bae7E61E848ffC87ba7f6ae1A06c0527",
-    ftoFactory: "0x5C4cDd0160c0CB4C606365dD98783064335A9ce0",
-    ftoFacade: "0x51e4fF69060CD62dE1a9374799a0BddeB55cb1E4",
+    ftoFactory: "0x2B74f450371D9977E412609B37588D17d4985c36",
+    ftoFacade: "0x149519DD90392172467BfDb0cB91a04C0950e2DD",
     ftoTokens: [
       {
         address: "0xfc5e3743E9FAC8BB60408797607352E24Db7d65E",
@@ -157,13 +173,13 @@ export const berachainBartioTestnetNetwork = new Network({
     {
       address: "0xfc5e3743E9FAC8BB60408797607352E24Db7d65E",
       name: "T-HPOT",
-      symbol: "T-HPOT",
+      symbol: "tHPOT",
       decimals: 18,
     },
     {
       address: "0x2C2fc71339aCdD913734a4CAe9dD95D9d2b1438d",
       name: "Bera the Pooh",
-      symbol: "BERA THE POOH",
+      symbol: "BTP",
       decimals: 18,
     },
     // {
@@ -185,42 +201,62 @@ export const berachainBartioTestnetNetwork = new Network({
   validatedTokensInfo: {
     "0x7507c1dc16935B82698e4C63f2746A2fCf994dF8": {
       name: "Wrapped Bera",
+      symbol: "WBERA",
+      decimals: 18,
       logoURI: "/images/icons/tokens/wbera-token-icon.png",
     },
     "0x2C2fc71339aCdD913734a4CAe9dD95D9d2b1438d": {
       name: "Bera the Pooh",
+      symbol: "BTP",
+      decimals: 18,
       logoURI: "/images/icons/tokens/bera-the-pooh-token-icon.png",
     },
     "0x0E4aaF1351de4c0264C5c7056Ef3777b41BD8e03": {
       name: "Honey",
+      symbol: "HONEY",
+      decimals: 18,
       logoURI: "/images/icons/tokens/honey-token-icon.png",
     },
     "0xfc5e3743E9FAC8BB60408797607352E24Db7d65E": {
       name: "T-HPOT",
+      symbol: "tHPOT",
+      decimals: 18,
       logoURI: "/images/icons/tokens/thpot-token-icon.jpg",
     },
     "0x05D0dD5135E3eF3aDE32a9eF9Cb06e8D37A6795D": {
       name: "USDT",
+      symbol: "USDT",
+      decimals: 18,
       logoURI: "/images/icons/tokens/usdt-token-icon.png",
     },
     "0xd6D83aF58a19Cd14eF3CF6fe848C9A4d21e5727c": {
       name: "USDC",
+      symbol: "USDC",
+      decimals: 18,
       logoURI: "/images/icons/tokens/usdc-token-icon.png",
     },
     "0x286F1C3f0323dB9c91D1E8f45c8DF2d065AB5fae": {
       name: "WBTC",
+      symbol: "WBTC",
+      decimals: 18,
       logoURI: "/images/icons/tokens/wbtc-token-icon.png",
     },
     "0xE28AfD8c634946833e89ee3F122C06d7C537E8A8": {
       name: "WETH",
+      symbol: "WETH",
+      decimals: 18,
       logoURI: "/images/icons/tokens/weth-token-icon.png",
     },
     "0x806Ef538b228844c73E8E692ADCFa8Eb2fCF729c": {
       name: "DAI",
+      symbol: "DAI",
+      decimals: 18,
       logoURI: "/images/icons/tokens/dai-token-icon.png",
     },
     "0x343499E6315f7d3473a12aaf660Ac02b5739C382": {
-      name: "GCG",
+      name: "Grand Conquest Gold",
+      symbol: "GCG",
+      decimals: 18,
       logoURI: "/images/icons/tokens/grandconquest-token-icon.svg",
     },
   },

@@ -6,30 +6,30 @@
                 fill="#877137" />
             <path
                 d="M12.0027 24.0053C18.6315 24.0053 24.0053 18.6315 24.0053 12.0027C24.0053 5.37377 18.6315 0 12.0027 0C5.37377 0 0 5.37377 0 12.0027C0 18.6315 5.37377 24.0053 12.0027 24.0053Z"
-                fill="url(#paint0_radial_8215_36614)" fill-opacity="0.25" />
+                fill="url(#paint0_radial_8215_36614)" fillOpacity="0.25" />
         </g>
         <path id="Vector_2"
             d="M12.0081 0C5.39709 0 0.0107422 5.38635 0.0107422 11.9973C0.0107422 18.6084 5.39709 23.9947 12.0081 23.9947C18.6191 23.9947 24.0054 18.6084 24.0054 11.9973C24.0054 5.38635 18.6244 0 12.0081 0ZM12.0081 3.44069C16.7318 3.44069 20.5648 7.27369 20.5648 11.9973C20.5648 16.721 16.7318 20.554 12.0081 20.554C7.28443 20.554 3.45143 16.721 3.45143 11.9973C3.45143 7.27369 7.27913 3.44069 12.0081 3.44069Z"
             fill="url(#paint1_linear_8215_36614)" />
         <path id="Vector_3"
             d="M12.0078 3.44091C16.7261 3.44091 20.5644 7.27921 20.5644 11.9976C20.5644 16.7159 16.7261 20.5542 12.0078 20.5542C7.2894 20.5542 3.45109 16.7159 3.45109 11.9976C3.45109 7.27921 7.2894 3.44091 12.0078 3.44091ZM12.0078 1.6543C6.29271 1.6543 1.65918 6.28783 1.65918 12.0029C1.65918 17.7179 6.29271 22.3514 12.0078 22.3514C17.7228 22.3514 22.3563 17.7179 22.3563 12.0029C22.3563 6.28783 17.7228 1.6543 12.0078 1.6543Z"
-            fill="url(#paint2_linear_8215_36614)" fill-opacity="0.5" />
+            fill="url(#paint2_linear_8215_36614)" fillOpacity="0.5" />
         <g id="Vector_4" filter="url(#filter0_d_8215_36614)">
             <path
                 d="M12.0079 4.34961L14.3222 9.03447L19.4999 9.78929L15.757 13.4386L16.6366 18.5789L12.0141 16.1522L7.39164 18.5789L8.27122 13.4386L4.52832 9.78929L9.70599 9.03447L12.0204 4.34961H12.0079Z"
                 fill="url(#paint3_linear_8215_36614)" />
         </g>
         <path id="Vector_5" d="M12.0083 4.34961V11.4674L9.66895 9.04071L12.0083 4.34961Z"
-            fill="url(#paint4_linear_8215_36614)" fill-opacity="0.5" />
+            fill="url(#paint4_linear_8215_36614)" fillOpacity="0.5" />
         <path id="Vector_6" d="M4.51562 9.7832L11.284 11.9728L8.25228 13.4512L4.51562 9.7832Z"
-            fill="url(#paint5_linear_8215_36614)" fill-opacity="0.5" />
+            fill="url(#paint5_linear_8215_36614)" fillOpacity="0.5" />
         <path id="Vector_7" d="M12.0082 16.1527V12.1104L7.38574 18.5793L12.0082 16.1527Z"
-            fill="url(#paint6_linear_8215_36614)" fill-opacity="0.5" />
+            fill="url(#paint6_linear_8215_36614)" fillOpacity="0.5" />
         <path id="Vector_8" d="M16.6304 18.5793L12.2949 12.1104L15.7509 13.4391L16.6304 18.5793Z"
-            fill="url(#paint7_linear_8215_36614)" fill-opacity="0.5" />
+            fill="url(#paint7_linear_8215_36614)" fillOpacity="0.5" />
         <path id="Vector_9"
             d="M19.4871 9.7896L12.3008 11.6174L14.3157 9.04102L19.4934 9.7896H19.4871Z"
-            fill="url(#paint8_linear_8215_36614)" fill-opacity="0.5" />
+            fill="url(#paint8_linear_8215_36614)" fillOpacity="0.5" />
     </g>
     <defs>
         <filter id="filter0_d_8215_36614" x="2.52832" y="2.34961" width="18.9717" height="18.2295"
@@ -53,51 +53,51 @@
         </radialGradient>
         <linearGradient id="paint1_linear_8215_36614" x1="12.0081" y1="0" x2="12.0081" y2="23.9894"
             gradientUnits="userSpaceOnUse">
-            <stop offset="0.06" stop-color="#EBDAAE" />
-            <stop offset="0.54" stop-color="#E1BA54" />
-            <stop offset="1" stop-color="#BF9E47" />
+            <stop offset="0.06" stopColor="#EBDAAE" />
+            <stop offset="0.54" stopColor="#E1BA54" />
+            <stop offset="1" stopColor="#BF9E47" />
         </linearGradient>
         <linearGradient id="paint2_linear_8215_36614" x1="12.0078" y1="1.649" x2="12.0078"
             y2="22.3461" gradientUnits="userSpaceOnUse">
             <stop />
-            <stop offset="0.53" stop-color="#343434" />
-            <stop offset="1" stop-color="#111111" stop-opacity="0.3" />
+            <stop offset="0.53" stopColor="#343434" />
+            <stop offset="1" stopColor="#111111" stop-opacity="0.3" />
         </linearGradient>
         <linearGradient id="paint3_linear_8215_36614" x1="11.515" y1="1.23979" x2="11.0938"
             y2="22.1115" gradientUnits="userSpaceOnUse">
-            <stop offset="0.0607203" stop-color="#EBDAAE" />
-            <stop offset="0.542833" stop-color="#E1BA54" />
-            <stop offset="1" stop-color="#BF9E47" />
+            <stop offset="0.0607203" stopColor="#EBDAAE" />
+            <stop offset="0.542833" stopColor="#E1BA54" />
+            <stop offset="1" stopColor="#BF9E47" />
         </linearGradient>
         <linearGradient id="paint4_linear_8215_36614" x1="10.8417" y1="4.34961" x2="10.8417"
             y2="11.3925" gradientUnits="userSpaceOnUse">
             <stop />
-            <stop offset="0.53" stop-color="#343434" />
-            <stop offset="1" stop-color="#111111" stop-opacity="0.3" />
+            <stop offset="0.53" stopColor="#343434" />
+            <stop offset="1" stopColor="#111111" stop-opacity="0.3" />
         </linearGradient>
         <linearGradient id="paint5_linear_8215_36614" x1="7.89671" y1="9.77696" x2="7.89671"
             y2="13.4013" gradientUnits="userSpaceOnUse">
             <stop />
-            <stop offset="0.53" stop-color="#343434" />
-            <stop offset="1" stop-color="#111111" stop-opacity="0.3" />
+            <stop offset="0.53" stopColor="#343434" />
+            <stop offset="1" stopColor="#111111" stop-opacity="0.3" />
         </linearGradient>
         <linearGradient id="paint6_linear_8215_36614" x1="9.7001" y1="12.1104" x2="9.7001"
             y2="18.5107" gradientUnits="userSpaceOnUse">
             <stop />
-            <stop offset="0.53" stop-color="#343434" />
-            <stop offset="1" stop-color="#111111" stop-opacity="0.3" />
+            <stop offset="0.53" stopColor="#343434" />
+            <stop offset="1" stopColor="#111111" stop-opacity="0.3" />
         </linearGradient>
         <linearGradient id="paint7_linear_8215_36614" x1="14.4658" y1="12.1104" x2="14.4658"
             y2="18.5107" gradientUnits="userSpaceOnUse">
             <stop />
-            <stop offset="0.53" stop-color="#343434" />
-            <stop offset="1" stop-color="#111111" stop-opacity="0.3" />
+            <stop offset="0.53" stopColor="#343434" />
+            <stop offset="1" stopColor="#111111" stop-opacity="0.3" />
         </linearGradient>
         <linearGradient id="paint8_linear_8215_36614" x1="15.894" y1="9.03478" x2="15.894"
             y2="11.5862" gradientUnits="userSpaceOnUse">
             <stop />
-            <stop offset="0.53" stop-color="#343434" />
-            <stop offset="1" stop-color="#111111" stop-opacity="0.3" />
+            <stop offset="0.53" stopColor="#343434" />
+            <stop offset="1" stopColor="#111111" stop-opacity="0.3" />
         </linearGradient>
     </defs>
 </svg>

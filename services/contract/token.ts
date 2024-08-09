@@ -7,7 +7,8 @@ import { ContractWrite } from "../utils";
 import { amountFormatted } from "@/lib/format";
 import { ERC20ABI } from "@/lib/abis/erc20";
 import { faucetABI } from "@/lib/abis/faucet";
-import { networksMap } from "../chain";
+import { watchAsset } from "viem/actions";
+import { toast } from "react-toastify";
 
 export class Token implements BaseContract {
   address: string = "";
@@ -25,6 +26,7 @@ export class Token implements BaseContract {
   get displayName() {
     return this.symbol || this.name;
   }
+
   get faucetContract() {
     return getContract({
       address: this.address as `0x${string}`,
@@ -46,9 +48,7 @@ export class Token implements BaseContract {
       this.balanceWithoutDecimals = new BigNumber(balance);
     }
 
-    this.logoURI =
-      networksMap[wallet.currentChainId]?.validatedTokensInfo[this.address]
-        ?.logoURI ?? "/images/icons/tokens/unknown-token-icon.png";
+    this.getLogoURI();
 
     makeAutoObservable(this);
   }
@@ -72,28 +72,14 @@ export class Token implements BaseContract {
     loadTotalSupply?: boolean;
     loadClaimed?: boolean;
   }) {
-    const cachedData = await fetch(
-      `/api/server-cache/get-server-cache?key=token:${this.address}:${wallet.currentChainId}`
-    ).then((res) => res.json());
-
-    if (cachedData.status === "success") {
-      const data = JSON.parse(cachedData.data);
-      Object.assign(this, {
-        ...data,
-        balanceWithoutDecimals: new BigNumber(data.balanceWithoutDecimals),
-        totalSupplyWithoutDecimals: new BigNumber(
-          data.totalSupplyWithoutDecimals
-        ),
-      });
-      return;
-    }
-
     const loadName = options?.loadName ?? true;
     const loadSymbol = options?.loadSymbol ?? true;
     const loadDecimals = options?.loadDecimals ?? true;
     const loadBalance = options?.loadBalance ?? true;
     const loadTotalSupply = options?.loadTotalSupply ?? false;
     const loadClaimed = options?.loadClaimed ?? false;
+
+    this.getLogoURI();
 
     await Promise.all([
       loadName && !this.name
@@ -123,18 +109,19 @@ export class Token implements BaseContract {
       return;
     });
 
-    const setData = await fetch(`/api/server-cache/set-server-cache`, {
-      method: "POST",
-      body: JSON.stringify({
-        key: `token:${this.address}:${wallet.currentChainId}`,
-        data: JSON.stringify(this),
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
     this.isInit = true;
+  }
+
+  getLogoURI() {
+    if (this.logoURI) return;
+
+    Object.entries(wallet.currentChain.validatedTokensInfo).forEach(
+      ([address, info]) => {
+        if (address.toLowerCase() === this.address.toLowerCase()) {
+          this.logoURI = info.logoURI ?? "";
+        }
+      }
+    );
   }
 
   async approveIfNoAllowance({
@@ -167,12 +154,18 @@ export class Token implements BaseContract {
   }
 
   async getBalance() {
-    const balance = await this.contract.read.balanceOf([
-      wallet.account as `0x${string}`,
-    ]);
-    this.balanceWithoutDecimals = new BigNumber(balance.toString());
-    return this.balanceWithoutDecimals;
+    try {
+      const balance = await this.contract.read.balanceOf([
+        wallet.account as `0x${string}`,
+      ]);
+      this.balanceWithoutDecimals = new BigNumber(balance.toString());
+      return this.balanceWithoutDecimals;
+    } catch (e) {
+      console.log(e);
+      return new BigNumber(0);
+    }
   }
+
   async getTotalSupply() {
     const totalSupply = await this.contract.read.totalSupply();
     this.totalSupplyWithoutDecimals = new BigNumber(totalSupply.toString());
@@ -190,5 +183,23 @@ export class Token implements BaseContract {
       decimals: this.decimals,
       fixed: 3,
     });
+  }
+
+  async watch() {
+    watchAsset(wallet.walletClient, {
+      type: "ERC20",
+      options: {
+        address: this.address,
+        symbol: this.symbol,
+        decimals: this.decimals,
+        image: window.location.origin + this.logoURI,
+      },
+    })
+      .then(() => {
+        toast.success("Token added to wallet");
+      })
+      .catch((e) => {
+        toast.error("Failed to add token to wallet");
+      });
   }
 }

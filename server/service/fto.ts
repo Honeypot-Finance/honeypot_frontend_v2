@@ -110,6 +110,27 @@ export const ftoService = {
       data.vote
     }`;
   },
+
+  updateFtoLogo: async (data: {
+    logo_url: string;
+    pair: string;
+    chain_id: number;
+    creator_api_key: string;
+  }) => {
+    if (
+      !fto_api_key_list.includes(data.creator_api_key) &&
+      data.creator_api_key.toLowerCase() != super_api_key.toLowerCase()
+    ) {
+      return;
+    }
+
+    await pg`INSERT INTO fto_project ${pg({
+      pair: data.pair.toLowerCase(),
+      chain_id: data.chain_id,
+      logo_url: data.logo_url,
+    })}
+    ON CONFLICT (pair, chain_id) DO UPDATE SET logo_url = ${data.logo_url}`;
+  },
   getProjectVotes: async (data: {
     pair: string;
   }): Promise<{
@@ -194,10 +215,11 @@ const selectFtoProject = async (data: { pair: string; chain_id: number }) => {
       telegram: string;
       website: string;
       description: string;
+      logo_url: string;
       name: string;
       provider: string;
     }[]
-  >`SELECT twitter, telegram, website,description,name, provider  FROM fto_project WHERE pair = ${data.pair.toLowerCase()} and chain_id = ${
+  >`SELECT twitter,logo_url, telegram, website,description,name, provider  FROM fto_project WHERE pair = ${data.pair.toLowerCase()} and chain_id = ${
     data.chain_id
   }`;
 };

@@ -34,6 +34,7 @@ export const ftoRouter = router({
           telegram: z.string().or(z.null()),
           website: z.string().or(z.null()),
           description: z.string().or(z.null()),
+          logo_url: z.string().or(z.null()),
           name: z.string().or(z.null()),
           provider: z.string(),
         })
@@ -71,6 +72,23 @@ export const ftoRouter = router({
     .mutation(async ({ input }) => {
       await ftoService.createOrUpdateProjectInfo({
         ...input,
+        creator_api_key: api_key,
+      });
+    }),
+  updateProjectLogo: authProcedure
+    .input(
+      z.object({
+        logo_url: z.string(),
+        pair: z.string(),
+        chain_id: z.number(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      console.log(input);
+      await ftoService.updateFtoLogo({
+        logo_url: input.logo_url,
+        pair: input.pair,
+        chain_id: input.chain_id,
         creator_api_key: api_key,
       });
     }),

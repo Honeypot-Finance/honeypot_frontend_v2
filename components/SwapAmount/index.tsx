@@ -8,7 +8,7 @@ type SwapAmountProps = {
 
 export const SwapAmount = ({ label, inputProps }: SwapAmountProps) => {
   return (
-    <div className="flex-1">
+    <div className="flex-1 w-full">
       <div className="text-sub text-sm font-normal leading-3 tracking-[0.14px]">
         {label}
       </div>

@@ -2,8 +2,8 @@ import { liquidity } from "@/services/liquidity";
 import { NextLayoutPage } from "@/types/nextjs";
 import { observer, useLocalObservable } from "mobx-react-lite";
 import { Table } from "@/components/table/index";
-import { trpc } from "@/lib/trpc";
-import { useEffect } from "react";
+import { trpc, trpcClient } from "@/lib/trpc";
+import { useEffect, useState } from "react";
 import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 import { useAccount } from "wagmi";
 import { PaginationState } from "@/services/utils";
@@ -22,20 +22,26 @@ import TokenLogo from "@/components/TokenLogo/TokenLogo";
 import ShareSocialMedialPopUp from "@/components/ShareSocialMedialPopUp/ShareSocialMedialPopUp";
 import PopUp from "@/components/PopUp/PopUp";
 import { RemoveLiquidity } from "@/components/LPCard";
+import { GhostPair } from "@/services/indexer/indexerTypes";
 
 const PoolsPage: NextLayoutPage = observer(() => {
   const { chainId } = useAccount();
   const router = useRouter();
-  const { data: pairsMap, isLoading } = trpc.pair.getPairs.useQuery(
-    {
-      chainId: chainId as number,
-      blockAddress: networksMap[chainId as number].blacklist?.poolBlacklist,
-    },
-    {
-      enabled: !!chainId,
-      refetchOnWindowFocus: false,
+  const [pairsMap, setPairsMap] = useState<GhostPair[]>();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    trpcClient.indexerFeedRouter.getAllPairs.query().then((data) => {
+      setPairsMap(data.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (wallet.isInit && liquidity.isInit) {
+      setLoading(false);
     }
-  );
+  }, [wallet.isInit, liquidity.isInit]);
+
   const state = useLocalObservable(() => ({
     columns: [
       {
@@ -86,8 +92,21 @@ const PoolsPage: NextLayoutPage = observer(() => {
   useEffect(() => {
     if (pairsMap) {
       liquidity.initPool(
-        Object.values(pairsMap),
-        wallet?.currentChain?.validatedTokensInfo
+        pairsMap.map((pair: any) => ({
+          address: pair.id,
+          token0: {
+            address: pair.token0.id,
+            name: pair.token0.name,
+            symbol: pair.token0.symbol,
+            decimals: pair.token0.decimals,
+          },
+          token1: {
+            address: pair.token1.id,
+            name: pair.token1.name,
+            symbol: pair.token1.symbol,
+            decimals: pair.token1.decimals,
+          },
+        }))
       );
       state.pagination.setTotal(liquidity.pairs.length);
     }
@@ -134,7 +153,7 @@ const PoolsPage: NextLayoutPage = observer(() => {
                 <Table
                   rowKey="address"
                   pagination={state.pagination}
-                  isLoading={isLoading}
+                  isLoading={loading}
                   columns={[
                     {
                       title: "",
@@ -287,16 +306,5 @@ const PoolsPage: NextLayoutPage = observer(() => {
     </div>
   );
 });
-
-// export const getStaticProps = async (context: any) => {
-//   // prefetch `post.byId`
-//   const pairsMap = await trpcClient.pair.getPairs.query();
-//   return {
-//     props: {
-//       pairs: Object.values(pairsMap),
-//     },
-//     revalidate: 5,
-//   };
-// };
 
 export default PoolsPage;

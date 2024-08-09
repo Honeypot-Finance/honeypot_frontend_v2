@@ -11,9 +11,7 @@ import { useEffect, useState } from "react";
 
 const SwapPage = observer(() => {
   useEffect(() => {
-    observe(chart, "chartTarget", () => {
-      console.log("chart.chartTarget", chart.chartTarget);
-    });
+    observe(chart, "chartTarget", () => {});
   }, []);
   return (
     <>

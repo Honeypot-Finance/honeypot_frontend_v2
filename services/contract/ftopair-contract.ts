@@ -10,6 +10,7 @@ import { dayjs } from "@/lib/dayjs";
 import { cn } from "@/lib/tailwindcss";
 import { trpcClient } from "@/lib/trpc";
 import { ZodError } from "zod";
+import { statusTextToNumber } from "../launchpad";
 
 export class FtoPairContract implements BaseContract {
   address = "";
@@ -37,6 +38,7 @@ export class FtoPairContract implements BaseContract {
     link: string;
     icon: string;
   }[] = [];
+  logoUrl = "";
 
   constructor(args: Partial<FtoPairContract>) {
     Object.assign(this, args);
@@ -274,41 +276,40 @@ export class FtoPairContract implements BaseContract {
     if (res.provider) {
       this.provider = res.provider;
     }
+    if (res.logo_url) {
+      this.logoUrl = res.logo_url;
+    }
   }
 
-  async init() {
-    const cachedData = await fetch(
-      `/api/server-cache/get-server-cache?key=fto:${this.address}:${wallet.currentChainId}`
-    ).then((res) => res.json());
-
-    //console.log("cachedData", cachedData);
-
-    if (cachedData.status === "success") {
-      const data = JSON.parse(cachedData.data);
-      Object.assign(this, {
-        ...data,
-        depositedRaisedTokenWithoutDecimals:
-          data.depositedRaisedTokenWithoutDecimals
-            ? new BigNumber(data.depositedRaisedTokenWithoutDecimals)
-            : null,
-        depositedLaunchedTokenWithoutDecimals:
-          data.depositedLaunchedTokenWithoutDecimals
-            ? new BigNumber(data.depositedLaunchedTokenWithoutDecimals)
-            : null,
-      });
-
-      await Promise.all([this.getRaisedToken(), this.getLaunchedToken()]);
+  async init({
+    raisedToken,
+    launchedToken,
+    depositedRaisedToken,
+    depositedLaunchedToken,
+    startTime,
+    endTime,
+    ftoState,
+  }: {
+    raisedToken?: Token;
+    launchedToken?: Token;
+    depositedRaisedToken?: string;
+    depositedLaunchedToken?: string;
+    startTime?: string;
+    endTime?: string;
+    ftoState?: number;
+  } = {}) {
+    if (this.isInit) {
       return;
     }
 
     await Promise.all([
-      this.getRaisedToken(),
-      this.getLaunchedToken(),
-      this.getDepositedRaisedToken(),
-      this.getDepositedLaunchedToken(),
-      this.getStartTime(),
-      this.getEndTime(),
-      this.getFTOState(),
+      this.getRaisedToken(raisedToken),
+      this.getLaunchedToken(launchedToken),
+      this.getDepositedRaisedToken(depositedRaisedToken),
+      this.getDepositedLaunchedToken(depositedLaunchedToken),
+      this.getStartTime(startTime),
+      this.getEndTime(endTime),
+      this.getFTOState(ftoState),
       this.getLaunchedTokenProvider(),
       this.getProjectInfo(),
       this.getCanClaimLP(),
@@ -317,31 +318,24 @@ export class FtoPairContract implements BaseContract {
       return;
     });
 
-    const setData = await fetch(`/api/server-cache/set-server-cache`, {
-      method: "POST",
-      body: JSON.stringify({
-        key: `fto:${this.address}:${wallet.currentChainId}`,
-        data: JSON.stringify({
-          ...this,
-        }),
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    //console.log("setData", setData);
-
     this.isInit = true;
   }
 
   getIsValidated() {
-    this.isValidated = wallet.currentChain.validatedFtoAddresses.includes(
+    this.isValidated = wallet.currentChain?.validatedFtoAddresses.includes(
       this.address.toLowerCase()
     );
   }
 
   async getCanClaimLP() {
+    if (
+      !wallet.account ||
+      // provider can't claim LP
+      wallet.account.toLowerCase() === this.provider.toLowerCase()
+    ) {
+      return false;
+    }
+
     try {
       const res = await this.contract.read.claimableLP([wallet.account] as [
         `0x${string}`
@@ -349,44 +343,75 @@ export class FtoPairContract implements BaseContract {
       this.canClaimLP = res > 0;
     } catch (error) {
       this.canClaimLP = false;
-      //console.error(error, `getCanClaimLP-${this.address}`);
     }
   }
 
-  async getRaisedToken() {
-    const res = (await this.contract.read.raisedToken()) as `0x${string}`;
-    this.raiseToken = new Token({ address: res });
-    this.raiseToken.init();
+  async getRaisedToken(token?: Token) {
+    if (token) {
+      this.raiseToken = token;
+      this.raiseToken.init();
+    } else {
+      const res = (await this.contract.read.raisedToken()) as `0x${string}`;
+      this.raiseToken = new Token({ address: res });
+      this.raiseToken.init();
+    }
   }
 
-  async getLaunchedToken() {
-    const res = (await this.contract.read.launchedToken()) as `0x${string}`;
-    this.launchedToken = new Token({ address: res });
-    this.launchedToken.init();
+  async getLaunchedToken(launchedToken?: Token) {
+    if (launchedToken) {
+      this.launchedToken = launchedToken;
+      //this.launchedToken.init();
+    } else {
+      const res = (await this.contract.read.launchedToken()) as `0x${string}`;
+      this.launchedToken = new Token({ address: res });
+      //this.launchedToken.init();
+    }
   }
 
-  async getDepositedRaisedToken() {
-    const res = (await this.contract.read.depositedRaisedToken()) as bigint;
-    this.depositedRaisedTokenWithoutDecimals = new BigNumber(res.toString());
+  async getDepositedRaisedToken(amount?: string) {
+    if (amount) {
+      this.depositedRaisedTokenWithoutDecimals = new BigNumber(amount);
+    } else {
+      const res = (await this.contract.read.depositedRaisedToken()) as bigint;
+      this.depositedRaisedTokenWithoutDecimals = new BigNumber(res.toString());
+    }
   }
 
-  async getDepositedLaunchedToken() {
-    const res = (await this.contract.read.depositedLaunchedToken()) as bigint;
-    this.depositedLaunchedTokenWithoutDecimals = new BigNumber(res.toString());
+  async getDepositedLaunchedToken(amount?: string) {
+    if (amount) {
+      this.depositedLaunchedTokenWithoutDecimals = new BigNumber(amount);
+    } else {
+      const res = (await this.contract.read.depositedLaunchedToken()) as bigint;
+      this.depositedLaunchedTokenWithoutDecimals = new BigNumber(
+        res.toString()
+      );
+    }
   }
 
-  async getEndTime() {
-    const res = await this.contract.read.endTime();
-    this.endTime = res.toString();
+  async getEndTime(endtime?: string) {
+    if (endtime) {
+      this.endTime = endtime;
+    } else {
+      const res = await this.contract.read.endTime();
+      this.endTime = res.toString();
+    }
   }
 
-  async getStartTime() {
-    const res = await this.contract.read.startTime();
-    this.startTime = res.toString();
+  async getStartTime(startTime?: string) {
+    if (startTime) {
+      this.startTime = startTime;
+    } else {
+      const res = await this.contract.read.startTime();
+      this.startTime = res.toString();
+    }
   }
-  async getFTOState() {
-    const res = await this.contract.read.FTOState();
-    this.ftoState = res;
+  async getFTOState(state?: number) {
+    if (state) {
+      this.ftoState = state;
+    } else {
+      const res = await this.contract.read.FTOState();
+      this.ftoState = res;
+    }
   }
   async getLaunchedTokenProvider() {
     const res = await this.contract.read.launchedTokenProvider();

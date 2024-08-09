@@ -18,64 +18,11 @@ import {
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { cn } from "@/lib/tailwindcss";
-
-type Menu = {
-  path:
-    | string
-    | {
-        path: string;
-        title: string;
-      }[];
-  title: string;
-};
+import { Menu, appPathsList as menuList } from "@/data/allAppPath";
 
 export const Header = (props: HtmlHTMLAttributes<any>) => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuList: Menu[] = [
-    // {
-    //   path: "/navigation",
-    //   title: "Navigation",
-    // },
-    {
-      path: "/swap",
-      title: "Swap",
-    },
-    {
-      path: "/faucet",
-      title: "Faucet",
-    },
-    {
-      path: [
-        {
-          path: "/pools",
-          title: "LP Pool List",
-        },
-        {
-          path: "/pool",
-          title: "Add Liquidity",
-        },
-      ],
-      title: "Liquidity",
-    },
-    {
-      path: [
-        {
-          path: "/launch",
-          title: "Project List",
-        },
-        {
-          path: "/launch-token",
-          title: "Launch Project",
-        },
-      ],
-      title: "Launch",
-    },
-    {
-      path: "/profile",
-      title: "Profile",
-    },
-  ];
 
   const listToNavbarItem = (list: Menu[], isSub?: boolean): React.ReactNode => {
     return list.map((m) =>
@@ -250,7 +197,6 @@ function WrapedDropdownItem({
 }
 function ListToElement({ list }: { list: Menu[] }) {
   const router = useRouter();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return list.map((m) => {
     return m.path instanceof Array ? (

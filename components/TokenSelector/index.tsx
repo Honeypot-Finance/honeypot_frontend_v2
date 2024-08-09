@@ -91,7 +91,7 @@ export const TokenSelector = observer(
         {value && (
           <>
             <Link
-              href={`${wallet.currentChain.chain.blockExplorers?.default.url}/token/${value.address}`}
+              href={`${wallet.currentChain?.chain.blockExplorers?.default.url}/token/${value.address}`}
               target="_blank"
             >
               <BiLinkExternal className=" cursor-pointer hover:text-primary "></BiLinkExternal>
@@ -126,7 +126,7 @@ export const TokenSelector = observer(
               </div>
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="flex w-[352px] flex-col items-center gap-4 border border-[color:var(--card-stroke,#F7931A)] [background:var(--card-color,#271A0C)] rounded-xl border-solid">
+          <PopoverContent className="flex w-full lg:w-[350px] flex-col items-center gap-4 border border-[color:var(--card-stroke,#F7931A)] [background:var(--card-color,#271A0C)] rounded-xl border-solid">
             <Observer>
               {() => (
                 <div className="w-full">

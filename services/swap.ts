@@ -22,12 +22,56 @@ class Swap {
   deadline: number = 20;
   price: BigNumber | null = null;
 
+  routerToken = new AsyncState<Token[] | undefined>(async () => {
+    if (!this.fromToken || !this.toToken) {
+      return undefined;
+    }
+
+    //try to get 1 token in fto tokens for both from and to
+    //route them by from -> router token -> to
+    const fromTokenRouterTokens = await liquidity.getTokenFtoPair(
+      this.fromToken
+    );
+    console.log("fromTokenRouterTokens: " + fromTokenRouterTokens);
+    if (fromTokenRouterTokens.length === 0) {
+      return undefined;
+    }
+
+    fromTokenRouterTokens.forEach(async (rtoken) => {
+      if (
+        liquidity.pairsByToken[`${this.toToken!.address}-${rtoken.address}`] ||
+        liquidity.pairsByToken[`${rtoken.address}-${this.toToken!.address}`]
+      ) {
+        return [rtoken];
+      }
+    });
+
+    // if there is not one token for both,
+    // get fto tokens for from and to separately
+    // and route them by from -> router token 1 -> router token 2 -> to
+    const toTokenRouterTokens = await liquidity.getTokenFtoPair(this.toToken);
+    console.log("toTokenRouterTokens: " + toTokenRouterTokens);
+    if (toTokenRouterTokens.length === 0) {
+      return undefined;
+    }
+
+    return [fromTokenRouterTokens[0], toTokenRouterTokens[0]];
+  });
+
   currentPair = new AsyncState<PairContract | undefined>(async () => {
     if (this.fromToken && this.toToken) {
       const res = await liquidity.getPairByTokens(
         this.fromToken.address,
         this.toToken.address
       );
+
+      console.log("currentPair: ", res);
+
+      if (!res) {
+        this.routerToken.call();
+        console.log("router token: ", this.routerToken.value);
+      }
+
       await res?.init();
       return res;
     }
@@ -92,10 +136,12 @@ class Swap {
       () => this.fromToken?.address,
       async () => {
         this.currentPair.setValue(undefined);
+        this.routerToken.setValue(undefined);
         await this.toToken?.init();
         chart.setChartTarget(this.fromToken as Token);
         if (this.fromToken && this.toToken) {
           await this.currentPair.call();
+          console.log(this.currentPair.value);
           chart.setChartTarget(this.currentPair.value as PairContract);
         }
       }
@@ -104,10 +150,12 @@ class Swap {
       () => this.toToken?.address,
       async () => {
         this.currentPair.setValue(undefined);
+        this.routerToken.setValue(undefined);
         await this.toToken?.init();
         chart.setChartTarget(this.toToken);
         if (this.fromToken && this.toToken) {
           await this.currentPair.call();
+          console.log(this.currentPair.value);
           chart.setChartTarget(this.currentPair.value as PairContract);
         }
       }
@@ -116,10 +164,9 @@ class Swap {
       () => this.fromAmount,
       debounce(async () => {
         if (!this.currentPair.value) {
-            return
+          return;
         }
         if (this.fromAmount) {
-          
           const [toAmount] = await this.currentPair.value.getAmountOut.call(
             this.fromAmount,
             this.fromToken as Token

@@ -19,6 +19,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Tooltip,
   useDisclosure,
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
@@ -27,17 +28,26 @@ import Link from "next/link";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TokenLogo from "@/components/TokenLogo/TokenLogo";
-import { BiLinkExternal } from "react-icons/bi";
+import { BiLinkExternal, BiWallet } from "react-icons/bi";
 import { PopupActions } from "reactjs-popup/dist/types";
 import PopUp from "@/components/PopUp/PopUp";
 import { info } from "console";
-import ShareSocialMedialPopUp from "@/components/ShareSocialMedialPopUp/ShareSocialMedialPopUp";
+import ShareSocialMedialPopUp, {
+  shareMediaToast,
+} from "@/components/ShareSocialMedialPopUp/ShareSocialMedialPopUp";
 import { trpcClient } from "@/lib/trpc";
 import TokenStatusDisplay from "@/components/atoms/TokenStatusDisplay/TokenStatusDisplay";
 import { Provider } from "ethcall";
+import { WatchAsset } from "@/components/atoms/WatchAsset/WatchAsset";
+import { UploadImage } from "@/components/UploadImage/UploadImage";
+import {
+  OptionsDropdown,
+  optionsPresets,
+} from "@/components/OptionsDropdown/OptionsDropdown";
+import { SlShare } from "react-icons/sl";
+import { VscCopy } from "react-icons/vsc";
 
-const UpdateProjectAction = observer(({ pair }: { pair: FtoPairContract }) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+const UpdateProjectModal = observer(({ pair }: { pair: FtoPairContract }) => {
   const {
     register,
     handleSubmit,
@@ -84,6 +94,21 @@ const UpdateProjectAction = observer(({ pair }: { pair: FtoPairContract }) => {
       <ModalBody>
         <div>
           <div className="flex flex-col gap-4">
+            <UploadImage
+              imagePath={
+                !!pair.logoUrl ? pair.logoUrl : "/images/project_honey.png"
+              }
+              blobName={pair.address}
+              onUpload={async (url) => {
+                console.log(url);
+                await launchpad.updateProjectLogo.call({
+                  logo_url: url,
+                  pair: pair.address,
+                  chain_id: wallet.currentChainId,
+                });
+                pair.logoUrl = url;
+              }}
+            ></UploadImage>
             <div>Project Name</div>
             <input
               type="text"
@@ -196,39 +221,45 @@ const UpdateProjectAction = observer(({ pair }: { pair: FtoPairContract }) => {
     </>
   ));
   return (
-    <>
-      <LuFileEdit
-        onClick={() => {
-          if (pair.provider.toLowerCase() !== wallet.account.toLowerCase()) {
-            toast.warning("You are not the owner of this project");
-            return;
-          }
-          onOpen();
-        }}
-        className="cursor-pointer"
-      ></LuFileEdit>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => <FormBody onClose={onClose}></FormBody>}
-        </ModalContent>
-      </Modal>
-    </>
+    <ModalContent>
+      {(onClose) => <FormBody onClose={onClose}></FormBody>}
+    </ModalContent>
   );
 });
 
 const SuccessAction = observer(({ pair }: { pair: FtoPairContract }) => {
   return (
-    <div className=" flex flex-col gap-[16px]">
-      <Button
-        className="w-full"
-        isLoading={pair.claimLP.loading}
-        onClick={() => {
-          pair.claimLP.call();
-        }}
-        isDisabled={!pair.canClaimLP}
+    <div className="flex gap-[16px] justify-center items-center flex-col lg:flex-row">
+      {wallet.account != pair.provider && (
+        <Button
+          className=""
+          isLoading={pair.claimLP.loading}
+          onClick={() => {
+            pair.claimLP.call();
+          }}
+          isDisabled={!pair.canClaimLP}
+        >
+          {pair.canClaimLP ? "Claim LP" : "Claim LP (Not available)"}
+        </Button>
+      )}
+
+      <Link
+        href={`/swap?inputCurrency=${pair.launchedToken.address}&outputCurrency=${pair.raiseToken.address}`}
+        className="text-black font-bold"
       >
-        {pair.canClaimLP ? "Claim LP" : "Claim LP (Not available)"}
-      </Button>
+        <Button className="w-full">
+          <p>Swap Token</p>
+          <p>
+            <Copy
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+              className=" absolute ml-[8px] top-[50%] translate-y-[-50%]"
+              value={`${window.location.origin}/swap?inputCurrency=${pair.launchedToken.address}&outputCurrency=${pair.raiseToken.address}`}
+            ></Copy>
+          </p>
+        </Button>{" "}
+      </Link>
     </div>
   );
 });
@@ -283,7 +314,7 @@ const ProcessingAction = observer(({ pair }: { pair: FtoPairContract }) => {
         placeholder="Deposit amount"
         min={0}
         type="number"
-        max={pair.raiseToken.balance?.toFixed()}
+        max={pair.raiseToken.balance.toFixed()}
         onChange={(e) => {
           state.setDepositAmount(e.target.value);
         }}
@@ -299,7 +330,7 @@ const ProcessingAction = observer(({ pair }: { pair: FtoPairContract }) => {
         <div>Balance: {pair.raiseToken.balance.toFormat()}</div>
         <div
           onClick={() => {
-            state.setDepositAmount(pair.raiseToken.balance?.toFixed());
+            state.setDepositAmount(pair.raiseToken.balance.toFixed());
           }}
           className="  cursor-pointer text-[color:var(--Button-Gradient,#F7931A)] text-base ml-[8px] font-bold leading-3 tracking-[0.16px] underline"
         >
@@ -340,6 +371,7 @@ const Action = observer(({ pair }: { pair: FtoPairContract }) => {
 
 const LaunchPage: NextLayoutPage = observer(() => {
   const router = useRouter();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { pair: pairAddress } = router.query;
   const [votes, setVotes] = useState({
     rocket_count: 0,
@@ -353,7 +385,9 @@ const LaunchPage: NextLayoutPage = observer(() => {
       ({ pairAddress }: { pairAddress: string }) => Promise<FtoPairContract>
     >(async ({ pairAddress }: { pairAddress: string }) => {
       const pair = new FtoPairContract({ address: pairAddress as string });
-      pair.init();
+      await pair.init();
+      pair.raiseToken.init();
+      pair.launchedToken.init();
       return pair;
     }),
   }));
@@ -379,6 +413,11 @@ const LaunchPage: NextLayoutPage = observer(() => {
 
   return (
     <div className="px-6 xl:max-w-[1200px] mx-auto">
+      {state.pair.value && (
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+          <UpdateProjectModal pair={state.pair.value}></UpdateProjectModal>
+        </Modal>
+      )}
       <Breadcrumbs
         breadcrumbs={[
           {
@@ -397,13 +436,16 @@ const LaunchPage: NextLayoutPage = observer(() => {
             <div className="flex h-[119px] shrink-0 self-stretch [background:radial-gradient(50%_50%_at_50%_50%,#9D5E28_0%,#FFCD4D_100%)] rounded-[12px_12px_0px_0px]"></div>
             <div className="relative flex-1 w-full h-full px-[29px] pb-[26px]">
               <TokenStatusDisplay pair={state.pair.value} />
-              <div className=" relative translate-y-[-50%] w-[65px] h-[65px] [background:#271B0C] rounded-[11.712px] p-[3px]">
-                <div className="w-full h-full flex items-center justify-center [background:#ECC94E] rounded-[11.712px]">
+              <div className=" relative translate-y-[-50%] w-[65px] h-[65px] [background:#271B0C] rounded-[11.712px] overflow-hidden">
+                <div className="w-full h-full flex items-center justify-center [background:#ECC94E] rounded-[11.712px] overflow-hidden">
                   <Image
-                    src="/images/project_honey.png"
+                    src={
+                      !!state.pair.value?.logoUrl
+                        ? state.pair.value.logoUrl
+                        : "/images/project_honey.png"
+                    }
                     alt="honey"
-                    width={36}
-                    height={36}
+                    fill
                   ></Image>
                 </div>
               </div>
@@ -495,12 +537,47 @@ const LaunchPage: NextLayoutPage = observer(() => {
             </div>
           </div>
           <div className="text-left relative flex-1 flex basis-full w-full sm:basis-0 sm:min-w-[500px]  flex-col gap-[10px] shrink-0 [background:#271B0C] rounded-2xl py-[12px] px-[24px]">
-            <div className=" absolute right-[24px] top-[12px]">
-              {state.pair.value?.isInit && (
-                <UpdateProjectAction
-                  pair={state.pair.value}
-                ></UpdateProjectAction>
-              )}
+            <div className="flex absolute right-[24px] top-[12px]">
+              <OptionsDropdown
+                className=""
+                options={[
+                  optionsPresets.copy({
+                    copyText: state.pair?.value?.launchedToken.address ?? "",
+                    displayText: "Copy Token address",
+                    copysSuccessText: "Token address copied",
+                  }),
+                  optionsPresets.share({
+                    shareUrl: `${window.location.origin}/launch-detail/${state.pair?.value?.address}`,
+                    displayText: "Share this project",
+                    shareText:
+                      "Checkout this Token: " + state.pair?.value?.projectName,
+                  }),
+                  {
+                    icon: <BiWallet />,
+                    display: "Import token to wallet",
+                    onClick: () => {
+                      state.pair?.value?.launchedToken.watch();
+                    },
+                  },
+                  {
+                    icon: <LuFileEdit />,
+                    display: "Update Project",
+                    onClick: () => {
+                      if (!state.pair.value) return;
+
+                      if (
+                        state.pair.value.provider.toLowerCase() !==
+                        wallet.account.toLowerCase()
+                      ) {
+                        toast.warning("You are not the owner of this project");
+                        return;
+                      }
+
+                      onOpen();
+                    },
+                  },
+                ]}
+              />
             </div>
             <div>
               {/* <Button
@@ -529,7 +606,7 @@ const LaunchPage: NextLayoutPage = observer(() => {
               </Button> */}
               <div className="text-[rgba(255,255,255,0.66)] text-[15.958px] font-bold leading-[normal]">
                 Token Raised
-              </div>
+              </div>{" "}
               <div className="text-[color:var(--Button-Gradient,var(--card-stroke,#F7931A))] text-[16.727px] font-normal leading-[normal]">
                 {amountFormatted(state.pair.value?.depositedRaisedToken, {
                   decimals: 0,
@@ -546,13 +623,6 @@ const LaunchPage: NextLayoutPage = observer(() => {
               </div>
               <div className="mt-[8px] flex  h-[41px] justify-between items-center [background:#3B2912] px-3 py-0 rounded-[10px]">
                 {state.pair.value?.launchedToken.address}{" "}
-                {state.pair.value?.launchedToken.address && (
-                  <span className="flex flex-row">
-                    <Copy
-                      value={state.pair.value?.launchedToken.address}
-                    ></Copy>
-                  </span>
-                )}
               </div>
             </div>
 

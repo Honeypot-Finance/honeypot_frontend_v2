@@ -3,9 +3,32 @@ import { wallet } from "./wallet";
 import BigNumber from "bignumber.js";
 import { FtoPairContract } from "./contract/ftopair-contract";
 import { AsyncState, PaginationState } from "./utils";
-import { trpcClient } from "@/lib/trpc";
+import { trpc, trpcClient } from "@/lib/trpc";
 import { createSiweMessage } from "@/lib/siwe";
 import { Address } from "viem";
+import { Token } from "./contract/token";
+
+const pagelimit = 9;
+
+export type PairFilter = {
+  search: string;
+  status: "all" | "processing" | "success" | "fail";
+  showNotValidatedPairs: boolean;
+};
+
+export const statusTextToNumber = (status: string) => {
+  switch (status) {
+    case "processing":
+      return 3;
+    case "success":
+      return 0;
+    case "fail":
+      return 1;
+    default:
+      return -1;
+  }
+};
+
 function calculateTimeDifference(timestamp: number): string {
   if (timestamp.toString().length !== 13) {
     return "Invaild";
@@ -30,34 +53,39 @@ function calculateTimeDifference(timestamp: number): string {
 }
 
 class LaunchPad {
-  pairFilter: {
-    search: string;
-    status: "all" | "processing" | "success" | "fail";
-    showNotValidatedPairs: boolean;
-  } = {
+  pairFilter: PairFilter = {
     search: "",
     status: "all",
-    showNotValidatedPairs: false,
+    showNotValidatedPairs: true,
   };
 
   set pairFilterSearch(search: string) {
     this.pairFilter.search = search;
-    this.getFtoPairs.call();
-    this.getMyFtoPairs.call();
+    this.ftoPairs.call({
+      page: this.ftoPairsPagination.page,
+      limit: this.ftoPairsPagination.limit,
+    });
+    this.myFtoPairs.call();
     this.getMyFtoParticipatedPairs.call();
   }
 
   set pairFilterStatus(status: "all" | "processing" | "success" | "fail") {
     this.pairFilter.status = status;
-    this.getFtoPairs.call();
-    this.getMyFtoPairs.call();
+    this.ftoPairs.call({
+      page: this.ftoPairsPagination.page,
+      limit: this.ftoPairsPagination.limit,
+    });
+    this.myFtoPairs.call();
     this.getMyFtoParticipatedPairs.call();
   }
 
   set showNotValidatedPairs(show: boolean) {
     this.pairFilter.showNotValidatedPairs = show;
-    this.getFtoPairs.call();
-    this.getMyFtoPairs.call();
+    this.ftoPairs.call({
+      page: this.ftoPairsPagination.page,
+      limit: this.ftoPairsPagination.limit,
+    });
+    this.myFtoPairs.call();
     this.getMyFtoParticipatedPairs.call();
   }
 
@@ -96,90 +124,54 @@ class LaunchPad {
     await this.ftofactoryContract.allPairs.call([index]);
 
   filterPairs = (pairs: FtoPairContract[]) => {
-    const filteredPairs = pairs
-      .filter((pair) => {
-        if (this.pairFilter.showNotValidatedPairs) {
-          return true;
-        } else {
-          return pair.isValidated;
-        }
-      })
-      .filter((pair) => {
-        if (this.pairFilter.status === "all") return true;
-        else if (this.pairFilter.status === "processing") {
-          return pair.ftoState === 3;
-        } else if (this.pairFilter.status === "success") {
-          return pair.ftoState === 0;
-        } else if (this.pairFilter.status === "fail") {
-          return pair.ftoState === 1;
-        }
-      })
-      .filter((pair) => {
-        if (
-          pair.projectName
-            .toLowerCase()
-            .includes(this.pairFilter.search.toLowerCase()) ||
-          pair.name
-            .toLowerCase()
-            .includes(this.pairFilter.search.toLowerCase()) ||
-          pair.description
-            .toLowerCase()
-            .includes(this.pairFilter.search.toLowerCase()) ||
-          pair.address
-            .toLowerCase()
-            .includes(this.pairFilter.search.toLowerCase()) ||
-          pair.launchedToken.address
-            .toLowerCase()
-            .includes(this.pairFilter.search.toLowerCase()) ||
-          pair.launchedToken.name
-            .toLowerCase()
-            .includes(this.pairFilter.search.toLowerCase()) ||
-          pair.launchedToken.symbol
-            .toLowerCase()
-            .includes(this.pairFilter.search.toLowerCase())
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      });
+    const filteredPairs = pairs.filter((pair) => {
+      if (this.pairFilter.showNotValidatedPairs) {
+        return true;
+      } else {
+        return pair.isValidated;
+      }
+    });
+    // .filter((pair) => {
+    //   if (this.pairFilter.status === "all") return true;
+    //   else if (this.pairFilter.status === "processing") {
+    //     return pair.ftoState === 3;
+    //   } else if (this.pairFilter.status === "success") {
+    //     return pair.ftoState === 0;
+    //   } else if (this.pairFilter.status === "fail") {
+    //     return pair.ftoState === 1;
+    //   }
+    // })
+    // .filter((pair) => {
+    //   if (
+    //     pair.projectName
+    //       .toLowerCase()
+    //       .includes(this.pairFilter.search.toLowerCase()) ||
+    //     pair.name
+    //       .toLowerCase()
+    //       .includes(this.pairFilter.search.toLowerCase()) ||
+    //     pair.description
+    //       .toLowerCase()
+    //       .includes(this.pairFilter.search.toLowerCase()) ||
+    //     pair.address
+    //       .toLowerCase()
+    //       .includes(this.pairFilter.search.toLowerCase()) ||
+    //     pair.launchedToken.address
+    //       .toLowerCase()
+    //       .includes(this.pairFilter.search.toLowerCase()) ||
+    //     pair.launchedToken.name
+    //       .toLowerCase()
+    //       .includes(this.pairFilter.search.toLowerCase()) ||
+    //     pair.launchedToken.symbol
+    //       .toLowerCase()
+    //       .includes(this.pairFilter.search.toLowerCase())
+    //   ) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // });
     return filteredPairs;
   };
-
-  getFtoPairs = new AsyncState<FtoPairContract[]>(async () => {
-    if (!this.ftoPairs.value) {
-      await this.ftoPairs.call({
-        page: this.ftoPairsPagination.page,
-        limit: this.ftoPairsPagination.limit,
-      });
-    } else {
-      this.ftoPairs.value.data.forEach(async (pair) => {
-        if (!pair.isInit) await pair.init();
-      });
-    }
-
-    const filteredPairs = this.filterPairs(this.ftoPairs.value?.data ?? []);
-
-    this.ftoPairsPagination.setTotal(filteredPairs.length);
-
-    return filteredPairs ?? [];
-  });
-
-  getMyFtoPairs = new AsyncState<FtoPairContract[]>(async () => {
-    if (!this.myFtoPairs.value) {
-      await this.myFtoPairs.call();
-    } else {
-      this.myFtoPairs.value.data.forEach(async (pair) => {
-        if (!pair.isInit) await pair.init();
-      });
-    }
-
-    const filteredPairs = this.filterPairs(this.myFtoPairs.value?.data ?? []);
-
-    this.myFtoPairsPagination.setTotal(filteredPairs.length);
-
-    return filteredPairs ?? [];
-  });
 
   getMyFtoParticipatedPairs = new AsyncState<FtoPairContract[]>(async () => {
     if (!this.myFtoParticipatedPairs.value) {
@@ -209,46 +201,60 @@ class LaunchPad {
       total: number;
     }>
   >(async ({ page, limit }) => {
-    const [pairsLength] = await this.allPairsLength();
-    //const size = Math.min(Number(pairsLength) - (page - 1) * limit, limit);
-    // const pairIndexesByPage = Array.from(
-    //   { length: Number(pairsLength) },
-    //   (_, index) => {
-    //     return Number(pairsLength) - (page - 1) * limit - index - 1;
-    //   }
-    // );
-    // let data = await Promise.all(
-    //   pairIndexesByPage.map(async (_) => {
-    //     const [pairAddress] = await this.getPairAddress(BigInt(_));
-    //     const pair = new FtoPairContract({ address: pairAddress as string });
-    //     pair.init();
-    //     return pair;
-    //   })
-    // );
+    const ftoAddresses =
+      await trpcClient.indexerFeedRouter.getFilteredFtoPairs.query({
+        filter: this.pairFilter,
+        chainId: String(wallet.currentChainId),
+      });
 
-    const data = await Promise.all(
-      Array.from({ length: Number(pairsLength) }, (_, index) => index).map(
-        async (index) => {
-          const [pairAddress] = await this.getPairAddress(BigInt(index));
-          const pair = new FtoPairContract({ address: pairAddress as string });
-          if (!pair.isInit) {
-            await pair.init();
+    if (!ftoAddresses || ftoAddresses.status === "error") {
+      return { data: [], total: 0 };
+    }
+
+    const data: Array<FtoPairContract> = (
+      await Promise.all(
+        ftoAddresses.data.pairs.map(async (pairAddress, idx) => {
+          if (
+            idx >= (this.ftoPairsPagination.page - 1) * limit &&
+            idx < this.ftoPairsPagination.page * limit
+          ) {
+            const pair = new FtoPairContract({
+              address: pairAddress.id,
+            });
+            if (!pair.isInit) {
+              pair.init({
+                raisedToken: new Token({
+                  ...pairAddress.token1,
+                  address: pairAddress.token1.id,
+                }),
+                launchedToken: new Token({
+                  ...pairAddress.token0,
+                  address: pairAddress.token0.id,
+                }),
+                depositedLaunchedToken: pairAddress.depositedLaunchedToken,
+                depositedRaisedToken: pairAddress.depositedRaisedToken,
+                startTime: pairAddress.createdAt,
+                endTime: pairAddress.endTime,
+                ftoState: Number(pairAddress.status),
+              });
+            }
+
+            return pair;
           }
-          return pair;
-        }
+        })
       )
-    );
+    ).filter((pair) => pair !== undefined) as FtoPairContract[];
 
-    data.sort((a, b) => {
-      return Number(b.startTime) - Number(a.startTime);
-    });
+    this.ftoPairsPagination.setTotal(ftoAddresses.data.pairs.length);
 
-    this.ftoPairsPagination.setTotal(data.length);
-
-    return {
-      data,
-      total: data.length,
-    };
+    if (!data || data.length === 0) {
+      return { data: [], total: 0 };
+    } else {
+      return {
+        data: data,
+        total: ftoAddresses.data.pairs.length,
+      };
+    }
   });
 
   myFtoParticipatedPairs = new AsyncState<{
@@ -264,6 +270,8 @@ class LaunchPad {
         const pair = new FtoPairContract({ address: pairAddress as string });
         if (!pair.isInit) {
           await pair.init();
+          pair.raiseToken.init();
+          pair.launchedToken.init();
         }
         return pair;
       })
@@ -285,43 +293,67 @@ class LaunchPad {
     data: FtoPairContract[];
     total: number;
   }>(async () => {
-    const projects = await trpcClient.fto.getProjectsByAccount.query({
-      provider: wallet.account,
-      chain_id: wallet.currentChainId,
-    });
+    const ftoAddresses =
+      await trpcClient.indexerFeedRouter.getFilteredFtoPairs.query({
+        filter: this.pairFilter,
+        chainId: String(wallet.currentChainId),
+        provider: wallet.account,
+      });
 
-    let data = await Promise.all(
-      projects.map(async ({ pair: pairAddress }) => {
-        const pair = new FtoPairContract({ address: pairAddress as string });
-        if (!pair.isInit) {
-          await pair.init();
-        }
-        return pair;
-      })
-    );
+    if (!ftoAddresses || ftoAddresses.status === "error") {
+      return { data: [], total: 0 };
+    }
 
-    data.sort((a, b) => {
-      return Number(b.startTime) - Number(a.startTime);
-    });
+    const data: Array<FtoPairContract> = (
+      await Promise.all(
+        ftoAddresses.data.pairs.map(async (pairAddress, idx) => {
+          const pair = new FtoPairContract({
+            address: pairAddress.id,
+          });
+          if (!pair.isInit) {
+            pair.init({
+              raisedToken: new Token(pairAddress.token1),
+              launchedToken: new Token(pairAddress.token0),
+              depositedLaunchedToken: pairAddress.depositedLaunchedToken,
+              depositedRaisedToken: pairAddress.depositedRaisedToken,
+              startTime: pairAddress.createdAt,
+              endTime: pairAddress.endTime,
+              ftoState: Number(pairAddress.status),
+            });
+          }
+          return pair;
+        })
+      )
+    ).filter((pair) => pair !== undefined) as FtoPairContract[];
 
-    this.myFtoPairsPagination.setTotal(data.length);
+    const filteredPairs = this.filterPairs(data);
 
-    return {
-      data,
-      total: data.length,
-    };
+    if (!filteredPairs || filteredPairs.length === 0) {
+      return { data: [], total: 0 };
+    } else {
+      filteredPairs.sort((a, b) => {
+        return Number(b.startTime) - Number(a.startTime);
+      });
+
+      this.myFtoPairsPagination.setTotal(ftoAddresses.data.pairs.length);
+
+      return {
+        data: filteredPairs,
+        total: ftoAddresses.data.pairs.length,
+      };
+    }
   });
 
   ftoPairsPagination = new PaginationState({
-    limit: 9,
+    limit: pagelimit,
   });
 
   myFtoPairsPagination = new PaginationState({
-    limit: 9,
+    limit: pagelimit,
   });
 
   myFtoParticipatedPairsPagination = new PaginationState({
-    limit: 9,
+    limit: pagelimit,
   });
 
   // getPairInfo = async (pairAddress: `0x${string}`) => {
@@ -376,6 +408,7 @@ class LaunchPad {
     });
     return pairAddress;
   };
+
   updateFtoProject = new AsyncState(
     async (data: {
       pair: string;
@@ -392,6 +425,18 @@ class LaunchPad {
         wallet.walletClient
       );
       await trpcClient.fto.createOrUpdateProjectInfo.mutate(data);
+    }
+  );
+
+  updateProjectLogo = new AsyncState(
+    async (data: { logo_url: string; pair: string; chain_id: number }) => {
+      await createSiweMessage(
+        wallet.account,
+        "Sign In With Honeypot",
+        wallet.walletClient
+      );
+
+      await trpcClient.fto.updateProjectLogo.mutate(data);
     }
   );
 }

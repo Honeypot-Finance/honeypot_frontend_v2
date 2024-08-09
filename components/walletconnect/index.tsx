@@ -58,7 +58,10 @@ export const WalletConnect = () => {
               if (!connected) {
                 return (
                   <ConnectButtonCustom onClick={openConnectModal}>
-                    <WalletSvg></WalletSvg>Connect Wallet
+                    <span className="flex w-[1rem] h-[1rem]">
+                      <WalletSvg></WalletSvg>
+                    </span>
+                    Connect Wallet
                   </ConnectButtonCustom>
                 );
               }
@@ -178,7 +181,10 @@ export const WalletConnectMobile = () => {
               if (!connected) {
                 return (
                   <ConnectButtonCustom onClick={openConnectModal}>
-                    <WalletSvg></WalletSvg>Connect Wallet
+                    <span className="flex w-[1rem] h-[1rem]">
+                      <WalletSvg></WalletSvg>
+                    </span>
+                    Connect Wallet
                   </ConnectButtonCustom>
                 );
               }

@@ -11,6 +11,8 @@ export const CopyTrigger = observer(
   ({
     state,
     className,
+    content,
+    copiedContent,
     ...props
   }: {
     state: {
@@ -19,13 +21,15 @@ export const CopyTrigger = observer(
       setTooltipOpen(value: boolean): void;
       setCopied(value: boolean): void;
     };
+    content?: string;
+    copiedContent?: string;
   } & Partial<IconType> &
     Partial<HTMLAttributes<any>>) => {
     return (
       <Tooltip
         color="primary"
         isOpen={state.isTooltipOpen}
-        content={state.copied ? "Copied" : "Copy"}
+        content={state.copied ? copiedContent ?? "Copied" : content ?? "Copy"}
       >
         <span
           onMouseEnter={() => {
@@ -36,11 +40,11 @@ export const CopyTrigger = observer(
             state.setCopied(false);
           }}
           className={clsx(
-            " inline-block cursor-pointer hover:text-primary",
+            "inline-block cursor-pointer hover:text-primary",
             className
           )}
         >
-          <VscCopy {...props}></VscCopy>
+          <VscCopy className="w-full h-full" {...props}></VscCopy>
         </span>
       </Tooltip>
     );
