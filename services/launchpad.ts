@@ -489,7 +489,7 @@ class LaunchPad {
     };
   });
 
-  createLaunchProject = async ({
+  createLaunchProject = new AsyncState(async ({
     launchType,
     provider,
     raisedToken,
