@@ -48,7 +48,7 @@ if (!bentoGlobal.bento) {
 }
 
 export const cacheProvider = bento.namespace(
-  "honeydex-" + process.env.NODE_ENV
+  "honeydex-" + process.env.NODE_ENV + '-' + process.env.VERSION ?? 'V1'
 );
 
 export const getCacheKey = (key: string, args?: any) => {
