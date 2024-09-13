@@ -1,4 +1,5 @@
 // import Redis from 'ioredis';
+import { metadata } from "@/config/metadata";
 import { BentoCache, bentostore } from "bentocache";
 import { memoryDriver } from "bentocache/drivers/memory";
 import { redisDriver } from "bentocache/drivers/redis";
@@ -48,7 +49,7 @@ if (!bentoGlobal.bento) {
 }
 
 export const cacheProvider = bento.namespace(
-  "honeydex-" + process.env.NODE_ENV + '-' + process.env.VERSION ?? 'V1'
+  "honeydex-" + process.env.NODE_ENV + '-' + metadata.version ?? 'V1'
 );
 
 export const getCacheKey = (key: string, args?: any) => {
