@@ -50,10 +50,6 @@ export const appPathsList: Menu[] = [
         path: "/launch",
         title: "Project Launch",
       },
-      {
-        path: "/meme-launchs",
-        title: "🐻Pot2pump launch",
-      },
     ],
     title: "Launch",
   },
