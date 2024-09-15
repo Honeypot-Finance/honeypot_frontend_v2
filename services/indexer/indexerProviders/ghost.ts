@@ -22,7 +22,7 @@ import { PageInfo } from "@/services/utils";
 import dayjs from "dayjs";
 
 const memeGraphHandle = "fadb27cf-2d02-46e6-b381-7afd8e14c448/ghostgraph";
-const ftoGraphHandle = "e68123d7-3006-46a7-aaf1-e13059aae6c3/ghostgraph";
+const ftoGraphHandle = "59eb35ba-6a83-4bb6-b00c-af0f103db519/ghostgraph";
 const pairGraphHandle = "ca609e38-a070-4806-b4c9-08e96fee8118/ghostgraph";
 
 export class GhostIndexer {
