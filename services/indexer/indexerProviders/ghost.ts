@@ -387,7 +387,7 @@ export class GhostIndexer {
       holdingPairs(where: {holder: "${walletAddress}", totalLpAmount_gt: "0"},
       orderBy: "totalLpAmount",
       orderDirection: "desc",
-      limit: 10, ${dirCondition}
+      ${dirCondition}
       ) {
         items {
           pairId
@@ -413,7 +413,7 @@ export class GhostIndexer {
     }
   `;
 
-    query;
+    console.log(query);
 
     const res = await this.callIndexerApi(query, {
       apiHandle: pairGraphHandle,
