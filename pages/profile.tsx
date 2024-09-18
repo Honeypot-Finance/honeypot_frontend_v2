@@ -121,7 +121,7 @@ const ParticipatedLaunchTab = observer(() => {
           animate="visible"
           className="grid gap-8 grid-cols-1 md:grid-cols-2 xl:gap-6 "
         >
-          {launchpad.participatedPairs.isLoading ? (
+          {!launchpad.participatedPairs.isInit ? (
             <LoadingDisplay />
           ) : launchpad.participatedPairs.pageItems.value?.length ?? 0 > 0 ? (
             launchpad.participatedPairs.pageItems.value?.map((project) => (
