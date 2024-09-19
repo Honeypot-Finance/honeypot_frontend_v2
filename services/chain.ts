@@ -19,6 +19,7 @@ export class Network {
     memeFactory: string;
     memeFacade: string;
     ftoTokens: Partial<Token>[];
+    vaultFactory?: string;
   };
   nativeToken!: Token;
   faucetTokens: Token[] = [];
@@ -104,6 +105,7 @@ export const berachainBartioTestnetNetwork = new Network({
     ftoFacade: "0x0264D933F13eE993270591668CfF87b8D35Dd3b4",
     memeFactory: "0xc906E2bA6AA4F6Dd8340487DD8CDeBcA65e56A8D",
     memeFacade: "0x1D97520d3a483457bA6b2423F6eF3dbfd9bcCe0A",
+    vaultFactory: "0x2B6e40f65D82A0cB98795bC7587a71bfa49fBB2B",
     ftoTokens: [
       {
         address: "0xfc5e3743E9FAC8BB60408797607352E24Db7d65E".toLowerCase(),

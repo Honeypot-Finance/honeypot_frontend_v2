@@ -12,6 +12,7 @@ import { AsyncState, StorageState } from "./utils";
 import { MemeFactoryContract } from "./contract/memefactory-contract";
 import { MEMEFacadeContract } from "./contract/memefacade-contract";
 import { init } from "next/dist/compiled/webpack/webpack";
+import { BerachainVaultFactoryContract } from "./contract/berachain-vault-factory-contract";
 
 export class Wallet {
   account: string = "";
@@ -27,6 +28,7 @@ export class Wallet {
     ftofacade: FtoFacadeContract;
     memeFactory: MemeFactoryContract;
     memeFacade: MEMEFacadeContract;
+    vaultFactory?: BerachainVaultFactoryContract;
   } = {} as any;
   publicClient!: PublicClient;
   isInit = false;
@@ -82,6 +84,11 @@ export class Wallet {
       memeFacade: new MEMEFacadeContract({
         address: this.currentChain.contracts.memeFacade,
       }),
+      vaultFactory: this.currentChain.contracts.vaultFactory
+        ? new BerachainVaultFactoryContract({
+            address: this.currentChain.contracts.vaultFactory,
+          })
+        : undefined,
     };
     this.publicClient = createPublicClientByChain(this.currentChain.chain);
     this.walletClient = walletClient;

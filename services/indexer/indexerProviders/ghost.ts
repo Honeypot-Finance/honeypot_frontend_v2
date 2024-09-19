@@ -22,9 +22,10 @@ import { networksMap } from "@/services/chain";
 import { PageInfo } from "@/services/utils";
 import dayjs from "dayjs";
 
-const memeGraphHandle = "a4357046-6f1a-4ceb-a888-8f90f60bd553/ghostgraph";
+const memeGraphHandle = "65fdc7f0-3ffc-48e5-b74b-48466ded88f6/ghostgraph";
 const ftoGraphHandle = "59eb35ba-6a83-4bb6-b00c-af0f103db519/ghostgraph";
-const pairGraphHandle = "43791f34-6b9f-4fc7-99bc-3883fe155151/ghostgraph";
+//const pairGraphHandle = "43791f34-6b9f-4fc7-99bc-3883fe155151/ghostgraph";
+const pairGraphHandle = "ca609e38-a070-4806-b4c9-08e96fee8118/ghostgraph";
 
 export class GhostIndexer {
   apiKey: string;
@@ -912,6 +913,8 @@ export class GhostIndexer {
     const res = await this.callIndexerApi(query, {
       apiHandle: pairGraphHandle,
     });
+
+    console.log(res);
 
     if (res.status === "success") {
       return res.data.pairs0.items[0] || res.data.pairs1.items[0];

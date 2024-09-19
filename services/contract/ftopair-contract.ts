@@ -11,6 +11,7 @@ import { cn } from "@/lib/tailwindcss";
 import { trpcClient } from "@/lib/trpc";
 import { ZodError } from "zod";
 import launchpad, { statusTextToNumber } from "../launchpad";
+import { liquidity } from "../liquidity";
 
 export class FtoPairContract implements BaseContract {
   databaseId: number | undefined = undefined;
@@ -366,6 +367,24 @@ export class FtoPairContract implements BaseContract {
     this.isValidated = wallet.currentChain?.validatedFtoAddresses.includes(
       this.address.toLowerCase()
     );
+  }
+
+  async getPoolPair() {
+    if (this.ftoState !== 0) {
+      console.error("fto is not completed");
+      return;
+    }
+    if (!this.raiseToken || !this.launchedToken) {
+      console.error("token is not initialized");
+      return;
+    }
+
+    const poolPair = await liquidity.getPairByTokens(
+      this.raiseToken.address.toLowerCase(),
+      this.launchedToken.address.toLowerCase()
+    );
+
+    return poolPair;
   }
 
   async getCanClaimLP() {

@@ -11,6 +11,7 @@ import { cn } from "@/lib/tailwindcss";
 import { trpcClient } from "@/lib/trpc";
 import { ZodError } from "zod";
 import { statusTextToNumber } from "../launchpad";
+import { liquidity } from "../liquidity";
 
 export class MemePairContract implements BaseContract {
   databaseId: number | undefined = undefined;
@@ -448,6 +449,24 @@ export class MemePairContract implements BaseContract {
         res.toString()
       );
     }
+  }
+
+  async getPoolPair() {
+    if (this.ftoState !== 0) {
+      console.error("fto is not completed");
+      return;
+    }
+    if (!this.raiseToken || !this.launchedToken) {
+      console.error("token is not initialized");
+      return;
+    }
+
+    const poolPair = await liquidity.getPairByTokens(
+      this.raiseToken.address.toLowerCase(),
+      this.launchedToken.address.toLowerCase()
+    );
+
+    return poolPair;
   }
 
   async getEndTime(endtime?: string) {

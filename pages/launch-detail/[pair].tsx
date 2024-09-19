@@ -57,6 +57,8 @@ import CardContianer from "@/components/CardContianer/CardContianer";
 import { CommentCard } from "@/components/Discussion/CommentCard/CommentCard";
 import { DiscussionArea } from "@/components/Discussion/DiscussionArea/DiscussionArea";
 import { MemePairContract } from "@/services/contract/memepair-contract";
+import { popmodal } from "@/services/popmodal";
+import VaultCard from "@/components/VaultCard/VaultCard";
 
 const UpdateProjectModal = observer(
   ({ pair }: { pair: FtoPairContract | MemePairContract }) => {
@@ -248,16 +250,33 @@ const SuccessAction = observer(
     return (
       <div className="flex gap-[16px] justify-center items-center flex-col lg:flex-row">
         {wallet.account != pair.provider && (
-          <Button
-            className="w-full"
-            isLoading={pair.claimLP.loading}
-            onClick={() => {
-              pair.claimLP.call();
-            }}
-            isDisabled={!pair.canClaimLP}
-          >
-            {pair.canClaimLP ? "Claim LP" : "Claim LP (Not available)"}
-          </Button>
+          <>
+            <Button
+              className="w-full"
+              isLoading={pair.claimLP.loading}
+              onClick={() => {
+                pair.claimLP.call();
+              }}
+              isDisabled={!pair.canClaimLP}
+            >
+              {pair.canClaimLP ? "Claim LP" : "Claim LP (Not available)"}
+            </Button>
+          </>
+        )}
+
+        {wallet.account == pair.provider && (
+          <>
+            <Button
+              className="w-full"
+              onClick={() => {
+                popmodal.openModal({
+                  content: <VaultCard pair={pair} />,
+                });
+              }}
+            >
+              Vault
+            </Button>
+          </>
         )}
 
         <Link

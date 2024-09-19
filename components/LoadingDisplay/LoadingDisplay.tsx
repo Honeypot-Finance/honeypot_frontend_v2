@@ -11,9 +11,9 @@ export default function LoadingDisplay() {
         </div>
       </div>
       <div className="text-gold-primary mt-[59px] font-bold">Loading...</div>
-      <div className="text-[#868B9A] mt-2 w-[250px] text-xs text-center">
+      {/* <div className="text-[#868B9A] mt-2 w-[250px] text-xs text-center">
         Waiting for the token list to be generated
-      </div>
+      </div> */}
     </div>
   );
 }
