@@ -285,7 +285,7 @@ class Swap {
   }
 
   setFromToken(token: Token) {
-    if (this.fromToken?.address !== token?.address || this.isWrapOrUnwrap) {
+    if (this.fromToken?.address !== token?.address || (this.fromToken.isNative !== token.isNative)) {
       // indicate this is a wrap to native or native to swap
       if (
         this.toToken?.address === token?.address &&
@@ -305,7 +305,7 @@ class Swap {
   }
 
   setToToken(token: Token) {
-    if (this.toToken?.address !== token?.address || this.isWrapOrUnwrap) {
+    if (this.toToken?.address !== token?.address || this.toToken.isNative !== token.isNative) {
       // indicate this is a wrap to native or native to swap
       if (
         this.fromToken?.address === token?.address &&
