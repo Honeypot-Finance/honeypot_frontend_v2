@@ -60,6 +60,7 @@ const AddLiquidity = observer(() => {
                     liquidity.setFromAmount(
                       (liquidity.fromToken as Token).balance.toFixed()
                     );
+                    liquidity.onFromAmountInputChange();
                   }}
                   className="  cursor-pointer text-[color:var(--Button-Gradient,#F7931A)] text-base ml-[8px] font-bold leading-3 tracking-[0.16px] underline"
                 >
@@ -117,6 +118,7 @@ const AddLiquidity = observer(() => {
                     liquidity.setToAmount(
                       (liquidity.toToken as Token).balance.toFixed()
                     );
+                    liquidity.onToAmountInputChange();
                   }}
                   className="  cursor-pointer text-[color:var(--Button-Gradient,#F7931A)] text-base ml-[8px] font-bold leading-3 tracking-[0.16px] underline"
                 >
