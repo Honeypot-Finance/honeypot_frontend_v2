@@ -27,28 +27,32 @@ export const Layout = ({
   const { chainId } = useAccount();
   const currentChain = chainId ? networksMap[chainId] : null;
 
-  // useEffect(() => {
-  //   trpcClient.metadata.getServerMetadata.query().then((res) => {
-  //     if (res.latest_version === metadata.version || process.env.NODE_ENV === 'development' ) return;
-  //     popmodal.openModal({
-  //       content: (
-  //         <div className="min-h-[300px] line-[24px]">
-  //           <p className="text-center  font-bold text-[30px]">Announcement</p>
-  //           <h1 className="mt-[24px]">This version is outdated, please check our newest link:&nbsp;    <a
-  //               className="hover:text-orange-500 transition-all underline"
-  //               href={res.latest_site}
-  //             >
-  //               {res.latest_site}.
-  //             </a></h1>
-  //             <p>
-  //               Meanwhile, please migrate your assets to our new version
-  //             </p>
+  useEffect(() => {
+    trpcClient.metadata.getServerMetadata.query().then((res) => {
+      if (
+        res.latest_version === metadata.version 
+        || 
+        process.env.NODE_ENV === 'development' 
+      ) return;
+      popmodal.openModal({
+        content: (
+          <div className="min-h-[300px] line-[24px]">
+            <p className="text-center  font-bold text-[30px]">Announcement</p>
+            <h1 className="mt-[24px]">This version is outdated, please check our newest link:&nbsp;    <a
+                className="hover:text-orange-500 transition-all underline"
+                href={res.latest_site}
+              >
+                {res.latest_site}.
+              </a></h1>
+              <p>
+                Meanwhile, please migrate your assets to our new version
+              </p>
 
-  //         </div>
-  //       ),
-  //     });
-  //   });
-  // }, []);
+          </div>
+        ),
+      });
+    });
+  }, []);
 
   return (
     <div className={cn("flex flex-col min-h-screen overflow-auto", className)}>
