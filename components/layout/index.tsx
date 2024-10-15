@@ -30,24 +30,32 @@ export const Layout = ({
   useEffect(() => {
     trpcClient.metadata.getServerMetadata.query().then((res) => {
       if (
-        res.latest_version === metadata.version 
-        || 
-        process.env.NODE_ENV === 'development' 
-      ) return;
+        res.latest_version === metadata.version
+        // ||process.env.NODE_ENV === "development"
+      )
+        return;
       popmodal.openModal({
         content: (
           <div className="min-h-[300px] line-[24px]">
             <p className="text-center  font-bold text-[30px]">Announcement</p>
-            <h1 className="mt-[24px]">This version is outdated, please check our newest link:&nbsp;    <a
+            <h1 className="mt-[24px]">
+              This version is outdated, please check our newest link:&nbsp;{" "}
+              <a
                 className="hover:text-orange-500 transition-all underline"
                 href={res.latest_site}
               >
                 {res.latest_site}.
-              </a></h1>
-              <p>
-                Meanwhile, please migrate your assets to our new version
-              </p>
-
+              </a>
+            </h1>
+            <p>Meanwhile, please migrate your assets to our new version</p>
+            <br />
+            <h2>how:</h2>
+            <ol className="mb-5">
+              <li className="pl-5">1. go to my pools in old link</li>
+              <li className="pl-5">2. remove liquidity</li>
+              <li className="pl-5">3. go to new link</li>
+              <li className="pl-5">4. add liquidity</li>
+            </ol>
           </div>
         ),
       });
