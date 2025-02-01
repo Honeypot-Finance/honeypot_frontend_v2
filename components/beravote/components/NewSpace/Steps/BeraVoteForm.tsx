@@ -90,15 +90,9 @@ const createDaoSpace = async (requestBody: {
       return { success: true, data };
     } else {
       console.error("Error:", response.statusText);
-      WrappedToastify.error({
-        message: `Failed to create Governance space: ${response.statusText}`,
-      });
       return { success: false, error: response.statusText };
     }
   } catch (error) {
-    WrappedToastify.error({
-      message: `Failed to create Governance space: ${error}`,
-    });
     console.error("Request failed:", error);
     return { success: false, error };
   }
@@ -121,6 +115,7 @@ const handleYes = async (
   console.log("Form Data:", values);
   console.log("paymentFee", paymentFee);
   const address = await signer.getAddress();
+  console.log(address);
   const paymentContract = new ethers.Contract(
     payContract,
     APIAccessPayment,
@@ -278,9 +273,7 @@ const handleYes = async (
 const BeraVoteForm = observer(
   ({ pair }: { pair: FtoPairContract | MemePairContract }) => {
     const [logoBase64, setLogoBase64] = useState("");
-    const [paymentFee, setPaymentFee] = useState(
-      ethers.utils.parseEther("0.1")
-    );
+    const [paymentFee, setPaymentFee] = useState("");
     const [formSpaceId, setFormSpaceId] = useState(pair.projectName);
     const signer = ethersProvider?.getSigner();
     const [allCreatedSpaces, setAllCreatedSpaces] = useState<string[]>([]);
@@ -306,6 +299,7 @@ const BeraVoteForm = observer(
           console.log(dataUrl);
           setLogoBase64(dataUrl);
         });
+        console.log("logoBase64", logoBase64);
       }
     }, [pair.logoUrl]);
 
@@ -313,19 +307,15 @@ const BeraVoteForm = observer(
       if (!signer) {
         return;
       }
-
       const fetchPaymentFee = async () => {
         const paymentContract = new ethers.Contract(
           payContract,
           APIAccessPayment,
           signer
         );
-
         const fee = await paymentContract.accessFee();
-
         setPaymentFee(fee);
       };
-
       fetchPaymentFee();
     }, [signer]);
 

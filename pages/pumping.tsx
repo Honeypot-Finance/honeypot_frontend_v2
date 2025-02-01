@@ -19,7 +19,7 @@ import { defaultFilterState } from "@/constants/pot2pump";
 import HoneyContainer from "@/components/CardContianer/HoneyContainer";
 import { hasValue, removeEmptyFields } from "@/lib/utils";
 import { PAGE_LIMIT } from "@/services/launchpad";
-import search from "../api/udf-data-feed/search";
+import search from "./api/udf-data-feed/search";
 
 const MemeLaunchPage: NextLayoutPage = observer(() => {
   const [pumpingProjects, setPumpingProjects] =

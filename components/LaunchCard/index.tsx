@@ -15,7 +15,6 @@ import { itemPopUpVariants } from "@/lib/animation";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 import ProgressBar from "../atoms/ProgressBar/ProgressBar";
 import { AmountFormat } from "../AmountFormat";
-import { LaunchType as projectType } from "@/pages/launch-token";
 import Countdown from "react-countdown";
 import CardContianer from "../CardContianer/CardContianer";
 import { FaCrown } from "react-icons/fa";
@@ -368,7 +367,7 @@ const ProjectDetail = ({
   pair,
   type,
 }: {
-  projectType: projectType;
+  projectType: "meme" | "fto";
   pair: FtoPairContract | MemePairContract;
   type: launchCardVariants;
 }) => {
@@ -394,7 +393,7 @@ const ProjectActions = ({
   pair,
   type,
 }: {
-  projectType: projectType;
+  projectType: "meme" | "fto";
   pair: FtoPairContract | MemePairContract;
   type: launchCardVariants;
 }) => {
@@ -425,7 +424,7 @@ const DetailLaunchCard = observer(
   }: {
     pair: FtoPairContract | MemePairContract;
     action: React.ReactNode;
-    projectType: projectType;
+    projectType: "meme" | "fto";
     type: launchCardVariants;
   }) => {
     return (
@@ -516,7 +515,7 @@ const TrendingLaunchCard = observer(
   }: {
     pair: FtoPairContract | MemePairContract;
     action: React.ReactNode;
-    projectType: projectType;
+    projectType: "meme" | "fto";
   }) => {
     return projectType === "meme" ? (
       <CardContianer addtionalClassName="z-[-1] cursor-pointer">
@@ -676,7 +675,7 @@ export const LaunchCard = observer(
     pair?: FtoPairContract | MemePairContract | null;
     action: React.ReactNode;
   } & Partial<HTMLAttributes<any>>) => {
-    const projectType: projectType =
+    const projectType: "meme" | "fto" =
       pair instanceof MemePairContract ? "meme" : "fto";
 
     return (

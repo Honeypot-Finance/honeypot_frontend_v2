@@ -4,8 +4,16 @@ export const All_Accounts = gql`
   query AllAccounts(
     $orderBy: Account_orderBy
     $orderDirection: OrderDirection
+    $skip: Int
+    $first: Int
+    $address: String
   ) {
-    accounts(first: 100, orderBy: $orderBy, orderDirection: $orderDirection) {
+    accounts(
+      first: $first
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+      skip: $skip
+    ) {
       ...AccountField
     }
   }

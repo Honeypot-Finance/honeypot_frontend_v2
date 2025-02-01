@@ -2,8 +2,9 @@ import { StaticImageData } from "next/image";
 import { ReactNode } from "react";
 import Image from "next/image";
 
-const DOMAIN_MAP = {
-  MAIN: "https://app.honeypotfinance.xyz",
+export const DOMAIN_MAP = {
+  LANDING: "https://honeypotfinance.xyz",
+  MAIN: "https://beta4.honeypotfinance.xyz",
   POT2PUMP: "https://pot2pump.honeypotfinance.xyz",
   DREAMPAD: "https://dreampad.honeypotfinance.xyz",
   WASABEE: "https://wasabee.honeypotfinance.xyz",
@@ -53,82 +54,34 @@ export const footerData: Record<string, ReactNode> = {
 };
 
 export const appPathsList: Menu[] = [
+  {
+    path: "/",
+    title: "Overview",
+    routePath: "/",
+  },
+  {
+    path: "/potting",
+    title: "Potting",
+    routePath: "/potting",
+  },
+  {
+    path: "/pumping",
+    title: "Pumping",
+    routePath: "/pumping",
+  },
   // {
-  //   path: "/navigation",
-  //   title: "Navigation",
+  //   path: "/derbydashboard",
+  //   title: "Derby Dashboard 🐎",
+  // },
+  // {
+  //   path: "/memewar",
+  //   title: "Meme War ⚔️",
   // },
   {
-    path: [
-      {
-        path: `${process.env.NODE_ENV === "development" ? "" : DOMAIN_MAP.POT2PUMP}/`,
-        title: "Overview",
-        routePath: "/"
-      },
-      {
-        path: `${process.env.NODE_ENV === "development" ? "" : DOMAIN_MAP.POT2PUMP}/potting`,
-        title: "Potting",
-        routePath: "/potting"
-      },
-      {
-        path: `${process.env.NODE_ENV === "development" ? "" : DOMAIN_MAP.POT2PUMP}/pumping`,
-        title: "Pumping",
-        routePath: "/pumping"
-      },
-      // {
-      //   path: "/derbydashboard",
-      //   title: "Derby Dashboard 🐎",
-      // },
-      // {
-      //   path: "/memewar",
-      //   title: "Meme War ⚔️",
-      // },
-    ],
-    title: "Pot2pump",
-    routePath: "/pot2pump"
-  },
-  {
-    title: "DEX",
-    routePath: "/dex",
-    path: [
-      {
-        path: `${process.env.NODE_ENV === "development" ? "" : DOMAIN_MAP.WASABEE}/swap`,
-        title: "Swap",
-        routePath: "/swap"
-      },
-      // {
-      //   path: "/pool",
-      //   title: "Add Liquidity",
-      // },
-      {
-        path: `${process.env.NODE_ENV === "development" ? "" : DOMAIN_MAP.WASABEE}/pools`,
-        title: "LP Pool List",
-        routePath: "/pools"
-      },
-    ],
-  },
-  {
-    path: `${process.env.NODE_ENV === "development" ? "" : DOMAIN_MAP.MAIN}/leaderboard`,
+    path: "/leaderboard",
     title: "Leaderboard",
-    routePath: "/leaderboard"
+    routePath: "/leaderboard",
   },
-  {
-    title: "Faucet",
-    path: `${process.env.NODE_ENV === "development" ? "" : DOMAIN_MAP.MAIN}/faucet`,
-    routePath: "/faucet"
-  },
-  // {
-  //   title: "DreamPad",
-  //   path: [
-  //     {
-  //       path: "/dreampad/launchpad-projects",
-  //       title: "Projects",
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: "/profile",
-  //   title: "Profile",
-  // },
 ];
 
 const getFlatPaths = (paths: Menu[]): flatMenu[] => {

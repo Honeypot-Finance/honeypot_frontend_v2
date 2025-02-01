@@ -8,7 +8,11 @@ import { CustomNavbar } from "./components/Navbar";
 import { Navbar, NavbarContent } from "@nextui-org/react";
 import React, { HtmlHTMLAttributes, useState } from "react";
 import { WalletConnect } from "@/components/walletconnect/v3";
-import { Menu, appPathsList as menuList } from "@/config/allAppPath";
+import {
+  DOMAIN_MAP,
+  Menu,
+  appPathsList as menuList,
+} from "@/config/allAppPath";
 
 export const Header = (props: HtmlHTMLAttributes<any>) => {
   const router = useRouter();
@@ -56,7 +60,8 @@ export const Header = (props: HtmlHTMLAttributes<any>) => {
       <div className={clsx("relative mb-5", props.className)}>
         <Navbar
           classNames={{
-            wrapper: "xl:max-w-[1200px] 2xl:max-w-[1500px] !px-0 !h-auto items-start ",
+            wrapper:
+              "xl:max-w-[1200px] 2xl:max-w-[1500px] !px-0 !h-auto items-start ",
             base: "bg-transparent",
           }}
           className="bg-transparent"
@@ -73,7 +78,7 @@ export const Header = (props: HtmlHTMLAttributes<any>) => {
 
           <NavbarContent className="flex gap-4 items-start" justify="center">
             <Link
-              href="/"
+              href={DOMAIN_MAP.LANDING}
               className="pointer-events-none md:pointer-events-auto cursor-pointer"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >

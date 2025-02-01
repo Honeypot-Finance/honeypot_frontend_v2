@@ -67,28 +67,7 @@ const nextConfig = {
     ],
     domains: ["cdn.alphakek.ai"],
   },
-  async redirects() {
-    return isDev
-      ? [
-          {
-            source: "/",
-            destination: "/swap",
-            permanent: false,
-          },
-        ]
-      : [
-          {
-            source: "/",
-            destination: "https://honeypotfinance.xyz/",
-            permanent: false,
-          },
-          {
-            source: "/launch",
-            destination: "/meme-launchs",
-            permanent: false,
-          },
-        ];
-  },
+
   transpilePackages: [
     "@usecapsule/rainbowkit-wallet",
     "@usecapsule/rainbowkit",

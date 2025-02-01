@@ -8,7 +8,6 @@ import { motion } from "framer-motion";
 import { itemPopUpVariants } from "@/lib/animation";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 import ProgressBar from "../../atoms/ProgressBar/ProgressBar";
-import { LaunchType as projectType } from "@/pages/launch-token";
 import CardContianer from "../../CardContianer/CardContianer";
 import BigNumber from "bignumber.js";
 import { wallet } from "@/services/wallet";

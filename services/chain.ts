@@ -1,4 +1,5 @@
 import { Token } from "./contract/token";
+import { createPublicClientByChain } from "@/lib/client";
 import { Chain } from "viem/chains";
 import {
   berachainBartioTestnet,
@@ -10,7 +11,6 @@ import {
 } from "@/lib/chain";
 import { ALGEBRA_POSITION_MANAGER } from "@/config/algebra/addresses";
 import { zeroAddress } from "viem";
-
 export class Network {
   isActive: boolean = true;
   get chainId() {

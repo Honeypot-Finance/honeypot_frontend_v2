@@ -14,7 +14,6 @@ import { itemPopUpVariants } from "@/lib/animation";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 import ProgressBar from "../../atoms/ProgressBar/ProgressBar";
 import { AmountFormat } from "../../AmountFormat";
-import { LaunchType as projectType } from "@/pages/launch-token";
 import Countdown from "react-countdown";
 import BigNumber from "bignumber.js";
 import { Pot2Pump } from "@/lib/algebra/graphql/clients/type";
@@ -306,7 +305,7 @@ const DetailLaunchCard = observer(
   }: {
     pair: Pot2Pump;
     action: React.ReactNode;
-    projectType: projectType;
+    projectType: "meme" | "fto";
   }) => {
     const { projectInfo } = useProjectInfo(pair.id);
 
@@ -531,7 +530,7 @@ export const LaunchCardV3 = observer(
     pair?: Pot2Pump;
     action: React.ReactNode;
   } & Partial<HTMLAttributes<any>>) => {
-    const projectType: projectType = "meme";
+    const projectType: "meme" | "fto" = "meme";
 
     return (
       <motion.div

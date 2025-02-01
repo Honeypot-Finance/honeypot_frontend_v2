@@ -42,7 +42,7 @@ const LeaderboardPage = () => {
     loadMore,
   } = useAccounts(page, pageSize, searchAddress);
   const { accounts: topSwapAccounts, loading: topSwapAccountsLoading } =
-    useTopSwapAccounts();
+    useTopParticipateAccounts();
   const {
     accounts: topPot2PumpDeployerAccounts,
     loading: topPot2PumpDeployerAccountsLoading,
@@ -81,7 +81,7 @@ const LeaderboardPage = () => {
     {
       title: "Top Trader",
       address: topSwapAccounts[0]?.walletAddress ?? "-",
-      value: `${topSwapAccounts[0]?.swapCount ?? "-"} Swaps`,
+      value: `${topSwapAccounts[0]?.participateCount ?? "-"} Swaps`,
     },
     {
       title: "Top Deployer",
@@ -100,7 +100,7 @@ const LeaderboardPage = () => {
       <div className="max-w-[1200px] w-full mx-auto">
         <div className="max-w-full xl:max-w-[1200px] mx-auto">
           {/* 顶部统计卡片 */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
+          {/* <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
             {statsCards.map((stat, index) => (
               <div key={index} className="bg-[#202020] rounded-2xl p-5">
                 <div className="text-gray-400 text-sm mb-2">{stat.title}</div>
@@ -109,10 +109,10 @@ const LeaderboardPage = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
 
           {/* Top Traders/Deployers/Participants */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+          {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
             {topStats.map((stat, index) => (
               <div key={index} className="bg-[#202020] rounded-2xl p-5">
                 <div>
@@ -136,7 +136,7 @@ const LeaderboardPage = () => {
                 <div className="text-[#FFCD4D] text-base">{stat.value}</div>
               </div>
             ))}
-          </div>
+          </div> */}
 
           {/* 搜索栏 */}
           <div className="flex justify-between items-center mb-4">
@@ -187,20 +187,20 @@ const LeaderboardPage = () => {
                           Address
                         </div>
                       </th>
-                      <th className="py-4 px-6 text-left text-base font-medium whitespace-nowrap">
+                      {/* <th className="py-4 px-6 text-left text-base font-medium whitespace-nowrap">
                         Volume
                       </th>
                       <th className="py-4 px-6 text-center text-base font-medium whitespace-nowrap">
                         Swaps
-                      </th>
+                      </th> */}
                       {/* <th className="py-4 px-6 text-center text-base font-medium whitespace-nowrap">
                           Holding Pools
                         </th> */}
-                      <th className="py-4 px-6 text-center text-base font-medium whitespace-nowrap">
+                      {/* <th className="py-4 px-6 text-center text-base font-medium whitespace-nowrap">
                         Meme Tokens
-                      </th>
+                      </th> */}
                       <th className="py-4 px-6 text-center text-base font-medium whitespace-nowrap">
-                        P2P Participations
+                        Participations
                       </th>
                     </tr>
                   </thead>
@@ -212,45 +212,47 @@ const LeaderboardPage = () => {
                         </td>
                       </tr>
                     ) : (
-                      accounts.map((item, index) => (
-                        <tr
-                          key={item.walletAddress}
-                          className="hover:bg-[#2a2a2a] transition-colors"
-                        >
-                          <td className="py-4 px-6 text-base font-mono text-blue-400">
-                            <div className="flex items-center gap-2">
-                              <div className="w-4 h-4 bg-[#FFCD4D] rounded"></div>
-                              <Tooltip
-                                content={item.walletAddress}
-                                placement="top"
-                              >
-                                <Link
-                                  href={`https://bartio.beratrail.io/address/${item.walletAddress}`}
-                                  target="_blank"
-                                  className="text-blue-400"
+                      accounts
+                        .sort((a, b) => b.participateCount - a.participateCount)
+                        .map((item, index) => (
+                          <tr
+                            key={item.walletAddress}
+                            className="hover:bg-[#2a2a2a] transition-colors"
+                          >
+                            <td className="py-4 px-6 text-base font-mono text-blue-400">
+                              <div className="flex items-center gap-2">
+                                <div className="w-4 h-4 bg-[#FFCD4D] rounded"></div>
+                                <Tooltip
+                                  content={item.walletAddress}
+                                  placement="top"
                                 >
-                                  {shortenAddressString(item.walletAddress)}
-                                </Link>
-                              </Tooltip>
-                            </div>
-                          </td>
-                          <td className="py-4 px-6 text-base">
+                                  <Link
+                                    href={`https://bartio.beratrail.io/address/${item.walletAddress}`}
+                                    target="_blank"
+                                    className="text-blue-400"
+                                  >
+                                    {item.walletAddress}
+                                  </Link>
+                                </Tooltip>
+                              </div>
+                            </td>
+                            {/* <td className="py-4 px-6 text-base">
                             {formatVolume(item.totalSpend)}
                           </td>
                           <td className="py-4 px-6 text-center text-base">
                             {item.swapCount}
-                          </td>
-                          {/* <td className="py-4 px-6 text-center text-base">
+                          </td> */}
+                            {/* <td className="py-4 px-6 text-center text-base">
                               {item.poolHoldingCount}
                             </td> */}
-                          <td className="py-4 px-6 text-center text-base">
+                            {/* <td className="py-4 px-6 text-center text-base">
                             {item.memeTokenCount}
-                          </td>
-                          <td className="py-4 px-6 text-center text-base">
-                            {item.participateCount}
-                          </td>
-                        </tr>
-                      ))
+                          </td> */}
+                            <td className="py-4 px-6 text-center text-base">
+                              {item.participateCount}
+                            </td>
+                          </tr>
+                        ))
                     )}
                   </tbody>
                 </table>

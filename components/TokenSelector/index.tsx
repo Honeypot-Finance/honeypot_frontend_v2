@@ -41,21 +41,22 @@ export const TokenSelector = observer(
         state.search = value.trim();
       },
       filterLoading: false,
+      filteredTokens: [] as Token[],
       filterTokensBySearch: async function () {
         if (!state.search) {
-          state.tokens = liquidity.tokens;
+          state.filteredTokens = state.tokens;
           return;
         }
         state.filterLoading = true;
         const isEthAddr = isEthAddress(state.search);
         if (isEthAddr) {
-          const filterToken = liquidity.tokens?.find((token) => {
+          const filterToken = state.tokens?.find((token) => {
             return (
               token.address.toLowerCase() === state.search.toLocaleLowerCase()
             );
           });
           if (filterToken) {
-            state.tokens = [filterToken];
+            state.filteredTokens = [filterToken];
             state.filterLoading = false;
             return;
           }
@@ -65,7 +66,7 @@ export const TokenSelector = observer(
           await token.init();
           state.tokens = [token];
         } else {
-          state.tokens = liquidity.tokens?.filter((token) => {
+          state.filteredTokens = state.tokens?.filter((token) => {
             return (
               token.name?.toLowerCase().includes(state.search.toLowerCase()) ||
               token.symbol?.toLowerCase().includes(state.search.toLowerCase())

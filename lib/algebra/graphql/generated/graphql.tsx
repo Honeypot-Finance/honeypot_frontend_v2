@@ -12836,6 +12836,9 @@ export enum _SubgraphErrorPolicy_ {
 export type AllAccountsQueryVariables = Exact<{
   orderBy?: InputMaybe<Account_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  address?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
@@ -13688,8 +13691,13 @@ export const VaultSharesFieldFragmentDoc = gql`
 }
     ${VaultFieldFragmentDoc}`;
 export const AllAccountsDocument = gql`
-    query AllAccounts($orderBy: Account_orderBy, $orderDirection: OrderDirection) {
-  accounts(first: 100, orderBy: $orderBy, orderDirection: $orderDirection) {
+    query AllAccounts($orderBy: Account_orderBy, $orderDirection: OrderDirection, $skip: Int, $first: Int, $address: String) {
+  accounts(
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    skip: $skip
+  ) {
     ...AccountField
   }
 }
@@ -13709,6 +13717,9 @@ export const AllAccountsDocument = gql`
  *   variables: {
  *      orderBy: // value for 'orderBy'
  *      orderDirection: // value for 'orderDirection'
+ *      skip: // value for 'skip'
+ *      first: // value for 'first'
+ *      address: // value for 'address'
  *   },
  * });
  */

@@ -20,7 +20,7 @@ export const ACCOUNTS_WITH_ADDRESS_QUERY = gql`
     accounts(
       skip: $skip
       first: $first
-      orderBy: totalSpendUSD
+      orderBy: participateCount
       orderDirection: desc
       where: { id: $address }
     ) {
@@ -43,7 +43,7 @@ export const ACCOUNTS_WITHOUT_ADDRESS_QUERY = gql`
     accounts(
       skip: $skip
       first: $first
-      orderBy: totalSpendUSD
+      orderBy: participateCount
       orderDirection: desc
       where: { id_not_in: $exclude }
     ) {

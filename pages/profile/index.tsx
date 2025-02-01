@@ -22,26 +22,6 @@ import Copy from "@/components/Copy/v3";
 import { cn } from "@/lib/utils";
 
 export const Profile = observer(() => {
-  const { chainId } = useAccount();
-  const chartContainerRef = useRef<HTMLDivElement>(null);
-  const [chartWidth, setChartWidth] = useState(0);
-  const [timeRange, setTimeRange] = useState<"1D" | "1W" | "1M">("1D");
-  const [userPoolsProfit, setUserPoolsProfit] = useState<UserPoolProfit[]>([]);
-
-  useEffect(() => {
-    if (wallet.account) {
-      getLiquidatorDatas(wallet.account).then((data) => {
-        setUserPoolsProfit(data);
-      });
-    }
-  }, [wallet.account]);
-
-  useEffect(() => {
-    if (chartContainerRef.current) {
-      setChartWidth(chartContainerRef.current.offsetWidth);
-    }
-  }, []);
-
   return (
     <div className="w-full max-w-[1200px] mx-auto px-4 xl:px-0 font-gliker">
       <div className="flex flex-col gap-6">
@@ -68,70 +48,11 @@ export const Profile = observer(() => {
                           className="text-[#4D4D4D] hover:text-[#0D0D0D] hover:underline decoration-2 transition-colors"
                           href={`https://bartio.beratrail.io/address/${wallet.account}`}
                         >
-                          {truncate(wallet.account, 10)}
+                          {wallet.account}
                         </Link>
                         <Copy value={wallet.account} copyTip="Copy address" />
                       </div>
                     </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <span className="flex flex-col items-start p-2">
-                      <span className="text-[#0D0D0D] text-base mb-4">
-                        Token Value
-                      </span>
-                      <div className="text-white text-[24px] leading-none text-shadow-[1.081px_2.162px_0px_#AF7F3D] text-stroke-1.5 text-stroke-black">
-                        {formatAmountWithAlphabetSymbol(
-                          portfolio.totalBalanceFormatted,
-                          2
-                        )}{" "}
-                        USD
-                      </div>
-                    </span>
-                    {/* <span className="flex flex-col items-start p-2">
-                      <span className="text-[#0D0D0D] text-base mb-4">
-                        Total LP Value
-                      </span>
-                      <div className="text-white text-[24px] leading-none text-shadow-[1.081px_2.162px_0px_#AF7F3D] text-stroke-1.5 text-stroke-black">
-                        {formatAmountWithAlphabetSymbol(
-                          userPoolsProfit
-                            .reduce((acc, curr) => acc + curr.totalValueUSD, 0)
-                            .toFixed(2),
-                          2
-                        )}{" "}
-                        USD
-                      </div>
-                    </span> */}
-                    <span className="flex flex-col items-start p-2">
-                      <span className="text-[#0D0D0D] text-base mb-4">
-                        Total LP Fees Gained
-                      </span>
-                      <div className="text-white text-[24px] leading-none text-shadow-[1.081px_2.162px_0px_#AF7F3D] text-stroke-1.5 text-stroke-black">
-                        {formatAmountWithAlphabetSymbol(
-                          userPoolsProfit
-                            .reduce(
-                              (acc, curr) => acc + curr.collectedFeesUSD,
-                              0
-                            )
-                            .toFixed(2),
-                          2
-                        )}{" "}
-                        USD
-                      </div>
-                    </span>
-                  </div>
-                </div>
-
-                <div className="w-[511px] flex flex-col gap-2">
-                  <div
-                    className="h-30 w-full rounded-lg overflow-hidden"
-                    ref={chartContainerRef}
-                  >
-                    <ProtfolioBalanceChart
-                      userPoolsProfits={userPoolsProfit}
-                      timeRange={timeRange}
-                      onTimeRangeChange={setTimeRange}
-                    />
                   </div>
                 </div>
               </div>
@@ -139,7 +60,6 @@ export const Profile = observer(() => {
 
             <Tabs
               aria-label="Options"
-              defaultSelectedKey={"portfolio"}
               classNames={{
                 base: "relative w-full",
                 tabList:
@@ -154,23 +74,12 @@ export const Profile = observer(() => {
                   "!mt-0"
                 ),
               }}
-              onSelectionChange={(key) => {
-                if (key === "portfolio") {
-                  portfolio.initPortfolio();
-                }
-              }}
             >
-              <Tab key="portfolio" title="Portfolio">
-                <PortfolioTab />
-              </Tab>
               <Tab key="my-launch" title="My Launch">
                 <MyLaunches />
               </Tab>
               <Tab key="participated-launch" title="Participated Launch">
                 <ParticipatedLaunches />
-              </Tab>
-              <Tab key="my-pools" title="My Pools">
-                <MyPools />
               </Tab>
             </Tabs>
           </div>
