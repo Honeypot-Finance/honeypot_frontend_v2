@@ -14740,7 +14740,7 @@ export const Pot2PumpPottingNewTokensByEndtimeDocument = gql`
     first: 25
     orderBy: endTime
     orderDirection: asc
-    where: {raisedTokenReachingMinCap: true, endTime_gt: $endTime}
+    where: {raisedTokenReachingMinCap: false, endTime_gt: $endTime}
   ) {
     ...Pot2PumpField
   }
