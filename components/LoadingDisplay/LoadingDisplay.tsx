@@ -5,18 +5,19 @@ const LoadingDisplay = ({ size = 200 }: { size?: number }) => {
     <div className="w-full flex flex-col items-center">
       <div className="relative">
         <Image
-          src="/images/loading/outline.svg"
           alt="loading"
           width={size}
           height={size}
           className="animate-spin"
+          src="/images/loading/outline.svg"
         />
         <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2">
           <Image
-            src="/images/loading/rocket.svg"
             alt="loading"
             width={size / 2}
             height={size / 2}
+            className="animate-breath"
+            src="/images/loading/rocket.svg"
           />
         </div>
       </div>

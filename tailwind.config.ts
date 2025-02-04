@@ -90,11 +90,16 @@ const config: Config = {
         'flip-in': {
           '0%': { transform: 'translateY(100%)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' }
-        }
+        },
+        breath: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.1)' },
+        },
       },
       animation: {
         'flip-out': 'flip-out 0.15s ease-out',
-        'flip-in': 'flip-in 0.15s ease-out'
+        'flip-in': 'flip-in 0.15s ease-out',
+        breath: 'breath 2s ease-in-out infinite',
       },
     },
   },
