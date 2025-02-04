@@ -3,8 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import CardContainer from "@/components/CardContianer/v3";
-import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 import CountdownTimer from "../launch-detail/components/Countdown";
+import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 
 const LBPDetailPage = () => {
   return (
@@ -304,7 +304,12 @@ const LBPDetailPage = () => {
           <div className="col-span-2">
             <CardContainer>
               <div className="space-y-4">
-                <CountdownTimer endTime={String(Math.floor((Date.now() + 24 * 60 * 60 * 1000) / 1000))} type="default" />
+                <CountdownTimer
+                  type="default"
+                  endTime={String(
+                    Math.floor((Date.now() + 24 * 60 * 60 * 1000) / 1000)
+                  )}
+                />
 
                 <div className="bg-white py-4 px-5 text-center rounded-2xl custom-dashed">
                   <div className="mb-5 bg-white rounded-[10px] border border-[#202020] shadow-[2.333px_2.333px_0px_0px_rgba(0,0,0,0.25)] inline-block p-2">

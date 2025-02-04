@@ -1,40 +1,39 @@
-import { PeddingSvg } from "../svg/Pedding";
-import { RocketSvg } from "../svg/Rocket";
+import Image from "next/image";
 
-export default function LoadingDisplay() {
+const LoadingDisplay = ({ size = 200 }: { size?: number }) => {
   return (
     <div className="w-full flex flex-col items-center">
       <div className="relative">
-        <PeddingSvg />
+        <Image
+          src="/images/loading/outline.svg"
+          alt="loading"
+          width={size}
+          height={size}
+          className="animate-spin"
+        />
         <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2">
-          <RocketSvg />
+          <Image
+            src="/images/loading/rocket.svg"
+            alt="loading"
+            width={size / 2}
+            height={size / 2}
+          />
         </div>
       </div>
-      <div className="text-gold-primary mt-[59px] font-bold">Loading...</div>
     </div>
-  );
-}
-
-export const LoadingContainer = ({
-  isLoading,
-  children,
-  text,
-}: {
-  children: React.ReactNode;
-  isLoading: boolean;
-  text?: string;
-}) => {
-  return isLoading ? (
-    <div className="w-full flex flex-col items-center">
-      <div className="relative">
-        <PeddingSvg />
-        <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2">
-          <RocketSvg />
-        </div>
-      </div>
-      <div className="text-gold-primary mt-[59px] font-bold">Loading...</div>
-    </div>
-  ) : (
-    children
   );
 };
+
+const LoadingContainer = ({
+  size,
+  children,
+  isLoading,
+}: {
+  size?: number;
+  isLoading: boolean;
+  children: React.ReactNode;
+}) => {
+  return isLoading ? <LoadingDisplay size={size} /> : children;
+};
+
+export { LoadingContainer, LoadingDisplay };
