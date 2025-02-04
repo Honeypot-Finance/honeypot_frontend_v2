@@ -6,7 +6,7 @@ import { Button } from "@/components/button";
 import { Token } from "@/services/contract/token";
 import { SpinnerContainer } from "../Spinner";
 import { PlusSvg } from "../svg/plus";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { isEthAddress } from "@/lib/address";
 import { wallet } from "@/services/wallet";
@@ -17,10 +17,9 @@ import {
   Tabs,
   Button as NextButton,
 } from "@nextui-org/react";
-import { Table } from "../table";
 import { ItemSelect, SelectState } from "../ItemSelect";
 import { SelectItem } from "../ItemSelect/index";
-import LoadingDisplay from "../LoadingDisplay/LoadingDisplay";
+import { LoadingDisplay } from "../LoadingDisplay/LoadingDisplay";
 
 const AddLiquidity = observer(() => {
   return (
