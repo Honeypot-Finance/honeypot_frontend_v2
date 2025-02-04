@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import CardContainer from "@/components/CardContianer/v3";
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
+import CountdownTimer from "../launch-detail/components/Countdown";
 
 const LBPDetailPage = () => {
   return (
@@ -303,34 +304,10 @@ const LBPDetailPage = () => {
           <div className="col-span-2">
             <CardContainer>
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="text-sm text-[#4D4D4D]">Sale Status</div>
-                  <div className="text-base font-bold">Ended</div>
-                </div>
-                <div>
-                  <div className="text-sm text-[#4D4D4D] mb-2">Completed</div>
-                  <div className="grid grid-cols-4 gap-2 text-center">
-                    <div>
-                      <div className="text-xl font-bold">1</div>
-                      <div className="text-xs text-[#4D4D4D]">Days</div>
-                    </div>
-                    <div>
-                      <div className="text-xl font-bold">0</div>
-                      <div className="text-xs text-[#4D4D4D]">Hours</div>
-                    </div>
-                    <div>
-                      <div className="text-xl font-bold">37</div>
-                      <div className="text-xs text-[#4D4D4D]">Minutes</div>
-                    </div>
-                    <div>
-                      <div className="text-xl font-bold">45</div>
-                      <div className="text-xs text-[#4D4D4D]">Seconds</div>
-                    </div>
-                  </div>
-                </div>
+                <CountdownTimer endTime={String(Math.floor((Date.now() + 24 * 60 * 60 * 1000) / 1000))} type="default" />
 
-                <div className="bg-white rounded-[16px] border border-black p-4 text-center">
-                  <div className="mb-4">
+                <div className="bg-white py-4 px-5 text-center rounded-2xl custom-dashed">
+                  <div className="mb-5 bg-white rounded-[10px] border border-[#202020] shadow-[2.333px_2.333px_0px_0px_rgba(0,0,0,0.25)] inline-block p-2">
                     <Image
                       src="/images/lbp-detail/logo/check.svg"
                       alt="check"
@@ -339,18 +316,18 @@ const LBPDetailPage = () => {
                       className="mx-auto"
                     />
                   </div>
-                  <div className="text-lg font-bold mb-2">Sale Ended</div>
-                  <div className="text-sm text-[#4D4D4D] mb-4">
+                  <div className="text-2xl font-bold mb-3">Sale Ended</div>
+                  <div className="text-xs text-[#4D4D4D] mb-3">
                     The token sale has ended. Tokens can be redeemed by clicking
                     the &apos;Claim Tokens Here&apos; button below.
                   </div>
-                  <div className="text-sm text-[#4D4D4D] mb-4">
+                  <div className="text-xs text-[#4D4D4D] mb-4">
                     Some tokens may have a claim delay as set by the sale
                     creator.
                   </div>
                   <div className="border-t border-black pt-4">
-                    <div className="flex items-center justify-between text-sm">
-                      <span>Purchased tokens:</span>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Purchased tokens:</span>
                       <span>0 OVL</span>
                     </div>
                   </div>
