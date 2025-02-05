@@ -28,6 +28,7 @@ import { chart } from "@/services/chart";
 import { V3SwapCard } from "../algebra/swap/V3SwapCard";
 import { HoneyContainer } from "../CardContianer";
 import { getSingleVaultDetails } from "@/lib/algebra/graphql/clients/vaults";
+import { DOMAIN_MAP } from "honeypot-sdk";
 
 export const LaunchDetailSwapCard = observer(
   ({
@@ -213,7 +214,7 @@ export const LaunchDetailSwapCard = observer(
                     onClick={async () => {
                       const lpTokenAddress =
                         await memePairContract.contract.read.lpToken();
-                      window.location.href = `/vault/${lpTokenAddress}`;
+                      window.location.href = `${DOMAIN_MAP.WASABEE_DEX}/vault/${lpTokenAddress}`;
                     }}
                   >
                     Visit Vault

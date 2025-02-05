@@ -7,9 +7,6 @@ import { useEffect, useState, useRef } from "react";
 import { useAccount } from "wagmi";
 import { MyLaunches } from "./MyLaunches";
 import ParticipatedLaunches from "./ParticipatedLaunches";
-import { MyPools } from "./MyPools";
-import PortfolioTab from "./Portfolio";
-import { ProtfolioBalanceChart } from "./ProtfolioBalanceChart";
 import { portfolio } from "@/services/portfolio";
 import {
   getLiquidatorDatas,
