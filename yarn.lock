@@ -11609,17 +11609,17 @@ hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.1, hoist-non-react-
   dependencies:
     react-is "^16.7.0"
 
-honeypot-sdk@^1.0.1:
+honeypot-sdk@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/honeypot-sdk/-/honeypot-sdk-1.0.2.tgz#d11c8cdfe34b3b61fd9ed1cdc166aeef1a84bb4b"
   integrity sha512-bUnFhD1kBjLr21awHphM7QbKbe0zyeeko9uFX6kHzRbt14c+oKpNyNKXnEf1RlEz+BwPQA4nx1jIHymozykICA==
   dependencies:
     "@tsconfig/recommended" "^1.0.8"
 
-honeypot-ui@^1.0.13:
-  version "1.0.18"
-  resolved "https://registry.yarnpkg.com/honeypot-ui/-/honeypot-ui-1.0.18.tgz#91722c17ba723f58b822c54f467ec659fe3c902d"
-  integrity sha512-0DzVx10Is72ar5t9Y0ZUbAGpohsP9t/UGU+VqNGES7neUAIQTF6diuYRMpfJKSoKhfbhds+6EsUzv3tfsRHV9A==
+honeypot-ui@^1.0.23:
+  version "1.0.23"
+  resolved "https://registry.yarnpkg.com/honeypot-ui/-/honeypot-ui-1.0.23.tgz#1329c31980b5bf5bc04d821d6278dc3cec02cc6d"
+  integrity sha512-hYF/2NfTANgyNXMGpOac0Dfxw0OBJYRz0uv0ieWhiQffFhnuddNG5fCo8jle839WpeHf8Id039fgl6art/cfbA==
   dependencies:
     "@tsconfig/recommended" "^1.0.8"
 
