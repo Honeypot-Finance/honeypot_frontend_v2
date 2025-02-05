@@ -16,6 +16,7 @@ import {
 // import { holdstationWallet } from "./holdstationWallet";
 // import { capsuleWallet } from "./capsualWallet";
 // import { berasigWallet } from "./berasigWallet";
+import { createConfig, http, cookieStorage, createStorage } from "wagmi";
 
 const pId = "1d1c8b5204bfbd57502685fc0934a57d";
 const CAPSULE_API_KEY = process.env.NEXT_PUBLIC_CAPSULE_API_KEY!;
@@ -82,4 +83,7 @@ export const config = getDefaultConfig({
   // @ts-ignore
   chains: networks.map((network) => network.chain),
   ssr: true, // If your dApp uses server side rendering (SSR)
+  storage: createStorage({
+    storage: cookieStorage,
+  }),
 });

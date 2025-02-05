@@ -25,9 +25,9 @@ import {
   usePot2PumpPottingNewTokensByEndtimeQuery,
 } from "@/lib/algebra/graphql/generated/graphql";
 import LoadingDisplay from "@/components/LoadingDisplay/LoadingDisplay";
-import CardContainer from "@/components/CardContianer/v3";
-
+import { CardContainer } from "honeypot-ui";
 // 在组件外部定义常量
+
 const POT_TABS = {
   NEW: "New POTs",
   ALMOST: "Almost",
@@ -39,7 +39,7 @@ const POT_TABS = {
 
 type TabType = (typeof POT_TABS)[keyof typeof POT_TABS];
 
-const STORAGE_KEY = 'pot2pump_selected_tabs';
+const STORAGE_KEY = "pot2pump_selected_tabs";
 
 const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
   const [newTokensList, setNewTokensList] = useState<MemePairContract[]>([]);
@@ -55,7 +55,9 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
   const [marketCapTokensList, setMarketCapTokensList] = useState<
     MemePairContract[]
   >([]);
-  const [endTimeTokensList, setEndTimeTokensList] = useState<MemePairContract[]>([]);
+  const [endTimeTokensList, setEndTimeTokensList] = useState<
+    MemePairContract[]
+  >([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [activeTab, setActiveTab] = useState<TabType>(POT_TABS.NEW);
   const [currentTime, setCurrentTime] = useState(
@@ -63,9 +65,11 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
   );
   const [selectedTabs, setSelectedTabs] = useState<TabType[]>(() => {
     // 从 localStorage 读取保存的标签，如果没有则使用默认值
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? JSON.parse(saved) : [POT_TABS.NEW, POT_TABS.ALMOST, POT_TABS.NEW_PUMPS];
+      return saved
+        ? JSON.parse(saved)
+        : [POT_TABS.NEW, POT_TABS.ALMOST, POT_TABS.NEW_PUMPS];
     }
     return [POT_TABS.NEW, POT_TABS.ALMOST, POT_TABS.NEW_PUMPS];
   });
@@ -370,7 +374,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
   }, [highPriceTokensList]);
 
   const handleTabClick = (tab: TabType) => {
-    setSelectedTabs(prev => {
+    setSelectedTabs((prev) => {
       if (prev.includes(tab)) {
         return prev;
       }
@@ -454,9 +458,9 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
               key={tab}
               onClick={() => handleTabClick(tab)}
               className={`px-4 py-2 rounded-lg border ${
-                selectedTabs.includes(tab) 
-                  ? 'bg-amber-500 text-white border-amber-600' 
-                  : 'bg-white text-gray-700 border-gray-300'
+                selectedTabs.includes(tab)
+                  ? "bg-amber-500 text-white border-amber-600"
+                  : "bg-white text-gray-700 border-gray-300"
               }`}
             >
               {tab}
@@ -469,7 +473,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
           {/* Desktop Grid */}
           <div className="hidden md:grid grid-cols-3 min-h-[600px] h-[calc(100vh-300px)] gap-2">
             {selectedTabs.map((tab) => (
-              <section key={tab} className="relative flex flex-col px-2 overflow-hidden">
+              <section
+                key={tab}
+                className="relative flex flex-col px-2 overflow-hidden"
+              >
                 <h2 className="text-xl font-bold mb-4 absolute top-0 left-0 right-0 z-20 py-2 px-2 bg-white">
                   {tab}
                 </h2>
@@ -479,9 +486,15 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                       case POT_TABS.NEW:
                         return newTokensList.length > 0 ? (
                           newTokensList
-                            .sort((a, b) => Number(b.startTime) - Number(a.startTime))
+                            .sort(
+                              (a, b) =>
+                                Number(b.startTime) - Number(a.startTime)
+                            )
                             ?.map((pot2pump, index) => (
-                              <motion.div key={index} variants={itemPopUpVariants}>
+                              <motion.div
+                                key={index}
+                                variants={itemPopUpVariants}
+                              >
                                 <LaunchCardV3
                                   type="simple"
                                   pair={pot2pump}
@@ -502,7 +515,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                                 Number(a.pottingPercentageNumber)
                             )
                             ?.map((pot2pump, index) => (
-                              <motion.div key={index} variants={itemPopUpVariants}>
+                              <motion.div
+                                key={index}
+                                variants={itemPopUpVariants}
+                              >
                                 <LaunchCardV3
                                   type="simple"
                                   pair={pot2pump}
@@ -523,7 +539,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                                 Number(a.launchedToken?.derivedUSD)
                             )
                             ?.map((pot2pump, index) => (
-                              <motion.div key={index} variants={itemPopUpVariants}>
+                              <motion.div
+                                key={index}
+                                variants={itemPopUpVariants}
+                              >
                                 <LaunchCardV3
                                   type="simple"
                                   pair={pot2pump}
@@ -540,11 +559,18 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                           trendingTokensList
                             ?.sort(
                               (a, b) =>
-                                Number(b.launchedToken?.priceChange24hPercentage) -
-                                Number(a.launchedToken?.priceChange24hPercentage)
+                                Number(
+                                  b.launchedToken?.priceChange24hPercentage
+                                ) -
+                                Number(
+                                  a.launchedToken?.priceChange24hPercentage
+                                )
                             )
                             ?.map((pot2pump, index) => (
-                              <motion.div key={index} variants={itemPopUpVariants}>
+                              <motion.div
+                                key={index}
+                                variants={itemPopUpVariants}
+                              >
                                 <LaunchCardV3
                                   type="simple"
                                   pair={pot2pump}
@@ -565,7 +591,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                                 Number(a.launchedToken?.marketCap)
                             )
                             ?.map((pot2pump, index) => (
-                              <motion.div key={index} variants={itemPopUpVariants}>
+                              <motion.div
+                                key={index}
+                                variants={itemPopUpVariants}
+                              >
                                 <LaunchCardV3
                                   type="simple"
                                   pair={pot2pump}
@@ -584,7 +613,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                               (a, b) => Number(a.endTime) - Number(b.endTime)
                             )
                             ?.map((pot2pump, index) => (
-                              <motion.div key={index} variants={itemPopUpVariants}>
+                              <motion.div
+                                key={index}
+                                variants={itemPopUpVariants}
+                              >
                                 <LaunchCardV3
                                   type="simple"
                                   pair={pot2pump}
@@ -609,15 +641,24 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
           <div className="md:hidden min-h-[600px] h-[calc(100vh-300px)]">
             <div className="h-full flex flex-col px-2 overflow-hidden">
               {selectedTabs.map((tab) => (
-                <div key={tab} className="flex flex-col gap-4 pb-2 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1 &::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2">
+                <div
+                  key={tab}
+                  className="flex flex-col gap-4 pb-2 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1 &::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2"
+                >
                   {(() => {
                     switch (tab) {
                       case POT_TABS.NEW:
                         return newTokensList.length > 0 ? (
                           newTokensList
-                            .sort((a, b) => Number(b.startTime) - Number(a.startTime))
+                            .sort(
+                              (a, b) =>
+                                Number(b.startTime) - Number(a.startTime)
+                            )
                             ?.map((pot2pump, index) => (
-                              <motion.div key={index} variants={itemPopUpVariants}>
+                              <motion.div
+                                key={index}
+                                variants={itemPopUpVariants}
+                              >
                                 <LaunchCardV3
                                   type="simple"
                                   pair={pot2pump}
@@ -637,7 +678,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                                 Number(a.pottingPercentageNumber)
                             )
                             ?.map((pot2pump, index) => (
-                              <motion.div key={index} variants={itemPopUpVariants}>
+                              <motion.div
+                                key={index}
+                                variants={itemPopUpVariants}
+                              >
                                 <LaunchCardV3
                                   type="simple"
                                   pair={pot2pump}
@@ -657,7 +701,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                                 Number(a.launchedToken?.derivedUSD)
                             )
                             ?.map((pot2pump, index) => (
-                              <motion.div key={index} variants={itemPopUpVariants}>
+                              <motion.div
+                                key={index}
+                                variants={itemPopUpVariants}
+                              >
                                 <LaunchCardV3
                                   type="simple"
                                   pair={pot2pump}
@@ -673,11 +720,18 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                           trendingTokensList
                             ?.sort(
                               (a, b) =>
-                                Number(b.launchedToken?.priceChange24hPercentage) -
-                                Number(a.launchedToken?.priceChange24hPercentage)
+                                Number(
+                                  b.launchedToken?.priceChange24hPercentage
+                                ) -
+                                Number(
+                                  a.launchedToken?.priceChange24hPercentage
+                                )
                             )
                             ?.map((pot2pump, index) => (
-                              <motion.div key={index} variants={itemPopUpVariants}>
+                              <motion.div
+                                key={index}
+                                variants={itemPopUpVariants}
+                              >
                                 <LaunchCardV3
                                   type="simple"
                                   pair={pot2pump}
@@ -697,7 +751,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                                 Number(a.launchedToken?.marketCap)
                             )
                             ?.map((pot2pump, index) => (
-                              <motion.div key={index} variants={itemPopUpVariants}>
+                              <motion.div
+                                key={index}
+                                variants={itemPopUpVariants}
+                              >
                                 <LaunchCardV3
                                   type="simple"
                                   pair={pot2pump}
@@ -715,7 +772,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                               (a, b) => Number(a.endTime) - Number(b.endTime)
                             )
                             ?.map((pot2pump, index) => (
-                              <motion.div key={index} variants={itemPopUpVariants}>
+                              <motion.div
+                                key={index}
+                                variants={itemPopUpVariants}
+                              >
                                 <LaunchCardV3
                                   type="simple"
                                   pair={pot2pump}
