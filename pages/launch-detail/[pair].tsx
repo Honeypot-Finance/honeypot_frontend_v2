@@ -721,7 +721,6 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
               {state.pair.value?.state !== 0 && (
                 <CountdownTimer
                   endTime={pair?.endTime}
-                  ftoState={state.pair.value?.state}
                   endTimeDisplay={state.pair.value?.endTimeDisplay}
                 />
               )}
@@ -731,7 +730,6 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                 {state.pair.value?.state !== 0 && (
                   <CountdownTimer
                     endTime={pair?.endTime}
-                    ftoState={state.pair.value?.state}
                     endTimeDisplay={state.pair.value?.endTimeDisplay}
                   />
                 )}

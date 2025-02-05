@@ -1,16 +1,10 @@
 import { motion } from "framer-motion";
 import { observer } from "mobx-react-lite";
 import { NextLayoutPage } from "@/types/nextjs";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { LaunchCardV3 } from "@/components/LaunchCard/v3";
 import { itemPopUpVariants } from "@/lib/animation";
-import {
-  fetchNearSuccessPot2Pump,
-  fetchPumpingHighPricePot2Pump,
-  fetchPottingNewTokens,
-  fetchPottingTrendingPot2Pump,
-  pot2PumpListToMemePairList,
-} from "@/lib/algebra/graphql/clients/pair";
+import { pot2PumpListToMemePairList } from "@/lib/algebra/graphql/clients/pair";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 import { wallet } from "@/services/wallet";
 import { Button } from "@/components/button";
@@ -24,7 +18,7 @@ import {
   usePot2PumpPottingMarketCapQuery,
   usePot2PumpPottingNewTokensByEndtimeQuery,
 } from "@/lib/algebra/graphql/generated/graphql";
-import LoadingDisplay from "@/components/LoadingDisplay/LoadingDisplay";
+import { LoadingDisplay } from "honeypot-ui";
 import { CardContainer } from "honeypot-ui";
 // 在组件外部定义常量
 

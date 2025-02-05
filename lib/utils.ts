@@ -89,3 +89,11 @@ export function removeEmptyFields(obj: FilterObject): FilterObject {
 
   return cleanedObject;
 }
+
+export function getTextSizeClass(text: string | undefined | null): string {
+  if (!text) return "text-2xl md:text-[34px] text-stroke-2 text-shadow-[2px_4px_0px_#AF7F3D]";
+  
+  if (text.length > 10) return "text-base md:text-xl text-stroke-1 text-shadow-[1px_2px_0px_#AF7F3D]";
+  if (text.length > 5) return "text-xl md:text-2xl text-stroke-[1.5px] text-shadow-[1.5px_3px_0px_#AF7F3D]";
+  return "text-2xl md:text-[34px] text-stroke-2 text-shadow-[2px_4px_0px_#AF7F3D]";
+}

@@ -6,7 +6,7 @@ import Image from "next/image";
 import { trpcClient } from "@/lib/trpc";
 import { wallet } from "@/services/wallet";
 import { useEffect, useState } from "react";
-import LoadingDisplay from "@/components/LoadingDisplay/LoadingDisplay";
+import { LoadingDisplay } from "@/components/LoadingDisplay/LoadingDisplay";
 import { useRouter } from "next/router";
 import { cn } from "@/lib/tailwindcss";
 import dayjs from "dayjs";
@@ -121,7 +121,9 @@ export function DiscussionArea(props: DiscussionAreaProps) {
   };
 
   return (
-    <CardContianer addtionalClassName={cn(props.classNames?.container,'bg-[#202020]')}>
+    <CardContianer
+      addtionalClassName={cn(props.classNames?.container, "bg-[#202020]")}
+    >
       <div
         className={cn(
           "flex-col w-full ",
@@ -141,8 +143,7 @@ export function DiscussionArea(props: DiscussionAreaProps) {
             label="Leave a Comment!"
             classNames={{
               base: "w-full h-full bg-[#262626] border border-[#FFCD4D] rounded-2xl overflow-hidden",
-              inputWrapper:
-                "w-full !h-full z-1",
+              inputWrapper: "w-full !h-full z-1",
               input: "w-full h-full",
               mainWrapper: "w-full h-full bg-[#2F200B] hover:bg-[#2F200B] z-1",
               label: "text-[#FFCD4D] text-base font-bold leading-[normal] z-1",
