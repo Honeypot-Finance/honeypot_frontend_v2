@@ -11,7 +11,7 @@ interface AnnouncementBarProps {
   interval: number;
 }
 
-const STORAGE_KEY = 'latest_pumping_token_id';
+const STORAGE_KEY = "latest_pumping_token_id";
 
 const AnnouncementBar: React.FC<AnnouncementBarProps> = ({
   slogans: initialSlogans,
@@ -22,10 +22,10 @@ const AnnouncementBar: React.FC<AnnouncementBarProps> = ({
   const [timer, setTimer] = useState<NodeJS.Timeout>();
   const [localSlogans, setLocalSlogans] = useState(initialSlogans);
   const [lastTokenId, setLastTokenId] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem(STORAGE_KEY) || '';
+    if (typeof window !== "undefined") {
+      return localStorage.getItem(STORAGE_KEY) || "";
     }
-    return '';
+    return "";
   });
 
   const { data: latestPumpingToken, refetch } = useGetLatestPumpingTokenQuery({
@@ -39,7 +39,8 @@ const AnnouncementBar: React.FC<AnnouncementBarProps> = ({
       if (newToken.id !== lastTokenId) {
         const newAnnouncement = (
           <span className="text-lg">
-            {newToken.launchToken?.symbol} ({newToken.launchToken?.name}) has reached pumping stage!
+            {newToken.launchToken?.symbol} ({newToken.launchToken?.name}) has
+            reached pumping stage!
           </span>
         );
         setLocalSlogans([newAnnouncement, ...localSlogans]);
@@ -98,7 +99,9 @@ const AnnouncementBar: React.FC<AnnouncementBarProps> = ({
                   onClick={handleClose}
                   className="absolute -top-1.5 -right-1.5 size-4 rounded-full border border-[#523914]/30 bg-[#523914] flex items-center justify-center hover:bg-gray-100"
                 >
-                  <span className="text-white text-base leading-none">&times;</span>
+                  <span className="text-white text-base leading-none">
+                    &times;
+                  </span>
                 </button>
               </div>
             </motion.div>

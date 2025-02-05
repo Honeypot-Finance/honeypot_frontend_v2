@@ -8,11 +8,8 @@ import { CustomNavbar } from "./components/Navbar";
 import { Navbar, NavbarContent } from "@nextui-org/react";
 import React, { HtmlHTMLAttributes, useState } from "react";
 import { WalletConnect } from "@/components/walletconnect/v3";
-import {
-  DOMAIN_MAP,
-  Menu,
-  appPathsList as menuList,
-} from "@/config/allAppPath";
+import { Menu, appPathsList as menuList } from "@/config/allAppPath";
+import { DOMAIN_MAP } from "honeypot-sdk";
 
 export const Header = (props: HtmlHTMLAttributes<any>) => {
   const router = useRouter();

@@ -11609,6 +11609,13 @@ hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.1, hoist-non-react-
   dependencies:
     react-is "^16.7.0"
 
+honeypot-sdk@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/honeypot-sdk/-/honeypot-sdk-1.0.2.tgz#d11c8cdfe34b3b61fd9ed1cdc166aeef1a84bb4b"
+  integrity sha512-bUnFhD1kBjLr21awHphM7QbKbe0zyeeko9uFX6kHzRbt14c+oKpNyNKXnEf1RlEz+BwPQA4nx1jIHymozykICA==
+  dependencies:
+    "@tsconfig/recommended" "^1.0.8"
+
 honeypot-ui@^1.0.13:
   version "1.0.18"
   resolved "https://registry.yarnpkg.com/honeypot-ui/-/honeypot-ui-1.0.18.tgz#91722c17ba723f58b822c54f467ec659fe3c902d"

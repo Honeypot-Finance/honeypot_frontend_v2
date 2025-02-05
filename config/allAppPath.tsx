@@ -2,14 +2,6 @@ import { StaticImageData } from "next/image";
 import { ReactNode } from "react";
 import Image from "next/image";
 
-export const DOMAIN_MAP = {
-  LANDING: "https://honeypotfinance.xyz",
-  MAIN: "https://app.honeypotfinance.xyz",
-  POT2PUMP: "https://pot2pump.honeypotfinance.xyz",
-  DREAMPAD: "https://dreampad.honeypotfinance.xyz",
-  WASABEE: "https://wasabee.honeypotfinance.xyz",
-} as const;
-
 export type PathChatConfig = {
   autoPopUpQuestion: ReactNode;
   pageTrendingQuestions: ReactNode[];
