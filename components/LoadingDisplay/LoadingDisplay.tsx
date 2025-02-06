@@ -1,6 +1,12 @@
 import Image from "next/image";
 
-const LoadingDisplay = ({ size = 200 }: { size?: number }) => {
+const LoadingDisplay = ({
+  size = 200,
+  text,
+}: {
+  size?: number;
+  text?: string;
+}) => {
   return (
     <div className="w-full flex flex-col items-center">
       <div className="relative">
@@ -21,20 +27,23 @@ const LoadingDisplay = ({ size = 200 }: { size?: number }) => {
           />
         </div>
       </div>
+      {text && <p className="text-[#FFCD4D] mt-[59px] font-bold">{text}</p>}
     </div>
   );
 };
 
 const LoadingContainer = ({
   size,
+  text,
   children,
   isLoading,
 }: {
+  text?: string;
   size?: number;
   isLoading: boolean;
   children: React.ReactNode;
 }) => {
-  return isLoading ? <LoadingDisplay size={size} /> : children;
+  return isLoading ? <LoadingDisplay size={size} text={text} /> : children;
 };
 
 export { LoadingContainer, LoadingDisplay };
