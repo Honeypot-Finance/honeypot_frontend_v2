@@ -221,7 +221,7 @@ export const LaunchDetailSwapCard = observer(
                   </Button>
                   <Link
                     className="w-full"
-                    href={`/pool-detail/${vaultContract?.pool?.address}`}
+                    href={`${DOMAIN_MAP.WASABEE_DEX}/pool-detail/${vaultContract?.pool?.address}`}
                   >
                     <Button className="w-full">Customize Position</Button>
                   </Link>
