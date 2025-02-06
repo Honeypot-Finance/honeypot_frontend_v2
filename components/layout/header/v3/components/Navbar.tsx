@@ -136,7 +136,7 @@ export const CustomNavbar: React.FC<NavbarProps> = ({ menuList }) => {
                 href={DOMAIN_MAP.WASABEE_DEX}
                 startContent={
                   <Image
-                    src="/images/blueAstro.8533943d.svg"
+                    src="/images/wasabee_pot.webp"
                     alt="pot2pump"
                     width={16}
                     height={16}
