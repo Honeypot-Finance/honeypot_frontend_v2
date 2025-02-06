@@ -11,6 +11,8 @@ import {
 import { Menu } from "@/config/allAppPath";
 import Image from "next/image";
 import { Key } from "react";
+import { FaPlusCircle } from "react-icons/fa";
+import { DOMAIN_MAP } from "honeypot-sdk";
 
 interface NavbarProps {
   menuList: Menu[];
@@ -41,17 +43,20 @@ export const CustomNavbar: React.FC<NavbarProps> = ({ menuList }) => {
         <div className="flex gap-2 py-1">
           {menuList.map((menu) =>
             Array.isArray(menu.path) ? (
-              <Dropdown 
-                key={menu.title} 
+              <Dropdown
+                key={menu.title}
                 placement="bottom-start"
                 classNames={{
-                  content: "bg-transparent p-0"
-                }}>
+                  content: "bg-transparent p-0",
+                }}
+              >
                 <DropdownTrigger>
                   <Button
                     className={cn(
                       "min-h-[32px] h-8 py-0 font-bold bg-transparent text-black hover:bg-[#202020] hover:text-white",
-                      (menu.path as SubMenu[]).some(item => item.routePath === router.pathname)
+                      (menu.path as SubMenu[]).some(
+                        (item) => item.routePath === router.pathname
+                      )
                         ? "bg-[#202020] text-white"
                         : ""
                     )}
@@ -102,7 +107,9 @@ export const CustomNavbar: React.FC<NavbarProps> = ({ menuList }) => {
                 key={menu.title}
                 className={cn(
                   "min-h-[32px] h-8 py-0 font-bold bg-transparent text-black hover:bg-[#202020]/70 hover:text-white",
-                  menu.routePath === router.pathname ? "bg-[#202020] text-white" : ""
+                  menu.routePath === router.pathname
+                    ? "bg-[#202020] text-white"
+                    : ""
                 )}
                 onPress={() => {
                   if (typeof menu.path === "string") {
@@ -114,6 +121,34 @@ export const CustomNavbar: React.FC<NavbarProps> = ({ menuList }) => {
               </Button>
             )
           )}
+          <Dropdown>
+            <DropdownTrigger
+              className={cn(
+                "min-h-[32px] h-8 py-0 font-bold bg-transparent text-black hover:bg-[#202020]/70 hover:text-white rounded-full"
+              )}
+            >
+              <Button isIconOnly variant="light" className="p-0 w-8 h-8">
+                <FaPlusCircle className="w-6 h-6" />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu>
+              <DropdownItem
+                href={DOMAIN_MAP.WASABEE_DEX}
+                startContent={
+                  <Image
+                    src="/images/blueAstro.8533943d.svg"
+                    alt="pot2pump"
+                    width={16}
+                    height={16}
+                    className="w-4 h-4"
+                  />
+                }
+                key="pot2pump"
+              >
+                Wasabee DEX
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </div>
       </div>
     </div>

@@ -67,15 +67,11 @@ export const Header = (props: HtmlHTMLAttributes<any>) => {
           }}
         >
           <NavbarContent
-            className="hidden sm:flex gap-4 items-start"
+            className="flex gap-4 items-start !flex-grow-0 min-w-[200px]"
             justify="start"
           >
-            <CustomNavbar menuList={menuList} />
-          </NavbarContent>
-
-          <NavbarContent className="flex gap-4 items-start" justify="center">
             <Link
-              href={DOMAIN_MAP.LANDING}
+              href={DOMAIN_MAP.MAIN}
               className="pointer-events-none md:pointer-events-auto cursor-pointer"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
@@ -89,7 +85,17 @@ export const Header = (props: HtmlHTMLAttributes<any>) => {
             </Link>
           </NavbarContent>
 
-          <NavbarContent className="flex gap-4" justify="end">
+          <NavbarContent
+            className="hidden sm:flex gap-4 items-center !grow"
+            justify="center"
+          >
+            <CustomNavbar menuList={menuList} />
+          </NavbarContent>
+
+          <NavbarContent
+            className="flex gap-4 !flex-grow-0 min-w-[370px]"
+            justify="end"
+          >
             {!isMenuOpen && <WalletConnect />}
           </NavbarContent>
         </Navbar>
