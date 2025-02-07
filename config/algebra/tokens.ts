@@ -1,4 +1,4 @@
-import { Token } from "@cryptoalgebra/sdk";
+import { Token } from "@cryptoalgebra/wasabee-sdk";
 import { DEFAULT_CHAIN_ID } from "./default-chain-id";
 
 export const STABLECOINS = {

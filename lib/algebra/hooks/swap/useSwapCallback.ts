@@ -1,4 +1,4 @@
-import { Currency, Percent, Trade, TradeType } from "@cryptoalgebra/sdk";
+import { Currency, Percent, Trade, TradeType } from "@cryptoalgebra/wasabee-sdk";
 import { useAccount, useContractWrite } from "wagmi";
 import { useSwapCallArguments } from "./useSwapCallArguments";
 import { useEffect, useMemo, useState } from "react";

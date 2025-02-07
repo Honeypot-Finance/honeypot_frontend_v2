@@ -5,7 +5,7 @@ import {
   CurrencyAmount,
   maxAmountSpend,
   tryParseAmount,
-} from "@cryptoalgebra/sdk";
+} from "@cryptoalgebra/wasabee-sdk";
 import { useCallback, useMemo, useEffect } from "react";
 import TokenCard from "../TokenCard";
 import { ArrowLeftRight, ChevronsUpDownIcon } from "lucide-react";
@@ -23,7 +23,7 @@ import { ExchangeSvg } from "@/components/svg/exchange";
 import { chart } from "@/services/chart";
 import { Token } from "@/services/contract/token";
 import { PairContract } from "@/services/contract/dex/liquidity/pair-contract";
-import { Token as AlgebraToken } from "@cryptoalgebra/sdk";
+import { Token as AlgebraToken } from "@cryptoalgebra/wasabee-sdk";
 import { wallet } from "@/services/wallet";
 import { AlgebraPoolContract } from "@/services/contract/algebra/algebra-pool-contract";
 

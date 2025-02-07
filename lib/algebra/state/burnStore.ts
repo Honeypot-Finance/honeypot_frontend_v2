@@ -9,7 +9,7 @@ import {
   Position,
   computePoolAddress,
   unwrappedToken,
-} from "@cryptoalgebra/sdk";
+} from "@cryptoalgebra/wasabee-sdk";
 import { useCallback, useMemo } from "react";
 import { useAccount } from "wagmi";
 import { create } from "zustand";

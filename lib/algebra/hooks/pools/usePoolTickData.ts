@@ -4,7 +4,7 @@ import {
   Token,
   computePoolAddress,
   tickToPrice,
-} from "@cryptoalgebra/sdk";
+} from "@cryptoalgebra/wasabee-sdk";
 import { useState } from "react";
 import { Address } from "viem";
 import keyBy from "lodash.keyby";

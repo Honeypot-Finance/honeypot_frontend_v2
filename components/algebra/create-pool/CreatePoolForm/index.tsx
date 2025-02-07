@@ -5,7 +5,7 @@ import {
   ADDRESS_ZERO,
   NonfungiblePositionManager,
   computePoolAddress,
-} from "@cryptoalgebra/sdk";
+} from "@cryptoalgebra/wasabee-sdk";
 import { useTransactionAwait } from "@/lib/algebra/hooks/common/useTransactionAwait";
 import { useContractWrite } from "wagmi";
 import { Address } from "viem";

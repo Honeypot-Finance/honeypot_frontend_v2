@@ -1,6 +1,6 @@
 import { useContractWrite, useSimulateContract } from "wagmi";
 import { encodeFunctionData } from "viem";
-import { MaxUint128 } from "@cryptoalgebra/sdk";
+import { MaxUint128 } from "@cryptoalgebra/wasabee-sdk";
 import { useFarmCheckApprove } from "./useFarmCheckApprove";
 import { useEffect, useState } from "react";
 import { useTransactionAwait } from "../common/useTransactionAwait";

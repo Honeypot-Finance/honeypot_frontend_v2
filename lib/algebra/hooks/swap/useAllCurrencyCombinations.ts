@@ -1,5 +1,5 @@
 import { BASES_TO_CHECK_TRADES_AGAINST } from "@/config/algebra/routing";
-import { Currency, Token } from "@cryptoalgebra/sdk";
+import { Currency, Token } from "@cryptoalgebra/wasabee-sdk";
 import { useMemo } from "react";
 import { useChainId } from "wagmi";
 

@@ -1,4 +1,4 @@
-import { Currency } from "@cryptoalgebra/sdk";
+import { Currency } from "@cryptoalgebra/wasabee-sdk";
 import React from "react";
 import { Address } from "viem";
 import USDTLogo from "@/assets/algebra/tokens/usdt.png";

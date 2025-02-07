@@ -27,7 +27,7 @@ import {
   Trade,
   TradeType,
   unwrappedToken,
-} from "@cryptoalgebra/sdk";
+} from "@cryptoalgebra/wasabee-sdk";
 import { ChevronDownIcon, ChevronRightIcon, ZapIcon } from "lucide-react";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { FaLongArrowAltRight } from "react-icons/fa";

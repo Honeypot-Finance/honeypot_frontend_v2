@@ -14,7 +14,7 @@ import {
   Currency,
   ExtendedNative,
   Token,
-} from "@cryptoalgebra/sdk";
+} from "@cryptoalgebra/wasabee-sdk";
 import { useTokensState } from "@/lib/algebra/state/tokensStore";
 import { Copy } from "lucide-react";
 import { cn } from "@/lib/tailwindcss";

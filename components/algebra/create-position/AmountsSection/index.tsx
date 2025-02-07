@@ -4,7 +4,7 @@ import {
   HoverCardTrigger,
 } from "@/components/algebra/ui/hover-card";
 import TokenRatio from "../TokenRatio";
-import { Currency } from "@cryptoalgebra/sdk";
+import { Currency } from "@cryptoalgebra/wasabee-sdk";
 import { usePositionAPR } from "@/lib/algebra/hooks/positions/usePositionAPR";
 import { getPoolAPR } from "@/lib/algebra/utils/pool/getPoolAPR";
 import AddLiquidityButton from "../AddLiquidityButton";

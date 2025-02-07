@@ -8,7 +8,7 @@ import {
   Price,
   Currency,
   ADDRESS_ZERO,
-} from "@cryptoalgebra/sdk";
+} from "@cryptoalgebra/wasabee-sdk";
 import { useEffect, useMemo, useState } from "react";
 import { Chart } from "./chart";
 import { Skeleton } from "@/components/algebra/ui/skeleton";

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Address } from "viem";
 import { useChainId } from "wagmi";
-import { ADDRESS_ZERO } from "@cryptoalgebra/sdk";
+import { ADDRESS_ZERO } from "@cryptoalgebra/wasabee-sdk";
 import {
   DEFAULT_NATIVE_SYMBOL,
   DEFAULT_NATIVE_NAME,

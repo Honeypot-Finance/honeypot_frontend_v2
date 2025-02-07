@@ -4,7 +4,7 @@ import {
   Route,
   Trade,
   TradeType,
-} from "@cryptoalgebra/sdk";
+} from "@cryptoalgebra/wasabee-sdk";
 import { useMemo } from "react";
 import { useAllRoutes } from "./useAllRoutes";
 import { useQuotesResults } from "./useQuotesResults";

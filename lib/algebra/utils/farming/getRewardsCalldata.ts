@@ -1,4 +1,4 @@
-import { MaxUint128 } from "@cryptoalgebra/sdk";
+import { MaxUint128 } from "@cryptoalgebra/wasabee-sdk";
 import { Address, encodeFunctionData } from "viem";
 import { isSameRewards } from "./isSameRewards";
 import { farmingCenterABI } from "@/lib/abis/algebra-contracts/ABIs";

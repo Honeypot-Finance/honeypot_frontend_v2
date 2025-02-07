@@ -1,17 +1,17 @@
 import { Input } from "@/components/algebra/ui/input";
 import { formatBalance } from "@/lib/algebra/utils/common/formatBalance";
 import { formatUSD } from "@/lib//algebra/utils/common/formatUSD";
-import { Currency, Percent } from "@cryptoalgebra/sdk";
+import { Currency, Percent } from "@cryptoalgebra/wasabee-sdk";
 import { useEffect, useMemo, useState } from "react";
 import { useAccount, useBalance, useWatchBlockNumber } from "wagmi";
 import { Address, zeroAddress } from "viem";
 import { TokenSelector } from "@/components/TokenSelector/v3";
-import { Token as AlgebraToken } from "@cryptoalgebra/sdk";
+import { Token as AlgebraToken } from "@cryptoalgebra/wasabee-sdk";
 import { wallet } from "@/services/wallet";
 import { Token } from "@/services/contract/token";
 import { Slider } from "@nextui-org/react";
 import { debounce } from "lodash";
-import NativeCurrency from "@cryptoalgebra/sdk/dist/entities/NativeCurrency";
+import NativeCurrency from "@cryptoalgebra/wasabee-sdk/dist/entities/NativeCurrency";
 import {
   ItemSelect,
   SelectState,

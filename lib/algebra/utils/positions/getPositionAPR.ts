@@ -1,4 +1,4 @@
-import { Position } from "@cryptoalgebra/sdk";
+import { Position } from "@cryptoalgebra/wasabee-sdk";
 import { Address } from "viem";
 import {
   PoolFieldsFragment,
