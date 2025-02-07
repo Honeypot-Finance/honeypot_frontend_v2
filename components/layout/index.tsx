@@ -118,7 +118,8 @@ export const Layout = ({
       <ConfettiComponent />
       <PopOverModal />
       <Header />
-      {whitelistWallets.includes(address?.toLowerCase() as string) ? (
+      {whitelistWallets.includes(address?.toLowerCase() as string) ||
+      whitelistWallets.length === 0 ? (
         currentChain ? (
           currentChain?.isActive ? (
             <div className="flex-1 flex">{children}</div>
