@@ -1,5 +1,5 @@
 import { IDerivedMintInfo } from "@/lib/algebra/state/mintStore";
-import { Bound, Currency, Price, Token } from "@cryptoalgebra/sdk";
+import { Bound, Currency, Price, Token } from "@cryptoalgebra/wasabee-sdk";
 import { useMemo } from "react";
 import RangeSelectorPart from "../RangeSelectorPart";
 

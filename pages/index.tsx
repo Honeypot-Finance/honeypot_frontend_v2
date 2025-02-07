@@ -424,9 +424,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                 <button
                   key={index}
                   className={`w-2 h-2 rounded-full ${
-                    currentSlide === index
-                      ? "bg-black"
-                      : "bg-gray-400"
+                    currentSlide === index ? "bg-black" : "bg-gray-400"
                   }`}
                   onClick={() => setCurrentSlide(index)}
                 />
@@ -458,8 +456,8 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                 onClick={() => handleTabClick(tab)}
                 className={`px-3 py-1.5 rounded-lg whitespace-nowrap text-sm ${
                   selectedTabs.includes(tab)
-                    ? "bg-[#FFCD4D] border border-black shadow-[2px_2px_0px_0px_#000000]"
-                    : "text-gray-700"
+                    ? "bg-[#020202] text-white border border-black shadow-[2px_2px_0px_0px_#000000]"
+                    : "text-default-500"
                 }`}
               >
                 {tab}
@@ -475,12 +473,14 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
             {selectedTabs.map((tab) => (
               <section
                 key={tab}
-                className="relative flex flex-col px-2 overflow-hidden"
+                className="relative flex flex-col px-2 overflow-hidden gap-y-2"
               >
-                <h2 className="text-xl font-bold mb-4 absolute top-0 left-0 right-0 z-20 py-2 px-2 bg-white">
-                  {tab}
-                </h2>
-                <div className="flex flex-col gap-6 pb-2 overflow-y-auto h-full pt-[60px] [&::-webkit-scrollbar]:w-1 &::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2">
+                <div>
+                  <div className="rounded-small dark:bg-default bg-[#FFCD4D] border border-black shadow-[2px_2px_0px_0px_#000000] text-sm inline-block p-2">
+                    {tab}
+                  </div>
+                </div>
+                <div className="flex flex-col gap-6 pb-2 overflow-y-auto h-full pt-[60px] [&::-webkit-scrollbar]:w-1 &::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2 shadow-inner rounded-xl px-2">
                   {(() => {
                     switch (tab) {
                       case POT_TABS.NEW:

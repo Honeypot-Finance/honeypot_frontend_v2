@@ -1,5 +1,5 @@
 import { useReadAlgebraPositionManagerFarmingApprovals } from "@/wagmi-generated";
-import { ADDRESS_ZERO } from "@cryptoalgebra/sdk";
+import { ADDRESS_ZERO } from "@cryptoalgebra/wasabee-sdk";
 import { useEffect, useState } from "react";
 
 export function useFarmCheckApprove(tokenId: bigint) {

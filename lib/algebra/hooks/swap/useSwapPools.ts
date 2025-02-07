@@ -1,4 +1,4 @@
-import { Currency, Token, computePoolAddress } from "@cryptoalgebra/sdk";
+import { Currency, Token, computePoolAddress } from "@cryptoalgebra/wasabee-sdk";
 import { useEffect, useMemo, useState } from "react";
 import { useAllCurrencyCombinations } from "./useAllCurrencyCombinations";
 import { Address } from "viem";

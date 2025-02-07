@@ -1,5 +1,5 @@
 import LiquidityChart from "@/components/algebra/create-position/LiquidityChart";
-import { Pool, Position, tickToPrice } from "@cryptoalgebra/sdk";
+import { Pool, Position, tickToPrice } from "@cryptoalgebra/wasabee-sdk";
 
 interface PositionRangeChartProps {
   pool: Pool;

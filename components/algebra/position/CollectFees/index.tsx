@@ -3,7 +3,7 @@ import { Button } from "@/components/algebra/ui/button";
 import { Skeleton } from "@/components/algebra/ui/skeleton";
 import { useTransactionAwait } from "@/lib/algebra/hooks/common/useTransactionAwait";
 import { usePositionFees } from "@/lib/algebra/hooks/positions/usePositionFees";
-import { NonfungiblePositionManager } from "@cryptoalgebra/sdk";
+import { NonfungiblePositionManager } from "@cryptoalgebra/wasabee-sdk";
 import { useMemo } from "react";
 import { useAccount, useContractWrite } from "wagmi";
 import { Address } from "viem";

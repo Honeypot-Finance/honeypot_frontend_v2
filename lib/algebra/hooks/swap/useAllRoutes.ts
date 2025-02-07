@@ -5,7 +5,7 @@ import {
   Pool,
   Route,
   Token,
-} from "@cryptoalgebra/sdk";
+} from "@cryptoalgebra/wasabee-sdk";
 import { useMemo } from "react";
 import { useSwapPools } from "./useSwapPools";
 import { useChainId } from "wagmi";

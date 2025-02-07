@@ -22,7 +22,7 @@ import {
   NonfungiblePositionManager,
   Percent,
   ZERO,
-} from "@cryptoalgebra/sdk";
+} from "@cryptoalgebra/wasabee-sdk";
 import { useWeb3Modal, useWeb3ModalState } from "@web3modal/wagmi/react";
 import { Address } from "viem";
 import JSBI from "jsbi";

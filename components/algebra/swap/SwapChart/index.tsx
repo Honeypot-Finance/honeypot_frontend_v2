@@ -20,7 +20,7 @@ import {
   PopoverTrigger,
 } from "@/components/algebra/ui/popover";
 import CurrencyLogo from "@/components/algebra/common/CurrencyLogo";
-import { Currency } from "@cryptoalgebra/sdk";
+import { Currency } from "@cryptoalgebra/wasabee-sdk";
 import { Button } from "@/components/algebra/ui/button";
 import { Address } from "viem";
 import { Skeleton } from "@/components/algebra/ui/skeleton";

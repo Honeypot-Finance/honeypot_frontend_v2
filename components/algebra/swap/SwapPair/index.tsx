@@ -4,7 +4,7 @@ import {
   CurrencyAmount,
   maxAmountSpend,
   tryParseAmount,
-} from "@cryptoalgebra/sdk";
+} from "@cryptoalgebra/wasabee-sdk";
 import { useCallback, useMemo } from "react";
 import TokenCard from "../TokenCard";
 import { ChevronsUpDownIcon } from "lucide-react";

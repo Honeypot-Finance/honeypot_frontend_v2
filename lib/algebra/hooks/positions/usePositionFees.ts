@@ -8,7 +8,7 @@ import {
   CurrencyAmount,
   Pool,
   unwrappedToken,
-} from "@cryptoalgebra/sdk";
+} from "@cryptoalgebra/wasabee-sdk";
 import { useMemo } from "react";
 import { Address } from "viem";
 

@@ -9,7 +9,7 @@ import {
 } from "@/components/algebra/ui/dialog";
 import { IDerivedMintInfo } from "@/lib/algebra/state/mintStore";
 import { ManageLiquidity } from "@/types/algebra/types/manage-liquidity";
-import { Currency } from "@cryptoalgebra/sdk";
+import { Currency } from "@cryptoalgebra/wasabee-sdk";
 import { useState } from "react";
 
 interface IncreaseLiquidityModalProps {

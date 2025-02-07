@@ -1,5 +1,5 @@
 import { useNeedAllowance } from "@/lib/algebra/hooks/common/useNeedAllowance";
-import { Currency, Field } from "@cryptoalgebra/sdk";
+import { Currency, Field } from "@cryptoalgebra/wasabee-sdk";
 import { useEffect, useMemo } from "react";
 import EnterAmountCard from "../EnterAmountsCard";
 import { ALGEBRA_POSITION_MANAGER } from "@/config/algebra/addresses";
