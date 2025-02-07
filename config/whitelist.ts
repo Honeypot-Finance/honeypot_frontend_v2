@@ -1,1 +1,1 @@
-export const whitelistWallets = [];
+export const whitelistWallets: string[] = [];
