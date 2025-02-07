@@ -61,7 +61,7 @@ export const PoolLiquidityCard = observer(
               <span>
                 <Tooltip content="View pool on explore">
                   <Link
-                    href={`https://bartio.beratrail.io/address/${pair.address}`}
+                    href={`https://berascan.com/address/${pair.address}`}
                     target="_blank"
                     className=" cursor-pointer hover:text-primary "
                   >

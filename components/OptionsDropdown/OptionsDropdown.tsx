@@ -132,7 +132,7 @@ export const optionsPresets = {
       icon: <BiLink />,
       display: displayText ?? "View on explorer",
       onClick: () => {
-        window.open(`https://bartio.beratrail.io/address/${address}`, "_blank");
+        window.open(`https://berascan.com/address/${address}`, "_blank");
       },
     };
   },

@@ -385,7 +385,7 @@ const TopHoldersModal = observer(
                             <td className="py-2 px-2 sm:px-4 text-sm sm:text-base whitespace-nowrap">
                               <div className="flex items-center gap-2">
                                 <a
-                                  href={`https://bartio.beratrail.io/address/${holder.account.id}`}
+                                  href={`https://berascan.com/address/${holder.account.id}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="hover:text-[#FFCD4D] flex items-center gap-1"

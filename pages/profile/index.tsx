@@ -43,7 +43,7 @@ export const Profile = observer(() => {
                         <Link
                           target="_blank"
                           className="text-[#4D4D4D] hover:text-[#0D0D0D] hover:underline decoration-2 transition-colors"
-                          href={`https://bartio.beratrail.io/address/${wallet.account}`}
+                          href={`https://berascan.com/address/${wallet.account}`}
                         >
                           {wallet.account}
                         </Link>

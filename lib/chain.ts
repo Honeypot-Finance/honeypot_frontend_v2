@@ -71,7 +71,7 @@ export const berachainBartioTestnet: Chain = {
   blockExplorers: {
     default: {
       name: "Berachain",
-      url: "https://bartio.beratrail.io/",
+      url: "https://berascan.com/",
     },
   },
   testnet: true,

@@ -155,7 +155,7 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                     <td className="py-4 px-6 text-base font-mono">
                       <div className="flex items-center gap-2">
                         <a
-                          href={`https://bartio.beratrail.io/tx/${tx.id}`}
+                          href={`https://berascan.com/tx/${tx.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="hover:text-[#FFCD4D] flex items-center gap-1"
@@ -175,7 +175,7 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                     <td className="py-4 px-6 text-base font-mono">
                       <div className="flex items-center gap-2">
                         <a
-                          href={`https://bartio.beratrail.io/address/${tx.account.id}`}
+                          href={`https://berascan.com/address/${tx.account.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="hover:text-[#FFCD4D] flex items-center gap-1"

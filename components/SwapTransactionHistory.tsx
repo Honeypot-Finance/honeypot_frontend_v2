@@ -98,7 +98,7 @@ const SwapTransactionHistory = () => {
                         <td className="py-2 px-2 sm:px-4 text-sm sm:text-base font-mono whitespace-nowrap">
                           <div className="flex items-center gap-2">
                             <a
-                              href={`https://bartio.beratrail.io/tx/${tx.transaction.id}`}
+                              href={`https://berascan.com/tx/${tx.transaction.id}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="hover:text-[#FFCD4D] flex items-center gap-1"
@@ -118,7 +118,7 @@ const SwapTransactionHistory = () => {
                         <td className="py-2 px-2 sm:px-4 text-sm sm:text-base font-mono whitespace-nowrap hidden md:table-cell">
                           <div className="flex items-center gap-2">
                             <a
-                              href={`https://bartio.beratrail.io/address/${tx.recipient}`}
+                              href={`https://berascan.com/address/${tx.recipient}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="hover:text-[#FFCD4D] flex items-center gap-1"

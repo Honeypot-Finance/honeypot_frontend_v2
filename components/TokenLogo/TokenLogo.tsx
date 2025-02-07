@@ -41,9 +41,7 @@ export const TokenLogo = observer(
         <Link
           className="shrink-0"
           href={
-            disableLink
-              ? "#"
-              : `https://bartio.beratrail.io/address/${token.address}`
+            disableLink ? "#" : `https://berascan.com/address/${token.address}`
           }
           target={disableLink ? "" : "_blank"}
         >

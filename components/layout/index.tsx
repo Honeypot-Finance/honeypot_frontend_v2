@@ -19,6 +19,7 @@ import Script from "next/script";
 import { Footer } from "./footer";
 import { chatService, presetQuestions, questionTitles } from "@/services/chat";
 import _ from "lodash";
+import { whitelistWallets } from "@/config/whitelist";
 
 export const Layout = ({
   children,
@@ -28,7 +29,7 @@ export const Layout = ({
   className?: string;
 }) => {
   const router = useRouter();
-  const { chainId } = useAccount();
+  const { chainId, address } = useAccount();
   const currentChain = chainId ? networksMap[chainId] : null;
 
   useEffect(() => {
@@ -117,19 +118,29 @@ export const Layout = ({
       <ConfettiComponent />
       <PopOverModal />
       <Header />
-      {currentChain ? (
-        currentChain?.isActive ? (
-          <div className="flex-1 flex">{children}</div>
-        ) : (
-          <div className="flex-1 flex items-center justify-center">
-            <div className="text-center">
-              <h1 className="text-2xl font-bold">Chain will be support soon</h1>
-              <p className="text-lg">Check back later for more information</p>
+      {whitelistWallets.includes(address?.toLowerCase() as string) ? (
+        currentChain ? (
+          currentChain?.isActive ? (
+            <div className="flex-1 flex">{children}</div>
+          ) : (
+            <div className="flex-1 flex items-center justify-center">
+              <div className="text-center">
+                <h1 className="text-2xl font-bold">
+                  Chain will be support soon
+                </h1>
+                <p className="text-lg">Check back later for more information</p>
+              </div>
             </div>
-          </div>
+          )
+        ) : (
+          <NotConnetctedDisplay />
         )
       ) : (
-        <NotConnetctedDisplay />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-lg">Coming soon check back later</p>
+          </div>
+        </div>
       )}
       <Footer />
     </div>

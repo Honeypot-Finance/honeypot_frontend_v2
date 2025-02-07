@@ -227,7 +227,7 @@ const LeaderboardPage = () => {
                                   placement="top"
                                 >
                                   <Link
-                                    href={`https://bartio.beratrail.io/address/${item.walletAddress}`}
+                                    href={`https://berascan.com/address/${item.walletAddress}`}
                                     target="_blank"
                                     className="text-blue-400"
                                   >
