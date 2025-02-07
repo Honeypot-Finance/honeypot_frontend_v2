@@ -14,6 +14,9 @@ importers:
       '@cryptoalgebra/sdk':
         specifier: npm:@rabbitblood/intergral-sdk-hpot@^1.0.5
         version: '@rabbitblood/intergral-sdk-hpot@1.0.5'
+      '@cryptoalgebra/wasabee-sdk':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@dynamic-labs/sdk-react-core':
         specifier: ^4.0.1
         version: 4.2.3(@types/react@18.3.2)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.5)(@babel/preset-env@7.24.5(@babel/core@7.24.5))(@types/react@18.3.2)(bufferutil@4.0.8)(react@18.3.1)(utf-8-validate@5.0.10))(react@18.3.1)
@@ -1545,6 +1548,10 @@ packages:
 
   '@cosmjs/encoding@0.32.4':
     resolution: {integrity: sha512-tjvaEy6ZGxJchiizzTn7HVRiyTg1i4CObRRaTRPknm5EalE13SV+TCHq38gIDfyUeden4fCuaBVEdBR5+ti7Hw==}
+
+  '@cryptoalgebra/wasabee-sdk@1.0.0':
+    resolution: {integrity: sha512-GSMUAgNKmlXBUhhYP/fYiUQ6Xdj/cYBJxSiUXwUO8gtuflgJPhpzyWi2I5+6Mb/dckc5ossPwtCkQ/QRQgniaA==}
+    engines: {node: '>=10'}
 
   '@discoveryjs/json-ext@0.5.7':
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
@@ -13856,6 +13863,20 @@ snapshots:
       base64-js: 1.5.1
       bech32: 1.1.4
       readonly-date: 1.0.0
+
+  '@cryptoalgebra/wasabee-sdk@1.0.0':
+    dependencies:
+      '@ethersproject/abi': 5.7.0
+      '@ethersproject/address': 5.7.0
+      '@ethersproject/solidity': 5.7.0
+      '@ethersproject/units': 5.7.0
+      big.js: 6.2.2
+      decimal.js-light: 2.5.1
+      jsbi: 3.2.5
+      numeral: 2.0.6
+      tiny-invariant: 1.3.3
+      tiny-warning: 1.0.3
+      toformat: 2.0.0
 
   '@discoveryjs/json-ext@0.5.7': {}
 
