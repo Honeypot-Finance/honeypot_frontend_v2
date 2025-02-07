@@ -19,7 +19,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import SearchIcon from "../svg/SearchIcon";
-import { berachainBartioTestnetNetwork } from "@/services/chain";
+import { berachainNetwork } from "@/services/chain";
 import Image from "next/image";
 import { useReadContract } from "wagmi";
 import { ERC20ABI } from "@/lib/abis/erc20";
@@ -47,12 +47,10 @@ const AssetTokenModal = ({
     watch,
   } = useFormContext();
 
-  const listToken = Object.keys(
-    berachainBartioTestnetNetwork.validatedTokensInfo
-  )
+  const listToken = Object.keys(berachainNetwork.validatedTokensInfo)
     .map((address) => ({
       addr: address,
-      ...berachainBartioTestnetNetwork.validatedTokensInfo[address],
+      ...berachainNetwork.validatedTokensInfo[address],
     }))
     .filter((item) => item.addr !== projectTokenAddress);
 
@@ -78,7 +76,10 @@ const AssetTokenModal = ({
 
   return (
     <>
-      <div className="flex items-center gap-2 md:gap-3 cursor-pointer" onClick={onOpen}>
+      <div
+        className="flex items-center gap-2 md:gap-3 cursor-pointer"
+        onClick={onOpen}
+      >
         {selectedToken ? (
           <>
             <img
@@ -267,7 +268,9 @@ const TokenomicsAndPreview = () => {
                         setIsFetchImageError(true);
                       }}
                     />
-                    <span className="text-lg md:text-xl">{projectTokenName}</span>
+                    <span className="text-lg md:text-xl">
+                      {projectTokenName}
+                    </span>
                     {isLoading && (
                       <span className="h-2.5 w-8 bg-neutral-400 rounded-full animate-pulse"></span>
                     )}
@@ -278,12 +281,12 @@ const TokenomicsAndPreview = () => {
                   input: "text-right flex-1",
                 }}
 
-              // description={
-              //   <div className="text-[10px] text-white/50 px-4 flex items-center justify-between">
-              //     <span>Use Max</span>
-              //     <span>% supply: 0.000000003930187014%</span>
-              //   </div>
-              // }
+                // description={
+                //   <div className="text-[10px] text-white/50 px-4 flex items-center justify-between">
+                //     <span>Use Max</span>
+                //     <span>% supply: 0.000000003930187014%</span>
+                //   </div>
+                // }
               />
             )}
           />
@@ -328,7 +331,8 @@ const TokenomicsAndPreview = () => {
                   id="customTotalSupplyType"
                   size="sm"
                   classNames={{
-                    wrapper: "group-data-[selected=true]:bg-white border border-[#202020] bg-white",
+                    wrapper:
+                      "group-data-[selected=true]:bg-white border border-[#202020] bg-white",
                     thumb: "bg-[#ECC94E]",
                   }}
                   isSelected={field.value}
