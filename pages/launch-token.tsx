@@ -530,7 +530,7 @@ const MEMELaunchModal: NextLayoutPage = observer(() => {
           onSubmit={handleSubmit(onSubmit)}
           className="w-full rounded-[24px] md:rounded-[32px] bg-white space-y-5 px-4 md:px-8 py-4 md:py-6 custom-dashed mx-3 md:mx-6 mt-4 md:mt-6"
         >
-          <AITokenGenerator tokenGeneratedCallback={tokenGeneratedCallback} />
+          {/* <AITokenGenerator tokenGeneratedCallback={tokenGeneratedCallback} /> */}
           <div className="flex flex-col gap-4">
             <Controller
               control={control}

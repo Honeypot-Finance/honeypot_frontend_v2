@@ -26,6 +26,7 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
     if (!wallet.isInit) {
       return;
     }
+
     // launchpad.setCurrentLaunchpadType("meme");
     // launchpad.showNotValidatedPairs = true;
     // launchpad.myLaunches.reloadPage();
