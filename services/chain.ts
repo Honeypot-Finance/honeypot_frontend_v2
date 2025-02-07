@@ -530,6 +530,11 @@ export const berachainNetwork = new Network({
       address: "0xFCBD14DC51f0A4d49d5E53C2E0950e0bC26d0Dce".toLowerCase(),
       amount: BigInt("20000000000000000000000"),
     },
+    {
+      symbol: "NECT",
+      address: "0x1cE0a25D13CE4d52071aE7e02Cf1F6606F4C79d3".toLowerCase(),
+      amount: BigInt("20000000000000000000000"),
+    },
   ],
   nativeFaucet: {
     address: "0x1bd43f7f55b700236c92256a0fd90266363119f7",
