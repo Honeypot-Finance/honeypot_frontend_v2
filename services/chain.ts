@@ -516,19 +516,19 @@ export const berachainNetwork = new Network({
   },
   raisedTokenData: [
     {
-      symbol: "Hpot",
+      symbol: "tHpot",
       address: "0x9b37d542114070518a44e200fdcd8e4be737297f".toLowerCase(),
-      amount: BigInt("2000000000000000000000000"),
+      amount: BigInt("1500000000000000000000000"),
     },
     {
       symbol: "WBERA",
       address: "0x6969696969696969696969696969696969696969".toLowerCase(),
-      amount: BigInt("4000000000000000000"),
+      amount: BigInt("2000000000000000000000"),
     },
     {
       symbol: "Honey",
       address: "0xFCBD14DC51f0A4d49d5E53C2E0950e0bC26d0Dce".toLowerCase(),
-      amount: BigInt("30000000000000000000"),
+      amount: BigInt("20000000000000000000000"),
     },
   ],
   nativeFaucet: {
