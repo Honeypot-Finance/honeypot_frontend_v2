@@ -21,7 +21,7 @@ import {
   Trade,
   TradeType,
   computePoolAddress,
-} from "@cryptoalgebra/sdk";
+} from "@cryptoalgebra/wasabee-sdk";
 import JSBI from "jsbi";
 import { useCallback, useMemo } from "react";
 import { Address, parseUnits } from "viem";

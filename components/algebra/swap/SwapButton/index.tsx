@@ -17,7 +17,7 @@ import {
 import { ApprovalState } from "@/types/algebra/types/approve-state";
 import { SwapField } from "@/types/algebra/types/swap-field";
 import { TradeState } from "@/types/algebra/types/trade-state";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 
 const SwapButton = () => {
   const { isExpertMode } = useUserState();
@@ -61,8 +61,10 @@ const SwapButton = () => {
 
   const userHasSpecifiedInputOutput = Boolean(
     currencies[SwapField.INPUT] &&
-    currencies[SwapField.OUTPUT] &&
-    parsedAmounts[independentField as keyof typeof parsedAmounts]?.greaterThan("0")
+      currencies[SwapField.OUTPUT] &&
+      parsedAmounts[
+        independentField as keyof typeof parsedAmounts
+      ]?.greaterThan("0")
   );
 
   const routeNotFound = !trade?.route;
