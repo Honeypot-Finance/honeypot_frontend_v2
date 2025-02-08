@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { amountFormatted, truncate } from "@/lib/format";
+import { getTextSizeClass } from "@/lib/utils";
 import { ChevronDown, LucideFileEdit } from "lucide-react";
 import CardContianer from "@/components/CardContianer/CardContianer";
 import { FtoPairContract } from "@/services/contract/launches/fto/ftopair-contract";
@@ -239,27 +240,27 @@ const Tabs = observer(
                 <div className="w-full md:w-[40%]">
                   <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
                     <div className="space-y-4 text-center md:text-left col-span-2 md:col-span-1">
-                      <div className="text-white text-shadow-[2px_4px_0px_#AF7F3D] text-stroke-2 text-stroke-black font-gliker text-[24px] md:text-[34px] font-normal leading-[110%] tracking-[0.68px]">
-                        {pair?.launchedToken?.name}
-                      </div>
-                      <div className="text-[var(--Heading,#0D0D0D)] font-gliker text-[20px] font-normal leading-[110%] tracking-[0.4px]">
-                        Token Name
-                      </div>
-                    </div>
-                    <div className="space-y-4 text-center md:text-left col-span-2 md:col-span-1">
-                      <div className="text-white text-shadow-[2px_4px_0px_#AF7F3D] text-stroke-2 text-stroke-black font-gliker text-[24px] md:text-[34px] font-normal leading-[110%] tracking-[0.68px]">
-                        {pair?.launchedToken?.symbol}
-                      </div>
                       <div className="text-[var(--Heading,#0D0D0D)] font-gliker text-[20px] font-normal leading-[110%] tracking-[0.4px]">
                         Token Symbol
                       </div>
-                    </div>
-                    <div className="space-y-4 text-center md:text-left col-span-2">
-                      <div className="text-white text-shadow-[2px_4px_0px_#AF7F3D] text-stroke-2 text-stroke-black font-gliker text-[24px] md:text-[34px] font-normal leading-[110%] tracking-[0.68px]">
-                        MEME
+                      <div className={`overflow-hidden break-all flex items-center justify-center md:justify-start text-white text-stroke-black font-gliker ${getTextSizeClass(pair?.launchedToken?.symbol)} font-normal leading-[110%] tracking-[0.68px]`}>
+                        {pair?.launchedToken?.symbol}
                       </div>
+                    </div>
+                    <div className="space-y-4 text-center md:text-left col-span-2 md:col-span-1">
                       <div className="text-[var(--Heading,#0D0D0D)] font-gliker text-[20px] font-normal leading-[110%] tracking-[0.4px]">
                         Token type
+                      </div>
+                      <div className="overflow-hidden break-all flex items-center justify-center md:justify-start text-white text-stroke-black font-gliker text-[24px] md:text-[34px] text-stroke-2 text-shadow-[2px_4px_0px_#AF7F3D] font-normal leading-[110%] tracking-[0.68px]">
+                        MEME
+                      </div>
+                    </div>
+                    <div className="space-y-4 text-center md:text-left col-span-2">
+                      <div className="text-[var(--Heading,#0D0D0D)] font-gliker text-[20px] font-normal leading-[110%] tracking-[0.4px]">
+                        Token Name
+                      </div>
+                      <div className={`overflow-hidden break-all flex items-center justify-center md:justify-start text-white text-stroke-black font-gliker ${getTextSizeClass(pair?.launchedToken?.name)} font-normal leading-[110%] tracking-[0.68px]`}>
+                        {pair?.launchedToken?.name}
                       </div>
                     </div>
                     <div className="space-y-4 text-center md:text-left col-span-2">

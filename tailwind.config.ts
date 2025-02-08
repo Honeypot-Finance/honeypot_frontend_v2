@@ -77,15 +77,29 @@ const config: Config = {
       outlineColor: {
         base: "var(--button-stroke,rgba(247,147,26,0.20))",
       },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
       boxShadow: {
         button: "1.5px 1.5px 0px 0px #000",
         field:
           "0px 332px 93px 0px rgba(0, 0, 0, 0.00), 0px 212px 85px 0px rgba(0, 0, 0, 0.01), 0px 119px 72px 0px rgba(0, 0, 0, 0.05), 0px 53px 53px 0px rgba(0, 0, 0, 0.09), 0px 13px 29px 0px rgba(0, 0, 0, 0.10)",
+      },
+      keyframes: {
+        'flip-out': {
+          '0%': { transform: 'translateY(0)', opacity: '1' },
+          '100%': { transform: 'translateY(-100%)', opacity: '0' }
+        },
+        'flip-in': {
+          '0%': { transform: 'translateY(100%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' }
+        },
+        breath: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.1)' },
+        },
+      },
+      animation: {
+        'flip-out': 'flip-out 0.15s ease-out',
+        'flip-in': 'flip-in 0.15s ease-out',
+        breath: 'breath 2s ease-in-out infinite',
       },
     },
   },

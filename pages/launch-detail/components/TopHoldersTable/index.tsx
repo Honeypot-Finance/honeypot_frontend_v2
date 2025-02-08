@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Copy } from "@/components/Copy";
 import { truncate } from "@/lib/format";
-import LoadingDisplay from "@/components/LoadingDisplay/LoadingDisplay";
+import { LoadingDisplay } from "@/components/LoadingDisplay/LoadingDisplay";
 import { getTokenTop10Holders } from "@/lib/algebra/graphql/clients/token";
 import BigNumber from "bignumber.js";
 

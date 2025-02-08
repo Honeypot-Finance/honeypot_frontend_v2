@@ -1,9 +1,5 @@
 import CreatePoolForm from "@/components/algebra/create-pool/CreatePoolForm";
-import CardContianer from "@/components/CardContianer/CardContianer";
-import { Layout } from "@/components/layout";
-import LoadingDisplay from "@/components/LoadingDisplay/LoadingDisplay";
-import { LPCard } from "@/components/LPCard";
-import { Swap } from "@/components/swap";
+import { LoadingDisplay } from "@/components/LoadingDisplay/LoadingDisplay";
 import { liquidity } from "@/services/liquidity";
 import { wallet } from "@/services/wallet";
 import { Tab, Tabs } from "@nextui-org/react";
