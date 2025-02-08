@@ -631,10 +631,10 @@
     bech32 "^1.1.4"
     readonly-date "^1.0.0"
 
-"@cryptoalgebra/sdk@npm:@rabbitblood/intergral-sdk-hpot@^1.0.5":
-  version "1.0.8"
-  resolved "https://registry.npmjs.org/@rabbitblood/intergral-sdk-hpot/-/intergral-sdk-hpot-1.0.8.tgz"
-  integrity sha512-FwXd0Yp8XzG6D8Xa1JJqt9df8XO2VkqmzLVrisiIT7vSuUcS9sX93a01pZXuZL570NHxUdR8ArJfMa5yBD0uZA==
+"@cryptoalgebra/sdk@npm:@cryptoalgebra/wasabee-sdk@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@cryptoalgebra/wasabee-sdk/-/wasabee-sdk-1.0.0.tgz#1d6eed8cf99d2b2913479221eed3eb1cbe7e9d35"
+  integrity sha512-GSMUAgNKmlXBUhhYP/fYiUQ6Xdj/cYBJxSiUXwUO8gtuflgJPhpzyWi2I5+6Mb/dckc5ossPwtCkQ/QRQgniaA==
   dependencies:
     "@ethersproject/abi" "^5.7.0"
     "@ethersproject/address" "^5.7.0"
