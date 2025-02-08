@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/algebra/ui/skeleton";
 import { useTransactionAwait } from "@/lib/algebra/hooks/common/useTransactionAwait";
 import { usePositionFees } from "@/lib/algebra/hooks/positions/usePositionFees";
 import { NonfungiblePositionManager } from "@cryptoalgebra/wasabee-sdk";
-import { useMemo } from "react";
+import { ReactNode, useMemo } from "react";
 import { useAccount, useContractWrite } from "wagmi";
 import { Address } from "viem";
 import { IDerivedMintInfo } from "@/lib/algebra/state/mintStore";
@@ -13,7 +13,7 @@ import { useSimulateAlgebraPositionManagerMulticall } from "@/wagmi-generated";
 
 interface CollectFeesProps {
   mintInfo: IDerivedMintInfo;
-  positionFeesUSD: string | undefined;
+  positionFeesUSD: string | ReactNode | undefined;
   positionId: number;
 }
 
