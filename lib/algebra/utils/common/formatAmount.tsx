@@ -40,14 +40,62 @@ export function DynamicFormatAmount({
   decimals?: number;
   beginWith?: ReactNode;
   endWith?: ReactNode;
-}): string {
+}): ReactNode {
   const amountStr = amount.toString();
-  const output =
+  const output: ReactNode =
     getFirstDecimalPlace(amountStr) < decimals
       ? formatAmountWithAlphabetSymbol(amountStr, decimals)
-      : formatAmountWithScientificNotation(amountStr, decimals);
+      : FormatSmallDecimal({ number: Number(amountStr) });
 
-  return `${beginWith ? `${beginWith} ` : ""}${output}${endWith ? ` ${endWith}` : ""}`;
+  return (
+    <span>
+      {beginWith ? `${beginWith} ` : ""}
+      {output}
+      {endWith ? ` ${endWith}` : ""}`
+    </span>
+  );
+}
+
+export function FormatSmallDecimal({
+  number,
+  decimals = 10,
+}: {
+  number: number;
+  decimals?: number;
+}) {
+  function formatSmallDecimal(num: number): ReactNode {
+    if (num === 0) return "0"; // Handle zero separately
+    if (num >= 1) return num.toFixed(decimals);
+
+    const numStr = num.toFixed(18);
+    let firstNonZeroIndex = 0;
+
+    for (let i = 0; i < numStr.length; i++) {
+      if (numStr[i + 3] !== "0") {
+        firstNonZeroIndex = i + 3;
+        break;
+      }
+    }
+
+    const first2digit =
+      numStr[2] === "0" ? numStr.slice(0, 3) : numStr.slice(0, 2);
+    const compressedCount = firstNonZeroIndex < 3 ? 0 : firstNonZeroIndex - 3;
+    const first2NonZero = numStr.slice(
+      firstNonZeroIndex,
+      2 + firstNonZeroIndex
+    );
+
+    console.log({ numStr, first2digit, compressedCount, first2NonZero });
+    return (
+      <>
+        {first2digit}
+        <sub>{compressedCount === 0 ? "" : compressedCount}</sub>
+        {first2NonZero}
+      </>
+    );
+  }
+
+  return <span>{formatSmallDecimal(number)}</span>;
 }
 
 export function getFirstDecimalPlace(amount: string): number {
