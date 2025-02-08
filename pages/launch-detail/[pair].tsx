@@ -906,7 +906,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
           <Tabs pair={pair} refreshTrigger={refreshTrigger} />
         </div>
       </div>
-      <footer>
+      {/* <footer>
         <Image
           src="/images/pumping/toast-bear.png"
           width={1000}
@@ -914,7 +914,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
           className="w-full h-auto mt-auto"
           alt="toast bear"
         />
-      </footer>
+      </footer> */}
     </div>
   );
 });
