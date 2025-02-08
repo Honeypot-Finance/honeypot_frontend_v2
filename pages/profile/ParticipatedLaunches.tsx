@@ -50,12 +50,17 @@ export const ParticipatedLaunches = observer(() => {
             <Button
               onClick={() => {
                 wallet.contracts.memeFacade.claimAllUserLP
-                  .call([
-                    wallet.account as Address,
-                    canClaimPot2PumpList.map(
-                      (pair) => pair.launchedToken?.address as Address
-                    ),
-                  ])
+                  .call(
+                    [
+                      wallet.account as Address,
+                      canClaimPot2PumpList.map(
+                        (pair) => pair.launchedToken?.address as Address
+                      ),
+                    ],
+                    {
+                      gas: BigInt(10000000),
+                    }
+                  )
                   .then(() => {
                     initPot2Pumps();
                   });
@@ -70,12 +75,17 @@ export const ParticipatedLaunches = observer(() => {
             <Button
               onClick={() => {
                 wallet.contracts.memeFacade.refundAllUserToken
-                  .call([
-                    wallet.account as Address,
-                    canRefundPot2PumpList.map(
-                      (pair) => pair.launchedToken?.address as Address
-                    ),
-                  ])
+                  .call(
+                    [
+                      wallet.account as Address,
+                      canRefundPot2PumpList.map(
+                        (pair) => pair.launchedToken?.address as Address
+                      ),
+                    ],
+                    {
+                      gas: BigInt(10000000),
+                    }
+                  )
                   .then(() => {
                     initPot2Pumps();
                   });
