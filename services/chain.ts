@@ -516,7 +516,7 @@ export const berachainNetwork = new Network({
   },
   raisedTokenData: [
     {
-      symbol: "tHpot",
+      symbol: "HPOT",
       address: "0x9b37d542114070518a44e200fdcd8e4be737297f".toLowerCase(),
       amount: BigInt("1500000000000000000000000"),
     },
