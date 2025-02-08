@@ -16,7 +16,7 @@ export const CurrentPageFooter = () => {
   const paths = useRouter().pathname.split("/");
   const footer: ReactNode = footerData[paths[1]];
 
-  return footer ?? <div className="bg-[url('/images/footer.png')] min-h-[160px] bg-cover bg-no-repeat bg-center relative">
+  return footer ?? <div className="bg-[url('/images/footer.png')] min-h-[160px] bg-cover bg-no-repeat bg-center relative mt-40">
     <Image src="/images/footer-sticky.png" alt="" width={385} height={394} className="absolute left-1/2 -translate-x-1/2 bottom-0" />
   </div>;
 };

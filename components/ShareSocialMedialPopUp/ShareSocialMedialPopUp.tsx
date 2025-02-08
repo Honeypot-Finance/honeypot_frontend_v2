@@ -26,7 +26,7 @@ export function ShareMediaDisplay(props: IShareSocialMedialPopUpProps) {
           href={`https://twitter.com/intent/tweet?text=${props.shareText}%0A%0A${props.shareUrl}`}
         >
           <Image
-            src="/images/twitter.png"
+            src="/images/twitter.svg"
             alt=""
             width={20}
             height={20}
