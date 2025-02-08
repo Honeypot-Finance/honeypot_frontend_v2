@@ -196,7 +196,7 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
               href="/profile"
             />
             {/* <Tab href="/launch" title="To Fto projects->" /> */}
-            <Tab
+            {/* <Tab
               href="https://bartio.bonds.yeetit.xyz/"
               target="_blank"
               title={
@@ -213,7 +213,7 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                   </span>
                 </div>
               }
-            />
+            /> */}
             {/* <Tab
               title={
                 <Link
