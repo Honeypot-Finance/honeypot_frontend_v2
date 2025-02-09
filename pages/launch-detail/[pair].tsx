@@ -391,7 +391,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
               "bg-white col-span-1 lg:col-span-2 px-4 md:px-8 py-3 md:py-5 rounded-3xl grid grid-cols-3 text-[#202020]"
             )}
           >
-            <div className="flex gap-x-4 md:gap-x-[7.5px] justify-center sm:justify-start col-span-1">
+            <div className="flex items-center gap-x-4 md:gap-x-[7.5px] justify-center sm:justify-start col-span-1">
               <div className="size-10 md:size-[77px] bg-[#ECC94E] flex items-center justify-center rounded-full shrink-0">
                 <Image
                   alt={state.pair.value?.launchedToken?.name || "honey"}
@@ -418,7 +418,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
               />
             </div>
 
-            <div className="col-span-1 text-xs">
+            <div className="col-span-1 text-xs flex items-center justify-center">
               {state.pair.value?.description}
             </div>
 
