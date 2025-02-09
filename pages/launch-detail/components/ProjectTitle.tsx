@@ -5,6 +5,7 @@ import { FaTelegram, FaGlobe } from "react-icons/fa";
 import { Copy } from "@/components/Copy";
 import { VscCopy } from "react-icons/vsc";
 import PairStatus from "@/components/atoms/TokenStatusDisplay/PairStatus";
+import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 
 interface ProjectTitleProps {
   name?: string;
@@ -16,6 +17,8 @@ interface ProjectTitleProps {
   statusColor?: string;
   status?: string;
   isValidated?: boolean;
+  description?: string;
+  pair?: MemePairContract | null;
 }
 
 const ProjectTitle: React.FC<ProjectTitleProps> = ({
@@ -28,17 +31,17 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
   statusColor,
   status,
   isValidated,
+  description,
+  pair,
 }) => {
   return (
-    <div className="flex flex-col gap-2">
-      <div className="md:text-2xl">
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-3">
         {name ? (
-          <div>{name}</div>
+          <div className="text-2xl">{name}</div>
         ) : (
           <Skeleton className="h-8 w-[140px] bg-slate-200" />
         )}
-      </div>
-      <div className="flex items-center gap-3">
         {name ? (
           <div className="text-sm text-[#5C5C5C]/60">{displayName}</div>
         ) : (
@@ -92,6 +95,8 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
           isValidated={isValidated}
         />
       </div>
+
+      <div>{description ?? "No description"}</div>
     </div>
   );
 };
