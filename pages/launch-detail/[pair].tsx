@@ -231,8 +231,7 @@ export const UpdateProjectModal = observer(
             </Button>
           </div>
         </ModalBody>
-        <ModalFooter>
-        </ModalFooter>
+        <ModalFooter></ModalFooter>
       </>
     ));
     return (
@@ -389,11 +388,11 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_500px] gap-4 md:gap-x-4 md:gap-y-14 w-full @container">
           <div
             className={cn(
-              "bg-white col-span-1 lg:col-span-2 px-4 md:px-8 py-3 md:py-5 rounded-3xl flex md:items-center flex-col @[450px]:flex-row justify-between gap-2 md:gap-0 text-black"
+              "bg-white col-span-1 lg:col-span-2 px-4 md:px-8 py-3 md:py-5 rounded-3xl grid grid-cols-3 text-[#202020]"
             )}
           >
-            <div className="flex items-center gap-x-4 md:gap-x-[7.5px] justify-center sm:justify-start">
-              <div className="size-10 md:size-[77px] bg-[#ECC94E] flex items-center justify-center rounded-full">
+            <div className="flex gap-x-4 md:gap-x-[7.5px] justify-center sm:justify-start col-span-1">
+              <div className="size-10 md:size-[77px] bg-[#ECC94E] flex items-center justify-center rounded-full shrink-0">
                 <Image
                   alt={state.pair.value?.launchedToken?.name || "honey"}
                   width={77}
@@ -416,40 +415,37 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                 statusColor={state.pair.value?.ftoStatusDisplay?.color}
                 status={state.pair.value?.ftoStatusDisplay?.status}
                 isValidated={state.pair.value?.isValidated}
-                description={state.pair.value?.description}
-                pair={state.pair.value}
               />
             </div>
-            <div className="md:block hidden">
+
+            <div className="col-span-1 text-xs">
+              {state.pair.value?.description}
+            </div>
+
+            <div className="flex flex-col items-center gap-3 md:gap-8 col-span-1">
               {state.pair.value?.state !== 0 && (
                 <CountdownTimer
                   endTime={state.pair.value?.endTime}
                   endTimeDisplay={state.pair.value?.endTimeDisplay}
                 />
               )}
-            </div>
-            <div className="flex flex-col md:flex-row items-center gap-3 md:gap-8">
-              <div className="md:hidden block">
-                {state.pair.value?.state !== 0 && (
-                  <CountdownTimer
-                    endTime={state.pair.value?.endTime}
-                    endTimeDisplay={state.pair.value?.endTimeDisplay}
-                  />
-                )}
-              </div>
               {state.pair.value?.state !== 0 ? (
-                <div className="flex flex-wrap items-center justify-center gap-x-4 md:gap-x-6 gap-y-2 md:gap-y-3 text-xs">
+                <div className="flex flex-wrap items-center justify-end gap-x-4 md:gap-x-6 gap-y-2 md:gap-y-3 text-xs">
                   <div className="flex flex-col items-center gap-1 md:gap-1.5">
                     <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
                       Total Supply
                     </span>
                     <span className="text-sm md:text-[15px] font-bold">
-                      {amountFormatted((state.pair.value as MemePairContract)?.depositedLaunchedToken, {
-                        prefix: "",
-                        decimals: 0,
-                        fixed: 3,
-                        symbol: ` ${state.pair.value?.launchedToken?.symbol || ""}`,
-                      })}
+                      {amountFormatted(
+                        (state.pair.value as MemePairContract)
+                          ?.depositedLaunchedToken,
+                        {
+                          prefix: "",
+                          decimals: 0,
+                          fixed: 3,
+                          symbol: ` ${state.pair.value?.launchedToken?.symbol || ""}`,
+                        }
+                      )}
                     </span>
                   </div>
                   <div className="flex flex-col items-center gap-1 md:gap-1.5">
@@ -471,7 +467,9 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                     </span>
                     <span className="text-sm md:text-[15px] font-bold">
                       $
-                      {Number(state.pair.value?.depositedRaisedToken || 0).toLocaleString()}
+                      {Number(
+                        state.pair.value?.depositedRaisedToken || 0
+                      ).toLocaleString()}
                     </span>
                   </div>
                   <div className="flex flex-col items-center gap-1 md:gap-1.5">
@@ -479,23 +477,29 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                       Participants
                     </span>
                     <span className="text-sm md:text-[15px] font-bold">
-                      {Number(state.pair.value?.participantsCount || 0).toLocaleString()}
+                      {Number(
+                        state.pair.value?.participantsCount || 0
+                      ).toLocaleString()}
                     </span>
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-wrap items-center justify-center gap-x-3 md:gap-x-6 gap-y-2 md:gap-y-3 text-xs w-full md:w-[400px]">
+                <div className="flex flex-wrap items-center justify-end gap-x-3 md:gap-x-6 gap-y-2 md:gap-y-3 text-xs w-full md:w-[400px]">
                   <div className="flex flex-col items-center gap-1 md:gap-1.5">
                     <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
                       Total Supply
                     </span>
                     <span className="text-sm md:text-[15px] font-bold">
-                      {amountFormatted((state.pair.value as MemePairContract)?.depositedLaunchedToken, {
-                        prefix: "",
-                        decimals: 0,
-                        fixed: 3,
-                        symbol: ` ${state.pair.value?.launchedToken?.symbol || ""}`,
-                      })}
+                      {amountFormatted(
+                        (state.pair.value as MemePairContract)
+                          ?.depositedLaunchedToken,
+                        {
+                          prefix: "",
+                          decimals: 0,
+                          fixed: 3,
+                          symbol: ` ${state.pair.value?.launchedToken?.symbol || ""}`,
+                        }
+                      )}
                     </span>
                   </div>
                   <div className="flex flex-col items-center gap-1 md:gap-1.5">
@@ -532,12 +536,11 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                     </span>
                     <span className="text-sm md:text-[15px] font-bold">
                       $
-                      {Number(state.pair.value?.marketValue || 0).toLocaleString(
-                        undefined,
-                        {
-                          maximumFractionDigits: 2,
-                        }
-                      )}
+                      {Number(
+                        state.pair.value?.marketValue || 0
+                      ).toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })}
                     </span>
                   </div>
                   <div className="flex flex-col items-center gap-1 md:gap-1.5">
@@ -547,7 +550,8 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                     <span className="text-sm md:text-[15px] font-bold">
                       $
                       {DynamicFormatAmount({
-                        amount: state.pair.value?.launchedToken?.derivedUSD ?? "0",
+                        amount:
+                          state.pair.value?.launchedToken?.derivedUSD ?? "0",
                         decimals: 5,
                       })}
                     </span>
@@ -570,7 +574,8 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                     <span className="text-sm md:text-[15px] font-bold">
                       $
                       {Number(
-                        state.pair.value?.launchedToken?.totalValueLockedUSD || 0
+                        state.pair.value?.launchedToken?.totalValueLockedUSD ||
+                          0
                       ).toLocaleString(undefined, { maximumFractionDigits: 2 })}
                     </span>
                   </div>
@@ -653,7 +658,12 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
           </div>
 
           <div className="bg-transparent rounded-2xl space-y-3 col-span-1">
-            {state.pair.value && <Action pair={state.pair.value} refreshTxsCallback={triggerRefresh} />}
+            {state.pair.value && (
+              <Action
+                pair={state.pair.value}
+                refreshTxsCallback={triggerRefresh}
+              />
+            )}
           </div>
         </div>
 

@@ -41,6 +41,8 @@ export function DynamicFormatAmount({
   beginWith?: ReactNode;
   endWith?: ReactNode;
 }): ReactNode {
+  console.log("DynamicFormatAmount", amount, decimals, beginWith, endWith);
+
   const amountStr = amount.toString();
   const output: ReactNode =
     getFirstDecimalPlace(amountStr) < decimals
@@ -51,7 +53,7 @@ export function DynamicFormatAmount({
     <span>
       {beginWith ? `${beginWith} ` : ""}
       {output}
-      {endWith ? ` ${endWith}` : ""}`
+      {endWith ? ` ${endWith}` : ""}
     </span>
   );
 }

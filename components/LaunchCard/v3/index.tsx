@@ -8,7 +8,6 @@ import { motion } from "framer-motion";
 import { itemPopUpVariants } from "@/lib/animation";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 import ProgressBar from "../../atoms/ProgressBar/ProgressBar";
-import CardContianer from "../../CardContianer/CardContianer";
 import BigNumber from "bignumber.js";
 import { wallet } from "@/services/wallet";
 import {
@@ -24,7 +23,6 @@ import {
 import { Button } from "@/components/button/button-next";
 import { PottingModalButton } from "@/components/atoms/Pot2PumpComponents/PottingModalButton";
 import { PumpingModalButton } from "@/components/atoms/Pot2PumpComponents/PumpingModalButton";
-import { amountFormatted } from "@/lib/format";
 import {
   getLaunchContractType,
   LaunchContract,
@@ -658,7 +656,7 @@ const FeaturedLaunchCard = observer(({ pair }: { pair: LaunchContract }) => {
                   {DynamicFormatAmount({
                     amount: pair.launchedToken?.derivedUSD ?? "0",
                     decimals: 5,
-                    endWith: "$",
+                    // endWith: null,
                   })}
                 </div>
                 <div className="font-bold text-base">

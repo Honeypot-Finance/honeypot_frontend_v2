@@ -17,8 +17,6 @@ interface ProjectTitleProps {
   statusColor?: string;
   status?: string;
   isValidated?: boolean;
-  description?: string;
-  pair?: MemePairContract | null;
 }
 
 const ProjectTitle: React.FC<ProjectTitleProps> = ({
@@ -31,21 +29,19 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
   statusColor,
   status,
   isValidated,
-  description,
-  pair,
 }) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
-        {name ? (
-          <div className="text-2xl">{name}</div>
-        ) : (
-          <Skeleton className="h-8 w-[140px] bg-slate-200" />
-        )}
-        {name ? (
-          <div className="text-sm text-[#5C5C5C]/60">{displayName}</div>
+        {displayName ? (
+          <div className="text-2xl text-[#5C5C5C]/60">{displayName}</div>
         ) : (
           <Skeleton className="h-5 w-20 bg-slate-200" />
+        )}
+        {name ? (
+          <div className="text-sm">{name}</div>
+        ) : (
+          <Skeleton className="h-8 w-[140px] bg-slate-200" />
         )}
 
         {telegram && (
@@ -95,8 +91,6 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
           isValidated={isValidated}
         />
       </div>
-
-      <div>{description ?? "No description"}</div>
     </div>
   );
 };
