@@ -65,10 +65,13 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
     }
   }, [refreshTrigger]);
 
-  const getActionTypeDisplay = (type: TransactionType) => {
+  const getActionTypeDisplay = (type: TransactionType, amount: string) => {
+    if (type === TransactionType.Swap) {
+      const amountNum = new BigNumber(amount);
+      return amountNum.isGreaterThanOrEqualTo(0) ? "Buy" : "Sell";
+    }
+    
     switch (type) {
-      case TransactionType.Swap:
-        return "Swap";
       case TransactionType.Deposit:
         return "Deposit";
       case TransactionType.Refund:
@@ -149,7 +152,7 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 bg-[#FFCD4D] rounded"></div>
-                        {getActionTypeDisplay(tx.type)}
+                        {getActionTypeDisplay(tx.type, getAmountByType(tx as Transaction))}
                       </div>
                     </td>
                     <td className="py-4 px-6 text-base font-mono">
@@ -192,12 +195,19 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                         </Copy>
                       </div>
                     </td>
-                    <td className="py-4 px-6 text-right text-base">
-                      {getAmountByType(tx as Transaction)}{" "}
-                      {tx.type === TransactionType.Swap &&
-                        pair?.launchedToken?.symbol}
-                      {(tx.type === TransactionType.Deposit ||
-                        tx.type === TransactionType.Refund) &&
+                    <td 
+                      className={`py-4 px-6 ${
+                        tx.type === TransactionType.Swap
+                          ? new BigNumber(getAmountByType(tx as Transaction)).isGreaterThanOrEqualTo(0)
+                            ? "text-[#089981]"
+                            : "text-[#F23645]"
+                          : ""
+                      }`}
+                    >
+                      {tx.type === TransactionType.Swap && !new BigNumber(getAmountByType(tx as Transaction)).isGreaterThanOrEqualTo(0) && "-"}
+                      {Math.abs(parseFloat(getAmountByType(tx as Transaction))).toFixed(3)}{" "}
+                      {tx.type === TransactionType.Swap && pair?.launchedToken?.symbol}
+                      {(tx.type === TransactionType.Deposit || tx.type === TransactionType.Refund) &&
                         pair?.raiseToken?.symbol}
                     </td>
                     <td className="py-4 px-6 text-right text-base">
