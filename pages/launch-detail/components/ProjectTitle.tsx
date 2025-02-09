@@ -32,7 +32,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
 }) => {
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center flex-col gap-3">
         <div className="flex items-center gap-1">
           {displayName ? (
             <div className="text-2xl text-[#5C5C5C]/60">{displayName}</div>
@@ -45,53 +45,54 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
             <Skeleton className="h-8 w-[140px] bg-slate-200" />
           )}
         </div>
-
-        {telegram && (
-          <a
-            href={telegram}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:opacity-80 text-[#5C5C5C]"
-          >
-            <FaTelegram size={16} />
-          </a>
-        )}
-        {twitter && (
-          <a
-            href={twitter}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:opacity-80 text-[#5C5C5C]"
-          >
-            <FaXTwitter size={16} />
-          </a>
-        )}
-        {website && (
-          <a
-            href={website}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:opacity-80 text-[#5C5C5C]"
-          >
-            <FaGlobe size={16} />
-          </a>
-        )}
-        {address && (
-          <Copy
-            content="Copy address"
-            value={address}
-            displayContent={
-              <div className="relative hover:opacity-80 text-[#5C5C5C]">
-                <VscCopy size={16} />
-              </div>
-            }
+        <div className="flex items-center gap-1">
+          {telegram && (
+            <a
+              href={telegram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-80 text-[#5C5C5C]"
+            >
+              <FaTelegram size={16} />
+            </a>
+          )}
+          {twitter && (
+            <a
+              href={twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-80 text-[#5C5C5C]"
+            >
+              <FaXTwitter size={16} />
+            </a>
+          )}
+          {website && (
+            <a
+              href={website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-80 text-[#5C5C5C]"
+            >
+              <FaGlobe size={16} />
+            </a>
+          )}
+          {address && (
+            <Copy
+              content="Copy address"
+              value={address}
+              displayContent={
+                <div className="relative hover:opacity-80 text-[#5C5C5C]">
+                  <VscCopy size={16} />
+                </div>
+              }
+            />
+          )}
+          <PairStatus
+            statusColor={statusColor}
+            status={status}
+            isValidated={isValidated}
           />
-        )}
-        <PairStatus
-          statusColor={statusColor}
-          status={status}
-          isValidated={isValidated}
-        />
+        </div>
       </div>
     </div>
   );
