@@ -739,6 +739,7 @@ class LaunchPad {
         "Sign In With Honeypot",
         wallet.walletClient
       );
+
       await trpcClient.projects.createOrUpdateProjectInfo.mutate(data);
     }
   );

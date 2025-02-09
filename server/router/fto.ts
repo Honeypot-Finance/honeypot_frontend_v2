@@ -24,7 +24,7 @@ export const ftoRouter = router({
         description: z.string().optional(),
         twitter: z.string().optional(),
         website: z.string().optional(),
-        telegram: z.string().optional()
+        telegram: z.string().optional(),
       })
     )
     .mutation(async ({ input }) => {
@@ -85,7 +85,7 @@ export const ftoRouter = router({
         telegram: z.string().optional(),
         website: z.string().optional(),
         description: z.string().optional(),
-        projectName: z.string().optional(),
+        name: z.string().optional(),
         pair: z.string(),
         chain_id: z.number(),
         provider: z.string().optional(),

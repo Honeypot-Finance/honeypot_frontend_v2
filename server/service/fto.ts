@@ -174,7 +174,7 @@ export const ftoService = {
     telegram?: string;
     website?: string;
     description?: string;
-    projectName?: string;
+    name?: string;
     pair: string;
     chain_id: number;
     beravote_space_id?: string;
@@ -320,8 +320,6 @@ export const updateFtoProject = async (
         return !!value;
       }) // Only include valid values
       .map(([key, value]) => `${key}`);
-
-    //console.log("fieldsToUpdate: ", fieldsToUpdate);
 
     await pg`
     INSERT INTO fto_project ${pg(data, ...(fieldsToUpdate as any))} 

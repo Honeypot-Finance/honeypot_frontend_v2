@@ -34,7 +34,6 @@ import KlineChart from "./components/KlineChart";
 import { LaunchDataProgress } from "./components/LaunchDataProgress";
 import { cn } from "@/lib/tailwindcss";
 import { DynamicFormatAmount } from "@/lib/algebra/utils/common/formatAmount";
-import CardContainer from "@/components/CardContianer/v3";
 import { amountFormatted } from "@/lib/format";
 
 export const UpdateProjectModal = observer(
