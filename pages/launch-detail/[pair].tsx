@@ -475,16 +475,14 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                       Total Supply
                     </span>
                     <span className="text-sm md:text-[15px] font-bold">
-                      {amountFormatted(
-                        (state.pair.value as MemePairContract)
-                          ?.depositedLaunchedToken,
-                        {
-                          prefix: "",
-                          decimals: 0,
-                          fixed: 3,
-                          symbol: ` ${state.pair.value?.launchedToken?.symbol || ""}`,
-                        }
-                      )}
+                      {DynamicFormatAmount({
+                        amount:
+                          (
+                            state.pair.value as MemePairContract
+                          )?.depositedLaunchedToken?.toFixed(18) ?? "0",
+                        decimals: 2,
+                        endWith: ` ${state.pair.value?.launchedToken?.symbol || ""}`,
+                      })}
                     </span>
                   </div>
                   <div className="flex flex-col items-center gap-1 md:gap-1.5">
