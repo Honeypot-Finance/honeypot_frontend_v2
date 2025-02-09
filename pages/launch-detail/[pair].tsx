@@ -485,19 +485,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                       })}
                     </span>
                   </div>
-                  <div className="flex flex-col items-center gap-1 md:gap-1.5">
-                    <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-                      Initial Market Cap
-                    </span>
-                    <span className="text-sm md:text-[15px] font-bold">
-                      {amountFormatted(state.pair.value?.depositedRaisedToken, {
-                        prefix: "$",
-                        decimals: 0,
-                        fixed: 3,
-                        symbol: "",
-                      })}
-                    </span>
-                  </div>
+
                   <div className="flex flex-col items-center gap-1 md:gap-1.5">
                     <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
                       24H
@@ -518,11 +506,10 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                       MCap
                     </span>
                     <span className="text-sm md:text-[15px] font-bold">
-                      $
-                      {Number(
-                        state.pair.value?.marketValue || 0
-                      ).toLocaleString(undefined, {
-                        maximumFractionDigits: 2,
+                      {DynamicFormatAmount({
+                        amount: Number(state.pair.value?.marketValue) || 0,
+                        decimals: 2,
+                        beginWith: "$",
                       })}
                     </span>
                   </div>
@@ -535,7 +522,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                       {DynamicFormatAmount({
                         amount:
                           state.pair.value?.launchedToken?.derivedUSD ?? "0",
-                        decimals: 5,
+                        decimals: 3,
                       })}
                     </span>
                   </div>
@@ -544,10 +531,11 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                       Volume
                     </span>
                     <span className="text-sm md:text-[15px] font-bold">
-                      $
-                      {Number(
-                        state.pair.value?.launchedToken?.volumeUSD || 0
-                      ).toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                      {DynamicFormatAmount({
+                        amount: state.pair.value?.launchedToken?.volumeUSD || 0,
+                        decimals: 2,
+                        beginWith: "$",
+                      })}
                     </span>
                   </div>
                   <div className="flex flex-col items-center gap-1 md:gap-1.5">
@@ -555,11 +543,13 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                       TVL
                     </span>
                     <span className="text-sm md:text-[15px] font-bold">
-                      $
-                      {Number(
-                        state.pair.value?.launchedToken?.totalValueLockedUSD ||
-                          0
-                      ).toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                      {DynamicFormatAmount({
+                        amount:
+                          state.pair.value?.launchedToken
+                            ?.totalValueLockedUSD || 0,
+                        decimals: 2,
+                        beginWith: "$",
+                      })}
                     </span>
                   </div>
                   <div className="flex flex-col items-center gap-1 md:gap-1.5">
