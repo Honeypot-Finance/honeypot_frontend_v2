@@ -68,7 +68,7 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
   const getActionTypeDisplay = (type: TransactionType, amount: string) => {
     if (type === TransactionType.Swap) {
       const amountNum = new BigNumber(amount);
-      return amountNum.isGreaterThanOrEqualTo(0) ? "Buy" : "Sell";
+      return amountNum.isGreaterThanOrEqualTo(0) ? "Sell" : "Buy";
     }
     
     switch (type) {
@@ -122,7 +122,7 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                 <th className="py-4 px-6 text-left text-base font-medium">
                   Address
                 </th>
-                <th className="py-4 px-6 text-right text-base font-medium">
+                <th className="py-4 px-6 text-left text-base font-medium">
                   Amount
                 </th>
                 <th className="py-4 px-6 text-right text-base font-medium">
@@ -199,12 +199,11 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                       className={`py-4 px-6 ${
                         tx.type === TransactionType.Swap
                           ? new BigNumber(getAmountByType(tx as Transaction)).isGreaterThanOrEqualTo(0)
-                            ? "text-[#089981]"
-                            : "text-[#F23645]"
+                            ? "text-[#F23645]"
+                            : "text-[#089981]"
                           : ""
                       }`}
                     >
-                      {tx.type === TransactionType.Swap && !new BigNumber(getAmountByType(tx as Transaction)).isGreaterThanOrEqualTo(0) && "-"}
                       {Math.abs(parseFloat(getAmountByType(tx as Transaction))).toFixed(3)}{" "}
                       {tx.type === TransactionType.Swap && pair?.launchedToken?.symbol}
                       {(tx.type === TransactionType.Deposit || tx.type === TransactionType.Refund) &&
