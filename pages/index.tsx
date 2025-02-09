@@ -20,6 +20,7 @@ import {
 } from "@/lib/algebra/graphql/generated/graphql";
 import { LoadingDisplay } from "honeypot-ui";
 import CardContainer from "@/components/CardContianer/v3";
+import { NetworkStatus } from "@apollo/client";
 // 在组件外部定义常量
 
 const POT_TABS = {
@@ -75,7 +76,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
     return () => clearInterval(timer);
   }, []);
 
-  const { data: pottingNewTokens, loading: isPottingNewTokensLoading } =
+  const { data: pottingNewTokens, networkStatus: newTokensNetworkStatus } =
     usePot2PumpPottingNewTokensQuery({
       variables: {
         endTime: currentTime,
@@ -85,9 +86,12 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
       skip: !wallet.isInit,
     });
 
+  const isNewTokensInitialLoading =
+    newTokensNetworkStatus === NetworkStatus.loading;
+
   const {
     data: pottingNearSuccessTokens,
-    loading: isPottingNearSuccessTokensLoading,
+    networkStatus: nearSuccessNetworkStatus,
   } = usePot2PumpPottingNearSuccessQuery({
     variables: {
       endTime: currentTime,
@@ -97,39 +101,49 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
     skip: !wallet.isInit,
   });
 
+  const isNearSuccessInitialLoading =
+    nearSuccessNetworkStatus === NetworkStatus.loading;
+
   const {
     data: pottingHighPriceTokens,
-    loading: isPottingHighPriceTokensLoading,
+    networkStatus: highPriceNetworkStatus,
   } = usePot2PumpPottingHighPriceQuery({
     fetchPolicy: "network-only",
     notifyOnNetworkStatusChange: true,
-    pollInterval: 5000, // Refetch every 10 seconds
+    pollInterval: 5000,
     skip: !wallet.isInit,
   });
 
-  const {
-    data: pottingTrendingTokens,
-    loading: isPottingTrendingTokensLoading,
-  } = usePot2PumpPottingTrendingQuery({
-    fetchPolicy: "network-only",
-    notifyOnNetworkStatusChange: true,
-    pollInterval: 5000, // Refetch every 10 seconds
-    skip: !wallet.isInit,
-  });
+  const isHighPriceInitialLoading =
+    highPriceNetworkStatus === NetworkStatus.loading;
+
+  const { data: pottingTrendingTokens, networkStatus: trendingNetworkStatus } =
+    usePot2PumpPottingTrendingQuery({
+      fetchPolicy: "network-only",
+      notifyOnNetworkStatusChange: true,
+      pollInterval: 5000,
+      skip: !wallet.isInit,
+    });
+
+  const isTrendingInitialLoading =
+    trendingNetworkStatus === NetworkStatus.loading;
 
   const {
     data: pottingMarketCapTokens,
-    loading: isPottingMarketCapTokensLoading,
+    networkStatus: marketCapNetworkStatus,
   } = usePot2PumpPottingMarketCapQuery({
     fetchPolicy: "network-only",
     notifyOnNetworkStatusChange: true,
-    pollInterval: 5000, // Refetch every 5 seconds
+    pollInterval: 5000,
     skip: !wallet.isInit,
   });
 
+  const isMarketCapInitialLoading =
+    marketCapNetworkStatus === NetworkStatus.loading;
+
   const {
     data: pottingNewTokensByEndtime,
-    loading: isPottingNewTokensByEndtimeLoading,
+    networkStatus: newTokensByEndtimeNetworkStatus,
   } = usePot2PumpPottingNewTokensByEndtimeQuery({
     variables: {
       endTime: currentTime,
@@ -138,6 +152,9 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
     notifyOnNetworkStatusChange: true,
     skip: !wallet.isInit,
   });
+
+  const isNewTokensByEndtimeInitialLoading =
+    newTokensByEndtimeNetworkStatus === NetworkStatus.loading;
 
   useEffect(() => {
     if (!pottingNewTokens) return;
@@ -177,7 +194,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
       });
       return prev;
     });
-  }, [pottingNewTokens]);
+  }, [newTokensList.length, pottingNewTokens]);
 
   useEffect(() => {
     if (!pottingNearSuccessTokens) return;
@@ -220,7 +237,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
 
       return prev;
     });
-  }, [pottingNearSuccessTokens]);
+  }, [nearSuccessTokensList.length, pottingNearSuccessTokens]);
 
   useEffect(() => {
     if (!pottingHighPriceTokens) return;
@@ -251,7 +268,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
       });
       return prev;
     });
-  }, [pottingHighPriceTokens]);
+  }, [highPriceTokensList.length, pottingHighPriceTokens]);
 
   useEffect(() => {
     const list = pot2PumpListToMemePairList(
@@ -281,7 +298,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
       });
       return prev;
     });
-  }, [pottingTrendingTokens]);
+  }, [pottingTrendingTokens, trendingTokensList.length]);
 
   useEffect(() => {
     if (!pottingMarketCapTokens) return;
@@ -312,7 +329,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
       });
       return prev;
     });
-  }, [pottingMarketCapTokens]);
+  }, [marketCapTokensList.length, pottingMarketCapTokens]);
 
   useEffect(() => {
     if (!pottingNewTokensByEndtime) return;
@@ -352,7 +369,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
       });
       return prev;
     });
-  }, [pottingNewTokensByEndtime]);
+  }, [endTimeTokensList.length, pottingNewTokensByEndtime]);
 
   // Auto scroll effect
   useEffect(() => {
@@ -480,14 +497,14 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                     {tab}
                   </div>
                 </div>
-                <div className="flex flex-col gap-6 pb-2 overflow-y-auto h-full pt-[60px] [&::-webkit-scrollbar]:w-1 &::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2 shadow-inner rounded-xl px-2">
+                <div className="flex flex-col gap-6 py-4 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1 &::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2 shadow-inner rounded-xl px-2">
                   {(() => {
                     switch (tab) {
                       case POT_TABS.NEW:
                         return (
                           <CardContainer
                             className="h-auto"
-                            loading={isPottingNewTokensLoading}
+                            loading={isNewTokensInitialLoading}
                             bordered={false}
                             type="default"
                             loadingText="Loading..."
@@ -517,7 +534,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                         return (
                           <CardContainer
                             className="h-auto"
-                            loading={isPottingNearSuccessTokensLoading}
+                            loading={isNearSuccessInitialLoading}
                             bordered={false}
                             type="default"
                             loadingText="Loading..."
@@ -547,7 +564,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                       case POT_TABS.MOON:
                         return (
                           <CardContainer
-                            loading={isPottingHighPriceTokensLoading}
+                            loading={isHighPriceInitialLoading}
                             bordered={false}
                             type="default"
                             loadingText="Loading..."
@@ -580,7 +597,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                         return (
                           <CardContainer
                             className="h-auto"
-                            loading={isPottingTrendingTokensLoading}
+                            loading={isTrendingInitialLoading}
                             bordered={false}
                             type="default"
                             loadingText="Loading..."
@@ -615,7 +632,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                         return (
                           <CardContainer
                             className="h-auto"
-                            loading={isPottingMarketCapTokensLoading}
+                            loading={isMarketCapInitialLoading}
                             bordered={false}
                             type="default"
                             loadingText="Loading..."
@@ -646,7 +663,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                         return (
                           <CardContainer
                             className="h-auto"
-                            loading={isPottingNewTokensByEndtimeLoading}
+                            loading={isNewTokensByEndtimeInitialLoading}
                             bordered={false}
                             type="default"
                             loadingText="Loading..."
@@ -691,7 +708,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                   {(() => {
                     switch (tab) {
                       case POT_TABS.NEW:
-                        return isPottingNewTokensLoading ? (
+                        return isNewTokensInitialLoading ? (
                           <LoadingDisplay />
                         ) : newTokensList.length > 0 ? (
                           newTokensList
@@ -715,7 +732,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                           <LoadingDisplay />
                         );
                       case POT_TABS.ALMOST:
-                        return isPottingNearSuccessTokensLoading ? (
+                        return isNearSuccessInitialLoading ? (
                           <LoadingDisplay />
                         ) : nearSuccessTokensList.length > 0 ? (
                           nearSuccessTokensList
@@ -740,7 +757,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                           <LoadingDisplay />
                         );
                       case POT_TABS.MOON:
-                        return isPottingHighPriceTokensLoading ? (
+                        return isHighPriceInitialLoading ? (
                           <LoadingDisplay />
                         ) : highPriceTokensList.length > 0 ? (
                           highPriceTokensList
@@ -765,7 +782,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                           <LoadingDisplay />
                         );
                       case POT_TABS.TRENDING:
-                        return isPottingTrendingTokensLoading ? (
+                        return isTrendingInitialLoading ? (
                           <LoadingDisplay />
                         ) : trendingTokensList.length > 0 ? (
                           trendingTokensList
@@ -794,7 +811,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                           <LoadingDisplay />
                         );
                       case POT_TABS.MARKET_CAP:
-                        return isPottingMarketCapTokensLoading ? (
+                        return isMarketCapInitialLoading ? (
                           <LoadingDisplay />
                         ) : marketCapTokensList.length > 0 ? (
                           marketCapTokensList
@@ -819,7 +836,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                           <LoadingDisplay />
                         );
                       case POT_TABS.NEW_PUMPS:
-                        return isPottingNewTokensByEndtimeLoading ? (
+                        return isNewTokensByEndtimeInitialLoading ? (
                           <LoadingDisplay />
                         ) : endTimeTokensList.length > 0 ? (
                           endTimeTokensList
