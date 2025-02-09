@@ -450,19 +450,6 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                   </div>
                   <div className="flex flex-col items-center gap-1 md:gap-1.5">
                     <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-                      Initial Market Cap
-                    </span>
-                    <span className="text-sm md:text-[15px] font-bold">
-                      {amountFormatted(state.pair.value?.depositedRaisedToken, {
-                        prefix: "$",
-                        decimals: 0,
-                        fixed: 3,
-                        symbol: "",
-                      })}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center gap-1 md:gap-1.5">
-                    <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
                       Current Raise
                     </span>
                     <span className="text-sm md:text-[15px] font-bold">
