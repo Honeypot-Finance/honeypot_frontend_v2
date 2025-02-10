@@ -215,6 +215,7 @@ const Tabs = observer(
                 Top 10 Holders
               </h1>
               <TopHoldersTable
+                projectPool={pair as MemePairContract}
                 launchedToken={pair?.launchedToken}
                 depositedLaunchedTokenWithoutDecimals={
                   pair?.depositedLaunchedTokenWithoutDecimals || 0
