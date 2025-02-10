@@ -33,10 +33,12 @@ const universalMenuItems = [
   { key: "txs", label: "Transactions" },
   { key: "comment", label: "Comments" },
   //{ key: "priceChart", label: "Price Chart" },
-  { key: "holders", label: "Top 10 Holders" },
 ];
 
-const successMenuItems = [{ key: "votingspace", label: "Voting Space" }];
+const successMenuItems = [
+  { key: "votingspace", label: "Voting Space" },
+  { key: "holders", label: "Top 10 Holders" },
+];
 
 interface Transaction {
   rank: string;
