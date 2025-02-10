@@ -89,14 +89,26 @@ export const Layout = ({
     }
   }, []);
 
-  const handleInviteCodeSubmit = (code: string) => {
-    const correctCode = process.env.NEXT_PUBLIC_INVITATION_CODE;
-    if (code === correctCode) {
-      localStorage.setItem('inviteCode', code);
-      setShowInviteModal(false);
-    } else {
-      // Don't use alert, let the modal handle the error state
-      throw new Error("Invalid invitation code");
+  const handleInviteCodeSubmit = async (code: string) => {
+    try {
+      const response = await fetch('/api/verify-invitation-code', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        localStorage.setItem('inviteCode', code);
+        setShowInviteModal(false);
+      } else {
+        throw new Error(data.message || 'Invalid invitation code');
+      }
+    } catch (error) {
+      throw new Error('Invalid invitation code');
     }
   };
 
