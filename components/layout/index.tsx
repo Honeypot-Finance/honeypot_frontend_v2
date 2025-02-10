@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "./header/v3";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
@@ -20,6 +20,7 @@ import { Footer } from "./footer";
 import { chatService, presetQuestions, questionTitles } from "@/services/chat";
 import _ from "lodash";
 import { whitelistWallets } from "@/config/whitelist";
+import { InvitationCodeModal } from "../InvitationCodeModal/InvitationCodeModal";
 
 export const Layout = ({
   children,
@@ -31,6 +32,7 @@ export const Layout = ({
   const router = useRouter();
   const { chainId, address } = useAccount();
   const currentChain = chainId ? networksMap[chainId] : null;
+  const [showInviteModal, setShowInviteModal] = useState(false);
 
   useEffect(() => {
     //if its user first time visit, open chat
@@ -80,6 +82,24 @@ export const Layout = ({
     });
   }, []);
 
+  useEffect(() => {
+    const inviteCode = localStorage.getItem('inviteCode');
+    if (!inviteCode) {
+      setShowInviteModal(true);
+    }
+  }, []);
+
+  const handleInviteCodeSubmit = (code: string) => {
+    const correctCode = process.env.NEXT_PUBLIC_INVITATION_CODE;
+    if (code === correctCode) {
+      localStorage.setItem('inviteCode', code);
+      setShowInviteModal(false);
+    } else {
+      // Don't use alert, let the modal handle the error state
+      throw new Error("Invalid invitation code");
+    }
+  };
+
   const slogans = [
     // <>
     //   <Link href="/derbydashboard" className="flex items-center ">
@@ -102,6 +122,8 @@ export const Layout = ({
         className
       )}
     >
+      {showInviteModal && <InvitationCodeModal onSubmit={handleInviteCodeSubmit} />}
+      
       <Script
         src="/charting_library/charting_library.standalone.js"
         strategy="beforeInteractive"
@@ -118,8 +140,8 @@ export const Layout = ({
       <ConfettiComponent />
       <PopOverModal />
       <Header />
-      {whitelistWallets.includes(address?.toLowerCase() as string) ||
-      whitelistWallets.length === 0 ? (
+      {!showInviteModal && (whitelistWallets.includes(address?.toLowerCase() as string) ||
+      whitelistWallets.length === 0) ? (
         currentChain ? (
           currentChain?.isActive ? (
             <div className="flex-1 flex">{children}</div>
@@ -139,7 +161,7 @@ export const Layout = ({
       ) : (
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <p className="text-lg">Coming soon check back later</p>
+            <p className="text-lg">{showInviteModal ? "Please enter invitation code to continue" : "Coming soon check back later"}</p>
           </div>
         </div>
       )}
