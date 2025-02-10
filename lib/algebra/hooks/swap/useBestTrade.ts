@@ -4,11 +4,13 @@ import {
   Route,
   Trade,
   TradeType,
-} from "@cryptoalgebra/wasabee-sdk";
+} from "@cryptoalgebra/sdk";
 import { useMemo } from "react";
 import { useAllRoutes } from "./useAllRoutes";
+
 import { useQuotesResults } from "./useQuotesResults";
 import { TradeStateType, TradeState } from "@/types/algebra/types/trade-state";
+
 // const DEFAULT_GAS_QUOTE = 2_000_000
 
 /**
@@ -74,14 +76,14 @@ export function useBestTradeExactIn(
         if (currentBest.amountOut === null) {
           return {
             bestRoute: routes[i],
-            amountOut: result[0],
+            amountOut: result[0][result[0].length - 1],
             fee: result[5],
             priceAfterSwap: result[2],
           };
-        } else if (currentBest.amountOut < result[0]) {
+        } else if (currentBest.amountOut < result[0][result[0].length - 1]) {
           return {
             bestRoute: routes[i],
-            amountOut: result[0],
+            amountOut: result[0][result[0].length - 1],
             fee: result[5],
             priceAfterSwap: result[2],
           };
@@ -106,8 +108,6 @@ export function useBestTradeExactIn(
       };
     }
 
-    console.log("amountOut", amountOut);
-
     return {
       state: TradeState.VALID,
       fee,
@@ -117,7 +117,7 @@ export function useBestTradeExactIn(
         inputAmount: amountIn,
         outputAmount: CurrencyAmount.fromRawAmount(
           currencyOut,
-          (amountOut as BigInt[]).sort()[0].toString()
+          amountOut.toString()
         ),
       }),
       priceAfterSwap,
@@ -199,14 +199,14 @@ export function useBestTradeExactOut(
         if (currentBest.amountIn === null) {
           return {
             bestRoute: routes[i],
-            amountIn: result[1],
+            amountIn: result[1][result[1].length - 1],
             fee: result[5],
             priceAfterSwap: result[2],
           };
-        } else if (currentBest.amountIn > result[0]) {
+        } else if (currentBest.amountIn > result[1][result[1].length - 1]) {
           return {
             bestRoute: routes[i],
-            amountIn: result[1],
+            amountIn: result[1][result[1].length - 1],
             fee: result[5],
             priceAfterSwap: result[2],
           };
@@ -239,7 +239,7 @@ export function useBestTradeExactOut(
         tradeType: TradeType.EXACT_OUTPUT,
         inputAmount: CurrencyAmount.fromRawAmount(
           currencyIn,
-          (amountIn as BigInt[]).sort()[0].toString()
+          amountIn.toString()
         ),
         outputAmount: amountOut,
       }),

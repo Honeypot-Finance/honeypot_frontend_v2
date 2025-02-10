@@ -23,7 +23,7 @@ export const useUserState = create(
       txDeadline: 180,
       slippage: "auto" as const,
       isExpertMode: true,
-      isMultihop: false,
+      isMultihop: true,
       actions: {
         setTxDeadline: (txDeadline) =>
           set({
