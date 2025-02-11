@@ -254,6 +254,7 @@ export class MemePairContract implements BaseLaunchContract {
     amount = new BigNumber(amount)
       .multipliedBy(new BigNumber(10).pow(this.raiseToken.decimals))
       .toFixed();
+
     await this.raiseToken.approveIfNoAllowance({
       amount,
       spender: this.facadeContract.address,

@@ -6,6 +6,16 @@ import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair
 import { cn, SelectItem } from "@nextui-org/react";
 import { observer, useLocalObservable } from "mobx-react-lite";
 import { Input } from "@/components/input";
+import { TokenSelector } from "@/components/TokenSelector/v3";
+import { WNATIVE_EXTENDED } from "@/config/algebra/routing";
+import { wallet } from "@/services/wallet";
+import { Token } from "@/services/contract/token";
+import { useEffect, useState } from "react";
+import TokenCardV3 from "@/components/algebra/swap/TokenCard/TokenCardV3";
+import { Address } from "viem";
+import { useBalance } from "wagmi";
+import BigNumber from "bignumber.js";
+import { ContractWrite } from "@/services/utils";
 
 export const PottingModal = observer(
   ({
@@ -17,6 +27,20 @@ export const PottingModal = observer(
     onSuccess?: () => void;
     boarderLess?: boolean;
   }) => {
+    const [selectedToken, setSelectedToken] = useState<Token | null>(
+      pair.raiseToken ?? null
+    );
+
+    useEffect(() => {
+      if (pair.raiseToken) {
+        pair.raiseToken.init();
+        if (pair.raiseToken.isNative) {
+          console.log("init native token");
+          wallet.currentChain.nativeToken.init();
+        }
+      }
+    }, [pair]);
+
     const state = useLocalObservable(() => ({
       depositAmount: "",
       setDepositAmount(val: string) {
@@ -29,8 +53,8 @@ export const PottingModal = observer(
         new SelectState({
           onSelectChange: (value) => {
             if (value === "max") {
-              state.setDepositAmount(pair.raiseToken?.balance.toFixed() ?? "0");
-              pair.raiseToken?.getBalance();
+              state.setDepositAmount(selectedToken?.balance.toFixed() ?? "0");
+              selectedToken?.getBalance();
             } else {
               state.setDepositAmount(value.toString());
             }
@@ -54,7 +78,7 @@ export const PottingModal = observer(
                 <div className="flex items-center gap-x-2">
                   <div>
                     <span>Balance: </span>
-                    <span>{pair.raiseToken.balance.toFormat(5)}</span>
+                    <span>{selectedToken?.balanceFormatted}</span>
                   </div>
                   <button
                     className="cursor-pointer text-[#63b4ff]"
@@ -71,10 +95,21 @@ export const PottingModal = observer(
               </div>
 
               <div className="w-full rounded-2xl border bg-card-dark shadow-[0px_332px_93px_0px_rgba(0,0,0,0.00),0px_212px_85px_0px_rgba(0,0,0,0.01),0px_119px_72px_0px_rgba(0,0,0,0.05),0px_53px_53px_0px_rgba(0,0,0,0.09),0px_13px_29px_0px_rgba(0,0,0,0.10)] flex items-center justify-between px-4 py-2.5 gap-x-2">
-                <div className="flex items-center">
-                  <TokenLogo token={pair.raiseToken} />
-                  <span className="ml-2">{pair.raiseToken.displayName}</span>
-                </div>
+                <TokenSelector
+                  staticTokenList={[
+                    pair.raiseToken,
+                    ...(pair.raiseToken &&
+                    pair.raiseToken.address.toLowerCase() ===
+                      wallet?.currentChain.nativeToken.address.toLowerCase()
+                      ? [wallet.currentChain.nativeToken]
+                      : []),
+                  ]}
+                  onSelect={(token) => {
+                    setSelectedToken(token);
+                    token.getBalance();
+                  }}
+                  value={selectedToken}
+                />
                 <Input
                   className="flex-1 text-right !bg-transparent [&_*]:!bg-transparent data-[invalid=true]:!bg-transparent"
                   classNames={{
@@ -88,7 +123,7 @@ export const PottingModal = observer(
                   min={0}
                   type="number"
                   isClearable={false}
-                  max={pair.raiseToken.balance.toFixed()}
+                  max={selectedToken?.balance.toFixed()}
                   onChange={(e) => {
                     state.setDepositAmount(e.target.value);
                   }}
@@ -104,19 +139,19 @@ export const PottingModal = observer(
                 selectState={selectState}
                 className="grid grid-cols-[repeat(4,auto)] gap-4 w-full mt-4 justify-content-end"
               >
-                {pair.raiseToken?.balance.gte(10) && (
+                {selectedToken?.balance.gte(10) && (
                   <SelectItem key="10" value="10">
-                    10 {pair.raiseToken?.symbol}
+                    10 {selectedToken?.symbol}
                   </SelectItem>
                 )}
-                {pair.raiseToken?.balance.gte(100) && (
+                {selectedToken?.balance.gte(100) && (
                   <SelectItem key="100" value="100">
-                    100 {pair.raiseToken?.symbol}
+                    100 {selectedToken?.symbol}
                   </SelectItem>
                 )}
-                {pair.raiseToken?.balance.gte(1000) && (
+                {selectedToken?.balance.gte(1000) && (
                   <SelectItem key="1000" value="1000">
-                    1000 {pair.raiseToken?.symbol}
+                    1000 {selectedToken?.symbol}
                   </SelectItem>
                 )}
                 <SelectItem key="max" value="max">
@@ -131,11 +166,33 @@ export const PottingModal = observer(
               isLoading={pair.deposit.loading}
               onPress={async () => {
                 try {
+                  const amount = new BigNumber(state.depositAmount)
+                    .multipliedBy(
+                      new BigNumber(10).pow(selectedToken?.decimals ?? 18)
+                    )
+                    .toFixed();
+
+                  if (
+                    selectedToken?.address.toLowerCase() ===
+                    wallet.currentChain.nativeToken.address.toLowerCase()
+                  ) {
+                    console.log("amount", amount);
+                    // @ts-ignore
+                    await new ContractWrite(
+                      wallet.currentChain.nativeToken.contract.write.deposit
+                    ).call({
+                      value: BigInt(amount),
+                      account: wallet.account as `0x${string}`,
+                      chain: wallet.currentChain.chain,
+                    });
+                  }
+
                   await pair.deposit.call({
                     amount: state.depositAmount,
                   });
+
                   state.setDepositAmount("");
-                  pair.raiseToken?.getBalance();
+                  selectedToken?.getBalance();
                   pair.getDepositedRaisedToken().then((res) => {
                     if (
                       pair.depositedLaunchedTokenWithoutDecimals &&
