@@ -28,7 +28,11 @@ export const PottingModal = observer(
     boarderLess?: boolean;
   }) => {
     const [selectedToken, setSelectedToken] = useState<Token | null>(
-      pair.raiseToken ?? null
+      pair.raiseToken &&
+        pair.raiseToken.address.toLowerCase() ===
+          wallet?.currentChain.nativeToken.address.toLowerCase()
+        ? wallet.currentChain.nativeToken
+        : (pair.raiseToken ?? null)
     );
 
     useEffect(() => {
