@@ -451,10 +451,14 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                       Current Raise
                     </span>
                     <span className="text-sm md:text-[15px] font-bold">
-                      $
-                      {Number(
-                        state.pair.value?.depositedRaisedToken || 0
-                      ).toLocaleString()}
+                      {DynamicFormatAmount({
+                        amount:
+                          (
+                            state.pair.value as MemePairContract
+                          )?.depositedRaisedToken?.toFixed(18) ?? "0",
+                        decimals: 2,
+                        endWith: ` ${state.pair.value?.raiseToken?.symbol || ""}`,
+                      })}
                     </span>
                   </div>
                   <div className="flex flex-col items-center gap-1 md:gap-1.5">
