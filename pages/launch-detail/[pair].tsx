@@ -35,6 +35,7 @@ import { LaunchDataProgress } from "./components/LaunchDataProgress";
 import { cn } from "@/lib/tailwindcss";
 import { DynamicFormatAmount } from "@/lib/algebra/utils/common/formatAmount";
 import { amountFormatted } from "@/lib/format";
+import CardContainer from "@/components/CardContianer/v3";
 
 export const UpdateProjectModal = observer(
   ({ pair }: { pair: FtoPairContract | MemePairContract }) => {
@@ -368,18 +369,22 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
 
   return (
     <div className="w-full px-4 md:px-8 xl:px-0 space-y-4 md:space-y-8">
-      <div className="px-4 md:px-8 xl:max-w-[min(1500px,100%)] mx-auto pb-20 relative pt-[90px] bg-[#202020] border-3 border-[#F2C34A] rounded-3xl overflow-hidden">
-        <div className="bg-[url('/images/pumping/outline-border.png')] h-[90px] absolute top-0 left-0 w-full bg-contain bg-[left_-90px_top] bg-repeat-x"></div>
+      <CardContainer
+        type="default"
+        topBorderOffset={0}
+        showBottomBorder={false}
+        className="px-4 md:px-8 xl:max-w-[min(1500px,100%)] mx-auto pb-20 relative rounded-3xl overflow-hidden"
+      >
         {state.pair.value && (
           <Modal
             isOpen={isOpen}
             onOpenChange={onOpenChange}
             classNames={{
-              base: "max-h-[70vh] overflow-y-auto",
               body: "bg-[#FFCD4D]",
               header: "bg-[#FFCD4D]",
               footer: "bg-[#FFCD4D]",
               closeButton: "hover:bg-black/5",
+              base: "max-h-[70vh] overflow-y-auto",
             }}
           >
             <UpdateProjectModal pair={state.pair.value}></UpdateProjectModal>
@@ -644,10 +649,10 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
           </div>
         </div>
 
-        <div className="mt-6 md:mt-16">
+        <div className="mt-6 md:mt-16 w-full">
           <Tabs pair={state.pair.value} refreshTrigger={refreshTrigger} />
         </div>
-      </div>
+      </CardContainer>
     </div>
   );
 });

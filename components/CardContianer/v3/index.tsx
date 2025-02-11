@@ -14,6 +14,7 @@ interface HoneyContainerProps {
   loading?: boolean;
   type?: "primary" | "default";
   loadingText?: string;
+  topBorderOffset?: number;
 }
 
 function CardContainer({
@@ -27,6 +28,7 @@ function CardContainer({
   loading = false,
   type = "primary",
   loadingText,
+  topBorderOffset = -65,
 }: HoneyContainerProps) {
   return (
     <div
@@ -50,17 +52,20 @@ function CardContainer({
             : "none",
         } as React.CSSProperties
       }
+      // TODO: Add style adaptation of different sizes
       className={cn(
         "flex flex-col h-full w-full gap-y-4 justify-center items-center rounded-2xl text-[#202020]",
-        type === "primary" && "bg-[#FFCD4D]",
+        type === "primary"
+          ? "bg-[#FFCD4D]"
+          : "border-3 border-[#F2C34A] bg-transparent",
         bordered &&
           [
             "px-4",
+            "bg-repeat-x",
             showTopBorder && "pt-[80px]",
             showBottomBorder && "pb-[80px]",
-            "bg-[position:-65px_top,_left_bottom]",
             "bg-[size:auto_70px,_auto_70px]",
-            "bg-repeat-x",
+            `bg-[position:${[topBorderOffset]}px_top,_left_bottom]`,
           ]
             .filter(Boolean)
             .join(" "),
