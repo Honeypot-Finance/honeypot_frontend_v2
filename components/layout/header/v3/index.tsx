@@ -71,7 +71,7 @@ export const Header = (props: HtmlHTMLAttributes<any>) => {
             justify="start"
           >
             <Link
-              href={DOMAIN_MAP.MAIN}
+              href={DOMAIN_MAP.LANDING}
               className="pointer-events-none md:pointer-events-auto cursor-pointer"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
