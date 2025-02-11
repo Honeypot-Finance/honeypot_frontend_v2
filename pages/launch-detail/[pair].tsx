@@ -36,6 +36,7 @@ import { cn } from "@/lib/tailwindcss";
 import { DynamicFormatAmount } from "@/lib/algebra/utils/common/formatAmount";
 import { amountFormatted } from "@/lib/format";
 import CardContainer from "@/components/CardContianer/v3";
+import { ReactTyped } from "react-typed";
 
 export const UpdateProjectModal = observer(
   ({ pair }: { pair: FtoPairContract | MemePairContract }) => {
@@ -424,7 +425,9 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
             </div>
 
             <div className="col-span-1 text-xs flex items-center justify-center">
-              {state.pair.value?.description}
+              {pair?.description && (
+                <ReactTyped strings={[pair.description]} typeSpeed={25} />
+              )}
             </div>
 
             <div className="flex flex-col items-center gap-3 md:gap-8 col-span-1">

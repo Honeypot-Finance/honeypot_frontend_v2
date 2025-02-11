@@ -130,6 +130,7 @@
     "react-spring": "^9.7.5",
     "react-toastify": "^10.0.5",
     "react-truncate-markup": "^5.1.2",
+    "react-typed": "^2.0.12",
     "react-window": "^1.8.10",
     "reactjs-popup": "^2.0.6",
     "recharts": "^2.13.3",
