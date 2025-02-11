@@ -660,6 +660,12 @@ export const berachainNetwork = new Network({
       logoURI: "/images/icons/tokens/weth-token-icon.png",
       isRouterToken: true,
     },
+    "0x1cE0a25D13CE4d52071aE7e02Cf1F6606F4C79d3": {
+      name: "NECT",
+      symbol: "NECT",
+      decimals: 18,
+      logoURI: "/images/icons/tokens/nect-token-icon.png",
+    },
   },
   validatedFtoAddresses: [],
   validatedMemeAddresses: [],
