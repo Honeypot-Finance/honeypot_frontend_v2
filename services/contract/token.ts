@@ -415,15 +415,15 @@ export class Token implements BaseContract {
   }
 
   async getBalance() {
-    if (this.isNative || this.address === zeroAddress) {
-      return wallet.balance;
-    }
     try {
-      const balance = this.isNative
-        ? await wallet.publicClient.getBalance({
-            address: wallet.account as `0x${string}`,
-          })
-        : await this.contract.read.balanceOf([wallet.account as `0x${string}`]);
+      const balance =
+        this.isNative || this.address === zeroAddress
+          ? await wallet.publicClient.getBalance({
+              address: wallet.account as `0x${string}`,
+            })
+          : await this.contract.read.balanceOf([
+              wallet.account as `0x${string}`,
+            ]);
       this.balanceWithoutDecimals = new BigNumber(balance.toString());
       return this.balanceWithoutDecimals;
     } catch (e) {

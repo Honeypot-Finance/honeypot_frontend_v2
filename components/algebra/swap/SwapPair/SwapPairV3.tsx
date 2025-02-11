@@ -32,9 +32,8 @@ interface SwapPairV3Props {
   toTokenAddress?: string;
   disableSelection?: boolean;
   isUpdatingPriceChart?: boolean;
-  staticSelectionList?: {
-    [key: string]: string;
-  };
+  staticFromTokenList?: Token[];
+  staticToTokenList?: Token[];
 }
 
 const SwapPairV3 = ({
@@ -42,7 +41,8 @@ const SwapPairV3 = ({
   toTokenAddress,
   disableSelection,
   isUpdatingPriceChart,
-  staticSelectionList,
+  staticFromTokenList,
+  staticToTokenList,
 }: SwapPairV3Props) => {
   const {
     toggledTrade: trade,
@@ -263,6 +263,7 @@ const SwapPairV3 = ({
   return (
     <div className="flex flex-col gap-1 relative bg-white custom-dashed px-[18px] py-6 w-full">
       <TokenCardV3
+        staticTokenList={staticFromTokenList}
         value={formattedAmounts[SwapField.INPUT] || ""}
         currency={baseCurrency}
         otherCurrency={quoteCurrency}
@@ -288,6 +289,7 @@ const SwapPairV3 = ({
       </div>
 
       <TokenCardV3
+        staticTokenList={staticToTokenList}
         value={formattedAmounts[SwapField.OUTPUT] || ""}
         currency={quoteCurrency}
         otherCurrency={baseCurrency}

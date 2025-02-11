@@ -289,6 +289,7 @@ interface TokenSwapCardProps {
   label?: string;
   disableSelection?: boolean;
   showInput?: boolean;
+  staticTokenList?: Token[];
 }
 
 const TokenCardV3 = ({
@@ -306,6 +307,7 @@ const TokenCardV3 = ({
   label,
   showInput = true,
   disableSelection,
+  staticTokenList,
 }: TokenSwapCardProps) => {
   const { address: account } = useAccount();
   useWatchBlockNumber({
@@ -378,7 +380,7 @@ const TokenCardV3 = ({
         <div className="grid grid-cols-[max-content_auto] w-full">
           <div className="flex-grow">
             <TokenSelector
-              staticSelectionList={staticSelectionList}
+              staticTokenList={staticTokenList}
               value={
                 currency?.wrapped.address
                   ? Token.getToken({
