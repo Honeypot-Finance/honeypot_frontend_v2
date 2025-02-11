@@ -234,6 +234,7 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                       pair={pair}
                       action={<></>}
                       key={pair.address}
+                      type="simple"
                     />
                   )}
                   classNames={{
