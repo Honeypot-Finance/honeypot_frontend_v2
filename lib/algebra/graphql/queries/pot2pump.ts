@@ -97,8 +97,8 @@ export const POT_2_PUMP_POTTING_NEW_TOKENS_BY_ENDTIME = gql`
     pot2Pumps(
       first: 25
       orderBy: endTime
-      orderDirection: asc
-      where: { raisedTokenReachingMinCap: false, endTime_gt: $endTime }
+      orderDirection: desc
+      where: { raisedTokenReachingMinCap: true }
     ) {
       ...Pot2PumpField
     }
