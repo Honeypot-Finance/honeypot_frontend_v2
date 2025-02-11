@@ -32,6 +32,7 @@ type TokenSelectorProps = {
   onSelect: (token: Token) => void;
   value?: Token | null;
   disableSelection?: boolean;
+  staticTokenList:
 };
 
 export const TokenSelector = observer(
@@ -175,10 +176,38 @@ export const TokenSelector = observer(
                     />
                     <Divider className="my-4" />
                     <div>
-                      <div className="max-h-[300px] overflow-auto">
-                        <div>
-                          <h2 className=" opacity-50 font-normal font-sans">
-                            Most Popular
+                      {staticSelectionList ? staticTokenList.length ? (
+                          state.tokens
+                            .slice()
+                            .sort((a, b) => b.priority - a.priority)
+                            .map((token, idx) => {
+                              return (
+                                <div
+                                  key={idx}
+                                  onClick={() => {
+                                    onSelect(token);
+                                    onClose();
+                                  }}
+                                  className="py-[8px] px-[8px] rounded-[8px] flex justify-between items-center cursor-pointer hover:[background:rgba(255,255,255,0.04)]"
+                                >
+                                  <TokenLogo token={token}></TokenLogo>
+                                  <div className="flex-grow-[1] px-2">
+                                    <div>{token.name}</div>
+                                    <div className="text-[rgba(255,255,255,0.50)] [font-kerning:none] [font-feature-settings:'calt'_off] [font-family:Inter] text-xs font-normal leading-[14px]">
+                                      {token.symbol}
+                                    </div>
+                                  </div>
+                                  <div>{token.balanceFormatted}</div>
+                                </div>
+                              );
+                            })
+                        ) : (
+                          <NoData></NoData>
+                        ):(
+                        <div className="max-h-[300px] overflow-auto">
+                          <div>
+                            <h2 className=" opacity-50 font-normal font-sans">
+                              Most Popular
                           </h2>
                           <div className="flex *:grow w-full flex-wrap gap-2">
                             {state.tokens.length ? (
@@ -250,7 +279,7 @@ export const TokenSelector = observer(
                             specific token...
                           </h3>
                         </div>
-                      </div>
+                      </div>)}
                     </div>
                   </SpinnerContainer>
                 </div>

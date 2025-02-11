@@ -378,6 +378,7 @@ const TokenCardV3 = ({
         <div className="grid grid-cols-[max-content_auto] w-full">
           <div className="flex-grow">
             <TokenSelector
+              staticSelectionList={staticSelectionList}
               value={
                 currency?.wrapped.address
                   ? Token.getToken({

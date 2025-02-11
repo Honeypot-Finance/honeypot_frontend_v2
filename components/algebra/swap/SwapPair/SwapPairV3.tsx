@@ -32,6 +32,9 @@ interface SwapPairV3Props {
   toTokenAddress?: string;
   disableSelection?: boolean;
   isUpdatingPriceChart?: boolean;
+  staticSelectionList?: {
+    [key: string]: string;
+  };
 }
 
 const SwapPairV3 = ({
@@ -39,6 +42,7 @@ const SwapPairV3 = ({
   toTokenAddress,
   disableSelection,
   isUpdatingPriceChart,
+  staticSelectionList,
 }: SwapPairV3Props) => {
   const {
     toggledTrade: trade,
