@@ -89,7 +89,7 @@ export function FormatSmallDecimal({
     return (
       <>
         {first2digit}
-        <sub>{compressedCount === 0 ? "" : compressedCount}</sub>
+        <sub>{compressedCount === 0 ? "" : compressedCount + 1}</sub>
         {first2NonZero}
       </>
     );
