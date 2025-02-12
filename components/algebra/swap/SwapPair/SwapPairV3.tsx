@@ -34,6 +34,8 @@ interface SwapPairV3Props {
   isUpdatingPriceChart?: boolean;
   staticFromTokenList?: Token[];
   staticToTokenList?: Token[];
+  isInputNative?: boolean;
+  isOutputNative?: boolean;
 }
 
 const SwapPairV3 = ({
@@ -43,6 +45,8 @@ const SwapPairV3 = ({
   isUpdatingPriceChart,
   staticFromTokenList,
   staticToTokenList,
+  isInputNative,
+  isOutputNative,
 }: SwapPairV3Props) => {
   const {
     toggledTrade: trade,
@@ -160,7 +164,10 @@ const SwapPairV3 = ({
   useEffect(() => {
     const initializeTokens = async () => {
       if (fromTokenAddress) {
-        const token = Token.getToken({ address: fromTokenAddress });
+        const token = Token.getToken({
+          address: fromTokenAddress,
+          isNative: isInputNative,
+        });
         // await token.init(false, {
         //   loadIndexerTokenData: true,
         //   loadLogoURI: true,
@@ -171,18 +178,27 @@ const SwapPairV3 = ({
         }
 
         handleInputSelect(
-          new AlgebraToken(
-            wallet.currentChainId,
-            token.address,
-            Number(token.decimals),
-            token.symbol,
-            token.name
+          Object.assign(
+            new AlgebraToken(
+              wallet.currentChainId,
+              token.address,
+              Number(token.decimals),
+              token.symbol,
+              token.name
+            ),
+            {
+              isNative: isInputNative,
+              isToken: !isInputNative,
+            }
           )
         );
       }
 
       if (toTokenAddress) {
-        const token = Token.getToken({ address: toTokenAddress });
+        const token = Token.getToken({
+          address: toTokenAddress,
+          isNative: isOutputNative,
+        });
         // await token.init(false, {
         //   loadIndexerTokenData: true,
         //   loadLogoURI: true,
@@ -190,21 +206,34 @@ const SwapPairV3 = ({
         if (!token) {
           return;
         }
-        console.log("token", token);
+
         handleOutputSelect(
-          new AlgebraToken(
-            wallet.currentChainId,
-            token.address,
-            Number(token.decimals),
-            token.symbol,
-            token.name
+          Object.assign(
+            new AlgebraToken(
+              wallet.currentChainId,
+              token.address,
+              Number(token.decimals),
+              token.symbol,
+              token.name
+            ),
+            {
+              isNative: isOutputNative,
+              isToken: !isOutputNative,
+            }
           )
         );
       }
     };
 
     initializeTokens();
-  }, [fromTokenAddress, toTokenAddress]);
+  }, [
+    fromTokenAddress,
+    handleInputSelect,
+    handleOutputSelect,
+    isInputNative,
+    isOutputNative,
+    toTokenAddress,
+  ]);
 
   useEffect(() => {
     if (!isUpdatingPriceChart) {

@@ -15,6 +15,8 @@ interface V3SwapCardProps {
   isUpdatingPriceChart?: boolean;
   staticFromTokenList?: Token[];
   staticToTokenList?: Token[];
+  isInputNative?: boolean;
+  isOutputNative?: boolean;
 }
 
 export function V3SwapCard({
@@ -25,6 +27,8 @@ export function V3SwapCard({
   isUpdatingPriceChart = false,
   staticFromTokenList,
   staticToTokenList,
+  isInputNative,
+  isOutputNative,
 }: V3SwapCardProps) {
   return (
     <CardContainer>
@@ -35,6 +39,8 @@ export function V3SwapCard({
         isUpdatingPriceChart={isUpdatingPriceChart}
         staticFromTokenList={staticFromTokenList}
         staticToTokenList={staticToTokenList}
+        isInputNative={isInputNative}
+        isOutputNative={isOutputNative}
       />
       <SwapParamsV3 />
       <SwapButtonV3 />

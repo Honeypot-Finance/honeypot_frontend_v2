@@ -7,6 +7,7 @@ import { useAccount } from "wagmi";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 import { LaunchDetailSwapCard } from "@/components/SwapCard/MemeSwap";
 import PottingModal from "@/components/atoms/Pot2PumpComponents/PottingModal";
+import { wallet } from "@/services/wallet";
 
 const SuccessAction = observer(
   ({
@@ -56,6 +57,10 @@ const SuccessAction = observer(
           outputAddress={pair.launchedToken?.address}
           memePairContract={pair as MemePairContract}
           onSwapSuccess={refreshTxsCallback}
+          isInputNative={
+            pair.raiseToken?.address.toLowerCase() ===
+            wallet.currentChain.nativeToken.address.toLowerCase()
+          }
         />
       </>
     );

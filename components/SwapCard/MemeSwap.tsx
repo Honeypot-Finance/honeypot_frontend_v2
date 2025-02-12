@@ -38,6 +38,8 @@ export const LaunchDetailSwapCard = observer(
     noBoarder,
     memePairContract,
     onSwapSuccess,
+    isInputNative,
+    isOutputNative,
   }: {
     inputAddress?: string;
     outputAddress?: string;
@@ -45,6 +47,8 @@ export const LaunchDetailSwapCard = observer(
     noBoarder?: boolean;
     memePairContract: MemePairContract;
     onSwapSuccess?: () => void;
+    isInputNative?: boolean;
+    isOutputNative?: boolean;
   }) => {
     const [values, setValues] = useState<{ amount0: string; amount1: string }>({
       amount0: "0",
@@ -105,6 +109,7 @@ export const LaunchDetailSwapCard = observer(
         swap.setFromToken(
           Token.getToken({
             address: inputCurrency,
+            isNative: isInputNative,
           })
         );
       } else {
@@ -112,6 +117,7 @@ export const LaunchDetailSwapCard = observer(
           Token.getToken({
             address:
               inputAddress || "0xfc5e3743e9fac8bb60408797607352e24db7d65e",
+            isNative: isInputNative,
           })
         );
       }
@@ -120,16 +126,26 @@ export const LaunchDetailSwapCard = observer(
         swap.setToToken(
           Token.getToken({
             address: outputCurrency,
+            isNative: isOutputNative,
           })
         );
       } else {
         swap.setToToken(
           Token.getToken({
             address: outputAddress ?? "",
+            isNative: isOutputNative,
           })
         );
       }
-    }, [isInit, inputCurrency, outputCurrency, inputAddress, outputAddress]);
+    }, [
+      isInit,
+      inputCurrency,
+      outputCurrency,
+      inputAddress,
+      outputAddress,
+      isInputNative,
+      isOutputNative,
+    ]);
 
     useInterval(() => {
       swap.onFromAmountChange();
@@ -185,6 +201,8 @@ export const LaunchDetailSwapCard = observer(
                 fromTokenAddress={inputAddress}
                 toTokenAddress={outputAddress}
                 bordered={false}
+                isInputNative={isInputNative}
+                isOutputNative={isOutputNative}
                 onSwapSuccess={onSwapSuccess}
               />
             </LoadingContainer>
