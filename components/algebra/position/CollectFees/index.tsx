@@ -13,7 +13,7 @@ import { useSimulateAlgebraPositionManagerMulticall } from "@/wagmi-generated";
 
 interface CollectFeesProps {
   mintInfo: IDerivedMintInfo;
-  positionFeesUSD: string | undefined;
+  positionFeesUSD: React.ReactNode;
   positionId: number;
 }
 
