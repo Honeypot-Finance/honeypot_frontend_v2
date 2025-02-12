@@ -12,21 +12,10 @@ import Image from "next/image";
 import { Button } from "@/components/button";
 import BeraVoteForm from "@/components/beravote/components/NewSpace/Steps/BeraVoteForm";
 import { observer } from "mobx-react-lite";
-import { VscCopy } from "react-icons/vsc";
-import { Copy } from "@/components/Copy";
 import { Trigger } from "@/components/Trigger";
-import {
-  OptionsDropdown,
-  optionsPresets,
-} from "@/components/OptionsDropdown/OptionsDropdown";
-import { wallet } from "@/services/wallet";
-import { toast } from "react-toastify";
 import { Modal, useDisclosure } from "@nextui-org/react";
 import { UpdateProjectModal } from "../[pair]";
 import TransactionHistory from "./TransactionHistory";
-import { ShareMediaDisplay } from "@/components/ShareSocialMedialPopUp/ShareSocialMedialPopUp";
-import { pot2PumpTGShareContent } from "@/config/socialSharingContents";
-import { popmodal } from "@/services/popmodal";
 import TopHoldersTable from "./TopHoldersTable";
 
 const universalMenuItems = [
