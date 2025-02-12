@@ -9,7 +9,7 @@ import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair
 import { ShareMediaDisplay } from "@/components/ShareSocialMedialPopUp/ShareSocialMedialPopUp";
 import {
   pot2pumpShareLink,
-  pot2PumpTGShareContent,
+  pot2PumpShareContent,
 } from "@/config/socialSharingContents";
 import { cn } from "@nextui-org/theme";
 import Link from "next/link";
@@ -115,7 +115,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                 <Link
                   className="cursor-pointer flex items-center gap-2 hover:text-primary flex-col"
                   target="_blank"
-                  href={`https://twitter.com/intent/tweet?text=${pot2PumpTGShareContent(pair)}%0A%0A${pot2pumpShareLink(pair)}`}
+                  href={`https://twitter.com/intent/tweet?text=${pot2PumpShareContent(pair, "twitter")}%0A%0A${pot2pumpShareLink(pair)}`}
                 >
                   <div className="flex items-center gap-1">
                     Share With Twitter
@@ -126,7 +126,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                 <Link
                   className="cursor-pointer flex items-center gap-2 hover:text-primary flex-col"
                   target="_blank"
-                  href={`https://telegram.me/share/url?url=${pot2pumpShareLink(pair)}%0A&text=${pot2PumpTGShareContent(pair)}`}
+                  href={`https://telegram.me/share/url?url=${pot2pumpShareLink(pair)}%0A&text=${pot2PumpShareContent(pair, "telegram")}`}
                 >
                   <div className="flex items-center gap-1">
                     Share With Telegram
