@@ -1,47 +1,31 @@
 import { DynamicFormatAmount } from "@/lib/algebra/utils/common/formatAmount";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
+import { DOMAIN_MAP } from "honeypot-sdk";
 
-export const pot2PumpPumpingTGShareContent = (pair: MemePairContract) => `
-🚀 Pot2Pump
-💥 Ticker: ${pair.launchedToken?.symbol} 
-🔹 Full Name: ${pair.launchedToken?.displayName}  
+export const pot2pumpShareLink = (pair: MemePairContract) =>
+  `${DOMAIN_MAP.POT2PUMP}/launch-detail/${pair.address}`;
 
-📈 Price Growth since Launch: ${pair.priceChangeDisplay}     
-💵 USD Price: $${DynamicFormatAmount({
-  amount: pair.launchedToken?.derivedUSD ?? "0",
-  decimals: 5,
-  endWith: "$",
-})} 
-📊 Total Supply: ${DynamicFormatAmount({
-  amount:
-    pair.launchedToken?.totalSupplyWithoutDecimals
-      .div(10 ** (pair.launchedToken?.decimals ?? 18))
-      .toFixed(2) ?? "0",
-  decimals: 2,
-  endWith: " ",
-})}  
-🔄 Transactions: 🟢 ${pair.launchedTokenBuyCount} / 🔴 ${pair.launchedTokenSellCount}
+export const pot2PumpPumpingShareContent = (pair: MemePairContract) => `
+🚀 Just graduated from Pot2Pump on @honeypotfinance 
+💥 "${pair.launchedToken?.symbol}" now trading on Pot-Wasabee DEX -> Berachain's answer to @Meteora
 
-🔗 ${window.location.origin}/launch-detail/${pair.address}
+🔹 A portion of token permanently locked
+🔹 Enhanced m3m3 staking mechanism
+🔹 Integrated with @berachain POL.
 `;
 
-export const pot2PumpPottingTGShareContent = (pair: MemePairContract) => `
-🚀 Pot2Pump
-💥 Ticker: ${pair.launchedToken?.symbol} 
-🔹 Full Name: ${pair.launchedToken?.displayName} 
+export const pot2PumpPottingShareContent = (pair: MemePairContract) => `
+🚀 "${pair.launchedToken?.symbol}" Token launched on @honeypotfinance 's pot2pump.
+💥 Launched with liquidity-focused meme model.
+🔹 Maintained in PotWasabee -> @Meteora on berachain (unique CLMM, ALM to generate high APY).
 
-📈 Potting Percentage: ${pair.pottingPercentageDisplay}    
-💵 Total Raised: $${pair.depositedRaisedToken}    
-👥 Participants count: ${pair.participantsCount}  
-📊 Total Supply: ${pair.launchedToken?.totalSupplyWithoutDecimals.div(10 ** (pair.launchedToken?.decimals ?? 18)).toFixed(2)} 
-
-🔗 ${window.location.origin}/launch-detail/${pair.address}
+👥 come play with me and have fun.
 `;
 
 export const pot2PumpTGShareContent = (pair: MemePairContract) => {
   return encodeURIComponent(
     pair.state === 0
-      ? pot2PumpPumpingTGShareContent(pair)
-      : pot2PumpPottingTGShareContent(pair)
+      ? pot2PumpPumpingShareContent(pair)
+      : pot2PumpPottingShareContent(pair)
   );
 };

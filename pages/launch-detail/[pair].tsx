@@ -37,6 +37,11 @@ import { DynamicFormatAmount } from "@/lib/algebra/utils/common/formatAmount";
 import { amountFormatted } from "@/lib/format";
 import CardContainer from "@/components/CardContianer/v3";
 import { ReactTyped } from "react-typed";
+import {
+  OptionsDropdown,
+  optionsPresets,
+} from "@/components/OptionsDropdown/OptionsDropdown";
+import { LucideFileEdit } from "lucide-react";
 
 export const UpdateProjectModal = observer(
   ({ pair }: { pair: FtoPairContract | MemePairContract }) => {
@@ -394,9 +399,48 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_500px] gap-4 md:gap-x-4 md:gap-y-14 w-full @container">
           <div
             className={cn(
-              "bg-white col-span-1 lg:col-span-2 px-4 md:px-8 py-3 md:py-5 rounded-3xl grid grid-cols-3 text-[#202020]"
+              "relative bg-white col-span-1 lg:col-span-2 px-4 md:px-8 py-3 md:py-5 rounded-3xl grid grid-cols-3 text-[#202020]"
             )}
           >
+            {" "}
+            <OptionsDropdown
+              className="p-0 m-0 absolute right-5 top-2 z-10 text-black"
+              options={[
+                optionsPresets.copy({
+                  copyText: pair?.launchedToken?.address ?? "",
+                  displayText: "Copy Token address",
+                  copysSuccessText: "Token address copied",
+                }),
+                optionsPresets.share({
+                  shareUrl: `${window.location.origin}/launch-detail/${pair?.address}`,
+                  displayText: "Share this project",
+                  shareText: "Checkout this Token: " + pair?.projectName,
+                }),
+                optionsPresets.importTokenToWallet({
+                  token: pair?.launchedToken,
+                }),
+                optionsPresets.viewOnExplorer({
+                  address: pair?.address ?? "",
+                }),
+                {
+                  icon: <LucideFileEdit />,
+                  display: "Update Project",
+                  onClick: () => {
+                    if (!pair) return;
+
+                    if (
+                      pair.provider.toLowerCase() !==
+                      wallet.account.toLowerCase()
+                    ) {
+                      toast.warning("You are not the owner of this project");
+                      return;
+                    }
+
+                    onOpen();
+                  },
+                },
+              ]}
+            />
             <div className="flex items-center gap-x-4 md:gap-x-[7.5px] justify-center sm:justify-start col-span-1">
               <div className="size-10 md:size-[77px] bg-[#ECC94E] flex items-center justify-center rounded-full shrink-0">
                 <Image
@@ -412,6 +456,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                 />
               </div>
               <ProjectTitle
+                pair={state.pair.value ?? undefined}
                 name={state.pair.value?.launchedToken?.name}
                 displayName={state.pair.value?.launchedToken?.displayName}
                 telegram={state.pair.value?.telegram}
@@ -423,13 +468,11 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                 isValidated={state.pair.value?.isValidated}
               />
             </div>
-
             <div className="col-span-1 text-xs flex items-center justify-center">
               {pair?.description && (
                 <ReactTyped strings={[pair.description]} typeSpeed={25} />
               )}
             </div>
-
             <div className="flex flex-col items-center gap-3 md:gap-8 col-span-1">
               {state.pair.value?.state !== 0 && (
                 <CountdownTimer

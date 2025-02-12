@@ -365,7 +365,7 @@ const DetailLaunchCard = observer(
           <div className="flex justify-between items-start">
             <div>
               <h3 className="font-bold text-xl">{pair?.launchToken?.name}</h3>
-              <p className="text-sm text-muted-foreground text-[#202020]/[0.67]">
+              <p className="text-sm  text-[#202020]/[0.67]">
                 {pair?.launchToken?.symbol}
               </p>
             </div>

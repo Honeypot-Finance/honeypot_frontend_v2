@@ -497,7 +497,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                     {tab}
                   </div>
                 </div>
-                <div className="flex flex-col gap-6 py-4 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1 &::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2 shadow-inner rounded-xl px-2">
+                <div className="flex flex-col gap-6 py-4 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1  [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2 shadow-inner px-2">
                   {(() => {
                     switch (tab) {
                       case POT_TABS.NEW:

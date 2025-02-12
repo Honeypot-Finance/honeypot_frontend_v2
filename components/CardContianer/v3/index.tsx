@@ -57,7 +57,9 @@ function CardContainer({
         "flex flex-col h-full w-full gap-y-4 justify-center items-center rounded-2xl text-[#202020]",
         type === "primary"
           ? "bg-[#FFCD4D]"
-          : "border-3 border-[#F2C34A] bg-transparent",
+          : bordered
+            ? "border-3 border-[#F2C34A] bg-transparent"
+            : "bg-transparent",
         bordered &&
           [
             "px-4",

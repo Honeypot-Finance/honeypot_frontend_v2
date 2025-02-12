@@ -89,7 +89,7 @@ export const LaunchDataProgress = observer(
                         refreshVotes();
                       });
                   }}
-                  className="mt-2 flex-1 flex flex-col  justify-center items-center bg-[#202020] px-3 py-3 hover:bg-[#FFCD4D] active:[background:#F0A000] cursor-pointer select-none border border-[#F2C34A] rounded-2xl"
+                  className="mt-2 flex-1 flex flex-col  justify-center items-center bg-[#202020] text-white px-3 py-3 hover:bg-[#FFCD4D] active:[background:#F0A000] cursor-pointer select-none border border-[#F2C34A] rounded-2xl"
                 >
                   <p>
                     {(key.split("_")[0] === "rocket" && "🚀") ||

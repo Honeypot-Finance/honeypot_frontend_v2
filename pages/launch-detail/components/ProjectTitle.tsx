@@ -6,6 +6,14 @@ import { Copy } from "@/components/Copy";
 import { VscCopy } from "react-icons/vsc";
 import PairStatus from "@/components/atoms/TokenStatusDisplay/PairStatus";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
+import { ShareMediaDisplay } from "@/components/ShareSocialMedialPopUp/ShareSocialMedialPopUp";
+import {
+  pot2pumpShareLink,
+  pot2PumpTGShareContent,
+} from "@/config/socialSharingContents";
+import { cn } from "@nextui-org/theme";
+import Link from "next/link";
+import { BiLinkExternal } from "react-icons/bi";
 
 interface ProjectTitleProps {
   name?: string;
@@ -17,6 +25,7 @@ interface ProjectTitleProps {
   statusColor?: string;
   status?: string;
   isValidated?: boolean;
+  pair?: MemePairContract;
 }
 
 const ProjectTitle: React.FC<ProjectTitleProps> = ({
@@ -29,6 +38,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
   statusColor,
   status,
   isValidated,
+  pair,
 }) => {
   return (
     <div className="flex flex-col gap-4">
@@ -92,6 +102,46 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
             status={status}
             isValidated={isValidated}
           />
+        </div>
+        <div className="flex items-center gap-1">
+          {pair && (
+            <div>
+              <div
+                className={cn(
+                  "m-2 text-right flex items-center gap-2 flex-row text-black"
+                )}
+              >
+                {" "}
+                <Link
+                  className="cursor-pointer flex items-center gap-2 hover:text-primary flex-col"
+                  target="_blank"
+                  href={`https://twitter.com/intent/tweet?text=${pot2PumpTGShareContent(pair)}%0A%0A${pot2pumpShareLink(pair)}`}
+                >
+                  <div className="flex items-center gap-1">
+                    Share With Twitter
+                    <BiLinkExternal />
+                  </div>
+                </Link>
+                {/* telegram */}
+                <Link
+                  className="cursor-pointer flex items-center gap-2 hover:text-primary flex-col"
+                  target="_blank"
+                  href={`https://telegram.me/share/url?url=${pot2pumpShareLink(pair)}%0A&text=${pot2PumpTGShareContent(pair)}`}
+                >
+                  <div className="flex items-center gap-1">
+                    Share With Telegram
+                    <BiLinkExternal />
+                  </div>
+                </Link>
+              </div>
+            </div>
+            // <ShareMediaDisplay
+            //   shareUrl={`${window.location.origin}/launch-detail/${address}`}
+            //   shareText={pot2PumpTGShareContent(pair)}
+            //   className="flex items-center gap-1 flex-row text-black"
+            //   noIcon
+            // />
+          )}
         </div>
       </div>
     </div>
