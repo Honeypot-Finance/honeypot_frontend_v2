@@ -61,12 +61,15 @@ export const LaunchDataProgress = observer(
 
         <TokenAddress address={pair?.launchedToken?.address} />
 
-        <TokenDetails
-          price={pair?.price}
-          depositedRaisedToken={pair?.depositedRaisedToken}
-          startTimeDisplay={pair?.startTimeDisplay}
-          endTimeDisplay={pair?.endTimeDisplay}
-        />
+        {pair.raiseToken && (
+          <TokenDetails
+            raisedToken={pair.raiseToken}
+            price={pair?.price}
+            depositedRaisedToken={pair?.depositedRaisedToken}
+            startTimeDisplay={pair?.startTimeDisplay}
+            endTimeDisplay={pair?.endTimeDisplay}
+          />
+        )}
 
         <div className="w-full h-[1px] bg-[#52493D]"></div>
         <div className="space-y-1.5">
