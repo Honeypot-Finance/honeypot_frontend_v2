@@ -655,7 +655,7 @@ const FeaturedLaunchCard = observer(({ pair }: { pair: LaunchContract }) => {
                   Token Price:{" "}
                   {DynamicFormatAmount({
                     amount: pair.launchedToken?.derivedUSD ?? "0",
-                    decimals: 5,
+                    decimals: 2,
                     // endWith: null,
                   })}
                 </div>
