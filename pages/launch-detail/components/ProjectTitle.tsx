@@ -4,6 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { FaTelegram, FaGlobe } from "react-icons/fa";
 import { Copy } from "@/components/Copy";
 import { VscCopy } from "react-icons/vsc";
+import { BiSearch } from "react-icons/bi";
 import PairStatus from "@/components/atoms/TokenStatusDisplay/PairStatus";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 import { ShareMediaDisplay } from "@/components/ShareSocialMedialPopUp/ShareSocialMedialPopUp";
@@ -96,6 +97,17 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                 </div>
               }
             />
+          )}
+          {address && (
+            <a
+              href={`https://x.com/search?q=${address}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-80 text-[#5C5C5C]"
+              title="Search on X"
+            >
+              <BiSearch size={16} />
+            </a>
           )}
           <PairStatus
             statusColor={statusColor}
