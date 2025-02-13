@@ -178,7 +178,8 @@ export const PottingModal = observer(
 
                   if (
                     selectedToken?.address.toLowerCase() ===
-                    wallet.currentChain.nativeToken.address.toLowerCase()
+                    wallet.currentChain.nativeToken.address.toLowerCase() &&
+                    selectedToken.isNative
                   ) {
                     console.log("amount", amount);
                     // @ts-ignore
