@@ -52,6 +52,7 @@ function CardContainer({
             : "none",
         } as React.CSSProperties
       }
+
       // TODO: Add style adaptation of different sizes
       className={cn(
         "flex flex-col h-full w-full gap-y-4 justify-center items-center rounded-2xl text-[#202020]",
@@ -67,7 +68,7 @@ function CardContainer({
             showTopBorder && "pt-[80px]",
             showBottomBorder && "pb-[80px]",
             "bg-[size:auto_70px,_auto_70px]",
-            `bg-[position:${[topBorderOffset]}px_top,_left_bottom]`,
+            `bg-[position:top,_left_bottom]`,
           ]
             .filter(Boolean)
             .join(" "),
