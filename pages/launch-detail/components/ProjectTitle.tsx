@@ -123,14 +123,13 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                   "m-2 text-right flex items-center gap-2 flex-row text-black"
                 )}
               >
-                {" "}
                 <Link
                   className="cursor-pointer flex items-center gap-2 hover:text-primary flex-col"
                   target="_blank"
                   href={`https://twitter.com/intent/tweet?text=${pot2PumpShareContent(pair, "twitter")}%0A%0A${pot2pumpShareLink(pair)}`}
                 >
-                  <div className="flex items-center gap-1">
-                    Share With Twitter
+                  <div className="flex items-center gap-1 hover:text-black/40">
+                    X
                     <BiLinkExternal />
                   </div>
                 </Link>
@@ -140,19 +139,13 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                   target="_blank"
                   href={`https://telegram.me/share/url?url=${pot2pumpShareLink(pair)}%0A&text=${pot2PumpShareContent(pair, "telegram")}`}
                 >
-                  <div className="flex items-center gap-1">
-                    Share With Telegram
+                  <div className="flex items-center gap-1 hover:text-black/40">
+                    Telegram
                     <BiLinkExternal />
                   </div>
                 </Link>
               </div>
             </div>
-            // <ShareMediaDisplay
-            //   shareUrl={`${window.location.origin}/launch-detail/${address}`}
-            //   shareText={pot2PumpTGShareContent(pair)}
-            //   className="flex items-center gap-1 flex-row text-black"
-            //   noIcon
-            // />
           )}
         </div>
       </div>
