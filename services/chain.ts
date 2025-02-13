@@ -535,6 +535,11 @@ export const berachainNetwork = new Network({
       address: "0x1cE0a25D13CE4d52071aE7e02Cf1F6606F4C79d3".toLowerCase(),
       amount: BigInt("20000000000000000000000"),
     },
+    {
+      symbol: "WGBERA",
+      address: "0xd77552d3849ab4d8c3b189a9582d0ba4c1f4f912".toLowerCase(),
+      amount: BigInt("2000000000000000000000"),
+    },
   ],
   nativeFaucet: {
     address: "0x1bd43f7f55b700236c92256a0fd90266363119f7",
@@ -665,6 +670,12 @@ export const berachainNetwork = new Network({
       symbol: "NECT",
       decimals: 18,
       logoURI: "/images/icons/tokens/nect-token-icon.png",
+    },
+    "0xd77552d3849ab4d8c3b189a9582d0ba4c1f4f912": {
+      name: "WGBERA",
+      symbol: "WGBERA",
+      decimals: 18,
+      logoURI: "/images/icons/tokens/wgbera-token-icon.png",
     },
   },
   validatedFtoAddresses: [],
