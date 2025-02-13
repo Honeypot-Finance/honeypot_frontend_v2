@@ -619,7 +619,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                     <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
                       Buys
                     </span>
-                    <span className="text-sm md:text-[15px] font-bold">
+                    <span className="text-sm md:text-[15px] font-bold text-green-500">
                       {Number(
                         state.pair.value?.launchedTokenBuyCount || 0
                       ).toLocaleString()}
@@ -629,7 +629,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                     <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
                       Sells
                     </span>
-                    <span className="text-sm md:text-[15px] font-bold">
+                    <span className="text-sm md:text-[15px] font-bold text-red-500">
                       {Number(
                         state.pair.value?.launchedTokenSellCount || 0
                       ).toLocaleString()}
