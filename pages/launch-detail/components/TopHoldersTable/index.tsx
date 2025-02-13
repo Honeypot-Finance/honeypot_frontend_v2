@@ -141,14 +141,19 @@ const TopHoldersTable = ({
                     </div>
                   </td>
                   <td className="py-4 px-6">
-                    <div className="flex items-center gap-3">
+                    <a
+                      href={`https://berascan.com/address/${holder.address}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3"
+                    >
                       <Copy
                         className="hover:text-black"
                         content={holder.address}
                         value={holder.address}
                         displayContent={holderAddressDisplay(holder.address)}
                       />
-                    </div>
+                    </a>
                   </td>
                   <td className="py-4 px-6 text-right">
                     <div className="flex flex-col">
