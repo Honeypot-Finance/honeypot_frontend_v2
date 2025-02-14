@@ -386,10 +386,27 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
 
   const handleTabClick = (tab: TabType) => {
     setSelectedTabs((prev) => {
+      let newTabs;
+      // If tab is already selected, remove it
       if (prev.includes(tab)) {
-        return prev;
+        newTabs = prev.filter((t) => t !== tab);
+      } else if (prev.length < 3) {
+        // If we haven't reached max tabs (3), add the new tab
+        newTabs = [...prev, tab];
+      } else {
+        // If we already have 3 tabs, don't add new one
+        newTabs = prev;
       }
-      const newTabs = [...prev.slice(1), tab];
+      // 保存到 localStorage
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newTabs));
+      return newTabs;
+    });
+  };
+
+  const handleCloseTab = (tabToRemove: TabType, event: React.MouseEvent) => {
+    event.stopPropagation();
+    setSelectedTabs((prev) => {
+      const newTabs = prev.filter((tab) => tab !== tabToRemove);
       // 保存到 localStorage
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newTabs));
       return newTabs;
@@ -467,19 +484,34 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
         {/* Tab Selector */}
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-[60%] z-10">
           <div className="flex gap-2 rounded-2xl border border-[#202020] bg-white shadow-[4px_4px_0px_0px_#202020,-4px_4px_0px_0px_#202020] py-1.5 px-2">
-            {Object.values(POT_TABS).map((tab) => (
-              <button
-                key={tab}
-                onClick={() => handleTabClick(tab)}
-                className={`px-3 py-1.5 rounded-lg whitespace-nowrap text-sm ${
-                  selectedTabs.includes(tab)
-                    ? "bg-[#020202] text-white border border-black shadow-[2px_2px_0px_0px_#000000]"
-                    : "text-default-500"
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
+            {Object.values(POT_TABS).map((tab) => {
+              const isSelected = selectedTabs.includes(tab);
+              const isDisabled = selectedTabs.length >= 3 && !isSelected;
+              
+              return (
+                <button
+                  key={tab}
+                  onClick={() => !isDisabled && handleTabClick(tab)}
+                  className={`px-3 py-1.5 rounded-lg whitespace-nowrap text-sm flex items-center gap-1 ${
+                    isSelected
+                      ? "bg-[#020202] text-white border border-black shadow-[2px_2px_0px_0px_#000000]"
+                      : isDisabled
+                      ? "text-gray-400 cursor-not-allowed"
+                      : "text-default-500 hover:bg-gray-100"
+                  }`}
+                >
+                  {tab}
+                  {isSelected && (
+                    <span
+                      onClick={(e) => handleCloseTab(tab, e)}
+                      className="ml-1 hover:bg-gray-700 rounded-full w-4 h-4 flex items-center justify-center"
+                    >
+                      ×
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
 
