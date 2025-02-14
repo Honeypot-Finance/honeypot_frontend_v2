@@ -127,7 +127,8 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
         </div>
         <div className="flex items-center gap-1">
           {pair ? (
-            <div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-[#5C5C5C]">Share To</span>
               <div
                 className={cn(
                   "m-2 text-right flex items-center gap-2 flex-row text-black"
