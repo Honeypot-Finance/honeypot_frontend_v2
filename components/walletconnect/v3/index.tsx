@@ -29,15 +29,7 @@ export const WalletConnect = () => {
         height={66}
         className="mb-[-20px]"
       />
-      <div className="bg-[#FFCD4D] rounded-xl pb-8 bg-[url('/images/card-container/dark/bottom-border.svg')] bg-left-bottom bg-repeat-x bg-clip-padding pt-4 px-2.5">
-        <div className="flex items-center gap-x-2 justify-center mb-2">
-          <Link
-            href="/profile"
-            className="flex flex-col items-center justify-center bg-white rounded-full p-2"
-          >
-            <BsPerson size={30} color="#202020" />
-          </Link>
-        </div>
+      <div className="bg-[#FFCD4D] rounded-xl pb-8 bg-[url('/images/card-container/dark/bottom-border.svg')] bg-left-bottom bg-repeat-x bg-clip-padding pt-2 lg:pt-4 px-2 lg:px-4">
         <ConnectButton.Custom>
           {({
             account,
@@ -48,8 +40,6 @@ export const WalletConnect = () => {
             authenticationStatus,
             mounted,
           }) => {
-            // Note: If your app doesn't use authentication, you
-            // can remove all 'authenticationStatus' checks
             const ready = mounted && authenticationStatus !== "loading";
             const connected =
               ready &&
@@ -67,67 +57,77 @@ export const WalletConnect = () => {
                     userSelect: "none",
                   },
                 })}
+                className="pr-4 lg:pr-6"
               >
-                {(() => {
-                  if (!connected) {
-                    return (
-                      <div className="flex items-center gap-x-2">
-                        {/* <NetworkSelect /> */}
-                        <ConnectButtonCustom
-                          onClick={() => {
-                            if (process.env.NEXT_PUBLIC_MOCK === "true") {
-                              connect({ connector: mockConnector! });
-                            } else {
-                              openConnectModal();
-                            }
-                          }}
-                        >
-                          <BiWallet size={20} />
-                          Connect Wallet
+                <div className="flex items-center gap-x-2 lg:gap-x-3 justify-between">
+                  <Link
+                    href="/profile"
+                    className="flex items-center justify-center bg-white rounded-full p-1.5 lg:p-2 shrink-0"
+                  >
+                    <BsPerson size={24} className="lg:w-[30px] lg:h-[30px]" color="#202020" />
+                  </Link>
+                  {(() => {
+                    if (!connected) {
+                      return (
+                        <div className="flex items-center">
+                          <ConnectButtonCustom
+                            onClick={() => {
+                              if (process.env.NEXT_PUBLIC_MOCK === "true") {
+                                connect({ connector: mockConnector! });
+                              } else {
+                                openConnectModal();
+                              }
+                            }}
+                            className="text-xs sm:text-sm lg:text-base"
+                          >
+                            <BiWallet size={18} className="lg:w-5 lg:h-5" />
+                            Connect Wallet
+                          </ConnectButtonCustom>
+                        </div>
+                      );
+                    }
+                    if (chain.unsupported) {
+                      return (
+                        <ConnectButtonCustom onClick={openChainModal} className="text-xs sm:text-sm lg:text-base">
+                          Wrong network
                         </ConnectButtonCustom>
+                      );
+                    }
+                    return (
+                      <div className="flex items-center gap-1.5 lg:gap-3">
+                        <button
+                          onClick={openChainModal}
+                          type="button"
+                          className="flex cursor-pointer bg-[#202020] text-white px-3 lg:px-4 py-1.5 lg:py-2 rounded-2xl gap-1.5 lg:gap-2 items-center shrink-0 text-xs sm:text-sm lg:text-base"
+                        >
+                          <Image
+                            src={"/images/empty-logo.png"}
+                            alt="icon"
+                            width={18}
+                            height={18}
+                            className="lg:w-5 lg:h-5"
+                          />
+                          <div className="text-nowrap text-white">
+                            {account.displayBalance ? (
+                              `${account.displayBalance}`
+                            ) : (
+                              <div className="h-3 lg:h-4 w-16 lg:w-20 bg-gray-700 animate-pulse rounded"></div>
+                            )}
+                          </div>
+                        </button>
+
+                        <button
+                          onClick={openAccountModal}
+                          type="button"
+                          className="flex cursor-pointer bg-[#202020] text-white px-3 lg:px-4 py-1.5 lg:py-2 rounded-2xl gap-1.5 lg:gap-2 items-center shrink-0 text-xs sm:text-sm lg:text-base"
+                        >
+                          <BiWallet size={18} className="lg:w-5 lg:h-5" />
+                          <span className="whitespace-nowrap">{account.displayName}</span>
+                        </button>
                       </div>
                     );
-                  }
-                  if (chain.unsupported) {
-                    return (
-                      <ConnectButtonCustom onClick={openChainModal}>
-                        Wrong network
-                      </ConnectButtonCustom>
-                    );
-                  }
-                  return (
-                    <div className="flex flex-col sm:flex-row gap-[12px] items-center relative">
-                      <button
-                        onClick={openChainModal}
-                        type="button"
-                        className="flex min-w-[126px] cursor-pointer bg-[#202020] text-white px-4 py-2 rounded-2xl gap-2 items-center"
-                      >
-                        <Image
-                          src={"/images/empty-logo.png"}
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-
-                        <div className="text-nowrap text-white">
-                          {account.displayBalance ? (
-                            `${account.displayBalance}`
-                          ) : (
-                            <div className="h-4 w-20 bg-gray-700 animate-pulse rounded"></div>
-                          )}
-                        </div>
-                      </button>
-
-                      <ConnectButtonCustom
-                        onClick={openAccountModal}
-                        type="button"
-                      >
-                        <BiWallet size={20} />
-                        {account.displayName}
-                      </ConnectButtonCustom>
-                    </div>
-                  );
-                })()}
+                  })()}
+                </div>
               </div>
             );
           }}

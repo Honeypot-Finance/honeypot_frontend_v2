@@ -7,7 +7,6 @@ import { VscCopy } from "react-icons/vsc";
 import { BiSearch } from "react-icons/bi";
 import PairStatus from "@/components/atoms/TokenStatusDisplay/PairStatus";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
-import { ShareMediaDisplay } from "@/components/ShareSocialMedialPopUp/ShareSocialMedialPopUp";
 import {
   pot2pumpShareLink,
   pot2PumpShareContent,

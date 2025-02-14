@@ -22,6 +22,7 @@
     "@graphql-codegen/cli": "^5.0.3",
     "@graphql-codegen/typescript-react-apollo": "^4.3.2",
     "@heroicons/react": "^2.2.0",
+    "@heroui/navbar": "^2.2.9",
     "@hookform/resolvers": "^3.9.0",
     "@internationalized/date": "3.6.0",
     "@marigoldlabs/fjord-honeypot-sdk": "^0.1.14",
