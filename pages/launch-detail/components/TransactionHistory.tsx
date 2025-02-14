@@ -107,7 +107,7 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
   };
 
   return (
-    <div className="bg-[#202020] rounded-2xl overflow-hidden">
+    <div className="bg-[#202020] rounded-2xl overflow-hidden w-full">
       <div className="p-6">
         <div className="border border-[#5C5C5C] rounded-lg overflow-hidden">
           <table className="w-full">
