@@ -46,12 +46,12 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
       <div className="flex items-center flex-col gap-3">
         <div className="flex items-center gap-1">
           {displayName ? (
-            <div className="text-2xl text-[#5C5C5C]/60">{displayName}</div>
+            <div className="text-2xl">{displayName}</div>
           ) : (
             <Skeleton className="h-8 w-[60px] bg-slate-200" />
           )}
           {name ? (
-            <div className="text-sm">({name})</div>
+            <div className="text-sm text-[#5C5C5C]/60">({name})</div>
           ) : (
             <Skeleton className="h-5 w-[150px] bg-slate-200" />
           )}
