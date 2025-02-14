@@ -48,16 +48,16 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
           {displayName ? (
             <div className="text-2xl text-[#5C5C5C]/60">{displayName}</div>
           ) : (
-            <Skeleton className="h-5 w-20 bg-slate-200" />
+            <Skeleton className="h-8 w-[60px] bg-slate-200" />
           )}
           {name ? (
             <div className="text-sm">({name})</div>
           ) : (
-            <Skeleton className="h-8 w-[140px] bg-slate-200" />
+            <Skeleton className="h-5 w-[150px] bg-slate-200" />
           )}
         </div>
         <div className="flex items-center gap-1">
-          {telegram && (
+          {telegram ? (
             <a
               href={telegram}
               target="_blank"
@@ -66,8 +66,10 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
             >
               <FaTelegram size={16} />
             </a>
+          ) : (
+            <Skeleton className="h-4 w-4 bg-slate-200" />
           )}
-          {twitter && (
+          {twitter ? (
             <a
               href={twitter}
               target="_blank"
@@ -76,8 +78,10 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
             >
               <FaXTwitter size={16} />
             </a>
+          ) : (
+            <Skeleton className="h-4 w-4 bg-slate-200" />
           )}
-          {website && (
+          {website ? (
             <a
               href={website}
               target="_blank"
@@ -86,8 +90,10 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
             >
               <FaGlobe size={16} />
             </a>
+          ) : (
+            <Skeleton className="h-4 w-4 bg-slate-200" />
           )}
-          {address && (
+          {address ? (
             <Copy
               content="Copy address"
               value={address}
@@ -97,8 +103,10 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                 </div>
               }
             />
+          ) : (
+            <Skeleton className="h-4 w-4 bg-slate-200" />
           )}
-          {address && (
+          {address ? (
             <a
               href={`https://x.com/search?q=${address}`}
               target="_blank"
@@ -108,15 +116,17 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
             >
               <BiSearch size={16} />
             </a>
+          ) : (
+            <Skeleton className="h-4 w-4 bg-slate-200" />
           )}
           <PairStatus
-            statusColor={statusColor}
             status={status}
+            statusColor={statusColor}
             isValidated={isValidated}
           />
         </div>
         <div className="flex items-center gap-1">
-          {pair && (
+          {pair ? (
             <div>
               <div
                 className={cn(
@@ -140,11 +150,16 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                   href={`https://telegram.me/share/url?url=${pot2pumpShareLink(pair)}%0A&text=${pot2PumpShareContent(pair, "telegram")}`}
                 >
                   <div className="flex items-center gap-1 hover:text-black/40">
-                    Telegram
+                    TG
                     <BiLinkExternal />
                   </div>
                 </Link>
               </div>
+            </div>
+          ) : (
+            <div className="m-2 flex items-center gap-2">
+              <Skeleton className="h-6 w-16 bg-slate-200" />
+              <Skeleton className="h-6 w-16 bg-slate-200" />
             </div>
           )}
         </div>
