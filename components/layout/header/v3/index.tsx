@@ -94,10 +94,7 @@ export const Header = (props: HtmlHTMLAttributes<any>) => {
             </NavbarBrand>
           )}
 
-          <NavbarContent
-            justify="start"
-            className="hidden md:flex !grow max-w-[280px] lg:max-w-fit"
-          >
+          <NavbarContent justify="center" className="hidden md:flex">
             <CustomNavbar menuList={menuList} />
           </NavbarContent>
 
@@ -109,24 +106,26 @@ export const Header = (props: HtmlHTMLAttributes<any>) => {
             )}
           />
 
-          <NavbarContent justify="end" className="flex gap-4">
-            {!isMenuOpen && <WalletConnect />}
-          </NavbarContent>
+          {!isMenuOpen && <WalletConnect />}
 
-          <NavbarMenu className={cn(
-            "lg:hidden pt-24 bg-black/95 backdrop-blur-md",
-            "will-change-transform transform-gpu transition-all duration-200 ease-out",
-            isMenuOpen 
-              ? "opacity-100 translate-y-0" 
-              : "opacity-0 -translate-y-2"
-          )}>
-            <div className={cn(
-              "flex flex-col gap-2",
-              "will-change-transform transform-gpu transition-all duration-150 ease-out",
-              isMenuOpen 
-                ? "opacity-100 translate-x-0" 
-                : "opacity-0 -translate-x-2"
-            )}>
+          <NavbarMenu
+            className={cn(
+              "lg:hidden pt-24 bg-black/95 backdrop-blur-md",
+              "will-change-transform transform-gpu transition-all duration-200 ease-out",
+              isMenuOpen
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 -translate-y-2"
+            )}
+          >
+            <div
+              className={cn(
+                "flex flex-col gap-2",
+                "will-change-transform transform-gpu transition-all duration-150 ease-out",
+                isMenuOpen
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-2"
+              )}
+            >
               {listToNavbarItem(menuList)}
             </div>
           </NavbarMenu>

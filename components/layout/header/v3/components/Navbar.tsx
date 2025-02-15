@@ -40,7 +40,7 @@ export const CustomNavbar: React.FC<NavbarProps> = ({ menuList }) => {
         src="/images/header/hanging-rope.svg"
       />
       <div className="bg-[#FFCD4D] rounded-xl flex flex-col py-2 px-1.5 lg:py-4 lg:px-3 border-[1.5px] border-[#010101] shadow-[2px_4px_0px_0px_#FFF]">
-        <div className="flex gap-1 lg:gap-2 lg:py-1 flex-wrap">
+        <div className="flex gap-1 lg:gap-2 lg:py-1 flex-wrap max-w-[280px] lg:max-w-none lg:flex-nowrap">
           {menuList.map((menu) =>
             Array.isArray(menu.path) ? (
               <Dropdown
