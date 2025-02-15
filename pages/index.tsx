@@ -21,6 +21,7 @@ import {
 import { LoadingDisplay } from "honeypot-ui";
 import CardContainer from "@/components/CardContianer/v3";
 import { NetworkStatus } from "@apollo/client";
+import Image from "next/image";
 // 在组件外部定义常量
 
 const POT_TABS = {
@@ -387,19 +388,14 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
   const handleTabClick = (tab: TabType) => {
     setSelectedTabs((prev) => {
       let newTabs;
-      // If tab is already selected, remove it
-      if (prev.includes(tab)) {
-        newTabs = prev.filter((t) => t !== tab);
-      } else if (prev.length < 3) {
-        // If we haven't reached max tabs (3), add the new tab
+      // Only add new tab if not already selected and we haven't reached max tabs (3)
+      if (!prev.includes(tab) && prev.length < 3) {
         newTabs = [...prev, tab];
-      } else {
-        // If we already have 3 tabs, don't add new one
-        newTabs = prev;
+        // 保存到 localStorage
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(newTabs));
+        return newTabs;
       }
-      // 保存到 localStorage
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newTabs));
-      return newTabs;
+      return prev;
     });
   };
 
@@ -517,387 +513,401 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
 
         {/* Content Area */}
         <div className="bg-white rounded-3xl p-8 border border-black shadow-[4px_4px_0px_0px_#D29A0D] w-full">
-          {/* Desktop Grid */}
-          <div className="hidden md:grid grid-cols-3 min-h-[600px] h-[calc(100vh-300px)] gap-2">
-            {selectedTabs.map((tab) => (
-              <section
-                key={tab}
-                className="relative flex flex-col px-2 overflow-hidden gap-y-2"
-              >
-                <div>
-                  <div className="rounded-small dark:bg-default bg-[#FFCD4D] border border-black shadow-[2px_2px_0px_0px_#000000] text-sm inline-block p-2">
-                    {tab}
-                  </div>
-                </div>
-                <div className="flex flex-col gap-6 py-4 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1  [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2 shadow-inner px-2">
-                  {(() => {
-                    switch (tab) {
-                      case POT_TABS.NEW:
-                        return (
-                          <CardContainer
-                            className="h-auto"
-                            loading={isNewTokensInitialLoading}
-                            bordered={false}
-                            type="default"
-                            loadingText="Loading..."
-                            empty={!newTokensList?.length}
-                          >
-                            {newTokensList
-                              .sort(
-                                (a, b) =>
-                                  Number(b.startTime) - Number(a.startTime)
-                              )
-                              ?.map((pot2pump, index) => (
-                                <motion.div
-                                  key={index}
-                                  variants={itemPopUpVariants}
-                                >
-                                  <LaunchCardV3
-                                    type="simple"
-                                    pair={pot2pump}
-                                    action={<></>}
-                                    theme="dark"
-                                  />
-                                </motion.div>
-                              ))}
-                          </CardContainer>
-                        );
-                      case POT_TABS.ALMOST:
-                        return (
-                          <CardContainer
-                            className="h-auto"
-                            loading={isNearSuccessInitialLoading}
-                            bordered={false}
-                            type="default"
-                            loadingText="Loading..."
-                            empty={!nearSuccessTokensList?.length}
-                          >
-                            {nearSuccessTokensList
-                              ?.sort(
-                                (a, b) =>
-                                  Number(b.pottingPercentageNumber) -
-                                  Number(a.pottingPercentageNumber)
-                              )
-                              ?.map((pot2pump, index) => (
-                                <motion.div
-                                  key={index}
-                                  variants={itemPopUpVariants}
-                                >
-                                  <LaunchCardV3
-                                    type="simple"
-                                    pair={pot2pump}
-                                    action={<></>}
-                                    theme="dark"
-                                  />
-                                </motion.div>
-                              ))}
-                          </CardContainer>
-                        );
-                      case POT_TABS.MOON:
-                        return (
-                          <CardContainer
-                            loading={isHighPriceInitialLoading}
-                            bordered={false}
-                            type="default"
-                            loadingText="Loading..."
-                            empty={!highPriceTokensList?.length}
-                            className="h-auto"
-                          >
-                            {highPriceTokensList
-                              ?.sort(
-                                (a, b) =>
-                                  Number(b.launchedToken?.derivedUSD) -
-                                  Number(a.launchedToken?.derivedUSD)
-                              )
-                              ?.map((pot2pump, index) => (
-                                <motion.div
-                                  key={index}
-                                  variants={itemPopUpVariants}
-                                >
-                                  <LaunchCardV3
-                                    type="simple"
-                                    pair={pot2pump}
-                                    action={<></>}
-                                    theme="dark"
-                                  />
-                                </motion.div>
-                              ))}
-                          </CardContainer>
-                        );
-
-                      case POT_TABS.TRENDING:
-                        return (
-                          <CardContainer
-                            className="h-auto"
-                            loading={isTrendingInitialLoading}
-                            bordered={false}
-                            type="default"
-                            loadingText="Loading..."
-                            empty={!trendingTokensList?.length}
-                          >
-                            {trendingTokensList
-                              ?.sort(
-                                (a, b) =>
-                                  Number(
-                                    b.launchedToken?.priceChange24hPercentage
-                                  ) -
-                                  Number(
-                                    a.launchedToken?.priceChange24hPercentage
-                                  )
-                              )
-                              ?.map((pot2pump, index) => (
-                                <motion.div
-                                  key={index}
-                                  variants={itemPopUpVariants}
-                                >
-                                  <LaunchCardV3
-                                    type="simple"
-                                    pair={pot2pump}
-                                    action={<></>}
-                                    theme="dark"
-                                  />
-                                </motion.div>
-                              ))}
-                          </CardContainer>
-                        );
-                      case POT_TABS.MARKET_CAP:
-                        return (
-                          <CardContainer
-                            className="h-auto"
-                            loading={isMarketCapInitialLoading}
-                            bordered={false}
-                            type="default"
-                            loadingText="Loading..."
-                            empty={!marketCapTokensList?.length}
-                          >
-                            {marketCapTokensList
-                              ?.sort(
-                                (a, b) =>
-                                  Number(b.launchedToken?.marketCap) -
-                                  Number(a.launchedToken?.marketCap)
-                              )
-                              ?.map((pot2pump, index) => (
-                                <motion.div
-                                  key={index}
-                                  variants={itemPopUpVariants}
-                                >
-                                  <LaunchCardV3
-                                    type="simple"
-                                    pair={pot2pump}
-                                    action={<></>}
-                                    theme="dark"
-                                  />
-                                </motion.div>
-                              ))}
-                          </CardContainer>
-                        );
-                      case POT_TABS.NEW_PUMPS:
-                        return (
-                          <CardContainer
-                            className="h-auto"
-                            loading={isNewTokensByEndtimeInitialLoading}
-                            bordered={false}
-                            type="default"
-                            loadingText="Loading..."
-                            empty={!endTimeTokensList?.length}
-                          >
-                            {endTimeTokensList
-                              ?.sort(
-                                (a, b) => Number(a.endTime) - Number(b.endTime)
-                              )
-                              ?.map((pot2pump, index) => (
-                                <motion.div
-                                  key={index}
-                                  variants={itemPopUpVariants}
-                                >
-                                  <LaunchCardV3
-                                    type="simple"
-                                    pair={pot2pump}
-                                    action={<></>}
-                                    theme="dark"
-                                  />
-                                </motion.div>
-                              ))}
-                          </CardContainer>
-                        );
-                      default:
-                        return null;
-                    }
-                  })()}
-                </div>
-              </section>
-            ))}
-          </div>
-
-          {/* Mobile Content */}
-          <div className="md:hidden min-h-[600px] h-[calc(100vh-300px)]">
-            <div className="h-full flex flex-col px-2 overflow-hidden">
-              {selectedTabs.map((tab) => (
-                <div
-                  key={tab}
-                  className="flex flex-col gap-4 pb-2 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1 &::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2"
-                >
-                  {(() => {
-                    switch (tab) {
-                      case POT_TABS.NEW:
-                        return isNewTokensInitialLoading ? (
-                          <LoadingDisplay />
-                        ) : newTokensList.length > 0 ? (
-                          newTokensList
-                            .sort(
-                              (a, b) =>
-                                Number(b.startTime) - Number(a.startTime)
-                            )
-                            ?.map((pot2pump, index) => (
-                              <motion.div
-                                key={index}
-                                variants={itemPopUpVariants}
-                              >
-                                <LaunchCardV3
-                                  type="simple"
-                                  pair={pot2pump}
-                                  action={<></>}
-                                />
-                              </motion.div>
-                            ))
-                        ) : (
-                          <LoadingDisplay />
-                        );
-                      case POT_TABS.ALMOST:
-                        return isNearSuccessInitialLoading ? (
-                          <LoadingDisplay />
-                        ) : nearSuccessTokensList.length > 0 ? (
-                          nearSuccessTokensList
-                            ?.sort(
-                              (a, b) =>
-                                Number(b.pottingPercentageNumber) -
-                                Number(a.pottingPercentageNumber)
-                            )
-                            ?.map((pot2pump, index) => (
-                              <motion.div
-                                key={index}
-                                variants={itemPopUpVariants}
-                              >
-                                <LaunchCardV3
-                                  type="simple"
-                                  pair={pot2pump}
-                                  action={<></>}
-                                />
-                              </motion.div>
-                            ))
-                        ) : (
-                          <LoadingDisplay />
-                        );
-                      case POT_TABS.MOON:
-                        return isHighPriceInitialLoading ? (
-                          <LoadingDisplay />
-                        ) : highPriceTokensList.length > 0 ? (
-                          highPriceTokensList
-                            ?.sort(
-                              (a, b) =>
-                                Number(b.launchedToken?.derivedUSD) -
-                                Number(a.launchedToken?.derivedUSD)
-                            )
-                            ?.map((pot2pump, index) => (
-                              <motion.div
-                                key={index}
-                                variants={itemPopUpVariants}
-                              >
-                                <LaunchCardV3
-                                  type="simple"
-                                  pair={pot2pump}
-                                  action={<></>}
-                                />
-                              </motion.div>
-                            ))
-                        ) : (
-                          <LoadingDisplay />
-                        );
-                      case POT_TABS.TRENDING:
-                        return isTrendingInitialLoading ? (
-                          <LoadingDisplay />
-                        ) : trendingTokensList.length > 0 ? (
-                          trendingTokensList
-                            ?.sort(
-                              (a, b) =>
-                                Number(
-                                  b.launchedToken?.priceChange24hPercentage
-                                ) -
-                                Number(
-                                  a.launchedToken?.priceChange24hPercentage
-                                )
-                            )
-                            ?.map((pot2pump, index) => (
-                              <motion.div
-                                key={index}
-                                variants={itemPopUpVariants}
-                              >
-                                <LaunchCardV3
-                                  type="simple"
-                                  pair={pot2pump}
-                                  action={<></>}
-                                />
-                              </motion.div>
-                            ))
-                        ) : (
-                          <LoadingDisplay />
-                        );
-                      case POT_TABS.MARKET_CAP:
-                        return isMarketCapInitialLoading ? (
-                          <LoadingDisplay />
-                        ) : marketCapTokensList.length > 0 ? (
-                          marketCapTokensList
-                            ?.sort(
-                              (a, b) =>
-                                Number(b.launchedToken?.marketCap) -
-                                Number(a.launchedToken?.marketCap)
-                            )
-                            ?.map((pot2pump, index) => (
-                              <motion.div
-                                key={index}
-                                variants={itemPopUpVariants}
-                              >
-                                <LaunchCardV3
-                                  type="simple"
-                                  pair={pot2pump}
-                                  action={<></>}
-                                />
-                              </motion.div>
-                            ))
-                        ) : (
-                          <LoadingDisplay />
-                        );
-                      case POT_TABS.NEW_PUMPS:
-                        return isNewTokensByEndtimeInitialLoading ? (
-                          <LoadingDisplay />
-                        ) : endTimeTokensList.length > 0 ? (
-                          endTimeTokensList
-                            ?.sort(
-                              (a, b) => Number(a.endTime) - Number(b.endTime)
-                            )
-                            ?.map((pot2pump, index) => (
-                              <motion.div
-                                key={index}
-                                variants={itemPopUpVariants}
-                              >
-                                <LaunchCardV3
-                                  type="simple"
-                                  pair={pot2pump}
-                                  action={<></>}
-                                />
-                              </motion.div>
-                            ))
-                        ) : (
-                          <LoadingDisplay />
-                        );
-                      default:
-                        return null;
-                    }
-                  })()}
-                </div>
-              ))}
+          {selectedTabs.length === 0 ? (
+            <div className="flex flex-col justify-center items-center min-h-[200px] space-y-5">
+              <Image
+                width={250}
+                height={250}
+                alt="No Data"
+                src={"/images/honey-stick.svg"}
+              />
+              <p className="text-[#FFCD4D] text-5xl">Please select a pool</p>
             </div>
-          </div>
+          ) : (
+            <>
+              {/* Desktop Grid */}
+              <div className="hidden md:grid grid-cols-3 min-h-[600px] h-[calc(100vh-300px)] gap-2">
+                {selectedTabs.map((tab) => (
+                  <section
+                    key={tab}
+                    className="relative flex flex-col px-2 overflow-hidden gap-y-2"
+                  >
+                    <div>
+                      <div className="rounded-small dark:bg-default bg-[#FFCD4D] border border-black shadow-[2px_2px_0px_0px_#000000] text-sm inline-block p-2">
+                        {tab}
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-6 py-4 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1  [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2 shadow-inner px-2">
+                      {(() => {
+                        switch (tab) {
+                          case POT_TABS.NEW:
+                            return (
+                              <CardContainer
+                                className="h-auto"
+                                loading={isNewTokensInitialLoading}
+                                bordered={false}
+                                type="default"
+                                loadingText="Loading..."
+                                empty={!newTokensList?.length}
+                              >
+                                {newTokensList
+                                  .sort(
+                                    (a, b) =>
+                                      Number(b.startTime) - Number(a.startTime)
+                                  )
+                                  ?.map((pot2pump, index) => (
+                                    <motion.div
+                                      key={index}
+                                      variants={itemPopUpVariants}
+                                    >
+                                      <LaunchCardV3
+                                        type="simple"
+                                        pair={pot2pump}
+                                        action={<></>}
+                                        theme="dark"
+                                      />
+                                    </motion.div>
+                                  ))}
+                              </CardContainer>
+                            );
+                          case POT_TABS.ALMOST:
+                            return (
+                              <CardContainer
+                                className="h-auto"
+                                loading={isNearSuccessInitialLoading}
+                                bordered={false}
+                                type="default"
+                                loadingText="Loading..."
+                                empty={!nearSuccessTokensList?.length}
+                              >
+                                {nearSuccessTokensList
+                                  ?.sort(
+                                    (a, b) =>
+                                      Number(b.pottingPercentageNumber) -
+                                      Number(a.pottingPercentageNumber)
+                                  )
+                                  ?.map((pot2pump, index) => (
+                                    <motion.div
+                                      key={index}
+                                      variants={itemPopUpVariants}
+                                    >
+                                      <LaunchCardV3
+                                        type="simple"
+                                        pair={pot2pump}
+                                        action={<></>}
+                                        theme="dark"
+                                      />
+                                    </motion.div>
+                                  ))}
+                              </CardContainer>
+                            );
+                          case POT_TABS.MOON:
+                            return (
+                              <CardContainer
+                                loading={isHighPriceInitialLoading}
+                                bordered={false}
+                                type="default"
+                                loadingText="Loading..."
+                                empty={!highPriceTokensList?.length}
+                                className="h-auto"
+                              >
+                                {highPriceTokensList
+                                  ?.sort(
+                                    (a, b) =>
+                                      Number(b.launchedToken?.derivedUSD) -
+                                      Number(a.launchedToken?.derivedUSD)
+                                  )
+                                  ?.map((pot2pump, index) => (
+                                    <motion.div
+                                      key={index}
+                                      variants={itemPopUpVariants}
+                                    >
+                                      <LaunchCardV3
+                                        type="simple"
+                                        pair={pot2pump}
+                                        action={<></>}
+                                        theme="dark"
+                                      />
+                                    </motion.div>
+                                  ))}
+                              </CardContainer>
+                            );
+
+                          case POT_TABS.TRENDING:
+                            return (
+                              <CardContainer
+                                className="h-auto"
+                                loading={isTrendingInitialLoading}
+                                bordered={false}
+                                type="default"
+                                loadingText="Loading..."
+                                empty={!trendingTokensList?.length}
+                              >
+                                {trendingTokensList
+                                  ?.sort(
+                                    (a, b) =>
+                                      Number(
+                                        b.launchedToken?.priceChange24hPercentage
+                                      ) -
+                                      Number(
+                                        a.launchedToken?.priceChange24hPercentage
+                                      )
+                                  )
+                                  ?.map((pot2pump, index) => (
+                                    <motion.div
+                                      key={index}
+                                      variants={itemPopUpVariants}
+                                    >
+                                      <LaunchCardV3
+                                        type="simple"
+                                        pair={pot2pump}
+                                        action={<></>}
+                                        theme="dark"
+                                      />
+                                    </motion.div>
+                                  ))}
+                              </CardContainer>
+                            );
+                          case POT_TABS.MARKET_CAP:
+                            return (
+                              <CardContainer
+                                className="h-auto"
+                                loading={isMarketCapInitialLoading}
+                                bordered={false}
+                                type="default"
+                                loadingText="Loading..."
+                                empty={!marketCapTokensList?.length}
+                              >
+                                {marketCapTokensList
+                                  ?.sort(
+                                    (a, b) =>
+                                      Number(b.launchedToken?.marketCap) -
+                                      Number(a.launchedToken?.marketCap)
+                                  )
+                                  ?.map((pot2pump, index) => (
+                                    <motion.div
+                                      key={index}
+                                      variants={itemPopUpVariants}
+                                    >
+                                      <LaunchCardV3
+                                        type="simple"
+                                        pair={pot2pump}
+                                        action={<></>}
+                                        theme="dark"
+                                      />
+                                    </motion.div>
+                                  ))}
+                              </CardContainer>
+                            );
+                          case POT_TABS.NEW_PUMPS:
+                            return (
+                              <CardContainer
+                                className="h-auto"
+                                loading={isNewTokensByEndtimeInitialLoading}
+                                bordered={false}
+                                type="default"
+                                loadingText="Loading..."
+                                empty={!endTimeTokensList?.length}
+                              >
+                                {endTimeTokensList
+                                  ?.sort(
+                                    (a, b) => Number(a.endTime) - Number(b.endTime)
+                                  )
+                                  ?.map((pot2pump, index) => (
+                                    <motion.div
+                                      key={index}
+                                      variants={itemPopUpVariants}
+                                    >
+                                      <LaunchCardV3
+                                        type="simple"
+                                        pair={pot2pump}
+                                        action={<></>}
+                                        theme="dark"
+                                      />
+                                    </motion.div>
+                                  ))}
+                              </CardContainer>
+                            );
+                          default:
+                            return null;
+                        }
+                      })()}
+                    </div>
+                  </section>
+                ))}
+              </div>
+
+              {/* Mobile Content */}
+              <div className="md:hidden min-h-[600px] h-[calc(100vh-300px)]">
+                <div className="h-full flex flex-col px-2 overflow-hidden">
+                  {selectedTabs.map((tab) => (
+                    <div
+                      key={tab}
+                      className="flex flex-col gap-4 pb-2 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1 &::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2"
+                    >
+                      {(() => {
+                        switch (tab) {
+                          case POT_TABS.NEW:
+                            return isNewTokensInitialLoading ? (
+                              <LoadingDisplay />
+                            ) : newTokensList.length > 0 ? (
+                              newTokensList
+                                .sort(
+                                  (a, b) =>
+                                    Number(b.startTime) - Number(a.startTime)
+                                )
+                                ?.map((pot2pump, index) => (
+                                  <motion.div
+                                    key={index}
+                                    variants={itemPopUpVariants}
+                                  >
+                                    <LaunchCardV3
+                                      type="simple"
+                                      pair={pot2pump}
+                                      action={<></>}
+                                    />
+                                  </motion.div>
+                                ))
+                            ) : (
+                              <LoadingDisplay />
+                            );
+                          case POT_TABS.ALMOST:
+                            return isNearSuccessInitialLoading ? (
+                              <LoadingDisplay />
+                            ) : nearSuccessTokensList.length > 0 ? (
+                              nearSuccessTokensList
+                                ?.sort(
+                                  (a, b) =>
+                                    Number(b.pottingPercentageNumber) -
+                                    Number(a.pottingPercentageNumber)
+                                )
+                                ?.map((pot2pump, index) => (
+                                  <motion.div
+                                    key={index}
+                                    variants={itemPopUpVariants}
+                                  >
+                                    <LaunchCardV3
+                                      type="simple"
+                                      pair={pot2pump}
+                                      action={<></>}
+                                    />
+                                  </motion.div>
+                                ))
+                            ) : (
+                              <LoadingDisplay />
+                            );
+                          case POT_TABS.MOON:
+                            return isHighPriceInitialLoading ? (
+                              <LoadingDisplay />
+                            ) : highPriceTokensList.length > 0 ? (
+                              highPriceTokensList
+                                ?.sort(
+                                  (a, b) =>
+                                    Number(b.launchedToken?.derivedUSD) -
+                                    Number(a.launchedToken?.derivedUSD)
+                                )
+                                ?.map((pot2pump, index) => (
+                                  <motion.div
+                                    key={index}
+                                    variants={itemPopUpVariants}
+                                  >
+                                    <LaunchCardV3
+                                      type="simple"
+                                      pair={pot2pump}
+                                      action={<></>}
+                                    />
+                                  </motion.div>
+                                ))
+                            ) : (
+                              <LoadingDisplay />
+                            );
+                          case POT_TABS.TRENDING:
+                            return isTrendingInitialLoading ? (
+                              <LoadingDisplay />
+                            ) : trendingTokensList.length > 0 ? (
+                              trendingTokensList
+                                ?.sort(
+                                  (a, b) =>
+                                    Number(
+                                      b.launchedToken?.priceChange24hPercentage
+                                    ) -
+                                    Number(
+                                      a.launchedToken?.priceChange24hPercentage
+                                    )
+                                )
+                                ?.map((pot2pump, index) => (
+                                  <motion.div
+                                    key={index}
+                                    variants={itemPopUpVariants}
+                                  >
+                                    <LaunchCardV3
+                                      type="simple"
+                                      pair={pot2pump}
+                                      action={<></>}
+                                    />
+                                  </motion.div>
+                                ))
+                            ) : (
+                              <LoadingDisplay />
+                            );
+                          case POT_TABS.MARKET_CAP:
+                            return isMarketCapInitialLoading ? (
+                              <LoadingDisplay />
+                            ) : marketCapTokensList.length > 0 ? (
+                              marketCapTokensList
+                                ?.sort(
+                                  (a, b) =>
+                                    Number(b.launchedToken?.marketCap) -
+                                    Number(a.launchedToken?.marketCap)
+                                )
+                                ?.map((pot2pump, index) => (
+                                  <motion.div
+                                    key={index}
+                                    variants={itemPopUpVariants}
+                                  >
+                                    <LaunchCardV3
+                                      type="simple"
+                                      pair={pot2pump}
+                                      action={<></>}
+                                    />
+                                  </motion.div>
+                                ))
+                            ) : (
+                              <LoadingDisplay />
+                            );
+                          case POT_TABS.NEW_PUMPS:
+                            return isNewTokensByEndtimeInitialLoading ? (
+                              <LoadingDisplay />
+                            ) : endTimeTokensList.length > 0 ? (
+                              endTimeTokensList
+                                ?.sort(
+                                  (a, b) => Number(a.endTime) - Number(b.endTime)
+                                )
+                                ?.map((pot2pump, index) => (
+                                  <motion.div
+                                    key={index}
+                                    variants={itemPopUpVariants}
+                                  >
+                                    <LaunchCardV3
+                                      type="simple"
+                                      pair={pot2pump}
+                                      action={<></>}
+                                    />
+                                  </motion.div>
+                                ))
+                            ) : (
+                              <LoadingDisplay />
+                            );
+                          default:
+                            return null;
+                        }
+                      })()}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </CardContainer>
     </div>
