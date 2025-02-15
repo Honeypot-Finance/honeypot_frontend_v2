@@ -2,7 +2,7 @@ import {
   Token,
   algebraPositionManagerABI,
   computePoolAddress,
-} from "@cryptoalgebra/wasabee-sdk";
+} from "@cryptoalgebra/sdk";
 import { useMemo } from "react";
 import { useAccount, useContractReads } from "wagmi";
 import { Address } from "viem";

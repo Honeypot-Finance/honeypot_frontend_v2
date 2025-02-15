@@ -1,6 +1,6 @@
 import { Address } from "viem";
-import { Currency, ExtendedNative, WNATIVE } from "@cryptoalgebra/wasabee-sdk";
-import { ADDRESS_ZERO } from "@cryptoalgebra/wasabee-sdk";
+import { Currency, ExtendedNative, WNATIVE } from "@cryptoalgebra/sdk";
+import { ADDRESS_ZERO } from "@cryptoalgebra/sdk";
 import { useAlgebraToken } from "./useAlgebraToken";
 import {
   DEFAULT_CHAIN_ID,

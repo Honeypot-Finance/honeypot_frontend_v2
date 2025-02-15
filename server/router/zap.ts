@@ -18,7 +18,7 @@ import {
 import { privateKeyToAccount } from "viem/accounts";
 import { berachainTestnetbArtio } from "viem/chains";
 import { chainsMap } from "@/lib/chain";
-import { ADDRESS_ZERO } from "@cryptoalgebra/wasabee-sdk";
+import { ADDRESS_ZERO } from "@cryptoalgebra/sdk";
 
 if (!process.env.OOGABOOGA_ZAP_PRIVATE_KEY)
   throw new Error("PRIVATE_KEY is required");

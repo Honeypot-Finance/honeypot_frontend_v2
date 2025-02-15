@@ -4,7 +4,7 @@ import {
   SwapRouter,
   Trade,
   TradeType,
-} from "@cryptoalgebra/wasabee-sdk";
+} from "@cryptoalgebra/sdk";
 import { useMemo } from "react";
 import { useAccount } from "wagmi";
 import { useUserState } from "../../state/userStore";

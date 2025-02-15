@@ -1,5 +1,5 @@
 import { useReadAlgebraPoolLiquidity } from "@/wagmi-generated";
-import { Position } from "@cryptoalgebra/wasabee-sdk";
+import { Position } from "@cryptoalgebra/sdk";
 import { Address } from "viem";
 import {
   useSinglePoolQuery,

@@ -8,7 +8,7 @@ import {
   CredenzaTitle,
   CredenzaTrigger,
 } from "@/components/algebra/ui/credenza";
-import { Currency } from "@cryptoalgebra/wasabee-sdk";
+import { Currency } from "@cryptoalgebra/sdk";
 
 interface ITokenSelectorModal {
   isOpen: boolean;

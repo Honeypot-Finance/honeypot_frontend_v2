@@ -1,4 +1,4 @@
-import { Currency, Percent, Trade, TradeType } from "@cryptoalgebra/wasabee-sdk";
+import { Currency, Percent, Trade, TradeType } from "@cryptoalgebra/sdk";
 import { useMemo } from "react";
 import { useUserSlippageToleranceWithDefault } from "../../state/userStore";
 

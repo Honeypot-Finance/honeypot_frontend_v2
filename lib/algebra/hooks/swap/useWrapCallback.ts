@@ -1,4 +1,4 @@
-import { Currency, WNATIVE, tryParseAmount } from "@cryptoalgebra/wasabee-sdk";
+import { Currency, WNATIVE, tryParseAmount } from "@cryptoalgebra/sdk";
 import { useMemo } from "react";
 import { useAccount, useBalance, useChainId, useContractWrite } from "wagmi";
 import { useTransactionAwait } from "../common/useTransactionAwait";

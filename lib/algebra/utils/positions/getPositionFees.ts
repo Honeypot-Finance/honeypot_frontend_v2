@@ -4,7 +4,7 @@ import {
   algebraPositionManagerAbi,
   algebraPositionManagerAddress,
 } from "@/wagmi-generated";
-import { CurrencyAmount, Pool, unwrappedToken } from "@cryptoalgebra/wasabee-sdk";
+import { CurrencyAmount, Pool, unwrappedToken } from "@cryptoalgebra/sdk";
 import { getContract } from "viem";
 
 export async function getPositionFees(pool: Pool, positionId: number) {

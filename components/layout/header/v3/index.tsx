@@ -10,7 +10,7 @@ import {
   NavbarContent,
   NavbarMenu,
   NavbarMenuToggle,
-} from "@heroui/navbar";
+} from "@nextui-org/react";
 import React, { HtmlHTMLAttributes, useState, useEffect } from "react";
 import { WalletConnect } from "@/components/walletconnect/v3";
 import { Menu, appPathsList as menuList } from "@/config/allAppPath";

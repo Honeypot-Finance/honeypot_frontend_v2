@@ -1,6 +1,6 @@
 import { useSingleTokenQuery } from "@/lib/algebra/graphql/generated/graphql";
 import { useMintState } from "@/lib/algebra/state/mintStore";
-import { Currency } from "@cryptoalgebra/wasabee-sdk";
+import { Currency } from "@cryptoalgebra/sdk";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
 import { Address } from "viem";

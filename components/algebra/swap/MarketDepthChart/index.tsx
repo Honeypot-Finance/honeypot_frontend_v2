@@ -8,7 +8,7 @@ import {
   Pool,
   TickMath,
   Token,
-} from "@cryptoalgebra/wasabee-sdk";
+} from "@cryptoalgebra/sdk";
 import { ArrowDownIcon, ArrowRightIcon, ArrowUpIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Address } from "viem";

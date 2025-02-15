@@ -1,4 +1,4 @@
-import { WNATIVE, Token, ChainId } from "@cryptoalgebra/wasabee-sdk";
+import { WNATIVE, Token, ChainId } from "@cryptoalgebra/sdk";
 import { STABLECOINS } from "./tokens";
 
 type ChainTokenList = {

@@ -1,4 +1,4 @@
-import { ADDRESS_ZERO } from "@cryptoalgebra/wasabee-sdk";
+import { ADDRESS_ZERO } from "@cryptoalgebra/sdk";
 import { Address } from "viem";
 
 export const isSameRewards = (

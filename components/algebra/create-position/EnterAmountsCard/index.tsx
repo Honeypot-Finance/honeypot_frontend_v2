@@ -1,5 +1,5 @@
 import { Input } from "@/components/algebra/ui/input";
-import { Currency, CurrencyAmount } from "@cryptoalgebra/wasabee-sdk";
+import { Currency, CurrencyAmount } from "@cryptoalgebra/sdk";
 import { useCallback, useMemo } from "react";
 import { useAccount, useBalance } from "wagmi";
 import { Address } from "viem";
