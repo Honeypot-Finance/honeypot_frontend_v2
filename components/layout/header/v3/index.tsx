@@ -101,22 +101,34 @@ export const Header = (props: HtmlHTMLAttributes<any>) => {
             <CustomNavbar menuList={menuList} />
           </NavbarContent>
 
-          <NavbarContent className="md:hidden" justify="start">
-            <NavbarMenuToggle
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-              className="text-white"
-            />
-          </NavbarContent>
+          <NavbarMenuToggle
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            className={cn(
+              "text-white will-change-transform transform-gpu transition-all duration-200 ease-out md:hidden h-16 w-16",
+              isMenuOpen ? "fixed top-6 left-0" : "-ml-4"
+            )}
+          />
 
-          <NavbarContent
-            justify="end"
-            className="flex gap-4 !flex-grow-0"
-          >
+          <NavbarContent justify="end" className="flex gap-4 !flex-grow-0">
             {!isMenuOpen && <WalletConnect />}
           </NavbarContent>
 
-          <NavbarMenu className="pt-6 lg:hidden">
-            {listToNavbarItem(menuList)}
+          <NavbarMenu className={cn(
+            "lg:hidden pt-24 bg-black/95 backdrop-blur-md",
+            "will-change-transform transform-gpu transition-all duration-200 ease-out",
+            isMenuOpen 
+              ? "opacity-100 translate-y-0" 
+              : "opacity-0 -translate-y-2"
+          )}>
+            <div className={cn(
+              "flex flex-col gap-2",
+              "will-change-transform transform-gpu transition-all duration-150 ease-out",
+              isMenuOpen 
+                ? "opacity-100 translate-x-0" 
+                : "opacity-0 -translate-x-2"
+            )}>
+              {listToNavbarItem(menuList)}
+            </div>
           </NavbarMenu>
         </Navbar>
       </div>
