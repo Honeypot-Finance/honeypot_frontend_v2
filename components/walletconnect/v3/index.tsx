@@ -29,7 +29,7 @@ export const WalletConnect = () => {
         height={66}
         className="mb-[-20px]"
       />
-      <div className="bg-[#FFCD4D] rounded-xl pb-8 bg-[url('/images/card-container/dark/bottom-border.svg')] bg-left-bottom bg-repeat-x bg-clip-padding pt-2 lg:pt-4 px-2 lg:px-4">
+      <div className="bg-[#FFCD4D] w-full rounded-xl pb-8 bg-[url('/images/card-container/dark/bottom-border.svg')] bg-left-bottom bg-repeat-x pt-2 lg:pt-4 px-2 lg:px-4">
         <ConnectButton.Custom>
           {({
             account,
@@ -58,7 +58,7 @@ export const WalletConnect = () => {
                   },
                 })}
               >
-                <div className="flex items-center gap-x-2 lg:gap-x-3 justify-between">
+                <div className="flex w-full items-center gap-x-2 lg:gap-x-3 justify-between">
                   <Link
                     href="/profile"
                     className="flex items-center justify-center bg-white rounded-full p-1.5 lg:p-2 shrink-0"
