@@ -10,7 +10,7 @@ const ConnectButtonCustom = (props: ButtonHTMLAttributes<any>) => {
   return (
     <button
       type="button"
-      className="flex h-10 px-4 justify-center items-center gap-2 bg-white rounded-[100px] text-black font-medium shadow-sm hover:opacity-90 transition-opacity"
+      className="inline-flex h-10 px-4 justify-center items-center gap-2 bg-white rounded-[100px] text-black font-medium shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
       {...props}
     ></button>
   );
@@ -57,14 +57,13 @@ export const WalletConnect = () => {
                     userSelect: "none",
                   },
                 })}
-                className="pr-4 lg:pr-6"
               >
                 <div className="flex items-center gap-x-2 lg:gap-x-3 justify-between">
                   <Link
                     href="/profile"
                     className="flex items-center justify-center bg-white rounded-full p-1.5 lg:p-2 shrink-0"
                   >
-                    <BsPerson size={24} className="lg:w-[30px] lg:h-[30px]" color="#202020" />
+                    <BsPerson size={24} className="size-4 lg:size-6" color="#202020" />
                   </Link>
                   {(() => {
                     if (!connected) {
@@ -78,10 +77,10 @@ export const WalletConnect = () => {
                                 openConnectModal();
                               }
                             }}
-                            className="text-xs sm:text-sm lg:text-base"
+                            className="text-xs sm:text-sm lg:text-base inline-flex items-center gap-x-1 sm:gap-x-2 bg-[#202020] px-3 lg:px-4 py-1.5 lg:py-2 rounded-full"
                           >
-                            <BiWallet size={18} className="lg:w-5 lg:h-5" />
-                            Connect Wallet
+                            <BiWallet size={18} className="lg:size-5 shrink-0" />
+                            <span className="whitespace-nowrap">Connect Wallet</span>
                           </ConnectButtonCustom>
                         </div>
                       );
