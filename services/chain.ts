@@ -556,7 +556,7 @@ export const berachainNetwork = new Network({
     ftoFactory: "0x7E0CCe2C9Ff537f8301dd40c652A03479B18dAef",
     ftoFacade: "0x0264D933F13eE993270591668CfF87b8D35Dd3b4",
     memeFactory: "0xC38eF79A6cA9b3EfBe20F3dD3b99B3e25d09F52B",
-    memeFacade: "0x80051Ca8C6E2e04E12de5d5Cb1313C086C867737",
+    memeFacade: "0xAAD87033d81bB4c6a3A08aD77323530FF9dB8f5C",
     vaultFactory: "0x1bf5e51eCacdfEA65ae9276fd228bB8719ffcA7E",
     ftoTokens: [
       {
