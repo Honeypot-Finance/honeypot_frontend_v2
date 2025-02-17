@@ -20,7 +20,7 @@ import { chatService, presetQuestions, questionTitles } from "@/services/chat";
 import _ from "lodash";
 import { whitelistWallets } from "@/config/whitelist";
 import { InvitationCodeModal } from "../InvitationCodeModal/InvitationCodeModal";
-
+import { useAutoConnect } from "@/lib/hooks/useAutoconnector";
 export const Layout = ({
   children,
   className,
@@ -32,6 +32,8 @@ export const Layout = ({
   const { chainId, address } = useAccount();
   const currentChain = chainId ? networksMap[chainId] : null;
   const [showInviteModal, setShowInviteModal] = useState(false);
+
+  useAutoConnect();
 
   useEffect(() => {
     //if its user first time visit, open chat
@@ -82,7 +84,7 @@ export const Layout = ({
   }, []);
 
   useEffect(() => {
-    const inviteCode = localStorage.getItem('inviteCode');
+    const inviteCode = localStorage.getItem("inviteCode");
     if (!inviteCode) {
       setShowInviteModal(true);
     }
@@ -90,10 +92,10 @@ export const Layout = ({
 
   const handleInviteCodeSubmit = async (code: string) => {
     try {
-      const response = await fetch('/api/verify-invitation-code', {
-        method: 'POST',
+      const response = await fetch("/api/verify-invitation-code", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ code }),
       });
@@ -101,13 +103,13 @@ export const Layout = ({
       const data = await response.json();
 
       if (data.success) {
-        localStorage.setItem('inviteCode', code);
+        localStorage.setItem("inviteCode", code);
         setShowInviteModal(false);
       } else {
-        throw new Error(data.message || 'Invalid invitation code');
+        throw new Error(data.message || "Invalid invitation code");
       }
     } catch (error) {
-      throw new Error('Invalid invitation code');
+      throw new Error("Invalid invitation code");
     }
   };
 
@@ -118,7 +120,10 @@ export const Layout = ({
     //   </Link>
     // </>,
     <>
-      <Link href="https://pot2pump.honeypotfinance.xyz/launch-token?launchType=meme" className="flex items-center">
+      <Link
+        href="https://pot2pump.honeypotfinance.xyz/launch-token?launchType=meme"
+        className="flex items-center"
+      >
         <span className="flex items-center justify-center gap-2">
           Launch a new meme token within 5 seconds 🚀
         </span>
@@ -133,8 +138,10 @@ export const Layout = ({
         className
       )}
     >
-      {showInviteModal && <InvitationCodeModal onSubmit={handleInviteCodeSubmit} />}
-      
+      {showInviteModal && (
+        <InvitationCodeModal onSubmit={handleInviteCodeSubmit} />
+      )}
+
       <Script
         src="/charting_library/charting_library.standalone.js"
         strategy="beforeInteractive"
@@ -144,15 +151,19 @@ export const Layout = ({
         strategy="beforeInteractive"
       />
 
-      <AnnouncementBar slogans={slogans} interval={5000} />
+      <AnnouncementBar
+        slogans={slogans}
+        interval={5000}
+      />
       {/* <GuideModal /> */}
       <ChatWidget />
 
       <ConfettiComponent />
       <PopOverModal />
       <Header />
-      {!showInviteModal && (whitelistWallets.includes(address?.toLowerCase() as string) ||
-      whitelistWallets.length === 0) ? (
+      {!showInviteModal &&
+      (whitelistWallets.includes(address?.toLowerCase() as string) ||
+        whitelistWallets.length === 0) ? (
         currentChain ? (
           currentChain?.isActive ? (
             <div className="flex-1 flex">{children}</div>
@@ -172,7 +183,11 @@ export const Layout = ({
       ) : (
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <p className="text-lg">{showInviteModal ? "Please enter invitation code to continue" : "Coming soon check back later"}</p>
+            <p className="text-lg">
+              {showInviteModal
+                ? "Please enter invitation code to continue"
+                : "Coming soon check back later"}
+            </p>
           </div>
         </div>
       )}

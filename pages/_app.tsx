@@ -25,7 +25,6 @@ import { ApolloProvider } from "@apollo/client";
 import { infoClient } from "@/lib/algebra/graphql/clients";
 import Image from "next/image";
 import SafeProvider from "@safe-global/safe-apps-react-sdk";
-import { useAutoConnect } from "@/lib/hooks/useAutoconnector";
 import {
   DynamicContextProvider,
   DynamicWidget,
@@ -81,7 +80,6 @@ export default function App({
   Component: NextLayoutPage;
 }) {
   const ComponentLayout = Component.Layout || Layout;
-  useAutoConnect();
 
   return (
     <trpc.Provider
@@ -89,8 +87,8 @@ export default function App({
       queryClient={queryClient}
     >
       <Analytics />
-      <SafeProvider>
-        <WagmiProvider config={config}>
+      <WagmiProvider config={config}>
+        <SafeProvider>
           <QueryClientProvider client={queryClient}>
             <ApolloProvider client={infoClient}>
               <RainbowKitProvider
@@ -122,8 +120,8 @@ export default function App({
               </RainbowKitProvider>
             </ApolloProvider>
           </QueryClientProvider>
-        </WagmiProvider>
-      </SafeProvider>
+        </SafeProvider>
+      </WagmiProvider>
     </trpc.Provider>
   );
 }
