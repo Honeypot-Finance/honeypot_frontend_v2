@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Observer, observer, useLocalObservable } from "mobx-react-lite";
+import { Observer, observer } from "mobx-react-lite";
 import { wallet } from "@/services/wallet";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/button";
@@ -19,17 +19,13 @@ import {
   Button as NextButton,
   Checkbox,
 } from "@nextui-org/react";
-import { IoSearchOutline } from "react-icons/io5";
 import { SpinnerContainer } from "@/components/Spinner";
 import { DropdownSvg } from "@/components/svg/dropdown";
-import LoadingDisplay from "@/components/LoadingDisplay/LoadingDisplay";
+import { LoadingDisplay } from "@/components/LoadingDisplay/LoadingDisplay";
 import { motion } from "framer-motion";
 import { defaultContainerVariants, itemPopUpVariants } from "@/lib/animation";
-import CardContianer from "@/components/CardContianer/CardContianer";
 import { FaCrown, FaExternalLinkAlt } from "react-icons/fa";
 import MemeWarBanner from "@/components/MemeWarBanner/MemeWarBanner";
-import HoneyStickSvg from "@/components/svg/HoneyStick";
-import { set } from "lodash";
 import { WrappedNextInputSearchBar } from "@/components/wrappedNextUI/SearchBar/WrappedInputSearchBar";
 import Pagination from "@/components/Pagination/OldPagination";
 

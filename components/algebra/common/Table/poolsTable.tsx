@@ -1,16 +1,16 @@
-import { Button } from "@/components/algebra/ui/button";
+import { Pool } from "./poolsColumns";
+import { cn } from "@/lib/tailwindcss";
 import { Search, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import LoadingDisplay from "@/components/LoadingDisplay/LoadingDisplay";
-import { popmodal } from "@/services/popmodal";
-import CreatePoolForm from "../../create-pool/CreatePoolForm";
-import { cn } from "@/lib/tailwindcss";
-import { Pool } from "./poolsColumns";
-import { ColumnDef } from "@tanstack/react-table";
-import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { Tab, Tabs } from "@nextui-org/react";
-import TokenLogo from "@/components/TokenLogo/TokenLogo";
+import { popmodal } from "@/services/popmodal";
 import { Token } from "@/services/contract/token";
+import { ColumnDef } from "@tanstack/react-table";
+import { Button } from "@/components/algebra/ui/button";
+import TokenLogo from "@/components/TokenLogo/TokenLogo";
+import CreatePoolForm from "../../create-pool/CreatePoolForm";
+import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { LoadingDisplay } from "@/components/LoadingDisplay/LoadingDisplay";
 
 interface PoolsTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -104,7 +104,9 @@ const PoolsTable = <TData, TValue>({
         case "apr":
           return multiplier * (Number(a.apr24h) - Number(b.apr24h));
         case "unclaimedFees":
-          return multiplier * (Number(a.unclaimedFees) - Number(b.unclaimedFees));
+          return (
+            multiplier * (Number(a.unclaimedFees) - Number(b.unclaimedFees))
+          );
         default:
           return 0;
       }

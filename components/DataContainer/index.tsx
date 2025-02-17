@@ -1,9 +1,7 @@
-import { Spinner } from "@nextui-org/react";
 import clsx from "clsx";
 import { HTMLAttributes } from "react";
-import { NoData } from "../table/index";
 import HoneyStickSvg from "../svg/HoneyStick";
-import LoadingDisplay from "../LoadingDisplay/LoadingDisplay";
+import { LoadingDisplay } from "../LoadingDisplay/LoadingDisplay";
 
 export type DataContainerProps = {
   children: React.ReactNode;

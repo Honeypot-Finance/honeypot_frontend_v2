@@ -1,19 +1,11 @@
-import { PoweredByAlphaKek } from "@/components/algebra/common/PoweredByAlgebra";
-import LoadingDisplay from "@/components/LoadingDisplay/LoadingDisplay";
-import { PeddingSvg } from "@/components/svg/Pedding";
-import { RocketSvg } from "@/components/svg/Rocket";
-import { uploadFile } from "@/components/UploadImage/UploadImage";
-import { base64ToFile } from "@/lib/blob/uploadProjectIcon";
+import { useState } from "react";
 import { cn } from "@/lib/tailwindcss";
-
 import { trpcClient } from "@/lib/trpc";
 import { wallet } from "@/services/wallet";
 import { Button } from "@nextui-org/react";
-import { TRPCError } from "@trpc/server";
-import { useState } from "react";
-import { FaTruckLoading } from "react-icons/fa";
-import { LuPersonStanding } from "react-icons/lu";
-import { VscLoading } from "react-icons/vsc";
+import { PeddingSvg } from "@/components/svg/Pedding";
+import { PoweredByAlphaKek } from "@/components/algebra/common/PoweredByAlgebra";
+
 
 export type TokenGeneratedSuccessValues = {
   description?: string;
