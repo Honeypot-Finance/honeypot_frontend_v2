@@ -40,92 +40,100 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
   isValidated,
   pair,
 }) => {
+  const isLoading = !pair;
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center flex-col gap-3">
         <div className="flex items-center gap-1">
-          {displayName ? (
-            <div className="text-2xl">{displayName}</div>
-          ) : (
+          {isLoading ? (
             <Skeleton className="h-8 w-[60px] bg-slate-200" />
-          )}
-          {name ? (
-            <div className="text-sm text-[#5C5C5C]/60">({name})</div>
           ) : (
+            <div className="text-2xl">{displayName}</div>
+          )}
+          {isLoading ? (
             <Skeleton className="h-5 w-[150px] bg-slate-200" />
+          ) : name ? (
+            <div className="text-sm text-[#5C5C5C]/60">({name})</div>
+          ) : null}
+        </div>
+        <div className="flex items-center gap-1">
+          {isLoading ? (
+            <>
+              <Skeleton className="h-4 w-4 bg-slate-200" />
+              <Skeleton className="h-4 w-4 bg-slate-200" />
+              <Skeleton className="h-4 w-4 bg-slate-200" />
+              <Skeleton className="h-4 w-4 bg-slate-200" />
+              <Skeleton className="h-4 w-4 bg-slate-200" />
+            </>
+          ) : (
+            <>
+              {telegram && (
+                <a
+                  href={telegram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:opacity-80 text-[#5C5C5C]"
+                >
+                  <FaTelegram size={16} />
+                </a>
+              )}
+              {twitter && (
+                <a
+                  href={twitter}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:opacity-80 text-[#5C5C5C]"
+                >
+                  <FaXTwitter size={16} />
+                </a>
+              )}
+              {website && (
+                <a
+                  href={website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:opacity-80 text-[#5C5C5C]"
+                >
+                  <FaGlobe size={16} />
+                </a>
+              )}
+              {address && (
+                <>
+                  <Copy
+                    content="Copy address"
+                    value={address}
+                    displayContent={
+                      <div className="relative hover:opacity-80 text-[#5C5C5C]">
+                        <VscCopy size={16} />
+                      </div>
+                    }
+                  />
+                  <a
+                    href={`https://x.com/search?q=${address}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-80 text-[#5C5C5C]"
+                    title="Search on X"
+                  >
+                    <BiSearch size={16} />
+                  </a>
+                </>
+              )}
+              <PairStatus
+                status={status}
+                statusColor={statusColor}
+                isValidated={isValidated}
+              />
+            </>
           )}
         </div>
         <div className="flex items-center gap-1">
-          {telegram ? (
-            <a
-              href={telegram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:opacity-80 text-[#5C5C5C]"
-            >
-              <FaTelegram size={16} />
-            </a>
-          ) : (
-            <Skeleton className="h-4 w-4 bg-slate-200" />
-          )}
-          {twitter ? (
-            <a
-              href={twitter}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:opacity-80 text-[#5C5C5C]"
-            >
-              <FaXTwitter size={16} />
-            </a>
-          ) : (
-            <Skeleton className="h-4 w-4 bg-slate-200" />
-          )}
-          {website ? (
-            <a
-              href={website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:opacity-80 text-[#5C5C5C]"
-            >
-              <FaGlobe size={16} />
-            </a>
-          ) : (
-            <Skeleton className="h-4 w-4 bg-slate-200" />
-          )}
-          {address ? (
-            <Copy
-              content="Copy address"
-              value={address}
-              displayContent={
-                <div className="relative hover:opacity-80 text-[#5C5C5C]">
-                  <VscCopy size={16} />
-                </div>
-              }
-            />
-          ) : (
-            <Skeleton className="h-4 w-4 bg-slate-200" />
-          )}
-          {address ? (
-            <a
-              href={`https://x.com/search?q=${address}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:opacity-80 text-[#5C5C5C]"
-              title="Search on X"
-            >
-              <BiSearch size={16} />
-            </a>
-          ) : (
-            <Skeleton className="h-4 w-4 bg-slate-200" />
-          )}
-          <PairStatus
-            status={status}
-            statusColor={statusColor}
-            isValidated={isValidated}
-          />
-        </div>
-        <div className="flex items-center gap-1">
-          {pair ? (
+          {isLoading ? (
+            <div className="m-2 flex items-center gap-2">
+              <Skeleton className="h-6 w-16 bg-slate-200" />
+              <Skeleton className="h-6 w-16 bg-slate-200" />
+            </div>
+          ) : pair ? (
             <div className="flex items-center gap-2">
               <span className="text-sm text-[#5C5C5C]">Share To</span>
               <div
@@ -143,7 +151,6 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                     <BiLinkExternal />
                   </div>
                 </Link>
-                {/* telegram */}
                 <Link
                   className="cursor-pointer flex items-center gap-2 hover:text-primary flex-col"
                   target="_blank"
@@ -156,12 +163,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                 </Link>
               </div>
             </div>
-          ) : (
-            <div className="m-2 flex items-center gap-2">
-              <Skeleton className="h-6 w-16 bg-slate-200" />
-              <Skeleton className="h-6 w-16 bg-slate-200" />
-            </div>
-          )}
+          ) : null}
         </div>
       </div>
     </div>
