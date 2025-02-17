@@ -666,7 +666,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
               "bg-[#FFCD4D] min-h-[500px] md:min-h-[665px] px-4 py-6 rounded-2xl space-y-3 relative overflow-hidden col-span-1"
             )}
           >
-            <div className="bg-[url('/images/pool-detail/top-border.svg')] bg-left-top h-6 absolute top-0 left-0 w-full bg-contain"></div>
+            <div className="bg-[url('/images/card-container/honey/top-border.svg')] bg-left-top h-6 absolute top-0 left-0 w-full bg-contain"></div>
             {state.pair.value?.state === 0 && (
               <div className="md:block">
                 <KlineChart height={500} />
@@ -693,7 +693,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
             {state.pair.value?.state === 3 && (
               <LaunchDataProgress pair={state.pair.value} />
             )}
-            <div className="bg-[url('/images/pool-detail/bottom-border.svg')] bg-left-top h-6 absolute -bottom-1 left-0 w-full bg-repeat-x bg-auto"></div>
+            <div className="bg-[url('/images/card-container/honey/bottom-border.svg')] bg-left-top h-6 absolute -bottom-1 left-0 w-full bg-repeat-x bg-auto"></div>
           </div>
 
           <div className="bg-transparent rounded-2xl space-y-3 col-span-1">
