@@ -6,6 +6,7 @@ import {
   okxWallet,
   walletConnectWallet,
   metaMaskWallet,
+  safeWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { injected, safe } from "wagmi/connectors";
 import {
@@ -54,6 +55,7 @@ let customWallets = [
 const connectors = [
   safe(),
   injected(),
+  safeWallet(),
   ...connectorsForWallets(
     [
       {
