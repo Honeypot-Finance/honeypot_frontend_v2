@@ -146,9 +146,9 @@ export const Layout = ({
         className
       )}
     >
-      {showInviteModal && (
+      {/* {showInviteModal && (
         <InvitationCodeModal onSubmit={handleInviteCodeSubmit} />
-      )}
+      )} */}
 
       <Script
         src="/charting_library/charting_library.standalone.js"
