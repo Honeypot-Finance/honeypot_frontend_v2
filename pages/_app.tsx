@@ -24,6 +24,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { ApolloProvider } from "@apollo/client";
 import { infoClient } from "@/lib/algebra/graphql/clients";
 import Image from "next/image";
+import SafeProvider from "@safe-global/safe-apps-react-sdk";
 
 import {
   DynamicContextProvider,
@@ -82,41 +83,46 @@ export default function App({
   const ComponentLayout = Component.Layout || Layout;
 
   return (
-    <trpc.Provider client={trpcQueryClient} queryClient={queryClient}>
+    <trpc.Provider
+      client={trpcQueryClient}
+      queryClient={queryClient}
+    >
       <Analytics />
-      <WagmiProvider config={config}>
-        <QueryClientProvider client={queryClient}>
-          <ApolloProvider client={infoClient}>
-            <RainbowKitProvider
-              avatar={CustomAvatar}
-              // capsule={capsuleClient}
-              // capsuleIntegratedProps={capsuleModalProps}
-            >
-              <NextUIProvider>
-                <Provider>
-                  <Inspector
-                    keys={["Ctrl", "Shift", "Z"]}
-                    onClickElement={({ codeInfo }: InspectParams) => {
-                      if (!codeInfo) {
-                        return;
-                      }
+      <SafeProvider>
+        <WagmiProvider config={config}>
+          <QueryClientProvider client={queryClient}>
+            <ApolloProvider client={infoClient}>
+              <RainbowKitProvider
+                avatar={CustomAvatar}
+                // capsule={capsuleClient}
+                // capsuleIntegratedProps={capsuleModalProps}
+              >
+                <NextUIProvider>
+                  <Provider>
+                    <Inspector
+                      keys={["Ctrl", "Shift", "Z"]}
+                      onClickElement={({ codeInfo }: InspectParams) => {
+                        if (!codeInfo) {
+                          return;
+                        }
 
-                      window.open(
-                        `cursor://file/${codeInfo.absolutePath}:${codeInfo.lineNumber}:${codeInfo.columnNumber}`,
-                        "_blank"
-                      );
-                    }}
-                  ></Inspector>
-                  <ComponentLayout className={`${dmSans.className}`}>
-                    <Component {...pageProps} />
-                  </ComponentLayout>
-                </Provider>
-                <ToastContainer></ToastContainer>
-              </NextUIProvider>
-            </RainbowKitProvider>
-          </ApolloProvider>
-        </QueryClientProvider>
-      </WagmiProvider>
+                        window.open(
+                          `cursor://file/${codeInfo.absolutePath}:${codeInfo.lineNumber}:${codeInfo.columnNumber}`,
+                          "_blank"
+                        );
+                      }}
+                    ></Inspector>
+                    <ComponentLayout className={`${dmSans.className}`}>
+                      <Component {...pageProps} />
+                    </ComponentLayout>
+                  </Provider>
+                  <ToastContainer></ToastContainer>
+                </NextUIProvider>
+              </RainbowKitProvider>
+            </ApolloProvider>
+          </QueryClientProvider>
+        </WagmiProvider>
+      </SafeProvider>
     </trpc.Provider>
   );
 }

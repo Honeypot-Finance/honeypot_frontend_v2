@@ -53,7 +53,7 @@ let customWallets = [
 // Create Capsule wallet connector
 
 const connectors = [
-  safe({ allowedDomains: [/^app\.safe\.global$/], debug: false }),
+  safe(),
   injected(),
   ...connectorsForWallets(
     [
