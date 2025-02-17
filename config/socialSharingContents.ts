@@ -7,14 +7,20 @@ type platformMap = "telegram" | "twitter";
 export const pot2pumpShareLink = (pair: MemePairContract) =>
   `${DOMAIN_MAP.POT2PUMP}/launch-detail/${pair.launchedToken?.address}`;
 
+// $BM now trading on @honeypotfinance - #Berachain  #Meteora.
+// 📈 24h Change: +X%
+// 💰 Current Price: $X.XXXX
+// CA: 0x3a276a32ac70eca4dea823e1624b5f17935f3333
+//  🔹concentrated liquidity + ALM 🔹m3m3 staking together with #berachain POL
+// Trade here:
+
 export const pot2PumpPumpingShareTwitterContent = (pair: MemePairContract) => {
   return `
-🚀 "${pair.launchedToken?.symbol}" now trade on @honeypotfinance's Pot-Wasabee Dex - Berachain's answer to #Meteora.
+🚀 "${pair.launchedToken?.symbol}" now trading on @honeypotfinance - #Berachain  #Meteora.
 📈 24h Change: ${Number(pair.launchedToken?.priceChange24hPercentage).toFixed(2)}%
 💰 Current Price: $${Number(pair.launchedToken?.derivedUSD).toExponential(3)} 
 CA: ${pair.launchedToken?.address}
-🔹 concentreted liquidity with ALM 
-🔹 Upgraded m3m3 staking with #berachain POL
+🔹concentrated liquidity + ALM 🔹m3m3 staking together with #berachain POL
 Trade now on:
 `;
 };
