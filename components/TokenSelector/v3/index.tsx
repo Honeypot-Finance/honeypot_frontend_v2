@@ -303,10 +303,13 @@ export const TokenSelector = observer(
             >
               <BiLinkExternal className=" cursor-pointer text-[#140E06]" />
             </Link>
-            <Copy value={value.address} className="size-4 text-[#140E06]" />
+            <Copy
+              value={value.address}
+              className="size-4 text-[#140E06]"
+            />
             {value.pot2pumpAddress && (
               <Tooltip content="This token is launched on Pot2Pump">
-                <Link href={`/launch-detail/${value.pot2pumpAddress}`}>
+                <Link href={`/launch-detail/${value.address}`}>
                   <Image
                     width={16}
                     height={16}

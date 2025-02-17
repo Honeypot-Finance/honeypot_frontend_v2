@@ -5,7 +5,7 @@ import { DOMAIN_MAP } from "honeypot-sdk";
 type platformMap = "telegram" | "twitter";
 
 export const pot2pumpShareLink = (pair: MemePairContract) =>
-  `${DOMAIN_MAP.POT2PUMP}/launch-detail/${pair.address}`;
+  `${DOMAIN_MAP.POT2PUMP}/launch-detail/${pair.launchedToken?.address}`;
 
 export const pot2PumpPumpingShareTwitterContent = (pair: MemePairContract) => `
 🚀 Just graduated from Pot2Pump on @honeypotfinance 
@@ -45,7 +45,7 @@ export const pot2PumpPumpingShareTelegramContent = (pair: MemePairContract) => `
 })}  
 🔄 Transactions: 🟢 ${pair.launchedTokenBuyCount} / 🔴 ${pair.launchedTokenSellCount}
 
-🔗 ${window.location.origin}/launch-detail/${pair.address}
+🔗 ${window.location.origin}/launch-detail/${pair.launchedToken?.address}
 `;
 
 export const pot2PumpPottingShareTelegramContent = (pair: MemePairContract) => `
@@ -58,7 +58,7 @@ export const pot2PumpPottingShareTelegramContent = (pair: MemePairContract) => `
 👥 Participants count: ${pair.participantsCount}  
 📊 Total Supply: ${pair.launchedToken?.totalSupplyWithoutDecimals.div(10 ** (pair.launchedToken?.decimals ?? 18)).toFixed(2)} 
 
-🔗 ${window.location.origin}/launch-detail/${pair.address}
+🔗 ${window.location.origin}/launch-detail/${pair.launchedToken?.address}
 `;
 
 export const pot2PumpShareContent = (

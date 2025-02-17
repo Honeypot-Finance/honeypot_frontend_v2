@@ -351,7 +351,9 @@ export const MemeWarBanner = observer((props: Props) => {
                 key={pair.pair.value?.address}
                 className="flex flex-col items-center z-10"
               >
-                <Link href={`/launch-detail/${pair.pair.value?.address}`}>
+                <Link
+                  href={`/launch-detail/${pair.pair.value?.launchedToken?.address}`}
+                >
                   <Image
                     src={pair.icon}
                     alt=""
@@ -416,7 +418,9 @@ export const MemeWarBanner = observer((props: Props) => {
                     key={pair.pair.value?.address}
                     className="flex flex-col items-center z-10"
                   >
-                    <Link href={`/launch-detail/${pair.pair.value?.address}`}>
+                    <Link
+                      href={`/launch-detail/${pair.pair.value?.launchedToken?.address}`}
+                    >
                       <Image
                         src={pair.icon}
                         alt=""
@@ -591,7 +595,10 @@ export const MemeWarBanner = observer((props: Props) => {
           </div>
         </div>
       </div>
-      <DiscussionArea pairDatabaseId={-9999} isSide />
+      <DiscussionArea
+        pairDatabaseId={-9999}
+        isSide
+      />
     </div>
   );
 });

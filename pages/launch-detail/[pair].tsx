@@ -412,7 +412,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                   copysSuccessText: "Token address copied",
                 }),
                 optionsPresets.share({
-                  shareUrl: `${window.location.origin}/launch-detail/${pair?.address}`,
+                  shareUrl: `${window.location.origin}/launch-detail/${pair?.launchedToken?.address}`,
                   displayText: "Share this project",
                   shareText: "Checkout this Token: " + pair?.projectName,
                 }),
@@ -470,7 +470,10 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
             </div>
             <div className="col-span-1 text-xs flex items-center justify-center">
               {pair?.description && (
-                <ReactTyped strings={[pair.description]} typeSpeed={25} />
+                <ReactTyped
+                  strings={[pair.description]}
+                  typeSpeed={25}
+                />
               )}
             </div>
             <div className="flex flex-col items-center gap-3 md:gap-8 col-span-1">
@@ -696,7 +699,10 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
         </div>
 
         <div className="mt-6 md:mt-16 w-full">
-          <Tabs pair={state.pair.value} refreshTrigger={refreshTrigger} />
+          <Tabs
+            pair={state.pair.value}
+            refreshTrigger={refreshTrigger}
+          />
         </div>
       </CardContainer>
     </div>
@@ -704,8 +710,20 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
 });
 
 const LaunchPage: NextLayoutPage = observer(() => {
+  const [pairAddress, setPairAddress] = useState<string | null>(null);
   const router = useRouter();
-  const { pair: pairAddress } = router.query;
+  const { pair: launchTokenAddress } = router.query;
+
+  useEffect(() => {
+    if (!launchTokenAddress || !wallet.isInit) return;
+
+    wallet.contracts.memeFacade
+      .getPairByLaunchTokenAddress(launchTokenAddress as `0x${string}`)
+      .then((pairAddress) => {
+        setPairAddress(pairAddress.toLowerCase());
+      });
+  }, [launchTokenAddress, wallet.isInit]);
+
   const [projectInfo, setProjectInfo] = useState<{
     name?: string | null;
     description?: string | null;
@@ -723,6 +741,7 @@ const LaunchPage: NextLayoutPage = observer(() => {
     if (!pairAddress || !wallet.isInit) {
       return;
     }
+    console.log("pairAddress", pairAddress);
     trpcClient.projects.getProjectInfo
       .query({
         pair: (pairAddress as string).toLowerCase(),

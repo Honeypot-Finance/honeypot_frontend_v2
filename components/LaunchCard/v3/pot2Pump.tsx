@@ -242,7 +242,7 @@ const RefundAction = observer(({ pair }: { pair: MemePairContract }) => {
 const ToTokenDetailsPage = observer(
   ({ pair }: { pair: FtoPairContract | MemePairContract }) => {
     return (
-      <Link href={`/launch-detail/${pair?.address}`}>
+      <Link href={`/launch-detail/${pair?.launchedToken?.address}`}>
         <Button className="w-full">View Token</Button>
       </Link>
     );
@@ -334,7 +334,7 @@ const DetailLaunchCard = observer(
               token: Token.getToken({ address: pair?.launchToken?.id }),
             }),
             optionsPresets.share({
-              shareUrl: `${window.location.origin}/launch-detail/${pair?.id}`,
+              shareUrl: `${window.location.origin}/launch-detail/${pair.launchToken.id}`,
               displayText: "Share this project",
               shareText:
                 projectType === "meme"
@@ -455,7 +455,7 @@ const TrendingLaunchCard = observer(({ pair }: { pair: Pot2Pump }) => {
   return (
     <Link
       className="flex flex-col bg-white px-4 py-6 border-none rounded-3xl shadow-[2px_2px_0px_0px_#925425] relative overflow-hidden"
-      href={`/launch-detail/${pair.id}`}
+      href={`/launch-detail/${pair.launchToken.id}`}
     >
       <div className="bg-[url('/images/pumping/inline-border.png')] bg-top h-6 absolute top-0 left-0 w-full bg-contain"></div>
       <Image

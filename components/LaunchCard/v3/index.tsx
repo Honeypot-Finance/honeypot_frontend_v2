@@ -305,7 +305,7 @@ const TrendingLaunchCard = observer(
       return (
         <Link
           className="flex flex-col gap-y-4 bg-white px-4 py-6 border-none rounded-3xl shadow-[2px_2px_0px_0px_#925425] relative overflow-hidden"
-          href={`/launch-detail/${pair.address}`}
+          href={`/launch-detail/${pair?.launchedToken?.address}`}
         >
           <div className="bg-[url('/images/pumping/inline-border.png')] bg-top h-6 absolute top-0 left-0 w-full bg-contain"></div>
           <Image
@@ -414,7 +414,7 @@ const SimpleLaunchCard = observer(
       return (
         <div className="relative group">
           <Link
-            href={`/launch-detail/${pair.address}`}
+            href={`/launch-detail/${pair?.launchedToken?.address}`}
             className={cn(
               "flex flex-col text-sm gap-y-1 bg-white px-4 py-6  rounded-3xl relative transition-all duration-100 overflow-hidden cursor-pointer",
               theme === "dark"
@@ -744,7 +744,7 @@ const FeaturedLaunchCard = observer(({ pair }: { pair: LaunchContract }) => {
                   <div className="flex p-1 mt-6 bg-white border border-black rounded-lg">
                     <Link
                       className="flex-1"
-                      href={`/launch-detail/${pair.address}`}
+                      href={`/launch-detail/${pair?.launchedToken?.address}`}
                     >
                       <Button className="w-full bg-[#FFCD4D] text-[#202020] rounded-lg border-none">
                         Token Details

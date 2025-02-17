@@ -50,4 +50,8 @@ export class MEMEFacadeContract implements BaseContract {
       isSuccessEffect: true,
     });
   }
+
+  async getPairByLaunchTokenAddress(launchTokenAddress: string) {
+    return this.contract.read.getPair([launchTokenAddress as `0x${string}`]);
+  }
 }
