@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Header } from "./header/v3";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
@@ -21,6 +21,9 @@ import _ from "lodash";
 import { whitelistWallets } from "@/config/whitelist";
 import { InvitationCodeModal } from "../InvitationCodeModal/InvitationCodeModal";
 import { useAutoConnect } from "@/lib/hooks/useAutoconnector";
+import { useSafeAppsSDK } from "@safe-global/safe-apps-react-sdk";
+import { ethers } from "ethers";
+import { SafeAppProvider } from "@safe-global/safe-apps-provider";
 export const Layout = ({
   children,
   className,
@@ -33,6 +36,11 @@ export const Layout = ({
   const currentChain = chainId ? networksMap[chainId] : null;
   const [showInviteModal, setShowInviteModal] = useState(false);
 
+  const { sdk, safe } = useSafeAppsSDK();
+  const web3Provider = useMemo(
+    () => new ethers.providers.Web3Provider(new SafeAppProvider(safe, sdk)),
+    [sdk, safe]
+  );
   useAutoConnect();
 
   useEffect(() => {

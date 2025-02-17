@@ -29,10 +29,6 @@ import {
   DynamicContextProvider,
   DynamicWidget,
 } from "@dynamic-labs/sdk-react-core";
-import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
-import { useSafeAppsSDK } from "@safe-global/safe-apps-react-sdk";
-import { SafeAppProvider } from "@safe-global/safe-apps-provider";
-import { ethers } from "ethers";
 
 // enableStaticRendering(true)
 const queryClient = new QueryClient({
@@ -82,12 +78,6 @@ export default function App({
 }: AppProps & {
   Component: NextLayoutPage;
 }) {
-  const { sdk, safe } = useSafeAppsSDK();
-  const web3Provider = useMemo(
-    () => new ethers.providers.Web3Provider(new SafeAppProvider(safe, sdk)),
-    [sdk, safe]
-  );
-
   const ComponentLayout = Component.Layout || Layout;
 
   return (
