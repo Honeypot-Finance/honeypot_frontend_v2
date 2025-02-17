@@ -15,7 +15,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { config } from "@/config/wagmi";
 import { trpc, trpcQueryClient } from "../lib/trpc";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { wallet } from "@/services/wallet";
 import { DM_Sans, Inter } from "next/font/google";
 import { Inspector, InspectParams } from "react-dev-inspector";
@@ -30,6 +30,9 @@ import {
   DynamicWidget,
 } from "@dynamic-labs/sdk-react-core";
 import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
+import { useSafeAppsSDK } from "@safe-global/safe-apps-react-sdk";
+import { SafeAppProvider } from "@safe-global/safe-apps-provider";
+import { ethers } from "ethers";
 
 // enableStaticRendering(true)
 const queryClient = new QueryClient({
@@ -79,6 +82,12 @@ export default function App({
 }: AppProps & {
   Component: NextLayoutPage;
 }) {
+  const { sdk, safe } = useSafeAppsSDK();
+  const web3Provider = useMemo(
+    () => new ethers.providers.Web3Provider(new SafeAppProvider(safe, sdk)),
+    [sdk, safe]
+  );
+
   const ComponentLayout = Component.Layout || Layout;
 
   return (
