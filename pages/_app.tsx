@@ -25,7 +25,7 @@ import { ApolloProvider } from "@apollo/client";
 import { infoClient } from "@/lib/algebra/graphql/clients";
 import Image from "next/image";
 import SafeProvider from "@safe-global/safe-apps-react-sdk";
-
+import { useAutoConnect } from "@/lib/hooks/useAutoconnector";
 import {
   DynamicContextProvider,
   DynamicWidget,
@@ -81,6 +81,7 @@ export default function App({
   Component: NextLayoutPage;
 }) {
   const ComponentLayout = Component.Layout || Layout;
+  useAutoConnect();
 
   return (
     <trpc.Provider
