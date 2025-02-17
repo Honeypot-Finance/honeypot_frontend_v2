@@ -546,17 +546,25 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
 
                   <div className="flex flex-col items-center gap-1 md:gap-1.5">
                     <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-                      24H
+                      24H Change
                     </span>
                     <span
                       className={cn(
                         "text-sm md:text-[15px] font-bold",
-                        state.pair.value?.priceChangeDisplay?.startsWith("-")
+                        state.pair.value?.launchedToken?.priceChange24hPercentage?.startsWith(
+                          "-"
+                        )
                           ? "text-red-500"
                           : "text-green-500"
                       )}
                     >
-                      {state.pair.value?.priceChangeDisplay}
+                      {DynamicFormatAmount({
+                        amount:
+                          state.pair.value?.launchedToken
+                            ?.priceChange24hPercentage ?? "0",
+                        decimals: 2,
+                        endWith: "%",
+                      })}
                     </span>
                   </div>
                   <div className="flex flex-col items-center gap-1 md:gap-1.5">

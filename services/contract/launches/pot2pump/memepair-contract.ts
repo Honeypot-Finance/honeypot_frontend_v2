@@ -85,15 +85,7 @@ export class MemePairContract implements BaseLaunchContract {
   }
 
   get priceChangeDisplay() {
-    return this.launchedToken?.derivedUSD &&
-      Number(this.launchedToken?.derivedUSD) &&
-      this.launchedToken?.initialUSD &&
-      Number(this.launchedToken.initialUSD)
-      ? Number(this.launchedToken.derivedUSD) >
-        Number(this.launchedToken.initialUSD)
-        ? `${formatAmountWithAlphabetSymbol((Number(this.launchedToken.derivedUSD) / Number(this.launchedToken.initialUSD)).toFixed(2), 2)}%`
-        : `-${formatAmountWithAlphabetSymbol((Number(this.launchedToken.initialUSD) / Number(this.launchedToken.derivedUSD)).toFixed(2), 2)}%`
-      : "--";
+    return this.launchedToken?.priceChange24hPercentage;
   }
 
   get pottingPercentageDisplay() {

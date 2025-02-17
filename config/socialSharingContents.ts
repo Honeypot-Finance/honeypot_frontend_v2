@@ -7,14 +7,17 @@ type platformMap = "telegram" | "twitter";
 export const pot2pumpShareLink = (pair: MemePairContract) =>
   `${DOMAIN_MAP.POT2PUMP}/launch-detail/${pair.launchedToken?.address}`;
 
-export const pot2PumpPumpingShareTwitterContent = (pair: MemePairContract) => `
-🚀 Just graduated from Pot2Pump on @honeypotfinance 
-💥 "${pair.launchedToken?.symbol}" now trading on Pot-Wasabee DEX -> Berachain's answer to @Meteora
-
-🔹 A portion of token permanently locked
-🔹 Enhanced m3m3 staking mechanism
-🔹 Integrated with @berachain POL.
+export const pot2PumpPumpingShareTwitterContent = (pair: MemePairContract) => {
+  return `
+🚀 "${pair.launchedToken?.symbol}" now trade on @honeypotfinance's Pot-Wasabee Dex - Berachain's answer to #Meteora.
+📈 24h Change: ${Number(pair.launchedToken?.priceChange24hPercentage).toFixed(2)}%
+💰 Current Price: $${Number(pair.launchedToken?.derivedUSD).toExponential(3)} 
+CA: ${pair.launchedToken?.address}
+🔹 concentreted liquidity with ALM 
+🔹 Upgraded m3m3 staking with #berachain POL
+Trade now on:
 `;
+};
 
 export const pot2PumpPottingShareTwitterContent = (pair: MemePairContract) => `
 🚀 "${pair.launchedToken?.symbol}" Token launched on @honeypotfinance 's pot2pump.
@@ -29,20 +32,8 @@ export const pot2PumpPumpingShareTelegramContent = (pair: MemePairContract) => `
 💥 Ticker: ${pair.launchedToken?.symbol} 
 🔹 Full Name: ${pair.launchedToken?.displayName}  
 
-📈 Price Growth since Launch: ${pair.priceChangeDisplay}     
-💵 USD Price: $${DynamicFormatAmount({
-  amount: pair.launchedToken?.derivedUSD ?? "0",
-  decimals: 5,
-  endWith: "$",
-})} 
-📊 Total Supply: ${DynamicFormatAmount({
-  amount:
-    pair.launchedToken?.totalSupplyWithoutDecimals
-      .div(10 ** (pair.launchedToken?.decimals ?? 18))
-      .toFixed(2) ?? "0",
-  decimals: 2,
-  endWith: " ",
-})}  
+📈 Price Growth since Launch: ${Number(pair.launchedToken?.priceChange24hPercentage).toFixed(2)}%     
+💵 USD Price: $${Number(pair.launchedToken?.derivedUSD).toExponential(3)} 
 🔄 Transactions: 🟢 ${pair.launchedTokenBuyCount} / 🔴 ${pair.launchedTokenSellCount}
 
 🔗 ${window.location.origin}/launch-detail/${pair.launchedToken?.address}
@@ -53,10 +44,9 @@ export const pot2PumpPottingShareTelegramContent = (pair: MemePairContract) => `
 💥 Ticker: ${pair.launchedToken?.symbol} 
 🔹 Full Name: ${pair.launchedToken?.displayName} 
 
-📈 Potting Percentage: ${pair.pottingPercentageDisplay}    
-💵 Total Raised: $${pair.depositedRaisedToken}    
-👥 Participants count: ${pair.participantsCount}  
-📊 Total Supply: ${pair.launchedToken?.totalSupplyWithoutDecimals.div(10 ** (pair.launchedToken?.decimals ?? 18)).toFixed(2)} 
+📈 Potting Percentage: ${Number(pair.pottingPercentageDisplay).toFixed(2)}%    
+💵 Total Raised: $${Number(pair.depositedRaisedToken).toExponential(3)}    
+👥 Participants count: ${Number(pair.participantsCount).toExponential(2)}  
 
 🔗 ${window.location.origin}/launch-detail/${pair.launchedToken?.address}
 `;
