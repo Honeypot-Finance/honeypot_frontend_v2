@@ -14,7 +14,6 @@ import {
   getCapsuleWallet,
   OAuthMethod,
 } from "@usecapsule/rainbowkit-wallet";
-import { SafeConnector } from "wagmi/connectors/safe";
 // import { holdstationWallet } from "./holdstationWallet";
 // import { capsuleWallet } from "./capsualWallet";
 // import { berasigWallet } from "./berasigWallet";
@@ -54,16 +53,8 @@ let customWallets = [
 // Create Capsule wallet connector
 
 const connectors = [
-  safe(),
+  safe({ allowedDomains: [/^app\.safe\.global$/], debug: false }),
   injected(),
-  safeWallet(),
-  new SafeConnector({
-    chains: networks.map((network) => network.chain),
-    options: {
-      allowedDomains: [/^app\.safe\.global$/],
-      debug: false,
-    },
-  }),
   ...connectorsForWallets(
     [
       {
