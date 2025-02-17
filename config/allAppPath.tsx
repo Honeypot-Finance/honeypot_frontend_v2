@@ -59,17 +59,17 @@ export const appPathsList: Menu[] = [
   {
     path: [
       {
-        path: `${process.env.NODE_ENV === "development" ? "" : DOMAIN_MAP.POT2PUMP}/pot2pump/overview`,
+        path: `/pot2pump/overview`,
         title: "Overview",
         routePath: "/pot2pump/overview"
       },
       {
-        path: `${process.env.NODE_ENV === "development" ? "" : DOMAIN_MAP.POT2PUMP}/pot2pump/potting`,
+        path: `/pot2pump/potting`,
         title: "Potting",
         routePath: "/pot2pump/potting"
       },
       {
-        path: `${process.env.NODE_ENV === "development" ? "" : DOMAIN_MAP.POT2PUMP}/pot2pump/pumping`,
+        path: `/pot2pump/pumping`,
         title: "Pumping",
         routePath: "/pot2pump/pumping"
       },
@@ -90,7 +90,7 @@ export const appPathsList: Menu[] = [
     routePath: "/dex",
     path: [
       {
-        path: `${process.env.NODE_ENV === "development" ? "" : DOMAIN_MAP.MAIN}/swap`,
+        path: `/swap`,
         title: "Swap",
         routePath: "/swap"
       },
@@ -99,20 +99,20 @@ export const appPathsList: Menu[] = [
       //   title: "Add Liquidity",
       // },
       {
-        path: `${process.env.NODE_ENV === "development" ? "" : DOMAIN_MAP.MAIN}/pools`,
+        path: `/pools`,
         title: "LP Pool List",
         routePath: "/pools"
       },
     ],
   },
   {
-    path: `${process.env.NODE_ENV === "development" ? "" : DOMAIN_MAP.MAIN}/leaderboard`,
+    path: `/leaderboard`,
     title: "Leaderboard",
     routePath: "/leaderboard"
   },
   {
     title: "Faucet",
-    path: `${process.env.NODE_ENV === "development" ? "" : DOMAIN_MAP.MAIN}/faucet`,
+    path: `/faucet`,
     routePath: "/faucet"
   },
   // {

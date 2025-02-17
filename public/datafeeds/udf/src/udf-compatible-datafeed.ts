@@ -4,11 +4,6 @@ import { Requester } from "./requester";
 
 export class UDFCompatibleDatafeed extends UDFCompatibleDatafeedBase {
   public constructor(datafeedURL: string, updateFrequency: number = 10 * 1000) {
-    console.log(
-      "UDFCompatibleDatafeed constructor",
-      datafeedURL,
-      updateFrequency
-    );
     const requester = new Requester();
     const quotesProvider = new QuotesProvider(datafeedURL, requester);
     super(datafeedURL, quotesProvider, requester, updateFrequency);

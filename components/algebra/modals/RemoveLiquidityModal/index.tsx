@@ -228,6 +228,4 @@ const RemoveLiquidityModal = ({ positionId }: RemoveLiquidityModalProps) => {
   );
 };
 
-RemoveLiquidityModal.whyDidYouRender = true;
-
 export default RemoveLiquidityModal;
