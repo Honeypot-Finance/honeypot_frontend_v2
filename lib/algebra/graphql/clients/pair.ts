@@ -122,7 +122,8 @@ const pop2PumpQuery = `
   raisedTokenReachingMinCap
   raisedTokenMinCap
   creator
-
+  buyCount
+  sellCount
 `;
 
 export const pot2PumpListToMemePairList = (
