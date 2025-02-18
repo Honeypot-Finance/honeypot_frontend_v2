@@ -73,7 +73,7 @@ export const LaunchDataProgress = observer(
 
         <div className="w-full h-[1px] bg-[#52493D]"></div>
         <div className="space-y-1.5">
-          <p className="text-white/65 text-sm mt-2.5">Rank Project</p>
+          <p className="text-white/65 text-sm mt-2.5">vote the MEME</p>
           <div className="flex gap-5">
             {Object.entries(votes).map(([key, value]) => {
               return (
