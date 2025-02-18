@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { infoClient } from ".";
 import {
   GetPot2PumpDetailDocument,

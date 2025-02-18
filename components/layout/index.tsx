@@ -23,7 +23,6 @@ import { InvitationCodeModal } from "../InvitationCodeModal/InvitationCodeModal"
 import { useAutoConnect } from "@/lib/hooks/useAutoconnector";
 import { useSafeAppsSDK } from "@safe-global/safe-apps-react-sdk";
 import { ethers } from "ethers";
-import { SafeAppProvider } from "@safe-global/safe-apps-provider";
 export const Layout = ({
   children,
   className,
@@ -37,10 +36,6 @@ export const Layout = ({
   const [showInviteModal, setShowInviteModal] = useState(false);
 
   const { sdk, safe } = useSafeAppsSDK();
-  const web3Provider = useMemo(
-    () => new ethers.providers.Web3Provider(new SafeAppProvider(safe, sdk)),
-    [sdk, safe]
-  );
   useAutoConnect();
 
   useEffect(() => {

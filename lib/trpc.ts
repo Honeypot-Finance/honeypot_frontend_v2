@@ -66,7 +66,7 @@ export const trpcClient = createTRPCClient<AppRouter>({
       url: `${getBaseUrl()}/api/trpc`,
       async headers () {
         const headers = {} as Record<string, string>;
-        if (
+        if (typeof window !== 'undefined' && 
           localStorage.getItem("message") &&
           localStorage.getItem("signature")
         ) {
@@ -88,7 +88,7 @@ export const trpcQueryClient = trpc.createClient({
       transformer: superjson,
       async headers () {
         const headers = {} as Record<string, string>;
-        if (
+        if (typeof window !== 'undefined' && 
           localStorage.getItem("message") &&
           localStorage.getItem("signature")
         ) {
