@@ -18,19 +18,28 @@ import { Filter } from "@/components/pot2pump/FilterModal";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 import { defaultContainerVariants, itemPopUpVariants } from "@/lib/animation";
 import { Pot2PumpPottingService } from "@/services/launchpad/pot2pump/potting";
+import { Pot2PumpService } from "@/services/launchpad/pot2pump";
 import { WrappedNextInputSearchBar } from "@/components/wrappedNextUI/SearchBar/WrappedInputSearchBar";
 import { FilterState } from "@/constants/pot2pump.type";
 import { defaultFilterState } from "@/constants/pot2pump";
 import { hasValue, removeEmptyFields } from "@/lib/utils";
+import { Address } from "viem";
+import {
+  canClaimPot2Pump,
+  canRefundPot2Pump,
+} from "@/lib/algebra/graphql/clients/pot2pump";
 
 const MemeLaunchPage: NextLayoutPage = observer(() => {
   const [pottingProjects, setPottingProjects] =
     useState<Pot2PumpPottingService>();
+  const [myProjects, setMyProjects] = useState<Pot2PumpService>();
   const [mostSuccessProjects, setMostSuccessProjects] = useState<
     MemePairContract[] | null
   >(null);
   const [filters, setFilters] = useState<FilterState>(defaultFilterState);
   const [search, setSearch] = useState("");
+  const [canClaimPot2PumpList, setCanClaimPot2PumpList] = useState<MemePairContract[]>([]);
+  const [canRefundPot2PumpList, setCanRefundPot2PumpList] = useState<MemePairContract[]>([]);
 
   const updateMostSuccessProjects = useCallback(() => {
     mostSuccessProjects?.forEach((pair) => {
@@ -81,6 +90,26 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
     setSearch("");
     setFilters(data);
   };
+
+  const initPot2Pumps = () => {
+    const newPumpingProjects = new Pot2PumpService();
+    setMyProjects(newPumpingProjects);
+    newPumpingProjects.myLaunches.reloadPage();
+    newPumpingProjects.participatedPairs.reloadPage();
+    canClaimPot2Pump(wallet.account).then((res) => {
+      setCanClaimPot2PumpList(res);
+    });
+    canRefundPot2Pump(wallet.account).then((res) => {
+      setCanRefundPot2PumpList(res);
+    });
+  };
+
+  useEffect(() => {
+    if (!wallet.isInit) {
+      return;
+    }
+    initPot2Pumps();
+  }, [wallet.isInit]);
 
   return (
     <div className="w-full grow flex flex-col font-gliker">
@@ -202,8 +231,61 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
               </Link>
             </div>
           </div>
+
+          <div className="absolute right-0 top-0 mt-16 flex gap-4 text-sm z-10">
+            {canClaimPot2PumpList.length > 0 && (
+              <Button
+                onClick={() => {
+                  wallet.contracts.memeFacade.claimAllUserLP
+                    .call(
+                      [
+                        wallet.account as Address,
+                        canClaimPot2PumpList.map(
+                          (pair) => pair.launchedToken?.address as Address
+                        ),
+                      ],
+                      {
+                        gas: BigInt(10000000),
+                      }
+                    )
+                    .then(() => {
+                      initPot2Pumps();
+                    });
+                }}
+                disabled={!wallet.account}
+                className="ml-[-1px] rounded-[8px] border border-black bg-[#FFCD4D] p-2 text-[#202020] shadow-[2px_2px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_1px_0px_0px_#000] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Claim All
+              </Button>
+            )}
+            {canRefundPot2PumpList.length > 0 && (
+              <Button
+                onClick={() => {
+                  wallet.contracts.memeFacade.refundAllUserToken
+                    .call(
+                      [
+                        wallet.account as Address,
+                        canRefundPot2PumpList.map(
+                          (pair) => pair.launchedToken?.address as Address
+                        ),
+                      ],
+                      {
+                        gas: BigInt(10000000),
+                      }
+                    )
+                    .then(() => {
+                      initPot2Pumps();
+                    });
+                }}
+                disabled={!wallet.account}
+                className="ml-[-1px] rounded-[8px] border border-black bg-[#FFCD4D] p-2 text-[#202020] shadow-[2px_2px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_1px_0px_0px_#000] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Refund All
+              </Button>
+            )}
+          </div>
+
           <Tabs
-            // destroyInactiveTabPanel={false}
             aria-label="Options"
             classNames={{
               tabList: "bg-transparent",
@@ -244,12 +326,44 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                 />
               )}
             </Tab>
-            <Tab key="my" title="My MEMEs" href="/profile" />
-            <Tab
-              key="participated-launch"
-              title="Participated MEMEs"
-              href="/profile"
-            />
+            <Tab key="my" title="My MEMEs">
+              {myProjects && (
+                <Pagination
+                  paginationState={myProjects.myLaunches}
+                  render={(project) => (
+                    <LaunchCardV3
+                      key={project.address}
+                      pair={project}
+                      action={<></>}
+                      type="simple"
+                    />
+                  )}
+                  classNames={{
+                    itemsContainer:
+                      "grid gap-8 grid-cols-1 md:grid-cols-2 xl:gap-6 xl:grid-cols-3",
+                  }}
+                />
+              )}
+            </Tab>
+            <Tab key="participated-launch" title="Participated MEMEs">
+              {myProjects && (
+                <Pagination
+                  paginationState={myProjects.participatedPairs}
+                  render={(project) => (
+                    <LaunchCardV3
+                      key={project.address}
+                      pair={project}
+                      action={<></>}
+                      type="simple"
+                    />
+                  )}
+                  classNames={{
+                    itemsContainer:
+                      "grid gap-8 grid-cols-1 md:grid-cols-2 xl:gap-6 xl:grid-cols-3",
+                  }}
+                />
+              )}
+            </Tab>
             {/* <Tab href="/launch" title="To Fto projects->" /> */}
             {/* <Tab
               href="https://bartio.bonds.yeetit.xyz/"
