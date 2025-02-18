@@ -9,6 +9,8 @@ interface V3SwapCardProps {
   fromTokenAddress?: string;
   toTokenAddress?: string;
   disableSelection?: boolean;
+  disableFromSelection?: boolean;
+  disableToSelection?: boolean;
   bordered?: boolean;
   borderHeight?: string;
   onSwapSuccess?: () => void;
@@ -29,6 +31,8 @@ export function V3SwapCard({
   staticToTokenList,
   isInputNative,
   isOutputNative,
+  disableFromSelection,
+  disableToSelection,
 }: V3SwapCardProps) {
   return (
     <CardContainer>
@@ -41,6 +45,8 @@ export function V3SwapCard({
         staticToTokenList={staticToTokenList}
         isInputNative={isInputNative}
         isOutputNative={isOutputNative}
+        disableFromSelection={disableFromSelection}
+        disableToSelection={disableToSelection}
       />
       <SwapParamsV3 />
       <SwapButtonV3 />

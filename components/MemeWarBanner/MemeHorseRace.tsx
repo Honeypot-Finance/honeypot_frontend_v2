@@ -432,7 +432,7 @@ const TopHoldersModal = observer(
               </ModalBody>
             </div>
 
-            <div className="bg-[url('/images/pool-detail/bottom-border.svg')] bg-left-top h-6 absolute -bottom-1 left-0 w-full bg-contain"></div>
+            <div className="bg-[url('/images/card-container/honey/bottom-border.svg')] bg-left-top h-6 absolute -bottom-1 left-0 w-full bg-contain"></div>
           </div>
         </ModalContent>
       </Modal>

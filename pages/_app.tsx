@@ -15,7 +15,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { config } from "@/config/wagmi";
 import { trpc, trpcQueryClient } from "../lib/trpc";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { wallet } from "@/services/wallet";
 import { DM_Sans, Inter } from "next/font/google";
 import { Inspector, InspectParams } from "react-dev-inspector";
@@ -25,12 +25,10 @@ import { ApolloProvider } from "@apollo/client";
 import { infoClient } from "@/lib/algebra/graphql/clients";
 import Image from "next/image";
 import SafeProvider from "@safe-global/safe-apps-react-sdk";
-import { useAutoConnect } from "@/lib/hooks/useAutoconnector";
 import {
   DynamicContextProvider,
   DynamicWidget,
 } from "@dynamic-labs/sdk-react-core";
-import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
 
 // enableStaticRendering(true)
 const queryClient = new QueryClient({
@@ -81,7 +79,6 @@ export default function App({
   Component: NextLayoutPage;
 }) {
   const ComponentLayout = Component.Layout || Layout;
-  useAutoConnect();
 
   return (
     <trpc.Provider
@@ -89,8 +86,8 @@ export default function App({
       queryClient={queryClient}
     >
       <Analytics />
-      <SafeProvider>
-        <WagmiProvider config={config}>
+      <WagmiProvider config={config}>
+        <SafeProvider>
           <QueryClientProvider client={queryClient}>
             <ApolloProvider client={infoClient}>
               <RainbowKitProvider
@@ -122,8 +119,8 @@ export default function App({
               </RainbowKitProvider>
             </ApolloProvider>
           </QueryClientProvider>
-        </WagmiProvider>
-      </SafeProvider>
+        </SafeProvider>
+      </WagmiProvider>
     </trpc.Provider>
   );
 }

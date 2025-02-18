@@ -204,6 +204,7 @@ export const LaunchDetailSwapCard = observer(
                 isInputNative={isInputNative}
                 isOutputNative={isOutputNative}
                 onSwapSuccess={onSwapSuccess}
+                disableToSelection={true}
               />
             </LoadingContainer>
           )}

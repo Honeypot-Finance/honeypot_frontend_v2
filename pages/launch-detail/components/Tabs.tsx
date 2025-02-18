@@ -7,7 +7,12 @@ import Image from "next/image";
 import { Button } from "@/components/button";
 import BeraVoteForm from "@/components/beravote/components/NewSpace/Steps/BeraVoteForm";
 import { observer } from "mobx-react-lite";
-import { Modal, Tab, Tabs as NextUITabs, useDisclosure } from "@nextui-org/react";
+import {
+  Modal,
+  Tab,
+  Tabs as NextUITabs,
+  useDisclosure,
+} from "@nextui-org/react";
 import { UpdateProjectModal } from "../[pair]";
 import TransactionHistory from "./TransactionHistory";
 import TopHoldersTable from "./TopHoldersTable";
@@ -84,13 +89,6 @@ const Tabs = observer(
             ),
           }}
         >
-          <Tab key="txs" title="Transactions">
-            <TransactionHistory
-              pairAddress={pair?.address ?? ""}
-              pair={pair as MemePairContract}
-              refreshTrigger={refreshTrigger}
-            />
-          </Tab>
           <Tab key="comment" title="Comments">
             <div className="w-full">
               {pair && (
@@ -101,6 +99,14 @@ const Tabs = observer(
               )}
             </div>
           </Tab>
+          <Tab key="txs" title="Transactions">
+            <TransactionHistory
+              pairAddress={pair?.address ?? ""}
+              pair={pair as MemePairContract}
+              refreshTrigger={refreshTrigger}
+            />
+          </Tab>
+
           {pair?.state === 0 && (
             <>
               <Tab key="holders" title="Top 10 Holders">
