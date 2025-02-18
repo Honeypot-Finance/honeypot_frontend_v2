@@ -39,6 +39,7 @@ export const calculateToken24hPriceChange: (token: Token) => {
       indexCount24h++;
     }
   }
+
   if (indexCount24h === 0) {
     averagePrice24h = 0;
   } else {
@@ -56,6 +57,7 @@ export const calculateToken24hPriceChange: (token: Token) => {
       indexCount48h++;
     }
   }
+
   if (indexCount48h === 0) {
     averagePrice48h = 0;
   } else {

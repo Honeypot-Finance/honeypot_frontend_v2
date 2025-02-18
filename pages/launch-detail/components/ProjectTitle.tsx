@@ -119,6 +119,19 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                   </a>
                 </>
               )}
+              {pair?.state === 0 && (
+                <>
+                  <a
+                    href={`https://www.defined.fi/berachain/${pair?.launchedToken?.address}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-80 text-[#5C5C5C]"
+                    title="defined.fi"
+                  >
+                    {`𝔻`}
+                  </a>
+                </>
+              )}
               <PairStatus
                 status={status}
                 statusColor={statusColor}
