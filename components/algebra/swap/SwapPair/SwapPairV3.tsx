@@ -36,6 +36,8 @@ interface SwapPairV3Props {
   staticToTokenList?: Token[];
   isInputNative?: boolean;
   isOutputNative?: boolean;
+  disableFromSelection?: boolean;
+  disableToSelection?: boolean;
 }
 
 const SwapPairV3 = ({
@@ -47,6 +49,8 @@ const SwapPairV3 = ({
   staticToTokenList,
   isInputNative,
   isOutputNative,
+  disableFromSelection,
+  disableToSelection,
 }: SwapPairV3Props) => {
   const {
     toggledTrade: trade,
@@ -303,7 +307,7 @@ const SwapPairV3 = ({
         showMaxButton={showMaxButton}
         showBalance={true}
         label="From"
-        disableSelection={disableSelection}
+        disableSelection={disableSelection || disableFromSelection}
       />
 
       <div className="flex w-full items-center gap-[5px]">
@@ -327,7 +331,7 @@ const SwapPairV3 = ({
         fiatValue={fiatValueOutputFormatted ?? undefined}
         showBalance={true}
         label="To"
-        disableSelection={disableSelection}
+        disableSelection={disableSelection || disableToSelection}
       />
     </div>
   );

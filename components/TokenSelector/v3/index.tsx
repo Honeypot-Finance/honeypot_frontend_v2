@@ -151,13 +151,15 @@ export const TokenSelector = observer(
                   {value?.displayName ? value.displayName : "Select Token"}
                 </span>
               </TruncateMarkup>
-              <motion.div
-                variants={animationVariants.dropDownIcon}
-                initial={animationVariants.dropDownIcon.initial}
-                animate={state.currentAnimationVariant}
-              >
-                <ChevronDown className="size-4" />
-              </motion.div>
+              {!disableSelection && (
+                <motion.div
+                  variants={animationVariants.dropDownIcon}
+                  initial={animationVariants.dropDownIcon.initial}
+                  animate={state.currentAnimationVariant}
+                >
+                  <ChevronDown className="size-4" />
+                </motion.div>
+              )}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="flex w-full lg:w-[350px] flex-col items-center gap-4 border border-[color:var(--card-stroke,#F7931A)] [background:var(--card-color,#271A0C)] rounded-xl border-solid">
