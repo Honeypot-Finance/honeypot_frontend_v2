@@ -19,6 +19,7 @@ import {
   Pot2PumpPottingTrendingQueryVariables,
 } from "../generated/graphql";
 import { filter } from "lodash";
+import { calculateToken24hPriceChange } from "../utils/calculateToken24hChange";
 
 type SubgraphToken = {
   id: string;
@@ -165,6 +166,10 @@ export const pot2PumpToMemePair = (
   });
 
   if (pot2Pump.launchToken?.id) {
+    const { priceChange, priceChangePercentage } = calculateToken24hPriceChange(
+      pot2Pump.launchToken
+    );
+
     contract.launchedToken = Token.getToken({
       address: pot2Pump.launchToken?.id,
       name: pot2Pump.launchToken?.name,
@@ -178,10 +183,14 @@ export const pot2PumpToMemePair = (
       initialUSD: pot2Pump.launchToken?.initialUSD,
       totalValueLockedUSD: pot2Pump.launchToken?.totalValueLockedUSD,
       poolCount: Number(pot2Pump.launchToken?.poolCount),
-      priceChange24hPercentage: pot2Pump.launchToken?.priceChange24hPercentage,
+      priceChange24hPercentage: priceChangePercentage.toString(),
     });
   }
+
   if (pot2Pump.raisedToken?.id) {
+    const { priceChange, priceChangePercentage } = calculateToken24hPriceChange(
+      pot2Pump.raisedToken
+    );
     contract.raiseToken = Token.getToken({
       address: pot2Pump.raisedToken?.id,
       name: pot2Pump.raisedToken?.name,
@@ -195,7 +204,7 @@ export const pot2PumpToMemePair = (
       initialUSD: pot2Pump.raisedToken?.initialUSD,
       totalValueLockedUSD: pot2Pump.raisedToken?.totalValueLockedUSD,
       poolCount: Number(pot2Pump.raisedToken?.poolCount),
-      priceChange24hPercentage: pot2Pump.raisedToken?.priceChange24hPercentage,
+      priceChange24hPercentage: priceChangePercentage.toString(),
     });
   }
 
@@ -210,7 +219,7 @@ export const pot2PumpToMemePair = (
   return contract;
 };
 
-export async function fetchNearSuccessPot2Pump () {
+export async function fetchNearSuccessPot2Pump() {
   const { data } = await infoClient.query<Pot2PumpPottingNearSuccessQuery>({
     query: Pot2PumpPottingNearSuccessDocument,
     variables: {
@@ -226,7 +235,7 @@ export async function fetchNearSuccessPot2Pump () {
   return pot2PumpListToMemePairList(data.pot2Pumps as Partial<Pot2Pump>[]);
 }
 
-export async function fetchPottingNewTokens () {
+export async function fetchPottingNewTokens() {
   const { data } = await infoClient.query<Pot2PumpPottingNewTokensQuery>({
     query: Pot2PumpPottingNewTokensDocument,
     variables: {
@@ -237,7 +246,7 @@ export async function fetchPottingNewTokens () {
   return pot2PumpListToMemePairList(data.pot2Pumps as Partial<Pot2Pump>[]);
 }
 
-export async function fetchPumpingHighPricePot2Pump () {
+export async function fetchPumpingHighPricePot2Pump() {
   const { data } = await infoClient.query<Pot2PumpPottingHighPriceQuery>({
     query: Pot2PumpPottingHighPriceDocument,
   });
@@ -245,7 +254,7 @@ export async function fetchPumpingHighPricePot2Pump () {
   return pot2PumpListToMemePairList(data.pot2Pumps as Partial<Pot2Pump>[]);
 }
 
-export async function fetchPottingTrendingPot2Pump () {
+export async function fetchPottingTrendingPot2Pump() {
   const { data } = await infoClient.query<Pot2PumpPottingTrendingQuery>({
     query: Pot2PumpPottingTrendingDocument,
   });
@@ -253,7 +262,7 @@ export async function fetchPottingTrendingPot2Pump () {
   return pot2PumpListToMemePairList(data.pot2Pumps as Partial<Pot2Pump>[]);
 }
 
-export async function fetchPairsList ({
+export async function fetchPairsList({
   filter,
   pageRequest,
 }: {
@@ -333,7 +342,7 @@ export async function fetchPairsList ({
     query: gql(query),
   });
 
-  function transformPairsListData (data: Pot2PumpListData): PairsListResponse {
+  function transformPairsListData(data: Pot2PumpListData): PairsListResponse {
     const pairs = data.pot2Pumps.map((pot2Pump) => ({
       id: pot2Pump.id,
       token0Id: pot2Pump.launchToken.id,
@@ -384,7 +393,7 @@ export async function fetchPairsList ({
   return transformPairsListData(data);
 }
 
-export async function fetchMemetrackerList ({
+export async function fetchMemetrackerList({
   chainId,
 }: {
   chainId: string;
@@ -406,7 +415,7 @@ export async function fetchMemetrackerList ({
     query: gql(query),
   });
 
-  function transformPairsListData (
+  function transformPairsListData(
     data: Pot2PumpListData
   ): MemetrackerListResponse {
     const pairs = data.pot2Pumps.map((pot2Pump) => ({
@@ -451,15 +460,13 @@ export async function fetchMemetrackerList ({
   return transformPairsListData(data);
 }
 
-export async function fetchPot2PumpList ({
+export async function fetchPot2PumpList({
   filter,
 }: {
   chainId: string;
   filter: SubgraphProjectFilter;
 }): Promise<Pot2PumpListResponse> {
   let whereCondition: string[] = [];
-
-
 
   if (filter.status === "success") {
     whereCondition.push(` raisedTokenReachingMinCap: true `);
@@ -474,10 +481,12 @@ export async function fetchPot2PumpList ({
   }
 
   if (filter.tvl?.min !== undefined) {
-    filter.tvl.min.length > 0 && whereCondition.push(` LaunchTokenTVLUSD_gte: "${filter.tvl.min}" `);
+    filter.tvl.min.length > 0 &&
+      whereCondition.push(` LaunchTokenTVLUSD_gte: "${filter.tvl.min}" `);
   }
   if (filter.tvl?.max !== undefined) {
-    filter.tvl.max.length > 0 && whereCondition.push(` LaunchTokenTVLUSD_lte: "${filter.tvl.max}" `);
+    filter.tvl.max.length > 0 &&
+      whereCondition.push(` LaunchTokenTVLUSD_lte: "${filter.tvl.max}" `);
   }
 
   if (filter.participants?.min !== undefined) {
@@ -497,31 +506,22 @@ export async function fetchPot2PumpList ({
     );
   }
   if (filter?.marketcap?.max !== undefined) {
-    ` LaunchTokenMCAPUSD_lte: "${filter?.marketcap?.min}" `
-
+    ` LaunchTokenMCAPUSD_lte: "${filter?.marketcap?.min}" `;
   }
 
   if (filter?.daybuys?.min !== undefined) {
-    whereCondition.push(
-      ` buyCount_gte: "${filter?.daybuys?.min}" `
-    );
+    whereCondition.push(` buyCount_gte: "${filter?.daybuys?.min}" `);
   }
   if (filter?.daybuys?.max !== undefined) {
-    whereCondition.push(
-      ` buyCount_lte: "${filter?.daybuys?.max}" `
-    );
+    whereCondition.push(` buyCount_lte: "${filter?.daybuys?.max}" `);
   }
 
   if (filter?.daysells?.min !== undefined) {
-    whereCondition.push(
-      ` sellCount_gte: "${filter?.daysells?.min}" `
-    );
+    whereCondition.push(` sellCount_gte: "${filter?.daysells?.min}" `);
   }
 
   if (filter?.daysells?.max !== undefined) {
-    whereCondition.push(
-      ` sellCount_lte: "${filter?.daysells?.max}" `
-    );
+    whereCondition.push(` sellCount_lte: "${filter?.daysells?.max}" `);
   }
 
   if (filter?.depositraisedtoken?.min !== undefined) {
@@ -536,11 +536,9 @@ export async function fetchPot2PumpList ({
     );
   }
 
-
-
   const launchTokenFilter: any = {};
 
-  console.log("filter.search", filter.search)
+  console.log("filter.search", filter.search);
 
   if (filter.search) {
     launchTokenFilter.and = [
@@ -548,57 +546,61 @@ export async function fetchPot2PumpList ({
         or: [
           { name_contains_nocase: filter.search },
           { symbol_contains_nocase: filter.search },
-          { id: filter.search.toLowerCase() }
-        ]
-      }
-    ]
+          { id: filter.search.toLowerCase() },
+        ],
+      },
+    ];
   }
 
   if (filter?.dayvolume?.min !== undefined) {
     if (filter.search) {
-      launchTokenFilter.and.push({ volumeUSD_gte: filter?.dayvolume?.min })
+      launchTokenFilter.and.push({ volumeUSD_gte: filter?.dayvolume?.min });
     } else {
-      launchTokenFilter.volumeUSD_gte = filter?.dayvolume?.min
+      launchTokenFilter.volumeUSD_gte = filter?.dayvolume?.min;
     }
   }
 
   if (filter?.dayvolume?.max !== undefined) {
     if (filter.search) {
-      launchTokenFilter.and.push({ volumeUSD_lte: filter?.dayvolume?.max })
+      launchTokenFilter.and.push({ volumeUSD_lte: filter?.dayvolume?.max });
     } else {
-      launchTokenFilter.volumeUSD_lte = filter?.dayvolume?.max
+      launchTokenFilter.volumeUSD_lte = filter?.dayvolume?.max;
     }
   }
 
   if (filter?.daytxns?.min !== undefined) {
     if (filter.search) {
-      launchTokenFilter.and.push({ txCount_gte: filter?.daytxns?.min })
+      launchTokenFilter.and.push({ txCount_gte: filter?.daytxns?.min });
     } else {
-      launchTokenFilter.txCount_gte = filter?.daytxns?.min
+      launchTokenFilter.txCount_gte = filter?.daytxns?.min;
     }
   }
 
   if (filter?.daytxns?.max !== undefined) {
     if (filter.search) {
-      launchTokenFilter.and.push({ txCount_lte: filter?.daytxns?.max })
+      launchTokenFilter.and.push({ txCount_lte: filter?.daytxns?.max });
     } else {
-      launchTokenFilter.txCount_lte = filter?.daytxns?.max
+      launchTokenFilter.txCount_lte = filter?.daytxns?.max;
     }
   }
 
   if (filter?.daychange?.min !== undefined) {
     if (filter.search) {
-      launchTokenFilter.and.push({ priceChange24hPercentage_gte: filter?.daychange?.min })
+      launchTokenFilter.and.push({
+        priceChange24hPercentage_gte: filter?.daychange?.min,
+      });
     } else {
-      launchTokenFilter.priceChange24hPercentage_gte = filter?.daychange?.min
+      launchTokenFilter.priceChange24hPercentage_gte = filter?.daychange?.min;
     }
   }
 
   if (filter?.daychange?.max !== undefined) {
     if (filter.search) {
-      launchTokenFilter.and.push({ priceChange24hPercentage_lte: filter?.daychange?.max })
+      launchTokenFilter.and.push({
+        priceChange24hPercentage_lte: filter?.daychange?.max,
+      });
     } else {
-      launchTokenFilter.priceChange24hPercentage_lte = filter?.daychange?.max
+      launchTokenFilter.priceChange24hPercentage_lte = filter?.daychange?.max;
     }
   }
 
@@ -612,12 +614,19 @@ export async function fetchPot2PumpList ({
               if (condition.or && Array.isArray(condition.or)) {
                 // Handle the 'or' case inside 'and'
                 const orConditions = condition.or
-                  .map((orCondition: any) => `{ ${Object.entries(orCondition).map(([k, v]) => `${k}: "${v}"`).join(", ")} }`)
+                  .map(
+                    (orCondition: any) =>
+                      `{ ${Object.entries(orCondition)
+                        .map(([k, v]) => `${k}: "${v}"`)
+                        .join(", ")} }`
+                  )
                   .join(", ");
                 return `{or: [${orConditions}]}`;
               } else {
                 // Handle normal 'and' conditions
-                return `{ ${Object.entries(condition).map(([k, v]) => `${k}: "${v}"`).join(", ")} }`;
+                return `{ ${Object.entries(condition)
+                  .map(([k, v]) => `${k}: "${v}"`)
+                  .join(", ")} }`;
               }
             })
             .join(", ");
@@ -629,7 +638,7 @@ export async function fetchPot2PumpList ({
       })
       .join(", ");
 
-    console.log("filterString", filterString)
+    console.log("filterString", filterString);
 
     whereCondition.push(`launchToken_: { ${filterString} }`);
   }
@@ -653,8 +662,8 @@ export async function fetchPot2PumpList ({
     filter.orderDirection ? `orderDirection: ${filter.orderDirection}` : "",
     whereCondition.length > 0
       ? `where:{ ${whereCondition
-        .map((condition) => `${condition}`)
-        .join(",\n")}}`
+          .map((condition) => `${condition}`)
+          .join(",\n")}}`
       : "",
   ].filter(Boolean);
 
@@ -668,7 +677,7 @@ export async function fetchPot2PumpList ({
     }
   `;
 
-  console.log("Pumping query", query)
+  console.log("Pumping query", query);
 
   const { data } = await infoClient.query<Pot2PumpListData>({
     query: gql(query),
@@ -689,7 +698,7 @@ export async function fetchPot2PumpList ({
   };
 }
 
-export async function fetchPot2Pumps ({
+export async function fetchPot2Pumps({
   filter,
 }: {
   chainId: string;
@@ -760,8 +769,8 @@ export async function fetchPot2Pumps ({
     filter.orderDirection ? `orderDirection: ${filter.orderDirection}` : "",
     whereCondition.length > 0
       ? `where:{ ${whereCondition
-        .map((condition) => `${condition}`)
-        .join(",\n")}}`
+          .map((condition) => `${condition}`)
+          .join(",\n")}}`
       : "",
   ].filter(Boolean);
 
