@@ -31,7 +31,7 @@ Trade now on:
 export const pot2PumpPottingShareTwitterContent = (pair: MemePairContract) => `
 🚀$${pair.launchedToken?.symbol} now launched on @honeypotfinance pot2pump - #Berachain #Meteora.
 
-📈 potting progress: ${pair.pottingPercentageNumber.toFixed(4)}%
+📈 potting progress: ${(pair.pottingPercentageNumber * 100).toFixed(4)}%
 CA: ${pair.launchedToken?.address}
 
 🔹concentrated liquidity + ALM 🔹m3m3 staking together with #berachain POL
