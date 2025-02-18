@@ -17,20 +17,26 @@ export const pot2pumpShareLink = (pair: MemePairContract) =>
 export const pot2PumpPumpingShareTwitterContent = (pair: MemePairContract) => {
   return `
 🚀 "${pair.launchedToken?.symbol}" now trading on @honeypotfinance - #Berachain  #Meteora.
+
 📈 24h Change: ${Number(pair.launchedToken?.priceChange24hPercentage).toFixed(2)}%
 💰 Current Price: $${Number(pair.launchedToken?.derivedUSD).toExponential(3)} 
 CA: ${pair.launchedToken?.address}
+
 🔹concentrated liquidity + ALM 🔹m3m3 staking together with #berachain POL
+
 Trade now on:
 `;
 };
 
 export const pot2PumpPottingShareTwitterContent = (pair: MemePairContract) => `
-🚀 "${pair.launchedToken?.symbol}" Token launched on @honeypotfinance 's pot2pump.
-💥 Launched with liquidity-focused meme model.
-🔹 Maintained in PotWasabee -> @Meteora on berachain (unique CLMM, ALM to generate high APY).
+🚀$${pair.launchedToken?.symbol} now launched on @honeypotfinance pot2pump - #Berachain #Meteora.
 
-👥 come play with me and have fun.
+📈 potting progress: ${pair.pottingPercentageNumber.toFixed(4)}%
+CA: ${pair.launchedToken?.address}
+
+🔹concentrated liquidity + ALM 🔹m3m3 staking together with #berachain POL
+
+Trade here:
 `;
 
 export const pot2PumpPumpingShareTelegramContent = (pair: MemePairContract) => `

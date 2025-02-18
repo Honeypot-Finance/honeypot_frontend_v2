@@ -95,8 +95,34 @@ export class MemePairContract implements BaseLaunchContract {
   }
 
   get pottingPercentageNumber() {
+    // console.log(
+    //   "this.depositedRaisedToken",
+    //   this.depositedRaisedToken?.toFixed(18)
+    // );
+    // console.log(
+    //   "this.raisedTokenMinCap",
+    //   this.raisedTokenMinCap
+    //     ?.div(10 ** (this.raiseToken?.decimals ?? 18))
+    //     .toFixed(18)
+    // );
+    // console.log(
+    //   "pottingPercentageNumber",
+    //   this.depositedRaisedToken && this.raisedTokenMinCap
+    //     ? Number(this.depositedRaisedToken.toFixed(18)) /
+    //         Number(
+    //           this.raisedTokenMinCap
+    //             .div(10 ** (this.raiseToken?.decimals ?? 18))
+    //             .toFixed(18)
+    //         )
+    //     : 0
+    // );
     return this.depositedRaisedToken && this.raisedTokenMinCap
-      ? Number(this.depositedRaisedToken) / Number(this.raisedTokenMinCap)
+      ? Number(this.depositedRaisedToken.toFixed(18)) /
+          Number(
+            this.raisedTokenMinCap
+              .div(10 ** (this.raiseToken?.decimals ?? 18))
+              .toFixed(18)
+          )
       : 0;
   }
 
