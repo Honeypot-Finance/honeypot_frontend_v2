@@ -186,7 +186,7 @@ export const Layout = ({
             </div>
           )
         ) : (
-          <div className="flex-1 flex">{children}</div>
+          <NotConnetctedDisplay />
         )
       ) : (
         <div className="flex-1 flex items-center justify-center">
