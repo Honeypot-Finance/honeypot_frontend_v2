@@ -447,7 +447,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                   alt={state.pair.value?.launchedToken?.name || "honey"}
                   width={77}
                   height={0}
-                  className="rounded-full hidden md:inline-block w-10 sm:w-[77px]"
+                  className="rounded-full hidden md:inline-block w-10 sm:w-[77px] object-cover w-full h-full"
                   src={
                     !!state.pair.value?.logoUrl
                       ? state.pair.value.logoUrl
