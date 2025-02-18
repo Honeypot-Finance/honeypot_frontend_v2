@@ -91,12 +91,12 @@ export const Layout = ({
     });
   }, []);
 
-  useEffect(() => {
-    const inviteCode = localStorage.getItem("inviteCode");
-    if (!inviteCode) {
-      setShowInviteModal(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const inviteCode = localStorage.getItem("inviteCode");
+  //   if (!inviteCode) {
+  //     setShowInviteModal(true);
+  //   }
+  // }, []);
 
   const handleInviteCodeSubmit = async (code: string) => {
     try {
@@ -186,7 +186,7 @@ export const Layout = ({
             </div>
           )
         ) : (
-          <NotConnetctedDisplay />
+          <div className="flex-1 flex">{children}</div>
         )
       ) : (
         <div className="flex-1 flex items-center justify-center">
