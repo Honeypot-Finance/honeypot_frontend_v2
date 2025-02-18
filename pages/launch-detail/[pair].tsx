@@ -618,14 +618,14 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                       })}
                     </span>
                   </div>
-                  <div className="flex flex-col items-center gap-1 md:gap-1.5">
+                  {/* <div className="flex flex-col items-center gap-1 md:gap-1.5">
                     <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
                       Position Count
                     </span>
                     <span className="text-sm md:text-[15px] font-bold">
                       {state.pair.value?.launchedToken?.poolCount || 0}
                     </span>
-                  </div>
+                  </div> */}
                   <div className="flex flex-col items-center gap-1 md:gap-1.5">
                     <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
                       Buys
