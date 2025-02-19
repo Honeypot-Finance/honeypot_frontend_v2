@@ -4,17 +4,17 @@ import { cn } from "@/lib/tailwindcss";
 import { LoadingDisplay } from "@/components/LoadingDisplay/LoadingDisplay";
 
 interface HoneyContainerProps {
-  children: ReactNode;
-  bordered?: boolean;
-  variant?: "default" | "wide";
-  className?: string;
-  showTopBorder?: boolean;
-  showBottomBorder?: boolean;
   empty?: boolean;
   loading?: boolean;
-  type?: "primary" | "default";
+  bordered?: boolean;
+  className?: string;
+  children: ReactNode;
+  topOffset?: boolean;
   loadingText?: string;
-  topBorderOffset?: number;
+  showTopBorder?: boolean;
+  showBottomBorder?: boolean;
+  variant?: "default" | "wide";
+  type?: "primary" | "default";
 }
 
 function CardContainer({
@@ -25,15 +25,15 @@ function CardContainer({
   loading = false,
   bordered = true,
   type = "primary",
+  topOffset = false,
   variant = "default",
   showTopBorder = true,
-  topBorderOffset = -65,
   showBottomBorder = true,
 }: HoneyContainerProps) {
   return (
     <div
       className={cn(
-        "flex flex-col h-full w-full gap-y-4 justify-center items-center rounded-2xl text-[#202020]",
+        "flex flex-col w-full gap-y-4 justify-center items-center rounded-2xl text-[#202020]",
         type === "primary"
           ? "bg-[#FFCD4D]"
           : bordered
@@ -41,22 +41,36 @@ function CardContainer({
             : "bg-transparent",
         bordered &&
           [
-            "px-4",
+            "px-4 sm:px-8",
             "bg-repeat-x",
-            showTopBorder && [
-              "pt-12 sm:pt-20",
-              `bg-[position:${topBorderOffset}px_0]`,
-              "bg-[length:auto_40px] sm:bg-[length:auto_70px]",
-              "bg-[url('/images/card-container/honey/honey-border.png')]",
-            ],
-            showBottomBorder && [
-              "pb-12 sm:pb-20",
-              "bg-left-bottom",
-              "bg-[length:auto_40px] sm:bg-[length:auto_70px]",
-              variant === "wide"
-                ? "bg-[url('/images/card-container/honey/bottom-border.svg')]"
-                : "bg-[url('/images/card-container/dark/bottom-border.svg')]",
-            ],
+            showTopBorder && showBottomBorder
+              ? [
+                  "py-12 sm:py-20",
+                  "bg-[length:auto_40px,auto_40px] sm:bg-[length:auto_70px,auto_70px]",
+                  "bg-[url('/images/card-container/honey/honey-border.png'),url('/images/card-container/honey/bottom-border.svg')]",
+                  topOffset
+                    ? `bg-[position:-65px_top,left_bottom]`
+                    : `bg-[position:left_top,left_bottom]`,
+                ]
+              : showTopBorder
+                ? [
+                    "pt-12 sm:pt-20 pb-2 sm:pb-4",
+                    "bg-[length:auto_40px] sm:bg-[length:auto_70px]",
+                    "bg-[url('/images/card-container/honey/honey-border.png')]",
+                    topOffset
+                      ? `bg-[position:-65px_top]`
+                      : `bg-[position:left_top]`,
+                  ]
+                : showBottomBorder
+                  ? [
+                      "pb-12 sm:pb-20 pt-2 sm:pt-4",
+                      "bg-left-bottom",
+                      "bg-[length:auto_40px] sm:bg-[length:auto_70px]",
+                      variant === "wide"
+                        ? "bg-[url('/images/card-container/honey/bottom-border.svg')]"
+                        : "bg-[url('/images/card-container/dark/bottom-border.svg')]",
+                    ]
+                  : "py-2 sm:py-4",
           ]
             .flat()
             .filter(Boolean)

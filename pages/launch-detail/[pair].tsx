@@ -376,9 +376,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
     <div className="w-full px-2 md:px-8 xl:px-0 space-y-4 md:space-y-8">
       <CardContainer
         type="default"
-        topBorderOffset={0}
         showBottomBorder={false}
-        className="px-2 md:px-8 xl:max-w-[min(1500px,100%)] mx-auto pb-20 relative rounded-3xl overflow-hidden"
       >
         {state.pair.value && (
           <Modal
