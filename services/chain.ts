@@ -612,14 +612,7 @@ export const berachainNetwork = new Network({
   },
   validatedTokensInfo: {
     //when adding a new token, make sure to add the address as lowercase
-    "0x0000000000000000000000000000000000000000": {
-      name: "Bera",
-      symbol: "BERA",
-      decimals: 18,
-      logoURI: "/images/icons/tokens/wbera-token-icon.png",
-      isRouterToken: true,
-      isPopular: true,
-    },
+
     "0x6969696969696969696969696969696969696969": {
       name: "Wrapped Bera",
       symbol: "WBERA",
