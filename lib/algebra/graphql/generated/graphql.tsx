@@ -801,6 +801,7 @@ export enum Burn_OrderBy {
   Token0HolderCount = 'token0__holderCount',
   Token0Id = 'token0__id',
   Token0InitialUsd = 'token0__initialUSD',
+  Token0LiquidityUsd = 'token0__liquidityUSD',
   Token0MarketCap = 'token0__marketCap',
   Token0Name = 'token0__name',
   Token0PoolCount = 'token0__poolCount',
@@ -823,6 +824,7 @@ export enum Burn_OrderBy {
   Token1HolderCount = 'token1__holderCount',
   Token1Id = 'token1__id',
   Token1InitialUsd = 'token1__initialUSD',
+  Token1LiquidityUsd = 'token1__liquidityUSD',
   Token1MarketCap = 'token1__marketCap',
   Token1Name = 'token1__name',
   Token1PoolCount = 'token1__poolCount',
@@ -2217,6 +2219,7 @@ export enum HoldingToken_OrderBy {
   TokenHolderCount = 'token__holderCount',
   TokenId = 'token__id',
   TokenInitialUsd = 'token__initialUSD',
+  TokenLiquidityUsd = 'token__liquidityUSD',
   TokenMarketCap = 'token__marketCap',
   TokenName = 'token__name',
   TokenPoolCount = 'token__poolCount',
@@ -2765,6 +2768,7 @@ export enum LiquidatorData_OrderBy {
   Token0HolderCount = 'token0__holderCount',
   Token0Id = 'token0__id',
   Token0InitialUsd = 'token0__initialUSD',
+  Token0LiquidityUsd = 'token0__liquidityUSD',
   Token0MarketCap = 'token0__marketCap',
   Token0Name = 'token0__name',
   Token0PoolCount = 'token0__poolCount',
@@ -2787,6 +2791,7 @@ export enum LiquidatorData_OrderBy {
   Token1HolderCount = 'token1__holderCount',
   Token1Id = 'token1__id',
   Token1InitialUsd = 'token1__initialUSD',
+  Token1LiquidityUsd = 'token1__liquidityUSD',
   Token1MarketCap = 'token1__marketCap',
   Token1Name = 'token1__name',
   Token1PoolCount = 'token1__poolCount',
@@ -3047,6 +3052,7 @@ export enum MemeRacer_OrderBy {
   TokenHolderCount = 'token__holderCount',
   TokenId = 'token__id',
   TokenInitialUsd = 'token__initialUSD',
+  TokenLiquidityUsd = 'token__liquidityUSD',
   TokenMarketCap = 'token__marketCap',
   TokenName = 'token__name',
   TokenPoolCount = 'token__poolCount',
@@ -3336,6 +3342,7 @@ export enum Mint_OrderBy {
   Token0HolderCount = 'token0__holderCount',
   Token0Id = 'token0__id',
   Token0InitialUsd = 'token0__initialUSD',
+  Token0LiquidityUsd = 'token0__liquidityUSD',
   Token0MarketCap = 'token0__marketCap',
   Token0Name = 'token0__name',
   Token0PoolCount = 'token0__poolCount',
@@ -3358,6 +3365,7 @@ export enum Mint_OrderBy {
   Token1HolderCount = 'token1__holderCount',
   Token1Id = 'token1__id',
   Token1InitialUsd = 'token1__initialUSD',
+  Token1LiquidityUsd = 'token1__liquidityUSD',
   Token1MarketCap = 'token1__marketCap',
   Token1Name = 'token1__name',
   Token1PoolCount = 'token1__poolCount',
@@ -3837,11 +3845,7 @@ export enum Plugin_OrderBy {
 
 export type Pool = {
   __typename?: 'Pool';
-  aprDayData: Array<PoolDayData>;
-  aprHourData: Array<PoolHourData>;
-  aprMonthData: Array<PoolMonthData>;
   aprPercentage: Scalars['BigDecimal']['output'];
-  aprWeekData: Array<PoolWeekData>;
   burns: Array<Burn>;
   collectedFeesToken0: Scalars['BigDecimal']['output'];
   collectedFeesToken1: Scalars['BigDecimal']['output'];
@@ -3890,42 +3894,6 @@ export type Pool = {
   volumeToken0: Scalars['BigDecimal']['output'];
   volumeToken1: Scalars['BigDecimal']['output'];
   volumeUSD: Scalars['BigDecimal']['output'];
-};
-
-
-export type PoolAprDayDataArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<PoolDayData_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<PoolDayData_Filter>;
-};
-
-
-export type PoolAprHourDataArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<PoolHourData_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<PoolHourData_Filter>;
-};
-
-
-export type PoolAprMonthDataArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<PoolMonthData_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<PoolMonthData_Filter>;
-};
-
-
-export type PoolAprWeekDataArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<PoolWeekData_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<PoolWeekData_Filter>;
 };
 
 
@@ -5497,9 +5465,6 @@ export type Pool_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Pool_Filter>>>;
-  aprDayData_?: InputMaybe<PoolDayData_Filter>;
-  aprHourData_?: InputMaybe<PoolHourData_Filter>;
-  aprMonthData_?: InputMaybe<PoolMonthData_Filter>;
   aprPercentage?: InputMaybe<Scalars['BigDecimal']['input']>;
   aprPercentage_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
   aprPercentage_gte?: InputMaybe<Scalars['BigDecimal']['input']>;
@@ -5508,7 +5473,6 @@ export type Pool_Filter = {
   aprPercentage_lte?: InputMaybe<Scalars['BigDecimal']['input']>;
   aprPercentage_not?: InputMaybe<Scalars['BigDecimal']['input']>;
   aprPercentage_not_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
-  aprWeekData_?: InputMaybe<PoolWeekData_Filter>;
   burns_?: InputMaybe<Burn_Filter>;
   collectedFeesToken0?: InputMaybe<Scalars['BigDecimal']['input']>;
   collectedFeesToken0_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
@@ -5869,11 +5833,7 @@ export type Pool_Filter = {
 };
 
 export enum Pool_OrderBy {
-  AprDayData = 'aprDayData',
-  AprHourData = 'aprHourData',
-  AprMonthData = 'aprMonthData',
   AprPercentage = 'aprPercentage',
-  AprWeekData = 'aprWeekData',
   Burns = 'burns',
   CollectedFeesToken0 = 'collectedFeesToken0',
   CollectedFeesToken1 = 'collectedFeesToken1',
@@ -5915,6 +5875,7 @@ export enum Pool_OrderBy {
   Token0HolderCount = 'token0__holderCount',
   Token0Id = 'token0__id',
   Token0InitialUsd = 'token0__initialUSD',
+  Token0LiquidityUsd = 'token0__liquidityUSD',
   Token0MarketCap = 'token0__marketCap',
   Token0Name = 'token0__name',
   Token0PoolCount = 'token0__poolCount',
@@ -5938,6 +5899,7 @@ export enum Pool_OrderBy {
   Token1HolderCount = 'token1__holderCount',
   Token1Id = 'token1__id',
   Token1InitialUsd = 'token1__initialUSD',
+  Token1LiquidityUsd = 'token1__liquidityUSD',
   Token1MarketCap = 'token1__marketCap',
   Token1Name = 'token1__name',
   Token1PoolCount = 'token1__poolCount',
@@ -6631,6 +6593,7 @@ export enum Position_OrderBy {
   Token0HolderCount = 'token0__holderCount',
   Token0Id = 'token0__id',
   Token0InitialUsd = 'token0__initialUSD',
+  Token0LiquidityUsd = 'token0__liquidityUSD',
   Token0MarketCap = 'token0__marketCap',
   Token0Name = 'token0__name',
   Token0PoolCount = 'token0__poolCount',
@@ -6654,6 +6617,7 @@ export enum Position_OrderBy {
   Token1HolderCount = 'token1__holderCount',
   Token1Id = 'token1__id',
   Token1InitialUsd = 'token1__initialUSD',
+  Token1LiquidityUsd = 'token1__liquidityUSD',
   Token1MarketCap = 'token1__marketCap',
   Token1Name = 'token1__name',
   Token1PoolCount = 'token1__poolCount',
@@ -6967,6 +6931,7 @@ export enum Pot2Pump_OrderBy {
   LaunchTokenHolderCount = 'launchToken__holderCount',
   LaunchTokenId = 'launchToken__id',
   LaunchTokenInitialUsd = 'launchToken__initialUSD',
+  LaunchTokenLiquidityUsd = 'launchToken__liquidityUSD',
   LaunchTokenMarketCap = 'launchToken__marketCap',
   LaunchTokenName = 'launchToken__name',
   LaunchTokenPoolCount = 'launchToken__poolCount',
@@ -6994,6 +6959,7 @@ export enum Pot2Pump_OrderBy {
   RaisedTokenHolderCount = 'raisedToken__holderCount',
   RaisedTokenId = 'raisedToken__id',
   RaisedTokenInitialUsd = 'raisedToken__initialUSD',
+  RaisedTokenLiquidityUsd = 'raisedToken__liquidityUSD',
   RaisedTokenMarketCap = 'raisedToken__marketCap',
   RaisedTokenName = 'raisedToken__name',
   RaisedTokenPoolCount = 'raisedToken__poolCount',
@@ -9714,6 +9680,7 @@ export enum Swap_OrderBy {
   Token0HolderCount = 'token0__holderCount',
   Token0Id = 'token0__id',
   Token0InitialUsd = 'token0__initialUSD',
+  Token0LiquidityUsd = 'token0__liquidityUSD',
   Token0MarketCap = 'token0__marketCap',
   Token0Name = 'token0__name',
   Token0PoolCount = 'token0__poolCount',
@@ -9736,6 +9703,7 @@ export enum Swap_OrderBy {
   Token1HolderCount = 'token1__holderCount',
   Token1Id = 'token1__id',
   Token1InitialUsd = 'token1__initialUSD',
+  Token1LiquidityUsd = 'token1__liquidityUSD',
   Token1MarketCap = 'token1__marketCap',
   Token1Name = 'token1__name',
   Token1PoolCount = 'token1__poolCount',
@@ -10469,6 +10437,7 @@ export type Token = {
   holders: Array<HoldingToken>;
   id: Scalars['ID']['output'];
   initialUSD: Scalars['BigDecimal']['output'];
+  liquidityUSD: Scalars['BigDecimal']['output'];
   marketCap: Scalars['BigDecimal']['output'];
   name: Scalars['String']['output'];
   poolCount: Scalars['BigInt']['output'];
@@ -10692,6 +10661,7 @@ export enum TokenDayData_OrderBy {
   TokenHolderCount = 'token__holderCount',
   TokenId = 'token__id',
   TokenInitialUsd = 'token__initialUSD',
+  TokenLiquidityUsd = 'token__liquidityUSD',
   TokenMarketCap = 'token__marketCap',
   TokenName = 'token__name',
   TokenPoolCount = 'token__poolCount',
@@ -10880,6 +10850,7 @@ export enum TokenHourData_OrderBy {
   TokenHolderCount = 'token__holderCount',
   TokenId = 'token__id',
   TokenInitialUsd = 'token__initialUSD',
+  TokenLiquidityUsd = 'token__liquidityUSD',
   TokenMarketCap = 'token__marketCap',
   TokenName = 'token__name',
   TokenPoolCount = 'token__poolCount',
@@ -10962,6 +10933,14 @@ export type Token_Filter = {
   initialUSD_lte?: InputMaybe<Scalars['BigDecimal']['input']>;
   initialUSD_not?: InputMaybe<Scalars['BigDecimal']['input']>;
   initialUSD_not_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
+  liquidityUSD?: InputMaybe<Scalars['BigDecimal']['input']>;
+  liquidityUSD_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
+  liquidityUSD_gte?: InputMaybe<Scalars['BigDecimal']['input']>;
+  liquidityUSD_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
+  liquidityUSD_lt?: InputMaybe<Scalars['BigDecimal']['input']>;
+  liquidityUSD_lte?: InputMaybe<Scalars['BigDecimal']['input']>;
+  liquidityUSD_not?: InputMaybe<Scalars['BigDecimal']['input']>;
+  liquidityUSD_not_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
   marketCap?: InputMaybe<Scalars['BigDecimal']['input']>;
   marketCap_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
   marketCap_gte?: InputMaybe<Scalars['BigDecimal']['input']>;
@@ -11120,6 +11099,7 @@ export enum Token_OrderBy {
   Holders = 'holders',
   Id = 'id',
   InitialUsd = 'initialUSD',
+  LiquidityUsd = 'liquidityUSD',
   MarketCap = 'marketCap',
   Name = 'name',
   PoolCount = 'poolCount',

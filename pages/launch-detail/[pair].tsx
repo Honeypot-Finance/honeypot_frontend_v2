@@ -350,6 +350,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
     router.query.edit,
     router,
   ]);
+
   useEffect(() => {
     if (!wallet.isInit || !pairAddress) {
       return;
