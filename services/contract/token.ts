@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import { BaseContract } from ".";
 import { wallet } from "../wallet";
-import { get, makeAutoObservable } from "mobx";
+import { get, makeAutoObservable, reaction } from "mobx";
 import { Address, getContract, zeroAddress } from "viem";
 import { ContractWrite } from "../utils";
 import { amountFormatted } from "@/lib/format";
@@ -118,6 +118,12 @@ export class Token implements BaseContract {
     this.setData(args);
     makeAutoObservable(this);
     this.getIsRouterToken();
+    reaction(
+      () => wallet?.account,
+      () => {
+        this.getBalance();
+      }
+    );
   }
 
   get faucet() {
