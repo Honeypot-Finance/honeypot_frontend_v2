@@ -47,7 +47,7 @@ function CardContainer({
               ? [
                   "py-12 sm:py-20",
                   "bg-[length:auto_40px,auto_40px] sm:bg-[length:auto_70px,auto_70px]",
-                  "bg-[url('/images/card-container/honey/honey-border.png'),url('/images/card-container/honey/bottom-border.svg')]",
+                  "bg-[url('/images/card-container/honey/honey-border.png'),url('/images/card-container/dark/bottom-border.svg')]",
                   topOffset
                     ? `bg-[position:-65px_top,left_bottom]`
                     : `bg-[position:left_top,left_bottom]`,
