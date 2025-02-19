@@ -55,7 +55,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
             alt={pair?.launchedToken?.name || "honey"}
             width={77}
             height={0}
-            className="rounded-full w-10 sm:w-[77px] object-cover w-full h-full"
+            className="rounded-full size-10 sm:w-[77px] object-cover"
             src={
               !!pair?.logoUrl
                 ? pair.logoUrl
@@ -144,7 +144,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                       }
                     />
                     <a
-                      href={`https://x.com/search?q=${address} or $(${displayName})`}
+                      href={`https://x.com/search?q=($${displayName} or ${address})`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="hover:opacity-80 text-[#5C5C5C]"

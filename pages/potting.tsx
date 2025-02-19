@@ -38,8 +38,12 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
   >(null);
   const [filters, setFilters] = useState<FilterState>(defaultFilterState);
   const [search, setSearch] = useState("");
-  const [canClaimPot2PumpList, setCanClaimPot2PumpList] = useState<MemePairContract[]>([]);
-  const [canRefundPot2PumpList, setCanRefundPot2PumpList] = useState<MemePairContract[]>([]);
+  const [canClaimPot2PumpList, setCanClaimPot2PumpList] = useState<
+    MemePairContract[]
+  >([]);
+  const [canRefundPot2PumpList, setCanRefundPot2PumpList] = useState<
+    MemePairContract[]
+  >([]);
 
   const updateMostSuccessProjects = useCallback(() => {
     mostSuccessProjects?.forEach((pair) => {
