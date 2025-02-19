@@ -42,6 +42,8 @@ import {
   optionsPresets,
 } from "@/components/OptionsDropdown/OptionsDropdown";
 import { LucideFileEdit } from "lucide-react";
+import ProjectDescription from "./components/ProjectDescription";
+import ProjectStats from "./components/ProjectStats";
 
 export const UpdateProjectModal = observer(
   ({ pair }: { pair: FtoPairContract | MemePairContract }) => {
@@ -400,7 +402,8 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_500px] gap-4 md:gap-x-4 md:gap-y-14 w-full @container">
           <div
             className={cn(
-              "relative bg-white col-span-1 lg:col-span-2 px-4 md:px-8 py-3 md:py-5 rounded-3xl grid grid-cols-3 text-[#202020]"
+              "relative bg-white col-span-1 lg:col-span-2 px-4 md:px-8 py-3 md:py-5 rounded-3xl",
+              "grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0 text-[#202020]"
             )}
           >
             {" "}
@@ -442,239 +445,42 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                 },
               ]}
             />
-            <div className="flex items-center gap-x-4 md:gap-x-[7.5px] justify-center sm:justify-start col-span-1">
-              <div className="size-10 md:size-[77px] bg-[#ECC94E] flex items-center justify-center rounded-full shrink-0">
-                <Image
-                  alt={state.pair.value?.launchedToken?.name || "honey"}
-                  width={77}
-                  height={0}
-                  className="rounded-full hidden md:inline-block w-10 sm:w-[77px] object-cover w-full h-full"
-                  src={
-                    !!state.pair.value?.logoUrl
-                      ? state.pair.value.logoUrl
-                      : "/images/empty-logo.png"
-                  }
-                />
-              </div>
-              <ProjectTitle
-                pair={state.pair.value ?? undefined}
-                name={state.pair.value?.launchedToken?.name}
-                displayName={state.pair.value?.launchedToken?.displayName}
-                telegram={state.pair.value?.telegram}
-                twitter={state.pair.value?.twitter}
-                website={state.pair.value?.website}
-                address={state.pair.value?.launchedToken?.address}
-                statusColor={state.pair.value?.ftoStatusDisplay?.color}
-                status={state.pair.value?.ftoStatusDisplay?.status}
-                isValidated={state.pair.value?.isValidated}
-              />
-            </div>
-            <div className="col-span-1 text-xs flex items-center justify-center">
-              {pair?.description && (
-                <ReactTyped
-                  strings={[pair.description]}
-                  typeSpeed={25}
-                />
-              )}
-            </div>
-            <div className="flex flex-col items-center gap-3 md:gap-8 col-span-1">
-              {state.pair.value?.state !== 0 && (
-                <CountdownTimer
-                  endTime={state.pair.value?.endTime}
-                  endTimeDisplay={state.pair.value?.endTimeDisplay}
-                />
-              )}
-              {state.pair.value?.state !== 0 ? (
-                <div className="flex flex-wrap items-center justify-end gap-x-4 md:gap-x-6 gap-y-2 md:gap-y-3 text-xs">
-                  <div className="flex flex-col items-center gap-1 md:gap-1.5">
-                    <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-                      Total Supply
-                    </span>
-                    <span className="text-sm md:text-[15px] font-bold">
-                      {DynamicFormatAmount({
-                        amount:
-                          (
-                            state.pair.value as MemePairContract
-                          )?.depositedLaunchedToken?.toFixed(18) ?? "0",
-                        decimals: 2,
-                        endWith: ` ${state.pair.value?.launchedToken?.symbol || ""}`,
-                      })}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center gap-1 md:gap-1.5">
-                    <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-                      Current Raise
-                    </span>
-                    <span className="text-sm md:text-[15px] font-bold">
-                      {DynamicFormatAmount({
-                        amount:
-                          (
-                            state.pair.value as MemePairContract
-                          )?.depositedRaisedToken?.toFixed(18) ?? "0",
-                        decimals: 2,
-                        endWith: ` ${state.pair.value?.raiseToken?.symbol || ""}`,
-                      })}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center gap-1 md:gap-1.5">
-                    <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-                      Participants
-                    </span>
-                    <span className="text-sm md:text-[15px] font-bold">
-                      {Number(
-                        state.pair.value?.participantsCount || 0
-                      ).toLocaleString()}
-                    </span>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex flex-wrap items-center justify-end gap-x-3 md:gap-x-6 gap-y-2 md:gap-y-3 text-xs w-full md:w-[400px]">
-                  <div className="flex flex-col items-center gap-1 md:gap-1.5">
-                    <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-                      Total Supply
-                    </span>
-                    <span className="text-sm md:text-[15px] font-bold">
-                      {DynamicFormatAmount({
-                        amount:
-                          (
-                            state.pair.value as MemePairContract
-                          )?.depositedLaunchedToken?.toFixed(18) ?? "0",
-                        decimals: 2,
-                        endWith: ` ${state.pair.value?.launchedToken?.symbol || ""}`,
-                      })}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col items-center gap-1 md:gap-1.5">
-                    <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-                      24H Change
-                    </span>
-                    <span
-                      className={cn(
-                        "text-sm md:text-[15px] font-bold",
-                        state.pair.value?.launchedToken?.priceChange24hPercentage?.startsWith(
-                          "-"
-                        )
-                          ? "text-red-500"
-                          : "text-green-500"
-                      )}
-                    >
-                      {DynamicFormatAmount({
-                        amount:
-                          state.pair.value?.launchedToken
-                            ?.priceChange24hPercentage ?? "0",
-                        decimals: 2,
-                        endWith: "%",
-                      })}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center gap-1 md:gap-1.5">
-                    <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-                      MCap
-                    </span>
-                    <span className="text-sm md:text-[15px] font-bold">
-                      {DynamicFormatAmount({
-                        amount: Number(state.pair.value?.marketValue) || 0,
-                        decimals: 2,
-                        beginWith: "$",
-                      })}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center gap-1 md:gap-1.5">
-                    <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-                      Price
-                    </span>
-                    <span className="text-sm md:text-[15px] font-bold">
-                      $
-                      {DynamicFormatAmount({
-                        amount:
-                          state.pair.value?.launchedToken?.derivedUSD ?? "0",
-                        decimals: 3,
-                      })}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center gap-1 md:gap-1.5">
-                    <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-                      Volume
-                    </span>
-                    <span className="text-sm md:text-[15px] font-bold">
-                      {DynamicFormatAmount({
-                        amount: state.pair.value?.launchedToken?.volumeUSD || 0,
-                        decimals: 2,
-                        beginWith: "$",
-                      })}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center gap-1 md:gap-1.5">
-                    <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-                      TVL
-                    </span>
-                    <span className="text-sm md:text-[15px] font-bold">
-                      {DynamicFormatAmount({
-                        amount:
-                          state.pair.value?.launchedToken
-                            ?.totalValueLockedUSD || 0,
-                        decimals: 2,
-                        beginWith: "$",
-                      })}
-                    </span>
-                  </div>
-                  {/* <div className="flex flex-col items-center gap-1 md:gap-1.5">
-                    <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-                      Position Count
-                    </span>
-                    <span className="text-sm md:text-[15px] font-bold">
-                      {state.pair.value?.launchedToken?.poolCount || 0}
-                    </span>
-                  </div> */}
-                  <div className="flex flex-col items-center gap-1 md:gap-1.5">
-                    <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-                      Buys
-                    </span>
-                    <span className="text-sm md:text-[15px] font-bold text-green-500">
-                      {Number(
-                        state.pair.value?.launchedTokenBuyCount || 0
-                      ).toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center gap-1 md:gap-1.5">
-                    <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-                      Sells
-                    </span>
-                    <span className="text-sm md:text-[15px] font-bold text-red-500">
-                      {Number(
-                        state.pair.value?.launchedTokenSellCount || 0
-                      ).toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center gap-1 md:gap-1.5">
-                    <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-                      Holders
-                    </span>
-                    <span className="text-sm md:text-[15px] font-bold">
-                      {Number(
-                        state.pair.value?.launchedToken?.holderCount || 0
-                      ).toLocaleString()}
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
+            <ProjectTitle
+              className="col-span-1"
+              pair={pair ?? undefined}
+              name={pair?.launchedToken?.name}
+              displayName={pair?.launchedToken?.displayName}
+              telegram={pair?.telegram}
+              twitter={pair?.twitter}
+              website={pair?.website}
+              address={pair?.launchedToken?.address}
+              statusColor={pair?.ftoStatusDisplay?.color}
+              status={pair?.ftoStatusDisplay?.status}
+              isValidated={pair?.isValidated}
+            />
+            <ProjectDescription
+              className="col-span-1"
+              description={pair?.description}
+            />
+            <ProjectStats
+              className="col-span-1"
+              pair={pair}
+            />
           </div>
 
           <div
             className={cn(
-              "bg-[#FFCD4D] min-h-[500px] md:min-h-[665px] px-4 py-6 rounded-2xl space-y-3 relative overflow-hidden col-span-1"
+              "relative bg-[#FFCD4D] min-h-[500px] md:min-h-[665px] px-4 py-6 rounded-2xl space-y-3 overflow-hidden col-span-1"
             )}
           >
             <div className="bg-[url('/images/card-container/honey/top-border.svg')] bg-left-top h-6 absolute top-0 left-0 w-full bg-contain"></div>
-            {state.pair.value?.state === 0 && (
+            {pair?.state === 0 && (
               <div className="md:block">
                 <KlineChart height={500} />
               </div>
             )}
 
-            {state.pair.value?.state === 1 && (
+            {pair?.state === 1 && (
               <div className="flex flex-col gap-y-3 md:gap-y-5">
                 <div className="flex flex-col gap-y-2">
                   <h2 className="text-xl md:text-2xl font-bold text-black text-center w-full">
@@ -691,16 +497,16 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
               </div>
             )}
 
-            {state.pair.value?.state === 3 && (
-              <LaunchDataProgress pair={state.pair.value} />
+            {pair?.state === 3 && (
+              <LaunchDataProgress pair={pair} />
             )}
             <div className="bg-[url('/images/card-container/honey/bottom-border.svg')] bg-left-top h-6 absolute -bottom-1 left-0 w-full bg-repeat-x bg-auto"></div>
           </div>
 
           <div className="bg-transparent rounded-2xl space-y-3 col-span-1">
-            {state.pair.value && (
+            {pair && (
               <Action
-                pair={state.pair.value}
+                pair={pair}
                 refreshTxsCallback={triggerRefresh}
               />
             )}
@@ -709,7 +515,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
 
         <div className="mt-6 md:mt-16 w-full">
           <Tabs
-            pair={state.pair.value}
+            pair={pair}
             refreshTrigger={refreshTrigger}
           />
         </div>
