@@ -41,7 +41,7 @@ export const calculateToken24hPriceChange: (token: Token) => {
   }
 
   if (indexCount24h === 0) {
-    averagePrice24h = tokenHourData[0].priceUSD;
+    averagePrice24h = tokenHourData[0]?.priceUSD ?? 0;
   } else {
     averagePrice24h = averagePrice24h / indexCount24h;
   }
