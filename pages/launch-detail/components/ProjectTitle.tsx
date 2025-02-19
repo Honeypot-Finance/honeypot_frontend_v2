@@ -45,10 +45,12 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
 }) => {
   const isLoading = !pair;
   return (
-    <div className={cn(
-      "flex items-end justify-between md:items-center md:justify-start gap-x-4 md:gap-x-[7.5px]",
-      className
-    )}>
+    <div
+      className={cn(
+        "flex items-end justify-between md:items-center md:justify-start gap-x-4 md:gap-x-[7.5px]",
+        className
+      )}
+    >
       <div className="flex flex-col items-center gap-2 md:gap-0">
         <div className="size-10 md:size-[77px] bg-[#ECC94E] flex items-center justify-center rounded-full shrink-0">
           <Image
@@ -56,11 +58,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
             width={77}
             height={0}
             className="rounded-full size-10 sm:w-[77px] object-cover"
-            src={
-              !!pair?.logoUrl
-                ? pair.logoUrl
-                : "/images/empty-logo.png"
-            }
+            src={!!pair?.logoUrl ? pair.logoUrl : "/images/empty-logo.png"}
           />
         </div>
         <div className="flex flex-col items-center gap-0.5 md:hidden">
@@ -72,12 +70,23 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
           ) : (
             <>
               <div className="text-base font-medium">{displayName}</div>
-              {name && <div className="text-xs text-[#5C5C5C]/60">({name})</div>}
+              {name && (
+                <div className="text-xs text-[#5C5C5C]/60">({name})</div>
+              )}
             </>
           )}
         </div>
       </div>
-      <div className="flex flex-col gap-4 items-end md:items-start">
+      <div className="w-1/2 sm:w-fit flex flex-col gap-4 items-start">
+        {!isLoading && (
+          <div className="md:hidden">
+            <PairStatus
+              status={status}
+              statusColor={statusColor}
+              isValidated={isValidated}
+            />
+          </div>
+        )}
         <div className="flex items-center flex-col gap-3">
           <div className="hidden md:flex items-center gap-1">
             {isLoading ? (
@@ -155,23 +164,23 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                   </>
                 )}
                 {pair?.state === 0 && (
-                  <>
-                    <a
-                      href={`https://www.defined.fi/berachain/${pair?.launchedToken?.address}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:opacity-80 text-[#5C5C5C]"
-                      title="defined.fi"
-                    >
-                      {`𝔻`}
-                    </a>
-                  </>
+                  <a
+                    href={`https://www.defined.fi/berachain/${pair?.launchedToken?.address}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-80 text-[#5C5C5C] text-lg"
+                    title="defined.fi"
+                  >
+                    {`𝔻`}
+                  </a>
                 )}
-                <PairStatus
-                  status={status}
-                  statusColor={statusColor}
-                  isValidated={isValidated}
-                />
+                <div className="hidden md:block">
+                  <PairStatus
+                    status={status}
+                    statusColor={statusColor}
+                    isValidated={isValidated}
+                  />
+                </div>
               </>
             )}
           </div>
@@ -183,7 +192,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
               </div>
             ) : pair ? (
               <div className="flex items-center gap-2">
-                <span className="text-sm text-[#5C5C5C]">Share To</span>
+                <span className="text-xs sm:text-sm text-[#5C5C5C]">Share To</span>
                 <div
                   className={cn(
                     "text-right flex items-center gap-2 flex-row text-black"

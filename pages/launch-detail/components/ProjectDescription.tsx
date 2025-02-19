@@ -61,7 +61,7 @@ const ProjectDescription: React.FC<ProjectDescriptionProps> = ({
   }
 
   return (
-    <div className={cn("text-xs flex items-center justify-center", className)}>
+    <div className={cn("text-xs shadow-inner rounded-xl p-4 border border-[#202020]/5", className)}>
       <ReactTyped
         strings={[description]}
         typeSpeed={25}
