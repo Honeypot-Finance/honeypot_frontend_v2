@@ -20,40 +20,18 @@ interface HoneyContainerProps {
 function CardContainer({
   children,
   className,
-  bordered = true,
-  variant = "default",
-  showTopBorder = true,
-  showBottomBorder = true,
+  loadingText,
   empty = false,
   loading = false,
+  bordered = true,
   type = "primary",
-  loadingText,
+  variant = "default",
+  showTopBorder = true,
   topBorderOffset = -65,
+  showBottomBorder = true,
 }: HoneyContainerProps) {
   return (
     <div
-      style={
-        {
-          backgroundImage: bordered
-            ? `${[
-                showTopBorder
-                  ? "url('/images/card-container/honey/honey-border.png')"
-                  : "",
-                showBottomBorder
-                  ? `url('${
-                      variant === "wide"
-                        ? "/images/card-container/honey/bottom-border.svg"
-                        : "/images/card-container/dark/bottom-border.svg"
-                    }')`
-                  : "",
-              ]
-                .filter(Boolean)
-                .join(", ")}`
-            : "none",
-        } as React.CSSProperties
-      }
-
-      // TODO: Add style adaptation of different sizes
       className={cn(
         "flex flex-col h-full w-full gap-y-4 justify-center items-center rounded-2xl text-[#202020]",
         type === "primary"
@@ -65,11 +43,22 @@ function CardContainer({
           [
             "px-4",
             "bg-repeat-x",
-            showTopBorder && "pt-[80px]",
-            showBottomBorder && "pb-[80px]",
-            "bg-[size:auto_70px,_auto_70px]",
-            `bg-[position:top,_left_bottom]`,
+            showTopBorder && [
+              "pt-12 sm:pt-20",
+              `bg-[position:${topBorderOffset}px_0]`,
+              "bg-[length:auto_40px] sm:bg-[length:auto_70px]",
+              "bg-[url('/images/card-container/honey/honey-border.png')]",
+            ],
+            showBottomBorder && [
+              "pb-12 sm:pb-20",
+              "bg-left-bottom",
+              "bg-[length:auto_40px] sm:bg-[length:auto_70px]",
+              variant === "wide"
+                ? "bg-[url('/images/card-container/honey/bottom-border.svg')]"
+                : "bg-[url('/images/card-container/dark/bottom-border.svg')]",
+            ],
           ]
+            .flat()
             .filter(Boolean)
             .join(" "),
         className

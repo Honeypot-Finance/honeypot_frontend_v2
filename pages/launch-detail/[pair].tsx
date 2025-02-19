@@ -373,12 +373,12 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
   const pair = useMemo(() => state.pair.value, [state.pair.value]);
 
   return (
-    <div className="w-full px-4 md:px-8 xl:px-0 space-y-4 md:space-y-8">
+    <div className="w-full px-2 md:px-8 xl:px-0 space-y-4 md:space-y-8">
       <CardContainer
         type="default"
         topBorderOffset={0}
         showBottomBorder={false}
-        className="px-4 md:px-8 xl:max-w-[min(1500px,100%)] mx-auto pb-20 relative rounded-3xl overflow-hidden"
+        className="px-2 md:px-8 xl:max-w-[min(1500px,100%)] mx-auto pb-20 relative rounded-3xl overflow-hidden"
       >
         {state.pair.value && (
           <Modal
@@ -398,7 +398,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_500px] gap-4 md:gap-x-4 md:gap-y-14 w-full @container">
           <div
             className={cn(
-              "relative bg-white col-span-1 lg:col-span-2 px-4 md:px-8 py-3 md:py-5 rounded-3xl",
+              "relative bg-white col-span-1 lg:col-span-2 px-2 md:px-8 py-3 md:py-5 rounded-xl sm:rounded-3xl",
               "grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0 text-[#202020]"
             )}
           >

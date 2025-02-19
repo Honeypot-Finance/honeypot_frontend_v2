@@ -75,7 +75,7 @@ export const Header = (props: HtmlHTMLAttributes<any>) => {
           classNames={{
             base: "bg-transparent",
             wrapper:
-              "max-w-full px-4 md:px-8 xl:px-0 xl:max-w-[1200px] 2xl:max-w-[1500px] !h-auto",
+              "max-w-full px-2 sm:px-4 md:px-8 xl:px-0 xl:max-w-[1200px] 2xl:max-w-[1500px] !h-auto",
           }}
         >
           {isXl && (

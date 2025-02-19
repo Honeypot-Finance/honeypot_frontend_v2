@@ -77,7 +77,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
           )}
         </div>
       </div>
-      <div className="w-1/2 sm:w-fit flex flex-col gap-4 items-start">
+      <div className="flex flex-col gap-4 items-start">
         {!isLoading && (
           <div className="md:hidden">
             <PairStatus
