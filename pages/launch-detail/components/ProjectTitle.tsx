@@ -144,7 +144,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                       }
                     />
                     <a
-                      href={`https://x.com/search?q=${address} or ${displayName}`}
+                      href={`https://x.com/search?q=${address} or $(${displayName})`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="hover:opacity-80 text-[#5C5C5C]"

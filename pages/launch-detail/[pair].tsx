@@ -28,15 +28,11 @@ import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair
 import { WrappedToastify } from "@/lib/wrappedToastify";
 import Action from "./components/Action";
 import Tabs from "./components/Tabs";
-import CountdownTimer from "./components/Countdown";
 import ProjectTitle from "./components/ProjectTitle";
 import KlineChart from "./components/KlineChart";
 import { LaunchDataProgress } from "./components/LaunchDataProgress";
 import { cn } from "@/lib/tailwindcss";
-import { DynamicFormatAmount } from "@/lib/algebra/utils/common/formatAmount";
-import { amountFormatted } from "@/lib/format";
 import CardContainer from "@/components/CardContianer/v3";
-import { ReactTyped } from "react-typed";
 import {
   OptionsDropdown,
   optionsPresets,
