@@ -460,7 +460,11 @@ const MEMELaunchModal: NextLayoutPage = observer(() => {
     control,
     formState: { errors },
     setValue,
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    defaultValues: {
+      logoUrl: "/images/empty-logo.png"
+    }
+  });
   const router = useRouter();
   const state = useLocalObservable(() => ({
     pairAddress: "",
@@ -574,7 +578,7 @@ const MEMELaunchModal: NextLayoutPage = observer(() => {
               )}
             />
             <div className="text-black opacity-50 text-center text-sm">
-              Click icon to upload new token icon
+               Click icon to upload new token icon <span className="text-red-500">*</span>
             </div>
             {errors.logoUrl && (
               <span className="text-red-500 text-center text-sm">
