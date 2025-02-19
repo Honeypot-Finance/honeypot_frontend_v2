@@ -434,7 +434,7 @@ const SimpleLaunchCard = observer(
                   src={!!pair.logoUrl ? pair.logoUrl : "/images/empty-logo.png"}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-2 flex-grow-[1]">
+              <div className="grid grid-cols-2 gap-2 flex-grow-[1] text-[#202020]">
                 <div className="flex flex-col gap-y-2">
                   <h3 className="font-bold text-md">
                     {pair?.launchedToken?.name}
