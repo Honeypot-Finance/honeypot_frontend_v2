@@ -89,6 +89,8 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
   const [showChartTypeMenu, setShowChartTypeMenu] = useState(false);
   const [showTrades, setShowTrades] = useState(true);
   const [screenshotUrl, setScreenshotUrl] = useState<string | null>(null);
+  const [showIntervalMenu, setShowIntervalMenu] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
 
   const intervals = [
     { text: "1s", resolution: "1S" },
@@ -366,7 +368,7 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
         interval: currentInterval as any,
         container: "tv_chart_container",
         width: chartWidth,
-        height: Number(height),
+        height: isMobile ? 300 : Number(height),
         formatting_price_precision: 10,
         timezone: timeZone as any,
         datafeed: datafeed,
@@ -381,10 +383,10 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
           "header_saveload",
           "drawing_templates",
           "volume_force_overlay",
+          ...(isMobile ? ["left_toolbar"] : []),
         ],
         enabled_features: [
-          // "header_widget",
-          "left_toolbar",
+          ...(isMobile ? [] : ["left_toolbar"]),
           "control_bar",
           "header_resolutions",
           "timeframes_toolbar",
@@ -421,6 +423,19 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
           "mainSeriesProperties.candleStyle.borderDownColor": "#F23645",
           "mainSeriesProperties.candleStyle.wickUpColor": "#089981",
           "mainSeriesProperties.candleStyle.wickDownColor": "#F23645",
+          ...(isMobile ? {
+            "scalesProperties.fontSize": 10,
+            "scalesProperties.textColor": "#808080",
+            "scalesProperties.scaleSeriesOnly": true,
+            "mainSeriesProperties.priceAxisProperties.autoScale": true,
+            "mainSeriesProperties.priceAxisProperties.percentage": false,
+            "mainSeriesProperties.priceAxisProperties.log": false,
+            "scalesProperties.showLeftScale": false,
+            "scalesProperties.showRightScale": true,
+            "scalesProperties.alignLabels": true,
+            "paneProperties.rightMargin": 5,
+            "paneProperties.leftMargin": 5,
+          } : {}),
         },
         fullscreen: false,
       });
@@ -448,18 +463,27 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
         onReady?.();
       });
     }
-  }, [chartWidth, height, chart.chartTarget, onReady, currentInterval]);
+  }, [chartWidth, height, chart.chartTarget, onReady, currentInterval, isMobile]);
 
   useEffect(() => {
     const resizeChart = () => {
       if (chartWrapRef.current) {
-        setChartWidth(chartWrapRef.current.clientWidth);
+        const newWidth = chartWrapRef.current.clientWidth;
+        const newIsMobile = window.innerWidth < 640;
+        
+        setChartWidth(newWidth);
+        if (newIsMobile !== isMobile) {
+          setIsMobile(newIsMobile);
+          if (window.tvWidget) {
+            initOnReady();
+          }
+        }
       }
     };
     resizeChart();
     window.addEventListener("resize", resizeChart);
     return () => window.removeEventListener("resize", resizeChart);
-  }, []);
+  }, [chartWidth, isMobile, initOnReady]);
 
   useEffect(() => {
     setSpinning(true);
@@ -557,10 +581,13 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        showChartTypeMenu &&
-        !(event.target as Element).closest(".chart-type-dropdown")
+        (showChartTypeMenu &&
+          !(event.target as Element).closest(".chart-type-dropdown")) ||
+        (showIntervalMenu &&
+          !(event.target as Element).closest(".interval-dropdown"))
       ) {
         setShowChartTypeMenu(false);
+        setShowIntervalMenu(false);
       }
     };
 
@@ -568,10 +595,10 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showChartTypeMenu]);
+  }, [showChartTypeMenu, showIntervalMenu]);
 
   return (
-    <div className="w-full relative rounded-2xl bg-[#202020] overflow-hidden p-4">
+    <div className="w-full relative rounded-2xl bg-[#202020] overflow-hidden p-2 sm:p-4">
       <div className="flex flex-col gap-1">
         {/* Token Info */}
         <div className="flex items-center gap-2">
@@ -581,26 +608,21 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
                 return <></>;
               }
 
-              return (
-                <TokenLogo
-                  key={token.address}
-                  token={token}
-                />
-              );
+              return <TokenLogo key={token.address} token={token} />;
             })}
           </div>
-          <span className="text-white text-lg font-bold">
+          <span className="text-white text-base sm:text-lg font-bold">
             {chart.chartLabel}
           </span>
         </div>
 
         {/* Price and Change */}
         <div className="flex items-center gap-2">
-          <span className="text-white text-3xl font-bold">
+          <span className="text-white text-2xl sm:text-3xl font-bold">
             {chart.currentPrice?.toFixed(6)}
           </span>
           <span
-            className={`text-base ${
+            className={`text-sm sm:text-base ${
               chart.chartPricePercentageChange >= 0
                 ? "text-[#089981]"
                 : "text-[#F23645]"
@@ -611,99 +633,145 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
           </span>
         </div>
       </div>
-      {/* 添加时间间隔切换器 */}
-      <div className="flex items-center my-4 bg-[#202020]">
-        {/* 时间间隔按钮 */}
-        {intervals.map((interval) => (
-          <button
-            key={interval.text}
-            onClick={() => setCurrentInterval(interval.resolution)}
-            className={`px-1 py-0.5 text-sm transition-colors ${
-              currentInterval === interval.resolution
-                ? "text-[#FFCD4D]"
-                : "text-[#808080] hover:text-[#FFCD4D]"
-            }`}
-          >
-            {interval.text}
-          </button>
-        ))}
+      
+      <div className="flex items-center my-4 bg-[#202020] flex-wrap gap-y-2">
+        <div className="relative shrink-0">
+          <div className="hidden sm:block space-x-1">
+            {intervals.map((interval) => (
+              <button
+                key={interval.text}
+                onClick={() => setCurrentInterval(interval.resolution)}
+                className={`text-sm transition-colors ${
+                  currentInterval === interval.resolution
+                    ? "text-[#FFCD4D]"
+                    : "text-[#808080] hover:text-[#FFCD4D]"
+                }`}
+              >
+                {interval.text}
+              </button>
+            ))}
+          </div>
 
-        {/* 图表切换按钮 */}
-        <div className="h-[20px] mx-1.5 w-[1px] bg-gray-600" />
+          <div className="sm:hidden interval-dropdown">
+            <button
+              onClick={() => setShowIntervalMenu(!showIntervalMenu)}
+              className="text-sm text-[#808080] hover:text-[#FFCD4D] transition-colors flex items-center gap-1"
+            >
+              <span>{intervals.find(i => i.resolution === currentInterval)?.text}</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={`transition-transform ${showIntervalMenu ? 'rotate-180' : ''}`}
+              >
+                <path d="m6 9 6 6 6-6"/>
+              </svg>
+            </button>
+
+            {showIntervalMenu && (
+              <div 
+                className="absolute top-full left-0 mt-1 bg-[#1E1E1E] border border-gray-700 rounded-md py-1 z-50 min-w-[120px]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {intervals.map((interval) => (
+                  <button
+                    key={interval.text}
+                    onClick={() => {
+                      setCurrentInterval(interval.resolution);
+                      setShowIntervalMenu(false);
+                    }}
+                    className={`w-full px-4 py-1.5 text-left text-sm hover:bg-[#2A2A2A] ${
+                      currentInterval === interval.resolution
+                        ? "text-[#FFCD4D]"
+                        : "text-[#808080]"
+                    }`}
+                  >
+                    {interval.text}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="h-[20px] mx-2 w-[1px] bg-gray-600" />
+
         <div className="relative chart-type-dropdown">
           <button
             onClick={() => setShowChartTypeMenu(!showChartTypeMenu)}
-            className="px-1.5 py-0.5 text-sm text-[#808080] hover:text-[#FFCD4D] transition-colors flex items-center gap-1 min-w-[32px] justify-center"
+            className=" text-sm text-[#808080] hover:text-[#FFCD4D] transition-colors flex items-center gap-1 justify-center"
           >
             <span className="opacity-60">
               {chartTypes.find((ct) => ct.type === chartType)?.icon}
             </span>
           </button>
 
-          {/* 下拉菜单 */}
-          {showChartTypeMenu && (
-            <div
-              className="absolute top-full left-0 mt-1 bg-[#1E1E1E] border border-gray-700 rounded-md py-1 z-50 min-w-[180px]"
-              onClick={(e) => e.stopPropagation()} // 防止点击菜单时关闭
-            >
-              {chartTypes.map(({ type, icon }) => (
-                <button
-                  key={type}
-                  onClick={() => handleChartTypeChange(type)}
-                  className={`w-full px-4 py-1.5 flex items-center gap-3 hover:bg-[#2A2A2A] ${
-                    chartType === type ? "text-[#FFCD4D]" : "text-[#808080]"
-                  }`}
-                >
-                  <span className="opacity-60">{icon}</span>
-                  <span className="flex-1 text-left whitespace-nowrap">
-                    {type}
-                  </span>
-                </button>
-              ))}
-            </div>
-          )}
+            {showChartTypeMenu && (
+              <div
+                className="absolute top-full left-0 mt-1 bg-[#1E1E1E] border border-gray-700 rounded-md py-1 z-50 min-w-[180px]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {chartTypes.map(({ type, icon }) => (
+                  <button
+                    key={type}
+                    onClick={() => handleChartTypeChange(type)}
+                    className={`w-full px-4 py-1.5 flex items-center gap-3 hover:bg-[#2A2A2A] ${
+                      chartType === type ? "text-[#FFCD4D]" : "text-[#808080]"
+                    }`}
+                  >
+                    <span className="opacity-60">{icon}</span>
+                    <span className="flex-1 text-left whitespace-nowrap">
+                      {type}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
         </div>
 
-        {/* 分割线 */}
-        <div className="h-[20px] mx-1.5 w-[1px] bg-gray-600" />
+        <div className="h-[20px] mx-2 w-[1px] bg-gray-600" />
 
-        {/* Indicators 和 Hide trades 按钮组 */}
-        <div className="flex items-center px-2 py-1 rounded-sm bg-[#1E1E1E]">
-          <button
-            onClick={handleIndicatorsClick}
-            className="px-1.5 py-0.5 text-sm text-[#808080] hover:text-[#FFCD4D] transition-all duration-75 flex items-center gap-0.5"
+        <button
+          onClick={handleIndicatorsClick}
+          className=" text-sm text-[#808080] hover:text-[#FFCD4D] transition-all duration-75 flex items-center gap-0.5"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            stroke="currentColor"
+            strokeWidth="0.5"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              stroke="currentColor"
-              strokeWidth="0.5"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M7.5 5.5a2.5 2.5 0 015 0v.321a.5.5 0 01-1 0V5.5a1.5 1.5 0 00-3 0V8H11a.5.5 0 010 1H8.5v5.5a2.5 2.5 0 01-5 0 .5.5 0 111 0 1.5 1.5 0 003 0V9H5a.5.5 0 010-1h2.5V5.5zm6.707 9l1.647 1.646a.5.5 0 01-.708.708L13.5 15.207l-1.646 1.647a.5.5 0 01-.708-.707l1.647-1.647-1.647-1.646a.5.5 0 01.708-.707l1.646 1.646 1.646-1.646a.5.5 0 01.708.707L14.207 14.5z"
-              />
-            </svg>
-            Indicators
-          </button>
-          <div className="h-[20px] mx-1.5 w-[1px] bg-gray-600" />
-          <button
-            onClick={handleHideTradesClick}
-            className="px-1.5 py-0.5 text-sm text-[#808080] hover:text-[#FFCD4D] transition-colors"
-          >
-            {showTrades ? "Hide" : "Show"} trades
-          </button>
-        </div>
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M7.5 5.5a2.5 2.5 0 015 0v.321a.5.5 0 01-1 0V5.5a1.5 1.5 0 00-3 0V8H11a.5.5 0 010 1H8.5v5.5a2.5 2.5 0 01-5 0 .5.5 0 111 0 1.5 1.5 0 003 0V9H5a.5.5 0 010-1h2.5V5.5zm6.707 9l1.647 1.646a.5.5 0 01-.708.708L13.5 15.207l-1.646 1.647a.5.5 0 01-.708-.707l1.647-1.647-1.647-1.646a.5.5 0 01.708-.707l1.646 1.646 1.646-1.646a.5.5 0 01.708.707L14.207 14.5z"
+            />
+          </svg>
+          Indicators
+        </button>
 
-        {/* 其他按钮保持不变 */}
-        <div className="h-[20px] mx-1.5 w-[1px] bg-gray-600" />
+        <div className="h-[20px] mx-2 w-[1px] bg-gray-600" />
+
+        <button
+          onClick={handleHideTradesClick}
+          className=" text-sm text-[#808080] hover:text-[#FFCD4D] transition-colors shrink-0"
+        >
+          {showTrades ? "Hide" : "Show"} trades
+        </button>
+
+        <div className="h-[20px] mx-2 w-[1px] bg-gray-600" />
         <button
           onClick={handlePriceMCapClick}
-          className={`px-1 py-0.5 text-sm transition-colors ${
+          className={`text-sm transition-colors ${
             priceType === "PRICE" ? "text-[#FFCD4D]" : "text-[#808080]"
           }`}
         >
@@ -712,16 +780,16 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
         <span className="text-[#808080] mx-0.5">/</span>
         <button
           onClick={handlePriceMCapClick}
-          className={`px-1 py-0.5 text-sm transition-colors ${
+          className={`text-sm transition-colors ${
             priceType === "MCAP" ? "text-[#FFCD4D]" : "text-[#808080]"
           }`}
         >
           MCap
         </button>
-        <div className="h-[20px] mx-1.5 w-[1px] bg-gray-600" />
+        <div className="h-[20px] mx-2 w-[1px] bg-gray-600" />
         <button
           onClick={handleUSDBeraClick}
-          className={`px-1 py-0.5 text-sm transition-colors ${
+          className={`text-sm transition-colors ${
             currencyType === "USD" ? "text-[#FFCD4D]" : "text-[#808080]"
           }`}
         >
@@ -730,17 +798,15 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
         <span className="text-[#808080] mx-0.5">/</span>
         <button
           onClick={handleUSDBeraClick}
-          className={`px-1 py-0.5 text-sm transition-colors ${
+          className={`text-sm transition-colors ${
             currencyType === "BERA" ? "text-[#FFCD4D]" : "text-[#808080]"
           }`}
         >
           BERA
         </button>
       </div>
-      <div
-        ref={chartWrapRef}
-        className="relative my-4"
-      >
+
+      <div ref={chartWrapRef} className="relative my-4">
         <div
           style={{
             opacity: spinning ? 0.8 : 0,
@@ -755,7 +821,7 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
           id="tv_chart_container"
           style={{
             width: "100%",
-            height: "100%",
+            height: isMobile ? "300px" : "400px",
             opacity: spinning ? 0 : 1,
             transition: "opacity 0.3s ease-out",
           }}
@@ -782,18 +848,8 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  <line
-                    x1="18"
-                    y1="6"
-                    x2="6"
-                    y2="18"
-                  ></line>
-                  <line
-                    x1="6"
-                    y1="6"
-                    x2="18"
-                    y2="18"
-                  ></line>
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
               </button>
             </div>

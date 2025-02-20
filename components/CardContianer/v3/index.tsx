@@ -13,7 +13,7 @@ interface HoneyContainerProps {
   loadingText?: string;
   showTopBorder?: boolean;
   showBottomBorder?: boolean;
-  variant?: "default" | "wide";
+  variant?: "default" | "dark";
   type?: "primary" | "default";
 }
 
@@ -46,28 +46,30 @@ function CardContainer({
               ? [
                   "py-12 sm:py-20",
                   "bg-[length:auto_40px,auto_40px] sm:bg-[length:auto_70px,auto_70px]",
-                  "bg-[url('/images/card-container/honey/honey-border.png'),url('/images/card-container/dark/bottom-border.svg')]",
                   topOffset
                     ? `bg-[position:-65px_top,left_bottom]`
                     : `bg-[position:left_top,left_bottom]`,
+                  variant === "default"
+                    ? "bg-[url('/images/card-container/honey/honey-border.png'),url('/images/card-container/dark/bottom-border.svg')]"
+                    : "bg-[url('/images/card-container/dark/top-border.svg'),url('/images/card-container/dark/bottom-border.svg')]",
                 ]
               : showTopBorder
                 ? [
                     "pt-12 sm:pt-20 pb-2 sm:pb-4",
                     "bg-[length:auto_40px] sm:bg-[length:auto_70px]",
-                    "bg-[url('/images/card-container/honey/honey-border.png')]",
                     topOffset
                       ? `bg-[position:-65px_top]`
                       : `bg-[position:left_top]`,
+                    variant === "default"
+                      ? "bg-[url('/images/card-container/honey/honey-border.png')]"
+                      : "bg-[url('/images/card-container/dark/top-border.svg')]",
                   ]
                 : showBottomBorder
                   ? [
                       "pb-12 sm:pb-20 pt-2 sm:pt-4",
                       "bg-left-bottom",
                       "bg-[length:auto_40px] sm:bg-[length:auto_70px]",
-                      variant === "wide"
-                        ? "bg-[url('/images/card-container/honey/bottom-border.svg')]"
-                        : "bg-[url('/images/card-container/dark/bottom-border.svg')]",
+                      "bg-[url('/images/card-container/dark/bottom-border.svg')]",
                     ]
                   : "py-2 sm:py-4",
           ]
