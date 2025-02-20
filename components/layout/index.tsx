@@ -23,6 +23,7 @@ import { InvitationCodeModal } from "../InvitationCodeModal/InvitationCodeModal"
 import { useAutoConnect } from "@/lib/hooks/useAutoconnector";
 import { useSafeAppsSDK } from "@safe-global/safe-apps-react-sdk";
 import { ethers } from "ethers";
+import { SafeAppProvider } from "@safe-global/safe-apps-provider";
 export const Layout = ({
   children,
   className,
@@ -34,9 +35,6 @@ export const Layout = ({
   const { chainId, address } = useAccount();
   const currentChain = chainId ? networksMap[chainId] : null;
   const [showInviteModal, setShowInviteModal] = useState(false);
-
-  const { sdk, safe } = useSafeAppsSDK();
-  useAutoConnect();
 
   useEffect(() => {
     //if its user first time visit, open chat

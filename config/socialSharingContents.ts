@@ -56,9 +56,9 @@ export const pot2PumpPottingShareTelegramContent = (pair: MemePairContract) => `
 💥 Ticker: ${pair.launchedToken?.symbol} 
 🔹 Full Name: ${pair.launchedToken?.displayName} 
 
-📈 Potting Percentage: ${Number(pair.pottingPercentageDisplay).toFixed(2)}%    
-💵 Total Raised: $${Number(pair.depositedRaisedToken).toExponential(3)}    
-👥 Participants count: ${Number(pair.participantsCount).toExponential(2)}  
+📈 Potting Percentage: ${(pair.pottingPercentageNumber * 100).toFixed(4)}%    
+💵 Total Raised: $${Number(pair.depositedRaisedToken).toFixed(5)} ${pair.launchedToken?.symbol} 
+👥 Participants count: ${pair.participantsCount}  
 
 🔗 ${window.location.origin}/launch-detail/${pair.launchedToken?.address}
 `;

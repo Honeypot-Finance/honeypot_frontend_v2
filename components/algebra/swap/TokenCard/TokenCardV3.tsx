@@ -291,6 +291,7 @@ interface TokenSwapCardProps {
   showInput?: boolean;
   showSetting?: boolean;
   staticTokenList?: Token[];
+  showSettings?: boolean;
 }
 
 const TokenCardV3 = ({
@@ -309,7 +310,7 @@ const TokenCardV3 = ({
   showInput = true,
   disableSelection,
   staticTokenList,
-  showSetting=true
+  showSettings = true,
 }: TokenSwapCardProps) => {
   const { address: account } = useAccount();
   useWatchBlockNumber({
@@ -374,7 +375,7 @@ const TokenCardV3 = ({
               )}
             </div>
           )}
-          {showSetting && <Settings />}
+          {showInput && showSettings && <Settings />}
         </div>
       </div>
 

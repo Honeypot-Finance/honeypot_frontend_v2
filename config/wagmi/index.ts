@@ -1,5 +1,6 @@
 import { networks } from "@/services/chain";
-import { connectorsForWallets, getDefaultConfig } from "@usecapsule/rainbowkit";
+import { getDefaultConfig } from "@rainbow-me/rainbowkit";
+import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import {
   rainbowWallet,
   bitgetWallet,
@@ -9,11 +10,6 @@ import {
   safeWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { injected, safe } from "wagmi/connectors";
-import {
-  Environment,
-  getCapsuleWallet,
-  OAuthMethod,
-} from "@usecapsule/rainbowkit-wallet";
 // import { holdstationWallet } from "./holdstationWallet";
 // import { capsuleWallet } from "./capsualWallet";
 // import { berasigWallet } from "./berasigWallet";
@@ -21,29 +17,19 @@ import { createConfig, http, cookieStorage, createStorage } from "wagmi";
 
 const pId = "1d1c8b5204bfbd57502685fc0934a57d";
 const CAPSULE_API_KEY = process.env.NEXT_PUBLIC_CAPSULE_API_KEY!;
-const CAPSULE_ENVIRONMENT =
-  process.env.NODE_ENV === "production"
-    ? Environment.PRODUCTION
-    : Environment.DEVELOPMENT;
+const DAPP_URL =
+  process.env.NEXT_PUBLIC_DAPP_URL ||
+  (typeof window !== "undefined" ? window.location.origin : "");
 
-const capsuleWalletOptions = {
-  capsule: {
-    apiKey: CAPSULE_API_KEY,
-    environment: CAPSULE_ENVIRONMENT,
-  },
-  appName: "My Awesome dApp",
-  oAuthMethods: [OAuthMethod.GOOGLE, OAuthMethod.TWITTER, OAuthMethod.DISCORD],
-};
-const capsuleWallet = getCapsuleWallet(capsuleWalletOptions);
 let customWallets = [
   metaMaskWallet,
   rainbowWallet,
   walletConnectWallet,
   bitgetWallet,
   okxWallet,
+  safeWallet,
   // holdstationWallet,
   // berasigWallet,
-  capsuleWallet,
 ];
 
 // if(!window.bitkeep){
@@ -53,7 +39,10 @@ let customWallets = [
 // Create Capsule wallet connector
 
 const connectors = [
-  safe(),
+  safe({
+    allowedDomains: [/app.safe.global$/],
+    debug: true,
+  }),
   injected(),
   ...connectorsForWallets(
     [
