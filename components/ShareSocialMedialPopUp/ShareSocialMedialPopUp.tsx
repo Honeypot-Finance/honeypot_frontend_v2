@@ -7,43 +7,53 @@ import { PopupActions } from "reactjs-popup/dist/types";
 import { text } from "stream/consumers";
 import Image from "next/image";
 import { popmodal } from "@/services/popmodal";
+import { cn } from "@/lib/tailwindcss";
 
 interface IShareSocialMedialPopUpProps
   extends React.HTMLAttributes<HTMLDivElement> {
   shareUrl: string;
   shareText: string;
   text?: React.ReactNode;
+  noIcon?: boolean;
 }
 
 export function ShareMediaDisplay(props: IShareSocialMedialPopUpProps) {
   return (
     <div>
-      <div className="m-2 text-right text-white">
+      <div className={cn("m-2 text-right text-white gap-2", props.className)}>
         {" "}
         <Link
-          className="cursor-pointer flex items-center gap-2 hover:text-primary"
+          className="cursor-pointer flex items-center gap-2 hover:text-primary flex-col"
           target="_blank"
           href={`https://twitter.com/intent/tweet?text=${props.shareText}%0A%0A${props.shareUrl}`}
         >
-          <Image
-            src="/images/twitter.svg"
-            alt=""
-            width={20}
-            height={20}
-            className="bg-black rounded-full"
-          />
-          Share With Twitter
-          <BiLinkExternal />
+          {!props.noIcon && (
+            <Image
+              src="/images/twitter.svg"
+              alt=""
+              width={20}
+              height={20}
+              className="bg-black rounded-full"
+            />
+          )}
+          <div className="flex items-center gap-1">
+            Share With Twitter
+            <BiLinkExternal />
+          </div>
         </Link>
         {/* telegram */}
         <Link
-          className="cursor-pointer flex items-center gap-2 hover:text-primary"
+          className="cursor-pointer flex items-center gap-2 hover:text-primary flex-col"
           target="_blank"
           href={`https://telegram.me/share/url?url=${props.shareUrl}%0A&text=${props.shareText}`}
         >
-          <Image src="/images/telegram.svg" alt="" width={20} height={20} />
-          Share With Telegram
-          <BiLinkExternal />
+          {!props.noIcon && (
+            <Image src="/images/telegram.svg" alt="" width={20} height={20} />
+          )}
+          <div className="flex items-center gap-1">
+            Share With Telegram
+            <BiLinkExternal />
+          </div>
         </Link>
       </div>
     </div>

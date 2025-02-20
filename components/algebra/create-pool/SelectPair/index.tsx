@@ -7,7 +7,7 @@ import {
 import { useSwapActionHandlers } from "@/lib/algebra/state/swapStore";
 import { SwapField } from "@/types/algebra/types/swap-field";
 
-import { Currency } from "@cryptoalgebra/wasabee-sdk";
+import { Currency } from "@cryptoalgebra/sdk";
 import { ChevronsUpDownIcon } from "lucide-react";
 import { useCallback } from "react";
 import TokenCardV3 from "../../swap/TokenCard/TokenCardV3";

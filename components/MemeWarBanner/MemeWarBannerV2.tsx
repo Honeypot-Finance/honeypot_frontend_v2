@@ -79,7 +79,10 @@ export const MemeWarBannerV2 = observer((props: Props) => {
         </div>
         <MemeWarPariticipantRaceChart />
       </div>
-      <DiscussionArea pairDatabaseId={-9999} isSide />
+      <DiscussionArea
+        pairDatabaseId={-9999}
+        isSide
+      />
     </div>
   ) : (
     <div className="flex justify-center items-center h-[500px]">
@@ -111,7 +114,10 @@ export const MemeWarSupportSection = observer(() => {
           {Object.entries(memewarStore.memewarParticipants).map(
             ([key, value]) => {
               return (
-                <SelectItem key={key} value={key}>
+                <SelectItem
+                  key={key}
+                  value={key}
+                >
                   {value.participantName}
                 </SelectItem>
               );
@@ -249,7 +255,7 @@ export const MemeWarPariticipantRaceChart = observer(() => {
                   extraTokenAction={
                     <a
                       href={`
-                      /launch-detail/${target.pairAddress}
+                      /launch-detail/${target.pair?.launchedToken?.address}
                     `}
                     >
                       {target.pair?.launchedToken && (

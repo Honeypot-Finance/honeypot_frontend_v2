@@ -52,6 +52,12 @@ export class Wallet {
         this.initWallet(this.walletClient);
       }
     );
+    reaction(
+      () => this.walletClient?.chain,
+      () => {
+        this.initWallet(this.walletClient);
+      }
+    );
   }
 
   async initWallet(walletClient: WalletClient) {

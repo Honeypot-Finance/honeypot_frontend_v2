@@ -9,7 +9,7 @@ import { Separator } from "@/components/algebra/ui/separator";
 import { Switch } from "@/components/algebra/ui/switch";
 import CardContianer from "@/components/CardContianer/CardContianer";
 import { useUserState } from "@/lib/algebra/state/userStore";
-import { Percent } from "@cryptoalgebra/wasabee-sdk";
+import { Percent } from "@cryptoalgebra/sdk";
 import { SettingsIcon } from "lucide-react";
 import { useState } from "react";
 

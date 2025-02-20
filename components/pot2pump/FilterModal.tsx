@@ -60,7 +60,10 @@ export const Filter = observer(
 
     return (
       <>
-        <Button className="!px-4" onClick={onOpen}>
+        <Button
+          className="!px-4"
+          onClick={onOpen}
+        >
           <FaSlidersH className="!text-black size-4" />
           {/* FIXME: display text */}
           {/* <span className="!text-black">Filters</span> */}
@@ -123,7 +126,7 @@ export const Filter = observer(
                   </Button>
                 </ModalFooter>
 
-                <div className="bg-[url('/images/pool-detail/bottom-border.svg')] bg-left-top h-6 absolute -bottom-1 left-0 w-full bg-contain"></div>
+                <div className="bg-[url('/images/card-container/honey/bottom-border.svg')] bg-left-top h-6 absolute -bottom-1 left-0 w-full bg-contain"></div>
               </>
             )}
           </ModalContent>

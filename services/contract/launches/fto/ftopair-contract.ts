@@ -202,6 +202,12 @@ export class FtoPairContract implements BaseLaunchContract {
     if (!this.raiseToken || !this.launchedToken) {
       throw new Error("token is not initialized");
     }
+    if (this.raiseToken.isNative) {
+      // @ts-ignore
+      await wallet.currentChain.nativeToken.deposit.callV2({
+        value: BigInt(amount),
+      });
+    }
 
     amount = new BigNumber(amount)
       .multipliedBy(new BigNumber(10).pow(this.raiseToken.decimals))

@@ -16,9 +16,9 @@ const DerbyDashboard = observer(() => {
           className="w-full"
         >
           <div className="w-full bg-[#FFCD4D] relative py-8 sm:py-12 px-4 rounded-2xl overflow-hidden">
-            <div className="bg-[url('/images/pool-detail/top-border.svg')] bg-left-top h-6 absolute top-0 left-0 w-full bg-contain"></div>
+            <div className="bg-[url('/images/card-container/honey/top-border.svg')] bg-left-top h-6 absolute top-0 left-0 w-full bg-contain"></div>
             <MemeHorseRace showTable={false} />
-            <div className="bg-[url('/images/pool-detail/bottom-border.svg')] bg-left-top h-6 absolute -bottom-1 left-0 w-full bg-contain"></div>
+            <div className="bg-[url('/images/card-container/honey/bottom-border.svg')] bg-left-top h-6 absolute -bottom-1 left-0 w-full bg-contain"></div>
           </div>
         </motion.div>
 
@@ -39,7 +39,7 @@ const DerbyDashboard = observer(() => {
                 </div>
               </div>
             </div>
-            <div className="bg-[url('/images/pool-detail/bottom-border.svg')] bg-top h-12 absolute -bottom-1 left-0 w-full bg-contain bg-repeat-x"></div>
+            <div className="bg-[url('/images/card-container/honey/bottom-border.svg')] bg-top h-12 absolute -bottom-1 left-0 w-full bg-contain bg-repeat-x"></div>
           </div>
         </motion.div>
       </div>

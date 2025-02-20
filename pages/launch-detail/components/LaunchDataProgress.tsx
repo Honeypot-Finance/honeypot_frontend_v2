@@ -61,16 +61,19 @@ export const LaunchDataProgress = observer(
 
         <TokenAddress address={pair?.launchedToken?.address} />
 
-        <TokenDetails
-          price={pair?.price}
-          depositedRaisedToken={pair?.depositedRaisedToken}
-          startTimeDisplay={pair?.startTimeDisplay}
-          endTimeDisplay={pair?.endTimeDisplay}
-        />
+        {pair.raiseToken && (
+          <TokenDetails
+            raisedToken={pair.raiseToken}
+            price={pair?.price}
+            depositedRaisedToken={pair?.depositedRaisedToken}
+            startTimeDisplay={pair?.startTimeDisplay}
+            endTimeDisplay={pair?.endTimeDisplay}
+          />
+        )}
 
         <div className="w-full h-[1px] bg-[#52493D]"></div>
         <div className="space-y-1.5">
-          <p className="text-white/65 text-sm mt-2.5">Rank Project</p>
+          <p className="text-white/65 text-sm mt-2.5">vote the MEME</p>
           <div className="flex gap-5">
             {Object.entries(votes).map(([key, value]) => {
               return (
@@ -89,7 +92,7 @@ export const LaunchDataProgress = observer(
                         refreshVotes();
                       });
                   }}
-                  className="mt-2 flex-1 flex flex-col  justify-center items-center bg-[#202020] px-3 py-3 hover:bg-[#FFCD4D] active:[background:#F0A000] cursor-pointer select-none border border-[#F2C34A] rounded-2xl"
+                  className="mt-2 flex-1 flex flex-col  justify-center items-center bg-[#202020] text-white px-3 py-3 hover:bg-[#FFCD4D] active:[background:#F0A000] cursor-pointer select-none border border-[#F2C34A] rounded-2xl"
                 >
                   <p>
                     {(key.split("_")[0] === "rocket" && "🚀") ||

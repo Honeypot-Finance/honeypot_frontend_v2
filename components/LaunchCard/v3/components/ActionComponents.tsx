@@ -53,7 +53,7 @@ export const RefundAction = observer(({ pair }: { pair: MemePairContract }) => {
 export const ToTokenDetailsPage = observer(
   ({ pair }: { pair: FtoPairContract | MemePairContract }) => {
     return (
-      <Link href={`/launch-detail/${pair?.address}`}>
+      <Link href={`/launch-detail/${pair?.launchedToken?.address}`}>
         <Button className="w-full">View Token</Button>
       </Link>
     );

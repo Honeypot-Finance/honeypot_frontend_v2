@@ -22,7 +22,7 @@ import {
 } from "@/lib/algebra/state/burnStore";
 import { TransactionType } from "@/lib/algebra/state/pendingTransactionsStore";
 import { useUserState } from "@/lib/algebra/state/userStore";
-import { NonfungiblePositionManager, Percent } from "@cryptoalgebra/wasabee-sdk";
+import { NonfungiblePositionManager, Percent } from "@cryptoalgebra/sdk";
 import { Address } from "viem";
 import { useEffect, useMemo, useState } from "react";
 import { useAccount, useContractWrite } from "wagmi";

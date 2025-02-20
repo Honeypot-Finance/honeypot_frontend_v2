@@ -5,7 +5,7 @@ import {
   CurrencyAmount,
   Price,
   tryParseAmount,
-} from "@cryptoalgebra/wasabee-sdk";
+} from "@cryptoalgebra/sdk";
 import { useMemo } from "react";
 import {
   useNativePriceQuery,

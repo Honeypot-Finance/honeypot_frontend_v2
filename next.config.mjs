@@ -69,16 +69,6 @@ const nextConfig = {
   },
 
   transpilePackages: [
-    "@usecapsule/rainbowkit-wallet",
-    "@usecapsule/rainbowkit",
-    "@usecapsule/core-components",
-    "@usecapsule/react-components",
-    "@usecapsule/react-sdk",
-    "@usecapsule/core-sdk",
-    "@usecapsule/web-sdk",
-    "@usecapsule/wagmi-v2-integration",
-    "@usecapsule/viem-v2-integration",
-    "@usecapsule/react-common",
     "styled-components",
   ],
 };

@@ -29,7 +29,9 @@ export const CopyTrigger = observer(
     return (
       <Tooltip
         isOpen={state.isTooltipOpen}
-        content={state.copied ? copiedContent ?? "Copied" : content ?? "Copy"}
+        content={
+          state.copied ? (copiedContent ?? "Copied") : (content ?? "Copy")
+        }
         classNames={{
           base: "",
           content: "bg-[#6B4311]",
@@ -44,7 +46,7 @@ export const CopyTrigger = observer(
             state.setCopied(false);
           }}
           className={clsx(
-            "inline-block cursor-pointer hover:text-primary",
+            "inline-block cursor-pointer hover:text-gray-500",
             className
           )}
           {...props}
@@ -64,8 +66,13 @@ export const Copy = observer(
   ({
     value,
     displayContent,
+    copiedContent,
     ...props
-  }: { value: string; displayContent?: React.ReactNode } & Partial<IconType> &
+  }: {
+    value: string;
+    displayContent?: React.ReactNode;
+    copiedContent?: string;
+  } & Partial<IconType> &
     Partial<HTMLAttributes<any>>) => {
     const state = useLocalObservable(() => ({
       copied: false,
@@ -86,8 +93,10 @@ export const Copy = observer(
         }}
       >
         <CopyTrigger
+          copiedContent={copiedContent}
           displayContent={displayContent}
           state={state}
+          className={props.className}
           {...props}
         ></CopyTrigger>
       </CopyToClipboard>

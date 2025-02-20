@@ -507,7 +507,7 @@ export const berachainNetwork = new Network({
     },
   ],
   nativeToken: {
-    address: "0x7507c1dc16935b82698e4c63f2746a2fcf994df8",
+    address: "0x6969696969696969696969696969696969696969",
     name: "Bera",
     symbol: "BERA",
     decimals: 18,
@@ -535,6 +535,11 @@ export const berachainNetwork = new Network({
       address: "0x1cE0a25D13CE4d52071aE7e02Cf1F6606F4C79d3".toLowerCase(),
       amount: BigInt("20000000000000000000000"),
     },
+    {
+      symbol: "WGBERA",
+      address: "0xd77552d3849ab4d8c3b189a9582d0ba4c1f4f912".toLowerCase(),
+      amount: BigInt("2000000000000000000000"),
+    },
   ],
   nativeFaucet: {
     address: "0x1bd43f7f55b700236c92256a0fd90266363119f7",
@@ -551,7 +556,7 @@ export const berachainNetwork = new Network({
     ftoFactory: "0x7E0CCe2C9Ff537f8301dd40c652A03479B18dAef",
     ftoFacade: "0x0264D933F13eE993270591668CfF87b8D35Dd3b4",
     memeFactory: "0xC38eF79A6cA9b3EfBe20F3dD3b99B3e25d09F52B",
-    memeFacade: "0x80051Ca8C6E2e04E12de5d5Cb1313C086C867737",
+    memeFacade: "0xAAD87033d81bB4c6a3A08aD77323530FF9dB8f5C",
     vaultFactory: "0x1bf5e51eCacdfEA65ae9276fd228bB8719ffcA7E",
     ftoTokens: [
       {
@@ -567,7 +572,7 @@ export const berachainNetwork = new Network({
         decimals: 18,
       },
       {
-        address: "0x7507c1dc16935B82698e4C63f2746A2fCf994dF8".toLowerCase(),
+        address: "0x6969696969696969696969696969696969696969".toLowerCase(),
         name: "Wrapped Bera",
         symbol: "WBERA",
         decimals: 18,
@@ -607,14 +612,7 @@ export const berachainNetwork = new Network({
   },
   validatedTokensInfo: {
     //when adding a new token, make sure to add the address as lowercase
-    "0x0000000000000000000000000000000000000000": {
-      name: "Bera",
-      symbol: "BERA",
-      decimals: 18,
-      logoURI: "/images/icons/tokens/wbera-token-icon.png",
-      isRouterToken: true,
-      isPopular: true,
-    },
+
     "0x6969696969696969696969696969696969696969": {
       name: "Wrapped Bera",
       symbol: "WBERA",
@@ -659,6 +657,18 @@ export const berachainNetwork = new Network({
       decimals: 18,
       logoURI: "/images/icons/tokens/weth-token-icon.png",
       isRouterToken: true,
+    },
+    "0x1cE0a25D13CE4d52071aE7e02Cf1F6606F4C79d3": {
+      name: "NECT",
+      symbol: "NECT",
+      decimals: 18,
+      logoURI: "/images/icons/tokens/nect-token-icon.png",
+    },
+    "0xd77552d3849ab4d8c3b189a9582d0ba4c1f4f912": {
+      name: "WGBERA",
+      symbol: "WGBERA",
+      decimals: 18,
+      logoURI: "/images/icons/tokens/wgbera-token-icon.png",
     },
   },
   validatedFtoAddresses: [],

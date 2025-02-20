@@ -5,7 +5,7 @@ import {
   Percent,
   Trade,
   TradeType,
-} from "@cryptoalgebra/wasabee-sdk";
+} from "@cryptoalgebra/sdk";
 import { useNeedAllowance } from "./useNeedAllowance";
 import { useMemo } from "react";
 import { useTransactionAwait } from "./useTransactionAwait";

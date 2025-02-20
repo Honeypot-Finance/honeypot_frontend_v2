@@ -1,5 +1,5 @@
 import { SetStateAction, useCallback, useEffect, useState } from "react";
-import { Price, Token } from "@cryptoalgebra/wasabee-sdk";
+import { Price, Token } from "@cryptoalgebra/sdk";
 import { useMintState } from "@/lib/algebra/state/mintStore";
 import { Button } from "@/components/algebra/ui/button";
 import { Input } from "@/components/algebra/ui/input";

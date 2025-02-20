@@ -3,7 +3,7 @@ import {
   usePosition,
   usePositionInFarming,
 } from "@/lib/algebra/hooks/positions/usePositions";
-import { Position } from "@cryptoalgebra/wasabee-sdk";
+import { Position } from "@cryptoalgebra/sdk";
 import PositionNFT from "../PositionNFT";
 import { Skeleton } from "@/components/algebra/ui/skeleton";
 import PositionRangeChart from "../PositionRangeChart";

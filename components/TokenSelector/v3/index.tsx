@@ -32,10 +32,16 @@ type TokenSelectorProps = {
   onSelect: (token: Token) => void;
   value?: Token | null;
   disableSelection?: boolean;
+  staticTokenList?: Token[];
 };
 
 export const TokenSelector = observer(
-  ({ onSelect, value, disableSelection }: TokenSelectorProps) => {
+  ({
+    onSelect,
+    value,
+    disableSelection,
+    staticTokenList,
+  }: TokenSelectorProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const state = useLocalObservable(() => ({
       search: "",
@@ -145,13 +151,15 @@ export const TokenSelector = observer(
                   {value?.displayName ? value.displayName : "Select Token"}
                 </span>
               </TruncateMarkup>
-              <motion.div
-                variants={animationVariants.dropDownIcon}
-                initial={animationVariants.dropDownIcon.initial}
-                animate={state.currentAnimationVariant}
-              >
-                <ChevronDown className="size-4" />
-              </motion.div>
+              {!disableSelection && (
+                <motion.div
+                  variants={animationVariants.dropDownIcon}
+                  initial={animationVariants.dropDownIcon.initial}
+                  animate={state.currentAnimationVariant}
+                >
+                  <ChevronDown className="size-4" />
+                </motion.div>
+              )}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="flex w-full lg:w-[350px] flex-col items-center gap-4 border border-[color:var(--card-stroke,#F7931A)] [background:var(--card-color,#271A0C)] rounded-xl border-solid">
@@ -175,49 +183,9 @@ export const TokenSelector = observer(
                     />
                     <Divider className="my-4" />
                     <div>
-                      <div className="max-h-[300px] overflow-auto">
-                        <div>
-                          <h2 className=" opacity-50 font-normal font-sans">
-                            Most Popular
-                          </h2>
-                          <div className="flex *:grow w-full flex-wrap gap-2">
-                            {state.tokens.length ? (
-                              state.tokens
-                                .slice()
-                                .filter((token) => token.isPopular)
-                                .sort((a, b) => b.priority - a.priority)
-                                .map((token, idx) => {
-                                  return (
-                                    <Button
-                                      key={idx}
-                                      onClick={() => {
-                                        onSelect(token);
-                                        onClose();
-                                      }}
-                                      className="min-w-[2rem] hover:bg-amber-600 flex  justify-center items-center"
-                                    >
-                                      <TokenLogo
-                                        addtionalClasses="w-[15px] h-[15px]"
-                                        token={token}
-                                        disableLink
-                                        disableTooltip
-                                      ></TokenLogo>
-                                      <p className="text-[rgba(255,255,255)] [font-kerning:none] [font-feature-settings:'calt'_off] [font-family:Inter] text-xs font-normal leading-[14px]">
-                                        {token.symbol}
-                                      </p>
-                                    </Button>
-                                  );
-                                })
-                            ) : (
-                              <NoData></NoData>
-                            )}
-                          </div>
-                        </div>
-                        <h2 className=" opacity-50 font-normal font-sans">
-                          Validated
-                        </h2>
-                        {state.tokens.length ? (
-                          state.tokens
+                      {staticTokenList ? (
+                        staticTokenList.length ? (
+                          staticTokenList
                             .slice()
                             .sort((a, b) => b.priority - a.priority)
                             .map((token, idx) => {
@@ -243,14 +211,85 @@ export const TokenSelector = observer(
                             })
                         ) : (
                           <NoData></NoData>
-                        )}
-                        <div className="w-full justify-center text-center opacity-50">
-                          <h3>
-                            not seeing the token you want? search address for
-                            specific token...
-                          </h3>
+                        )
+                      ) : (
+                        <div className="max-h-[300px] overflow-auto">
+                          <div>
+                            <h2 className=" opacity-50 font-normal font-sans">
+                              Most Popular
+                            </h2>
+                            <div className="flex *:grow w-full flex-wrap gap-2">
+                              {state.tokens.length ? (
+                                state.tokens
+                                  .slice()
+                                  .filter((token) => token.isPopular)
+                                  .sort((a, b) => b.priority - a.priority)
+                                  .map((token, idx) => {
+                                    return (
+                                      <Button
+                                        key={idx}
+                                        onClick={() => {
+                                          onSelect(token);
+                                          onClose();
+                                        }}
+                                        className="min-w-[2rem] hover:bg-amber-600 flex  justify-center items-center"
+                                      >
+                                        <TokenLogo
+                                          addtionalClasses="w-[15px] h-[15px]"
+                                          token={token}
+                                          disableLink
+                                          disableTooltip
+                                        ></TokenLogo>
+                                        <p className="text-[rgba(255,255,255)] [font-kerning:none] [font-feature-settings:'calt'_off] [font-family:Inter] text-xs font-normal leading-[14px]">
+                                          {token.symbol}
+                                        </p>
+                                      </Button>
+                                    );
+                                  })
+                              ) : (
+                                <NoData></NoData>
+                              )}
+                            </div>
+                          </div>
+                          <h2 className=" opacity-50 font-normal font-sans">
+                            Validated
+                          </h2>
+                          {state.tokens.length ? (
+                            state.tokens
+                              .slice()
+                              .sort((a, b) => b.priority - a.priority)
+                              .map((token, idx) => {
+                                return (
+                                  <div
+                                    key={idx}
+                                    onClick={() => {
+                                      onSelect(token);
+                                      onClose();
+                                    }}
+                                    className="py-[8px] px-[8px] rounded-[8px] flex justify-between items-center cursor-pointer hover:[background:rgba(255,255,255,0.04)]"
+                                  >
+                                    <TokenLogo token={token}></TokenLogo>
+                                    <div className="flex-grow-[1] px-2">
+                                      <div>{token.name}</div>
+                                      <div className="text-[rgba(255,255,255,0.50)] [font-kerning:none] [font-feature-settings:'calt'_off] [font-family:Inter] text-xs font-normal leading-[14px]">
+                                        {token.symbol}
+                                      </div>
+                                    </div>
+                                    <div>{token.balanceFormatted}</div>
+                                  </div>
+                                );
+                              })
+                          ) : (
+                            <NoData></NoData>
+                          )}
+                          <div className="w-full justify-center text-center opacity-50">
+                            <h3>
+                              not seeing the token you want? search address for
+                              specific token...
+                            </h3>
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   </SpinnerContainer>
                 </div>
@@ -266,10 +305,13 @@ export const TokenSelector = observer(
             >
               <BiLinkExternal className=" cursor-pointer text-[#140E06]" />
             </Link>
-            <Copy value={value.address} className="size-4 text-[#140E06]" />
+            <Copy
+              value={value.address}
+              className="size-4 text-[#140E06]"
+            />
             {value.pot2pumpAddress && (
               <Tooltip content="This token is launched on Pot2Pump">
-                <Link href={`/launch-detail/${value.pot2pumpAddress}`}>
+                <Link href={`/launch-detail/${value.address}`}>
                   <Image
                     width={16}
                     height={16}

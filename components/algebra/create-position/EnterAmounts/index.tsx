@@ -1,5 +1,5 @@
 import { useNeedAllowance } from "@/lib/algebra/hooks/common/useNeedAllowance";
-import { Currency, Field } from "@cryptoalgebra/wasabee-sdk";
+import { Currency, Field } from "@cryptoalgebra/sdk";
 import { useEffect, useMemo } from "react";
 import EnterAmountCard from "../EnterAmountsCard";
 import { ALGEBRA_POSITION_MANAGER } from "@/config/algebra/addresses";
@@ -26,10 +26,9 @@ const EnterAmounts = ({
     mintInfo.noLiquidity
   );
 
-  const formattedAmounts = {
-    [independentField]: typedValue,
-    [mintInfo.dependentField]:
-      mintInfo.parsedAmounts[mintInfo.dependentField]?.toSignificant(6) ?? "",
+  const formattedAmounts: Record<Field, string> = {
+    [Field.CURRENCY_A]: independentField === Field.CURRENCY_A ? typedValue : mintInfo.parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) ?? "",
+    [Field.CURRENCY_B]: independentField === Field.CURRENCY_B ? typedValue : mintInfo.parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? "",
   };
 
   const currencyAError = useMemo(() => {

@@ -1,4 +1,4 @@
-import { ConnectButton } from "@usecapsule/rainbowkit";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Balance } from "../balance";
 import { BalanceSvg } from "../svg/balance";
 import { ButtonHTMLAttributes } from "react";
@@ -117,7 +117,10 @@ export const WalletConnect = () => {
                     )}
                     {chain.name}
                   </button>
-                  <ConnectButtonCustom onClick={openAccountModal} type="button">
+                  <ConnectButtonCustom
+                    onClick={openAccountModal}
+                    type="button"
+                  >
                     {account.displayName}
                   </ConnectButtonCustom>
                 </div>

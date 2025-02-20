@@ -16,7 +16,7 @@ import {
   TbChartHistogram,
   TbChartArcs,
 } from "react-icons/tb";
-
+import Link from "next/link";
 // 为 Window 对象添加 TradingView 相关的类型定义
 declare global {
   interface Window {
@@ -581,7 +581,12 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
                 return <></>;
               }
 
-              return <TokenLogo key={token.address} token={token} />;
+              return (
+                <TokenLogo
+                  key={token.address}
+                  token={token}
+                />
+              );
             })}
           </div>
           <span className="text-white text-lg font-bold">
@@ -606,7 +611,6 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
           </span>
         </div>
       </div>
-
       {/* 添加时间间隔切换器 */}
       <div className="flex items-center my-4 bg-[#202020]">
         {/* 时间间隔按钮 */}
@@ -733,8 +737,10 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
           BERA
         </button>
       </div>
-
-      <div ref={chartWrapRef} className="relative my-4">
+      <div
+        ref={chartWrapRef}
+        className="relative my-4"
+      >
         <div
           style={{
             opacity: spinning ? 0.8 : 0,
@@ -755,7 +761,6 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
           }}
         />
       </div>
-
       {/* 截图弹窗 */}
       {screenshotUrl && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -777,8 +782,18 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                  <line
+                    x1="18"
+                    y1="6"
+                    x2="6"
+                    y2="18"
+                  ></line>
+                  <line
+                    x1="6"
+                    y1="6"
+                    x2="18"
+                    y2="18"
+                  ></line>
                 </svg>
               </button>
             </div>
@@ -799,6 +814,13 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
           </div>
         </div>
       )}
+      <Link
+        href="https://www.codex.io/"
+        target="_blank"
+        className="text-center text-sm text-[#808080] hover:text-[#FFCD4D] transition-colors"
+      >
+        price feed powered by Codex
+      </Link>
     </div>
   );
 });

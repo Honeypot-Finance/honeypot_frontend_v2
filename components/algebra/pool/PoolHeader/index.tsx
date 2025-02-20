@@ -7,7 +7,7 @@ import { formatPercent } from "@/lib/algebra/utils/common/formatPercent";
 import { AlgebraPoolContract } from "@/services/contract/algebra/algebra-pool-contract";
 import { Address } from "viem";
 import { Token } from "@/services/contract/token";
-import { Pool } from "@cryptoalgebra/wasabee-sdk";
+import { Pool } from "@cryptoalgebra/sdk";
 import { observer } from "mobx-react-lite";
 
 interface PoolHeaderProps {

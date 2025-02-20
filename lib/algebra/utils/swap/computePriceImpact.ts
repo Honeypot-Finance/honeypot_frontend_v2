@@ -1,4 +1,4 @@
-import { CurrencyAmount, Percent, Token } from "@cryptoalgebra/wasabee-sdk";
+import { CurrencyAmount, Percent, Token } from "@cryptoalgebra/sdk";
 
 export const ONE_HUNDRED_PERCENT = new Percent("1");
 

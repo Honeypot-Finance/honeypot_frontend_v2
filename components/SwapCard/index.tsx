@@ -72,7 +72,7 @@ export const SwapCard = observer(
       } else {
         swap.setFromToken(
           Token.getToken({
-            address: "0x7507c1dc16935b82698e4c63f2746a2fcf994df8",
+            address: "0x6969696969696969696969696969696969696969",
             isNative: true,
           })
         );

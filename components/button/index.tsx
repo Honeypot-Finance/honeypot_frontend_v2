@@ -1,6 +1,6 @@
 import { cn } from "@/lib/tailwindcss";
 import { ButtonProps, Button as NextButton } from "@nextui-org/react";
-import { useConnectModal } from "@usecapsule/rainbowkit";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAccount, useConnect, useConnectors } from "wagmi";
 
 export const Button = ({
@@ -28,7 +28,11 @@ export const Button = ({
     className
   );
   return isConnected ? (
-    <NextButton isLoading={isLoading} className={baseClassNames} {...props}>
+    <NextButton
+      isLoading={isLoading}
+      className={baseClassNames}
+      {...props}
+    >
       {children}
     </NextButton>
   ) : (

@@ -10,7 +10,7 @@ import { useCurrency } from "@/lib/algebra/hooks/common/useCurrency";
 import { useFarmUnstake } from "@/lib/algebra/hooks/farming/useFarmStake";
 import { useFarmingDepositRewardsEarned } from "@/lib/algebra/hooks/farming/useFarmingDepositRewardsEarned";
 import { FormattedPosition } from "@/types/algebra/types/formatted-position";
-import { ADDRESS_ZERO } from "@cryptoalgebra/wasabee-sdk";
+import { ADDRESS_ZERO } from "@cryptoalgebra/sdk";
 import { useAccount } from "wagmi";
 
 interface ClosedFarmingCardProps {
