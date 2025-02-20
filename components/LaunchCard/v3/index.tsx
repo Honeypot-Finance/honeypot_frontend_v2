@@ -496,7 +496,7 @@ const SimpleLaunchCard = observer(
                           ) &&
                             Number(
                               pair?.launchedToken?.priceChange24hPercentage
-                            ) > 1
+                            ) > 0
                             ? "text-green-500"
                             : "text-red-500"
                         )}
@@ -629,7 +629,7 @@ const FeaturedLaunchCard = observer(({ pair }: { pair: LaunchContract }) => {
                 <span
                   className={cn(
                     Number(pair?.launchedToken?.priceChange24hPercentage) &&
-                      Number(pair?.launchedToken?.priceChange24hPercentage) > 1
+                      Number(pair?.launchedToken?.priceChange24hPercentage) > 0
                       ? "text-green-500"
                       : "text-red-500"
                   )}
@@ -668,7 +668,7 @@ const FeaturedLaunchCard = observer(({ pair }: { pair: LaunchContract }) => {
                     className={cn(
                       Number(pair?.launchedToken?.priceChange24hPercentage) &&
                         Number(pair?.launchedToken?.priceChange24hPercentage) >
-                          1
+                          0
                         ? "text-green-500"
                         : "text-red-500"
                     )}

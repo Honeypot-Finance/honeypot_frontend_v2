@@ -29,6 +29,7 @@ type SubgraphToken = {
   holderCount: string;
   derivedMatic: string;
   totalSupply: string;
+  derivedUSD: string;
 };
 
 export type Pot2PumpListData = {
@@ -158,8 +159,7 @@ export const pot2PumpToMemePair = (
       pot2Pump.participants.length > 0 &&
       !pot2Pump.participants[0].claimed,
     canRefund:
-      pot2Pump.creator?.toLowerCase() !==
-        pot2Pump.participants?.[0]?.account?.id?.toLowerCase() &&
+      Number(pot2Pump.participants?.[0]?.amount) > 0 &&
       !pot2Pump.raisedTokenReachingMinCap &&
       pot2Pump.participants &&
       pot2Pump.participants.length > 0 &&
@@ -365,6 +365,7 @@ export async function fetchPairsList({
         holderCount: pot2Pump.raisedToken.holderCount,
         derivedMatic: pot2Pump.raisedToken.derivedMatic,
         totalSupply: pot2Pump.raisedToken.totalSupply,
+        derivedUSD: pot2Pump.raisedToken.derivedUSD,
       },
       token1: {
         id: pot2Pump.launchToken.id,
@@ -374,6 +375,7 @@ export async function fetchPairsList({
         holderCount: pot2Pump.launchToken.holderCount,
         derivedMatic: pot2Pump.launchToken.derivedMatic,
         totalSupply: pot2Pump.launchToken.totalSupply,
+        derivedUSD: pot2Pump.launchToken.derivedUSD,
       },
     }));
 
@@ -440,6 +442,7 @@ export async function fetchMemetrackerList({
         holderCount: pot2Pump.launchToken.holderCount,
         derivedMatic: pot2Pump.launchToken.derivedMatic,
         totalSupply: pot2Pump.launchToken.totalSupply,
+        derivedUSD: pot2Pump.launchToken.derivedUSD,
       },
       token1: {
         id: pot2Pump.raisedToken.id,
@@ -449,6 +452,7 @@ export async function fetchMemetrackerList({
         holderCount: pot2Pump.raisedToken.holderCount,
         derivedMatic: pot2Pump.raisedToken.derivedMatic,
         totalSupply: pot2Pump.raisedToken.totalSupply,
+        derivedUSD: pot2Pump.raisedToken.derivedUSD,
       },
     }));
 
