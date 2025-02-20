@@ -373,7 +373,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
   const pair = useMemo(() => state.pair.value, [state.pair.value]);
 
   return (
-    <div className="w-full px-2 md:px-8 xl:px-0 space-y-4 md:space-y-8">
+    <div className="w-full px-2 md:px-8 xl:px-0 space-y-4 md:space-y-8 max-w-[1440px] mx-auto">
       <CardContainer
         type="default"
         showBottomBorder={false}
@@ -491,9 +491,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
               </div>
             )}
 
-            {pair?.state === 3 && (
-              <LaunchDataProgress pair={pair} />
-            )}
+            {pair?.state === 3 && <LaunchDataProgress pair={pair} />}
             <div className="bg-[url('/images/card-container/honey/bottom-border.svg')] bg-left-top h-6 absolute -bottom-1 left-0 w-full bg-repeat-x bg-auto"></div>
           </div>
 
