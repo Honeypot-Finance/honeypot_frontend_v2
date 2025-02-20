@@ -94,7 +94,7 @@ export const UpdateProjectModal = observer(
         </ModalHeader>
         <ModalBody>
           <div className="w-full rounded-[24px] md:rounded-[32px] bg-white space-y-5 px-4 md:px-8 py-4 md:py-6 custom-dashed">
-            <div className="flex flex-col gap-4">
+            {/* <div className="flex flex-col gap-4">
               <UploadImage
                 imagePath={
                   !!pair.logoUrl ? pair.logoUrl : "/images/project_honey.png"
@@ -113,7 +113,7 @@ export const UpdateProjectModal = observer(
               <div className="text-black opacity-50 text-center text-sm">
                 Click icon to upload new token icon
               </div>
-            </div>
+            </div> */}
             <div className="flex flex-col gap-2">
               <label className={labelBaseClass}>Project Name</label>
               <input
