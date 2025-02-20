@@ -54,10 +54,12 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
       <div className="flex flex-col items-center gap-2 md:gap-0">
         <div className="size-10 md:size-[77px] flex items-center justify-center rounded-full shrink-0">
           <Image
-            alt={pair?.launchedToken?.name || "honey"}
             width={77}
             height={77}
-            className="rounded-full size-10 sm:size-[77px] object-cover"
+            objectFit="cover"
+            className="rounded-full"
+            sizes="(max-width: 640px) 40px,77px"
+            alt={pair?.launchedToken?.name || "honey"}
             src={!!pair?.logoUrl ? pair.logoUrl : "/images/empty-logo.png"}
           />
         </div>

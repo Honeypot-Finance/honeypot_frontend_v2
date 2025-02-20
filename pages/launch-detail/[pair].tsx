@@ -396,7 +396,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_500px] gap-4 md:gap-x-4 md:gap-y-14 w-full @container">
           <div
             className={cn(
-              "relative bg-white col-span-1 lg:col-span-2 px-2 md:px-8 py-3 md:py-5 rounded-xl sm:rounded-3xl",
+              "relative bg-white col-span-1 lg:col-span-2 px-2 sm:px-4 md:px-8 py-3 md:py-5 rounded-xl sm:rounded-3xl",
               "grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0 text-[#202020]"
             )}
           >
