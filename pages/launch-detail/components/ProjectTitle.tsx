@@ -52,12 +52,12 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
       )}
     >
       <div className="flex flex-col items-center gap-2 md:gap-0">
-        <div className="size-10 md:size-[77px] bg-[#ECC94E] flex items-center justify-center rounded-full shrink-0">
+        <div className="size-10 md:size-[77px] flex items-center justify-center rounded-full shrink-0">
           <Image
             alt={pair?.launchedToken?.name || "honey"}
             width={77}
-            height={0}
-            className="rounded-full size-10 sm:w-[77px] object-cover"
+            height={77}
+            className="rounded-full size-10 sm:size-[77px] object-cover"
             src={!!pair?.logoUrl ? pair.logoUrl : "/images/empty-logo.png"}
           />
         </div>
