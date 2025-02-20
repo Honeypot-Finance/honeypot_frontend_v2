@@ -23,27 +23,19 @@ export const calculateToken24hPriceChange: (token: Token) => {
     tokenHourData,
   });
 
-  let averagePrice24h = 0;
-  let averagePrice48h = 0;
-  let indexCount24h = 0;
-  let indexCount48h = 0;
+  let price24h = 0;
+  let price48h = 0;
 
-  //calculate average price of token in the last 24 hours
+  //find first available price
   for (let i = 0; i < 24; i++) {
     const hourTimestamp = tokenHourNowUnix - i * 3600;
     const hourData = tokenHourData.find((hourData) => {
       return Number(hourData.periodStartUnix) === hourTimestamp;
     });
     if (hourData) {
-      averagePrice24h += Number(hourData.priceUSD);
-      indexCount24h++;
+      price24h = Number(hourData.priceUSD);
+      break;
     }
-  }
-
-  if (indexCount24h === 0) {
-    averagePrice24h = tokenHourData[0]?.priceUSD ?? 0;
-  } else {
-    averagePrice24h = averagePrice24h / indexCount24h;
   }
 
   //calculate average price of token in the last 48 hours
@@ -53,39 +45,29 @@ export const calculateToken24hPriceChange: (token: Token) => {
       return Number(hourData.periodStartUnix) === hourTimestamp;
     });
     if (hourData) {
-      averagePrice48h += Number(hourData.priceUSD);
-      indexCount48h++;
+      price48h = Number(hourData.priceUSD);
+      break;
     }
   }
 
-  if (indexCount48h === 0) {
-    averagePrice48h = token.initialUSD;
-  } else {
-    averagePrice48h = averagePrice48h / indexCount48h;
+  if (price48h === 0) {
+    price48h = token.initialUSD;
   }
 
-  console.log("calculateToken24hPriceChange output data", {
-    averagePrice24h,
-    averagePrice48h,
-    indexCount24h,
-    indexCount48h,
-  });
-
-  if (averagePrice48h === 0) {
+  if (price48h === 0) {
     return {
-      priceChange: averagePrice24h,
+      priceChange: price24h,
       priceChangePercentage: 100,
     };
-  } else if (averagePrice24h === 0) {
+  } else if (price24h === 0) {
     return {
-      priceChange: -averagePrice48h,
+      priceChange: -price48h,
       priceChangePercentage: 0,
     };
   } else {
     return {
-      priceChange: averagePrice24h - averagePrice48h,
-      priceChangePercentage:
-        ((averagePrice24h - averagePrice48h) / averagePrice48h) * 100,
+      priceChange: price24h - price48h,
+      priceChangePercentage: ((price24h - price48h) / price48h) * 100,
     };
   }
 };
