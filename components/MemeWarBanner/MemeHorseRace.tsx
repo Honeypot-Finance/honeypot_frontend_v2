@@ -19,7 +19,6 @@ import { useSpring, animated } from "react-spring";
 import { getTokenTop10Holders } from "@/lib/algebra/graphql/clients/token";
 import { TokenTop10HoldersQuery } from "@/lib/algebra/graphql/generated/graphql";
 import BigNumber from "bignumber.js";
-import { truncateEthAddress } from "@usecapsule/rainbowkit-wallet";
 import { poolsByTokenPair } from "@/lib/algebra/graphql/clients/pool";
 import { useRouter } from "next/router";
 import { ExternalLink } from "lucide-react";
@@ -390,7 +389,7 @@ const TopHoldersModal = observer(
                                   rel="noopener noreferrer"
                                   className="hover:text-[#FFCD4D] flex items-center gap-1"
                                 >
-                                  {truncateEthAddress(holder.account.id)}
+                                  {holder.account.id}
                                   <ExternalLink className="size-3" />
                                 </a>
                                 <Copy

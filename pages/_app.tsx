@@ -6,10 +6,9 @@ import type { AppProps } from "next/app";
 import { Layout } from "@/components/layout";
 import { NextLayoutPage } from "@/types/nextjs";
 import { WagmiProvider, useWalletClient } from "wagmi";
-import { AvatarComponent, RainbowKitProvider } from "@usecapsule/rainbowkit";
+import { AvatarComponent, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-// import "@rainbow-me/rainbowkit/styles.css";
-import "@usecapsule/rainbowkit/styles.css";
+import "@rainbow-me/rainbowkit/styles.css";
 import { NextUIProvider } from "@nextui-org/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -29,7 +28,7 @@ import {
   DynamicContextProvider,
   DynamicWidget,
 } from "@dynamic-labs/sdk-react-core";
-
+import { berachainNetwork } from "@/services/chain";
 // enableStaticRendering(true)
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -87,14 +86,16 @@ export default function App({
     >
       <Analytics />
       <WagmiProvider config={config}>
-        <SafeProvider>
-          <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <RainbowKitProvider
+            avatar={CustomAvatar}
+            initialChain={berachainNetwork.chain}
+            // capsule={capsuleClient}
+            // capsuleIntegratedProps={capsuleModalProps}
+          >
+            {" "}
             <ApolloProvider client={infoClient}>
-              <RainbowKitProvider
-                avatar={CustomAvatar}
-                // capsule={capsuleClient}
-                // capsuleIntegratedProps={capsuleModalProps}
-              >
+              <SafeProvider>
                 <NextUIProvider>
                   <Provider>
                     <Inspector
@@ -116,10 +117,10 @@ export default function App({
                   </Provider>
                   <ToastContainer></ToastContainer>
                 </NextUIProvider>
-              </RainbowKitProvider>
+              </SafeProvider>
             </ApolloProvider>
-          </QueryClientProvider>
-        </SafeProvider>
+          </RainbowKitProvider>
+        </QueryClientProvider>
       </WagmiProvider>
     </trpc.Provider>
   );

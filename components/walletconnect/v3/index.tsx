@@ -1,4 +1,4 @@
-import { ConnectButton } from "@usecapsule/rainbowkit";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ButtonHTMLAttributes } from "react";
 import Image from "next/image";
 import { useConnect, useConnectors } from "wagmi";
@@ -63,7 +63,11 @@ export const WalletConnect = () => {
                     href="/profile"
                     className="flex items-center justify-center bg-white rounded-full p-1.5 lg:p-2 shrink-0"
                   >
-                    <BsPerson size={24} className="size-4 lg:size-6" color="#202020" />
+                    <BsPerson
+                      size={24}
+                      className="size-4 lg:size-6"
+                      color="#202020"
+                    />
                   </Link>
                   {(() => {
                     if (!connected) {
@@ -79,15 +83,23 @@ export const WalletConnect = () => {
                             }}
                             className="text-xs sm:text-sm lg:text-base inline-flex items-center gap-x-1 sm:gap-x-2 bg-[#202020] px-3 lg:px-4 py-1.5 lg:py-2 rounded-full"
                           >
-                            <BiWallet size={18} className="lg:size-5 shrink-0" />
-                            <span className="whitespace-nowrap">Connect Wallet</span>
+                            <BiWallet
+                              size={18}
+                              className="lg:size-5 shrink-0"
+                            />
+                            <span className="whitespace-nowrap">
+                              Connect Wallet
+                            </span>
                           </ConnectButtonCustom>
                         </div>
                       );
                     }
                     if (chain.unsupported) {
                       return (
-                        <ConnectButtonCustom onClick={openChainModal} className="text-xs sm:text-sm lg:text-base">
+                        <ConnectButtonCustom
+                          onClick={openChainModal}
+                          className="text-xs sm:text-sm lg:text-base"
+                        >
                           Wrong network
                         </ConnectButtonCustom>
                       );
@@ -120,8 +132,13 @@ export const WalletConnect = () => {
                           type="button"
                           className="flex cursor-pointer bg-[#202020] text-white px-3 lg:px-4 py-1.5 lg:py-2 rounded-2xl gap-1.5 lg:gap-2 items-center shrink-0 text-xs sm:text-sm lg:text-base"
                         >
-                          <BiWallet size={18} className="lg:w-5 lg:h-5" />
-                          <span className="whitespace-nowrap">{account.displayName}</span>
+                          <BiWallet
+                            size={18}
+                            className="lg:w-5 lg:h-5"
+                          />
+                          <span className="whitespace-nowrap">
+                            {account.displayName}
+                          </span>
                         </button>
                       </div>
                     );
