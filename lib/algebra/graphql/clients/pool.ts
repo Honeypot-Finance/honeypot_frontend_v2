@@ -11,6 +11,9 @@ import {
   Pool,
   UserActivePositionsQueryResult,
   useNativePriceQuery,
+  SinglePoolQuery,
+  SinglePoolQueryVariables,
+  SinglePoolDocument,
 } from "../generated/graphql";
 import { Address, getContract } from "viem";
 import { algebraPositionManagerAddress } from "@/wagmi-generated";
@@ -194,4 +197,16 @@ export const useUserPools = (userAddress: string) => {
     loading: isLoading,
     refetch: refetch,
   };
+};
+
+export const poolExists = async (poolAddress: string) => {
+  const { data } = await infoClient.query<
+    SinglePoolQuery,
+    SinglePoolQueryVariables
+  >({
+    query: SinglePoolDocument,
+    variables: { poolId: poolAddress },
+  });
+
+  return data?.pool !== null;
 };
