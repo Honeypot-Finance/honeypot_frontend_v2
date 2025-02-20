@@ -39,7 +39,10 @@ let customWallets = [
 // Create Capsule wallet connector
 
 const connectors = [
-  safe(),
+  safe({
+    allowedDomains: [/app.safe.global$/],
+    debug: true,
+  }),
   injected(),
   ...connectorsForWallets(
     [
@@ -73,10 +76,4 @@ export const config = getDefaultConfig({
   storage: createStorage({
     storage: cookieStorage,
   }),
-  transports: {
-    safe: {
-      allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/],
-      debug: true,
-    },
-  },
 });

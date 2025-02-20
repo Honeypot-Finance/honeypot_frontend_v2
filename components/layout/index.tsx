@@ -36,18 +36,6 @@ export const Layout = ({
   const currentChain = chainId ? networksMap[chainId] : null;
   const [showInviteModal, setShowInviteModal] = useState(false);
 
-  const { sdk, safe } = useSafeAppsSDK();
-  const web3Provider = useMemo(
-    () => new ethers.providers.Web3Provider(new SafeAppProvider(safe, sdk)),
-    [sdk, safe]
-  );
-
-  console.log("safe", {
-    sdk,
-    safe,
-    web3Provider,
-  });
-
   useEffect(() => {
     //if its user first time visit, open chat
     const questions = chatService.findRelatedQuestionsByPath(router.pathname);
