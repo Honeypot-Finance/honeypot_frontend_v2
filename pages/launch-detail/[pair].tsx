@@ -457,7 +457,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
 
           <CardContainer
             variant="dark"
-            className={cn("relative min-h-[500px] md:min-h-[665px] px-1")}
+            className={cn("relative min-h-[500px] md:min-h-[665px] px-1 sm:px-2 md:px-4")}
           >
             {pair?.state === 0 && (
               <div className="md:block w-full">

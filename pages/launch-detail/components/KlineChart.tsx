@@ -368,7 +368,7 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
         interval: currentInterval as any,
         container: "tv_chart_container",
         width: chartWidth,
-        height: isMobile ? 300 : Number(height),
+        height: isMobile ? 350 : Number(height),
         formatting_price_precision: 10,
         timezone: timeZone as any,
         datafeed: datafeed,
@@ -641,7 +641,7 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
               <button
                 key={interval.text}
                 onClick={() => setCurrentInterval(interval.resolution)}
-                className={`text-sm transition-colors ${
+                className={`text-xs sm:text-sm transition-colors ${
                   currentInterval === interval.resolution
                     ? "text-[#FFCD4D]"
                     : "text-[#808080] hover:text-[#FFCD4D]"
@@ -655,7 +655,7 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
           <div className="sm:hidden interval-dropdown">
             <button
               onClick={() => setShowIntervalMenu(!showIntervalMenu)}
-              className="text-sm text-[#808080] hover:text-[#FFCD4D] transition-colors flex items-center gap-1"
+              className="text-xs sm:text-sm text-[#808080] hover:text-[#FFCD4D] transition-colors flex items-center gap-1"
             >
               <span>{intervals.find(i => i.resolution === currentInterval)?.text}</span>
               <svg
@@ -686,7 +686,7 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
                       setCurrentInterval(interval.resolution);
                       setShowIntervalMenu(false);
                     }}
-                    className={`w-full px-4 py-1.5 text-left text-sm hover:bg-[#2A2A2A] ${
+                    className={`w-full px-4 py-1.5 text-left text-xs sm:text-sm hover:bg-[#2A2A2A] ${
                       currentInterval === interval.resolution
                         ? "text-[#FFCD4D]"
                         : "text-[#808080]"
@@ -705,7 +705,7 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
         <div className="relative chart-type-dropdown">
           <button
             onClick={() => setShowChartTypeMenu(!showChartTypeMenu)}
-            className=" text-sm text-[#808080] hover:text-[#FFCD4D] transition-colors flex items-center gap-1 justify-center"
+            className="text-xs sm:text-sm text-[#808080] hover:text-[#FFCD4D] transition-colors flex items-center gap-1 justify-center"
           >
             <span className="opacity-60">
               {chartTypes.find((ct) => ct.type === chartType)?.icon}
@@ -726,7 +726,7 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
                     }`}
                   >
                     <span className="opacity-60">{icon}</span>
-                    <span className="flex-1 text-left whitespace-nowrap">
+                    <span className="flex-1 text-left whitespace-nowrap text-xs sm:text-sm">
                       {type}
                     </span>
                   </button>
@@ -739,7 +739,7 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
 
         <button
           onClick={handleIndicatorsClick}
-          className=" text-sm text-[#808080] hover:text-[#FFCD4D] transition-all duration-75 flex items-center gap-0.5"
+          className="text-xs sm:text-sm text-[#808080] hover:text-[#FFCD4D] transition-all duration-75 flex items-center gap-0.5"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -763,7 +763,7 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
 
         <button
           onClick={handleHideTradesClick}
-          className=" text-sm text-[#808080] hover:text-[#FFCD4D] transition-colors shrink-0"
+          className="text-xs sm:text-sm text-[#808080] hover:text-[#FFCD4D] transition-colors shrink-0"
         >
           {showTrades ? "Hide" : "Show"} trades
         </button>
@@ -771,7 +771,7 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
         <div className="h-[20px] mx-2 w-[1px] bg-gray-600" />
         <button
           onClick={handlePriceMCapClick}
-          className={`text-sm transition-colors ${
+          className={`text-xs sm:text-sm transition-colors ${
             priceType === "PRICE" ? "text-[#FFCD4D]" : "text-[#808080]"
           }`}
         >
@@ -780,7 +780,7 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
         <span className="text-[#808080] mx-0.5">/</span>
         <button
           onClick={handlePriceMCapClick}
-          className={`text-sm transition-colors ${
+          className={`text-xs sm:text-sm transition-colors ${
             priceType === "MCAP" ? "text-[#FFCD4D]" : "text-[#808080]"
           }`}
         >
@@ -789,7 +789,7 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
         <div className="h-[20px] mx-2 w-[1px] bg-gray-600" />
         <button
           onClick={handleUSDBeraClick}
-          className={`text-sm transition-colors ${
+          className={`text-xs sm:text-sm transition-colors ${
             currencyType === "USD" ? "text-[#FFCD4D]" : "text-[#808080]"
           }`}
         >
@@ -798,7 +798,7 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
         <span className="text-[#808080] mx-0.5">/</span>
         <button
           onClick={handleUSDBeraClick}
-          className={`text-sm transition-colors ${
+          className={`text-xs sm:text-sm transition-colors ${
             currencyType === "BERA" ? "text-[#FFCD4D]" : "text-[#808080]"
           }`}
         >
@@ -821,8 +821,8 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
           id="tv_chart_container"
           style={{
             width: "100%",
-            height: isMobile ? "300px" : "400px",
             opacity: spinning ? 0 : 1,
+            height: isMobile ? "350px" : "500px",
             transition: "opacity 0.3s ease-out",
           }}
         />
