@@ -137,7 +137,7 @@ const TopHoldersTable = ({
   }, [launchedToken, depositedLaunchedTokenWithoutDecimals]);
 
   return (
-    <div className="custom-dashed-3xl w-full p-6 bg-white">
+    <div className="custom-dashed-3xl w-full p-6 bg-white overflow-x-auto">
       {!loading ? (
         <table className="w-full">
           <thead>
