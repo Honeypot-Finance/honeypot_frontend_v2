@@ -24,6 +24,7 @@ let customWallets = [
   walletConnectWallet,
   bitgetWallet,
   okxWallet,
+  safeWallet,
   // holdstationWallet,
   // berasigWallet,
 ];
