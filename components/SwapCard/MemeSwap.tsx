@@ -169,9 +169,8 @@ export const LaunchDetailSwapCard = observer(
             base: "relative w-full",
             tabList: cn(
               "flex rounded-2xl border border-[#202020] bg-white shadow-[4px_4px_0px_0px_#202020,-4px_4px_0px_0px_#202020]",
-              "py-1.5 sm:py-2 px-2.5 sm:px-3.5 absolute left-1/2 -translate-x-1/2 z-10 -top-5",
+              "absolute left-1/2 -translate-x-1/2 z-10 -top-5",
               "overflow-x-auto max-w-[90vw] sm:max-w-none",
-              "p-1 sm:p-4"
             ),
             tab: "px-5 py-1 rounded-lg whitespace-nowrap text-xs sm:text-sm sm:text-base",
             tabContent: "group-data-[selected=true]:text-white",
@@ -179,7 +178,7 @@ export const LaunchDetailSwapCard = observer(
               "bg-[#020202] border border-black shadow-[0.5px_0.5px_0px_0px_#000000] sm:shadow-[2px_2px_0px_0px_#000000]",
             panel: cn(
               "flex flex-col h-full w-full gap-y-4 justify-center items-center",
-              "!mt-0"
+              "!mt-0 !py-0"
             ),
           }}
         >
