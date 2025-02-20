@@ -96,10 +96,10 @@ export const UpdateProjectModal = observer(
           <div className="w-full rounded-[24px] md:rounded-[32px] bg-white space-y-5 px-4 md:px-8 py-4 md:py-6 custom-dashed">
             {/* <div className="flex flex-col gap-4">
               <UploadImage
+                blobName={pair.address + "_logo"}
                 imagePath={
                   !!pair.logoUrl ? pair.logoUrl : "/images/project_honey.png"
                 }
-                blobName={pair.address + "_logo"}
                 onUpload={async (url) => {
                   console.log(url);
                   await launchpad.updateProjectLogo.call({
@@ -109,7 +109,7 @@ export const UpdateProjectModal = observer(
                   });
                   pair.logoUrl = url;
                 }}
-              ></UploadImage>
+              />
               <div className="text-black opacity-50 text-center text-sm">
                 Click icon to upload new token icon
               </div>
@@ -373,11 +373,8 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
   const pair = useMemo(() => state.pair.value, [state.pair.value]);
 
   return (
-    <div className="w-full px-2 md:px-8 xl:px-0 space-y-4 md:space-y-8 max-w-[1440px] mx-auto">
-      <CardContainer
-        type="default"
-        showBottomBorder={false}
-      >
+    <div className="w-full px-2 sm:px-4 md:px-8 xl:px-0 space-y-4 md:space-y-8 xl:max-w-[1200px] 2xl:max-w-[1500px] mx-auto">
+      <CardContainer type="default" showBottomBorder={false}>
         {state.pair.value && (
           <Modal
             isOpen={isOpen}
@@ -396,13 +393,12 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_500px] gap-4 md:gap-x-4 md:gap-y-14 w-full @container">
           <div
             className={cn(
-              "relative bg-white col-span-1 lg:col-span-2 px-2 md:px-8 py-3 md:py-5 rounded-xl sm:rounded-3xl",
+              "relative bg-white col-span-1 lg:col-span-2 px-2 sm:px-4 md:px-8 py-3 md:py-5 rounded-xl sm:rounded-3xl",
               "grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0 text-[#202020]"
             )}
           >
-            {" "}
             <OptionsDropdown
-              className="p-0 m-0 absolute right-5 top-2 z-10 text-black"
+              className="p-0 m-0 absolute right-2.5 sm:right-5 top-2 z-10 text-black"
               options={[
                 optionsPresets.copy({
                   copyText: pair?.launchedToken?.address ?? "",
@@ -456,20 +452,20 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
               className="col-span-1"
               description={pair?.description}
             />
-            <ProjectStats
-              className="col-span-1"
-              pair={pair}
-            />
+            <ProjectStats className="col-span-1" pair={pair} />
           </div>
 
-          <div
+          <CardContainer
+            variant="dark"
+            loading={!pair}
+            loadingSize={200}
+            loadingText="Loading Data..."
             className={cn(
-              "relative bg-[#FFCD4D] min-h-[500px] md:min-h-[665px] px-4 py-6 rounded-2xl space-y-3 overflow-hidden col-span-1"
+              "relative min-h-[500px] md:min-h-[665px] px-1 sm:px-2 md:px-4"
             )}
           >
-            <div className="bg-[url('/images/card-container/honey/top-border.svg')] bg-left-top h-6 absolute top-0 left-0 w-full bg-contain"></div>
             {pair?.state === 0 && (
-              <div className="md:block">
+              <div className="md:block w-full">
                 <KlineChart height={500} />
               </div>
             )}
@@ -492,24 +488,15 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
             )}
 
             {pair?.state === 3 && <LaunchDataProgress pair={pair} />}
-            <div className="bg-[url('/images/card-container/honey/bottom-border.svg')] bg-left-top h-6 absolute -bottom-1 left-0 w-full bg-repeat-x bg-auto"></div>
-          </div>
+          </CardContainer>
 
           <div className="bg-transparent rounded-2xl space-y-3 col-span-1">
-            {pair && (
-              <Action
-                pair={pair}
-                refreshTxsCallback={triggerRefresh}
-              />
-            )}
+            {pair && <Action pair={pair} refreshTxsCallback={triggerRefresh} />}
           </div>
         </div>
 
         <div className="mt-6 md:mt-16 w-full">
-          <Tabs
-            pair={pair}
-            refreshTrigger={refreshTrigger}
-          />
+          <Tabs pair={pair} refreshTrigger={refreshTrigger} />
         </div>
       </CardContainer>
     </div>

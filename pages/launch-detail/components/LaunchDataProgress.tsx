@@ -41,7 +41,7 @@ export const LaunchDataProgress = observer(
     }
 
     return (
-      <div className="flex flex-col py-5 px-4 bg-[#202020] rounded-2xl gap-y-5">
+      <div className="flex flex-col py-5 px-4 bg-[#202020] rounded-2xl gap-y-5 w-full">
         {/* TODO：kline chart */}
         <div className="flex justify-between items-start \">
           <TokenRaised

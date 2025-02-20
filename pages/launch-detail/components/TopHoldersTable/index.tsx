@@ -9,6 +9,8 @@ import Image from "next/image";
 import pot2pumpIcon from "@/public/images/bera/smoking_bera.png";
 import poolIcon from "@/public/images/icons/tokens/wbera-token-icon.png";
 import { poolExists } from "@/lib/algebra/graphql/clients/pool";
+import { ExternalLink } from "lucide-react";
+import { VscCopy } from "react-icons/vsc";
 
 interface Holder {
   rank: string;
@@ -33,65 +35,6 @@ interface TopHoldersTableProps {
 
 const HolderAddressDisplay = ({
   address,
-  projectPool,
-}: {
-  address: string;
-  projectPool: MemePairContract | null | undefined;
-}) => {
-  const [isPool, setIsPool] = useState(false);
-
-  useEffect(() => {
-    const checkPool = async () => {
-      const result = await poolExists(address);
-      setIsPool(result);
-    };
-    checkPool();
-  }, [address]);
-
-  if (address.toLowerCase() === projectPool?.address.toLowerCase()) {
-    return (
-      <span className="text-black flex items-center gap-2">
-        <Image
-          src="/images/empty-logo.png"
-          alt="Pot2Pump Pool"
-          width={16}
-          height={16}
-        />
-        Pot2Pump CA
-      </span>
-    );
-  } else if (isPool) {
-    return (
-      <span className="text-black flex items-center gap-2">
-        <Image
-          width={16}
-          height={16}
-          src={poolIcon}
-          alt="pot2pump"
-          className="size-4 cursor-pointer"
-        />
-        Liquidity Pool
-      </span>
-    );
-  } else if (address.toLowerCase() === projectPool?.provider.toLowerCase()) {
-    return (
-      <span className="text-black flex items-center gap-2">
-        <Image
-          width={16}
-          height={16}
-          src={pot2pumpIcon}
-          alt="pot2pump"
-          className="size-4 cursor-pointer"
-        />
-        Launcher
-      </span>
-    );
-  } else {
-    return address;
-  }
-};
-
-const TopHoldersTable = ({
   projectPool,
   launchedToken,
   depositedLaunchedTokenWithoutDecimals,
@@ -137,77 +80,111 @@ const TopHoldersTable = ({
   }, [launchedToken, depositedLaunchedTokenWithoutDecimals]);
 
   return (
-    <div className="custom-dashed-3xl w-full p-6 bg-white overflow-x-auto">
+    <div className="custom-dashed-3xl w-full p-3 sm:p-6 bg-white">
       {!loading ? (
-        <table className="w-full">
-          <thead>
-            <tr className="text-left border-b-2 border-[#202020]">
-              <th className="py-4 px-6 font-gliker text-[#4D4D4D]">Rank</th>
-              <th className="py-4 px-6 font-gliker text-[#4D4D4D]">Address</th>
-              <th className="py-4 px-6 font-gliker text-[#4D4D4D] text-right">
-                Quantity
-              </th>
-              <th className="py-4 px-6 font-gliker text-[#4D4D4D] text-right">
-                Percentage
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-[#4D4D4D]/10">
-            {!holders.length ? (
-              <tr className="hover:bg-white border-white h-full">
-                <td
-                  colSpan={4}
-                  className="h-24 text-center text-black"
-                >
-                  No results.
-                </td>
+        <div className="overflow-x-auto [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-[#FFCD4D] [&::-webkit-scrollbar-thumb]:rounded-full">
+          <table className="w-full min-w-[600px]">
+            <thead>
+              <tr className="text-left border-b-2 border-[#202020]">
+                <th className="py-2 sm:py-4 px-3 sm:px-6 font-gliker text-[#4D4D4D] text-xs sm:text-base">
+                  Rank
+                </th>
+                <th className="py-2 sm:py-4 px-3 sm:px-6 font-gliker text-[#4D4D4D] text-xs sm:text-base">
+                  Address
+                </th>
+                <th className="py-2 sm:py-4 px-3 sm:px-6 font-gliker text-[#4D4D4D] text-right text-xs sm:text-base">
+                  Quantity
+                </th>
+                <th className="py-2 sm:py-4 px-3 sm:px-6 font-gliker text-[#4D4D4D] text-right text-xs sm:text-base">
+                  Percentage
+                </th>
               </tr>
-            ) : (
-              holders.map((holder, index) => (
-                <tr
-                  key={index}
-                  className="transition-colors bg-white text-black hover:bg-gray-50"
-                >
-                  <td className="py-4 px-6">
-                    <div className="flex flex-col">
-                      <span className="text-black">{holder.rank}</span>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6">
-                    <a
-                      href={`https://berascan.com/address/${holder.address}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3"
-                    >
-                      <Copy
-                        className="hover:text-black"
-                        content={holder.address}
-                        value={holder.address}
-                        displayContent={
-                          <HolderAddressDisplay
-                            address={holder.address}
-                            projectPool={projectPool}
-                          />
-                        }
-                      />
-                    </a>
-                  </td>
-                  <td className="py-4 px-6 text-right">
-                    <div className="flex flex-col">
-                      <span className="text-black">{holder.quantity}</span>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6 text-right">
-                    <div className="flex flex-col">
-                      <span className="text-black">{holder.percentage}%</span>
-                    </div>
+            </thead>
+            <tbody className="divide-y divide-[#4D4D4D]/10">
+              {!holders.length ? (
+                <tr className="hover:bg-white border-white h-full">
+                  <td
+                    colSpan={4}
+                    className="h-24 text-center text-black text-xs sm:text-base"
+                  >
+                    No results.
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                holders.map((holder, index) => (
+                  <tr
+                    key={index}
+                    className="transition-colors bg-white text-black hover:bg-gray-50"
+                  >
+                    <td className="py-2 sm:py-4 px-3 sm:px-6 text-xs sm:text-base">
+                      <div className="flex flex-col">
+                        <span className="text-black">{holder.rank}</span>
+                      </div>
+                    </td>
+                    <td className="py-2 sm:py-4 px-3 sm:px-6 text-xs sm:text-base">
+                      <div className="flex items-center gap-1 sm:gap-2">
+                        {holder.address.toLowerCase() ===
+                        projectPool?.address.toLowerCase() ? (
+                          <span className="text-black flex items-center gap-1 sm:gap-2">
+                            <Image
+                              src="/images/empty-logo.png"
+                              alt="Pot2Pump Pool"
+                              width={12}
+                              height={12}
+                              className="sm:w-4 sm:h-4"
+                            />
+                            <span>Pot2Pump Pool</span>
+                          </span>
+                        ) : holder.address.toLowerCase() ===
+                          projectPool?.provider.toLowerCase() ? (
+                          <span className="text-black flex items-center gap-1 sm:gap-2">
+                            <Image
+                              width={12}
+                              height={12}
+                              src={pot2pumpIcon}
+                              alt="pot2pump"
+                              className="sm:w-4 sm:h-4"
+                            />
+                            <span>Launcher</span>
+                          </span>
+                        ) : (
+                          <div className="flex items-center gap-1 sm:gap-2">
+                            <a
+                              href={`https://berascan.com/address/${holder.address}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="hover:text-[#FFCD4D] flex items-center gap-1"
+                            >
+                              {truncate(holder.address, 8)}
+                              <ExternalLink className="size-3 sm:size-4" />
+                            </a>
+                            <Copy
+                              className="p-0.5 sm:p-1 hover:bg-gray-100 rounded"
+                              value={holder.address}
+                              content="Copy address"
+                            >
+                              <VscCopy className="size-4 sm:size-5" />
+                            </Copy>
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                    <td className="py-2 sm:py-4 px-3 sm:px-6 text-right text-xs sm:text-base">
+                      <div className="flex flex-col">
+                        <span className="text-black">{holder.quantity}</span>
+                      </div>
+                    </td>
+                    <td className="py-2 sm:py-4 px-3 sm:px-6 text-right text-xs sm:text-base">
+                      <div className="flex flex-col">
+                        <span className="text-black">{holder.percentage}%</span>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <LoadingDisplay />
       )}

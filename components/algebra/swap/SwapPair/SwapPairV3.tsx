@@ -331,7 +331,7 @@ const SwapPairV3 = ({
         fiatValue={fiatValueOutputFormatted ?? undefined}
         showBalance={true}
         label="To"
-        showSettings={false}
+        showSetting={false}
         disableSelection={disableSelection || disableToSelection}
       />
     </div>

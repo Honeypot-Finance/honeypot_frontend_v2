@@ -37,20 +37,14 @@ const Settings = () => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
-          variant={"icon"}
-          size={"icon"}
-        >
+        <Button variant={"icon"} size={"icon"}>
           <SettingsIcon />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="z-[9999]">
         <CardContianer addtionalClassName="flex-col gap-2">
           <div className="text-md font-bold">Transaction Settings</div>
-          <Separator
-            orientation={"horizontal"}
-            className="bg-border"
-          />
+          <Separator orientation={"horizontal"} className="bg-border" />
           <SlippageTolerance />
           <TransactionDeadline />
           <Multihop />
@@ -295,6 +289,7 @@ interface TokenSwapCardProps {
   label?: string;
   disableSelection?: boolean;
   showInput?: boolean;
+  showSetting?: boolean;
   staticTokenList?: Token[];
   showSettings?: boolean;
 }
@@ -522,28 +517,16 @@ const TokenCardV3 = ({
             }
             className="grid grid-cols-2 lg:grid-cols-4 gap-[16px] justify-around w-full"
           >
-            <SelectItem
-              className="rounded-[30px] px-[24px]"
-              value={0.25}
-            >
+            <SelectItem className="rounded-[30px] px-[24px]" value={0.25}>
               25%
             </SelectItem>
-            <SelectItem
-              className="rounded-[30px] px-[24px]"
-              value={0.5}
-            >
+            <SelectItem className="rounded-[30px] px-[24px]" value={0.5}>
               50%
             </SelectItem>
-            <SelectItem
-              className="rounded-[30px] px-[24px]"
-              value={0.75}
-            >
+            <SelectItem className="rounded-[30px] px-[24px]" value={0.75}>
               75%
             </SelectItem>
-            <SelectItem
-              className="rounded-[30px] px-[24px]"
-              value={1}
-            >
+            <SelectItem className="rounded-[30px] px-[24px]" value={1}>
               100%
             </SelectItem>
           </ItemSelect>

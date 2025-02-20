@@ -1,11 +1,11 @@
 import { Textarea } from "@nextui-org/react";
 import { Button } from "@/components/button/button-next";
 import { CommentCard } from "../CommentCard/CommentCard";
-import CardContianer from "@/components/CardContianer/CardContianer";
+import CardContainer from "@/components/CardContianer/CardContianer";
 import Image from "next/image";
 import { trpcClient } from "@/lib/trpc";
 import { wallet } from "@/services/wallet";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { LoadingDisplay } from "@/components/LoadingDisplay/LoadingDisplay";
 import { useRouter } from "next/router";
 import { cn } from "@/lib/tailwindcss";
@@ -42,33 +42,9 @@ export function DiscussionArea(props: DiscussionAreaProps) {
     loadingMore: false,
   });
 
-  useEffect(() => {
-    if (!props.pairDatabaseId) return;
-    startFetchComments();
-  }, [props.pairDatabaseId]);
+  const timeoutId = useRef<NodeJS.Timeout | null>(null);
 
-  const startFetchComments = async () => {
-    setState({
-      ...state,
-      loadingComments: true,
-    });
-    const res = await trpcClient.discussionRouter.getCommentsByProjectId.query({
-      project_id: props.pairDatabaseId ?? -1,
-      limit: 10,
-    });
-
-    if (res) {
-      setComments(res);
-      setState({
-        ...state,
-        loadingComments: false,
-        noMoreToLoad: res.length < 10,
-      });
-      continueFetchComments(res?.[0]?.id ?? 0);
-    }
-  };
-
-  const continueFetchComments = async (afterId: number) => {
+  const continueFetchComments = useCallback(async (afterId: number) => {
     const res = await trpcClient.discussionRouter.getCommentsByProjectId.query({
       project_id: props.pairDatabaseId ?? -1,
       afterId: afterId,
@@ -81,17 +57,52 @@ export function DiscussionArea(props: DiscussionAreaProps) {
       });
     }
 
-    setTimeout(() => {
+    timeoutId.current = setTimeout(() => {
       if (window.location.pathname !== router.asPath.toString()) return;
       continueFetchComments(res?.[0]?.id ?? afterId);
     }, 2000);
-  };
+  }, [props.pairDatabaseId, router.asPath]);
+
+  const startFetchComments = useCallback(async () => {
+    setState((prevState) => ({
+      ...prevState,
+      loadingComments: true,
+    }));
+    const res = await trpcClient.discussionRouter.getCommentsByProjectId.query({
+      project_id: props.pairDatabaseId ?? -1,
+      limit: 10,
+    });
+
+    if (res) {
+      setComments(res);
+      setState((prevState) => ({
+        ...prevState,
+        loadingComments: false,
+        noMoreToLoad: res.length < 10,
+      }));
+      continueFetchComments(res?.[0]?.id ?? 0);
+    }
+  }, [props.pairDatabaseId, continueFetchComments]);
+
+  useEffect(() => {
+    if (!props.pairDatabaseId) return;
+    startFetchComments();
+
+    // Cleanup function to clear the timeout
+    return () => {
+      if (timeoutId.current) {
+        clearTimeout(timeoutId.current);
+      }
+    };
+  }, [props.pairDatabaseId, startFetchComments]);
 
   const loadMoreComments = async () => {
     if (state.noMoreToLoad) return;
-    setState({
-      ...state,
-      loadingMore: true,
+    setState((prev) => {
+      return {
+        ...prev,
+        loadingMore: true,
+      };
     });
     const res = await trpcClient.discussionRouter.getCommentsByProjectId.query({
       project_id: props.pairDatabaseId ?? -1,
@@ -121,7 +132,7 @@ export function DiscussionArea(props: DiscussionAreaProps) {
   };
 
   return (
-    <CardContianer
+    <CardContainer
       addtionalClassName={cn(props.classNames?.container, "bg-[#202020]")}
     >
       <div
@@ -237,6 +248,6 @@ export function DiscussionArea(props: DiscussionAreaProps) {
           </div>
         )}
       </div>
-    </CardContianer>
+    </CardContainer>
   );
 }

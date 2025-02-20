@@ -52,12 +52,14 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
       )}
     >
       <div className="flex flex-col items-center gap-2 md:gap-0">
-        <div className="size-10 md:size-[77px] bg-[#ECC94E] flex items-center justify-center rounded-full shrink-0">
+        <div className="size-10 md:size-[77px] flex items-center justify-center rounded-full shrink-0">
           <Image
-            alt={pair?.launchedToken?.name || "honey"}
             width={77}
-            height={0}
-            className="rounded-full size-10 sm:w-[77px] object-cover"
+            height={77}
+            objectFit="cover"
+            className="rounded-full"
+            sizes="(max-width: 640px) 40px,77px"
+            alt={pair?.launchedToken?.name || "honey"}
             src={!!pair?.logoUrl ? pair.logoUrl : "/images/empty-logo.png"}
           />
         </div>
@@ -159,7 +161,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                       className="hover:opacity-80 text-[#5C5C5C]"
                       title="Search on X"
                     >
-                      <BiSearch size={16} />
+                      <BiSearch size={18} />
                     </a>
                   </>
                 )}
@@ -192,7 +194,9 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
               </div>
             ) : pair ? (
               <div className="flex items-center gap-2">
-                <span className="text-xs sm:text-sm text-[#5C5C5C]">Share To</span>
+                <span className="text-xs sm:text-sm text-[#5C5C5C]">
+                  Share To
+                </span>
                 <div
                   className={cn(
                     "text-right flex items-center gap-2 flex-row text-black"

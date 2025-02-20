@@ -76,11 +76,18 @@ const Tabs = observer(
           aria-label="Project Details"
           classNames={{
             base: "relative w-full",
-            tabList:
-              "flex rounded-2xl border border-[#202020] bg-white p-4 shadow-[4px_4px_0px_0px_#202020,-4px_4px_0px_0px_#202020] py-2 px-3.5 absolute left-1/2 -translate-x-1/2 z-10 -top-5",
+            tabList: cn(
+              "flex rounded-2xl border border-[#202020] bg-white shadow-[4px_4px_0px_0px_#202020,-4px_4px_0px_0px_#202020]",
+              "py-1.5 sm:py-2 px-2.5 sm:px-3.5 absolute left-1/2 -translate-x-1/2 z-10 -top-5",
+              "overflow-x-auto max-w-[90vw] sm:max-w-none",
+              "p-1 sm:p-4"
+            ),
+            tab: "px-1 sm:px-2 py-1 rounded-lg whitespace-nowrap text-xs sm:text-sm sm:text-base",
+            tabContent: "group-data-[selected=true]:text-white",
+            cursor: "bg-[#020202] border border-black shadow-[0.5px_0.5px_0px_0px_#000000] sm:shadow-[2px_2px_0px_0px_#000000]",
             panel: cn(
               "flex flex-col h-full w-full gap-y-4 justify-center items-center bg-[#FFCD4D] rounded-2xl text-[#202020]",
-              "px-8 pt-[70px] pb-[70px]",
+              "px-2 sm:px-4 pt-[50px] sm:pt-[70px] pb-[50px] sm:pb-[70px]",
               "bg-[url('/images/card-container/honey/honey-border.png'),url('/images/card-container/dark/bottom-border.svg')]",
               "bg-[position:-65px_top,_-85px_bottom]",
               "bg-[size:auto_65px,_auto_65px]",
@@ -90,14 +97,12 @@ const Tabs = observer(
           }}
         >
           <Tab key="comment" title="Comments">
-            <div className="w-full">
-              {pair && (
-                <DiscussionArea
-                  pairDatabaseId={pair.databaseId ?? -1}
-                  classNames={{ container: "border-none" }}
-                />
-              )}
-            </div>
+            {pair && (
+              <DiscussionArea
+                pairDatabaseId={pair.databaseId ?? -1}
+                classNames={{ container: "border-none" }}
+              />
+            )}
           </Tab>
           <Tab key="txs" title="Transactions">
             <TransactionHistory
@@ -111,7 +116,7 @@ const Tabs = observer(
             <>
               <Tab key="holders" title="Top 10 Holders">
                 <div className="w-full">
-                  <h1 className="text-[var(--Heading,#0D0D0D)] text-center text-shadow-[2px_4px_0px_#AF7F3D] webkit-text-stroke-[2px] text-stroke-white font-gliker text-[40px] md:text-[64px] font-normal leading-[110%] tracking-[1.28px] mb-6 md:mb-12">
+                  <h1 className="text-[var(--Heading,#0D0D0D)] text-center text-shadow-[2px_4px_0px_#AF7F3D] webkit-text-stroke-[2px] text-stroke-white font-gliker text-[32px] md:text-[64px] font-normal leading-[110%] tracking-[1.28px] mb-4 md:mb-12">
                     Top 10 Holders
                   </h1>
                   <TopHoldersTable
@@ -147,7 +152,7 @@ const Tabs = observer(
                           width={500}
                           height={500}
                           alt="beravote logo"
-                          className="w-full"
+                          className="w-full rounded-xl"
                         />
                         {pair.isProvider ? (
                           <BeraVoteForm pair={pair} />
