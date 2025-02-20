@@ -86,16 +86,16 @@ export default function App({
     >
       <Analytics />
       <WagmiProvider config={config}>
-        <QueryClientProvider client={queryClient}>
-          <RainbowKitProvider
-            avatar={CustomAvatar}
-            initialChain={berachainNetwork.chain}
-            // capsule={capsuleClient}
-            // capsuleIntegratedProps={capsuleModalProps}
-          >
-            {" "}
-            <ApolloProvider client={infoClient}>
-              <SafeProvider>
+        <SafeProvider>
+          <QueryClientProvider client={queryClient}>
+            <RainbowKitProvider
+              avatar={CustomAvatar}
+              initialChain={berachainNetwork.chain}
+              // capsule={capsuleClient}
+              // capsuleIntegratedProps={capsuleModalProps}
+            >
+              {" "}
+              <ApolloProvider client={infoClient}>
                 <NextUIProvider>
                   <Provider>
                     <Inspector
@@ -117,10 +117,10 @@ export default function App({
                   </Provider>
                   <ToastContainer></ToastContainer>
                 </NextUIProvider>
-              </SafeProvider>
-            </ApolloProvider>
-          </RainbowKitProvider>
-        </QueryClientProvider>
+              </ApolloProvider>
+            </RainbowKitProvider>
+          </QueryClientProvider>
+        </SafeProvider>
       </WagmiProvider>
     </trpc.Provider>
   );
