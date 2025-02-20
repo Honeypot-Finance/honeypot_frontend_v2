@@ -7,6 +7,7 @@ import BigNumber from "bignumber.js";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 import Image from "next/image";
 import pot2pumpIcon from "@/public/images/bera/smoking_bera.png";
+import poolIcon from "@/public/images/bera/beekeeperBear.png";
 import { poolExists } from "@/lib/algebra/graphql/clients/pool";
 
 interface Holder {
@@ -65,7 +66,7 @@ const HolderAddressDisplay = ({
         <Image
           width={16}
           height={16}
-          src={pot2pumpIcon}
+          src={poolIcon}
           alt="pot2pump"
           className="size-4 cursor-pointer"
         />
