@@ -208,5 +208,11 @@ export const poolExists = async (poolAddress: string) => {
     variables: { poolId: poolAddress },
   });
 
+  // console.log("poolExists", {
+  //   poolAddress,
+  //   data,
+  //   result: data?.pool !== null,
+  // });
+
   return data?.pool !== null;
 };

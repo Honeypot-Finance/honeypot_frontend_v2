@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState, useMemo } from "react";
 import { Copy } from "@/components/Copy";
 import { truncate } from "@/lib/format";
 import { LoadingDisplay } from "@/components/LoadingDisplay/LoadingDisplay";
@@ -7,6 +7,8 @@ import BigNumber from "bignumber.js";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 import Image from "next/image";
 import pot2pumpIcon from "@/public/images/bera/smoking_bera.png";
+import poolIcon from "@/public/images/icons/tokens/wbera-token-icon.png";
+import { poolExists } from "@/lib/algebra/graphql/clients/pool";
 
 interface Holder {
   rank: string;
@@ -29,6 +31,66 @@ interface TopHoldersTableProps {
   projectPool: MemePairContract | null | undefined;
 }
 
+const HolderAddressDisplay = ({
+  address,
+  projectPool,
+}: {
+  address: string;
+  projectPool: MemePairContract | null | undefined;
+}) => {
+  const [isPool, setIsPool] = useState(false);
+
+  useEffect(() => {
+    const checkPool = async () => {
+      const result = await poolExists(address);
+      setIsPool(result);
+    };
+    checkPool();
+  }, [address]);
+
+  if (address.toLowerCase() === projectPool?.address.toLowerCase()) {
+    return (
+      <span className="text-black flex items-center gap-2">
+        <Image
+          src="/images/empty-logo.png"
+          alt="Pot2Pump Pool"
+          width={16}
+          height={16}
+        />
+        Pot2Pump CA
+      </span>
+    );
+  } else if (isPool) {
+    return (
+      <span className="text-black flex items-center gap-2">
+        <Image
+          width={16}
+          height={16}
+          src={poolIcon}
+          alt="pot2pump"
+          className="size-4 cursor-pointer"
+        />
+        Liquidity Pool
+      </span>
+    );
+  } else if (address.toLowerCase() === projectPool?.provider.toLowerCase()) {
+    return (
+      <span className="text-black flex items-center gap-2">
+        <Image
+          width={16}
+          height={16}
+          src={pot2pumpIcon}
+          alt="pot2pump"
+          className="size-4 cursor-pointer"
+        />
+        Launcher
+      </span>
+    );
+  } else {
+    return address;
+  }
+};
+
 const TopHoldersTable = ({
   projectPool,
   launchedToken,
@@ -36,38 +98,6 @@ const TopHoldersTable = ({
 }: TopHoldersTableProps) => {
   const [holders, setHolders] = useState<Holder[]>([]);
   const [loading, setLoading] = useState(false);
-
-  const holderAddressDisplay = (address: string): ReactNode => {
-    if (address.toLowerCase() === projectPool?.address.toLowerCase()) {
-      return (
-        <span className="text-black flex items-center gap-2">
-          <Image
-            src="/images/empty-logo.png"
-            alt="Pot2Pump Pool"
-            width={16}
-            height={16}
-          />
-          Pot2Pump Pool
-        </span>
-      );
-    }
-    if (address.toLowerCase() === projectPool?.provider.toLowerCase()) {
-      return (
-        <span className="text-black flex items-center gap-2">
-          <Image
-            width={16}
-            height={16}
-            src={pot2pumpIcon}
-            alt="pot2pump"
-            className="size-4 cursor-pointer"
-          />
-          Launcher
-        </span>
-      );
-    } else {
-      return address;
-    }
-  };
 
   useEffect(() => {
     const fetchHolders = async () => {
@@ -125,7 +155,10 @@ const TopHoldersTable = ({
           <tbody className="divide-y divide-[#4D4D4D]/10">
             {!holders.length ? (
               <tr className="hover:bg-white border-white h-full">
-                <td colSpan={4} className="h-24 text-center text-black">
+                <td
+                  colSpan={4}
+                  className="h-24 text-center text-black"
+                >
                   No results.
                 </td>
               </tr>
@@ -151,7 +184,12 @@ const TopHoldersTable = ({
                         className="hover:text-black"
                         content={holder.address}
                         value={holder.address}
-                        displayContent={holderAddressDisplay(holder.address)}
+                        displayContent={
+                          <HolderAddressDisplay
+                            address={holder.address}
+                            projectPool={projectPool}
+                          />
+                        }
                       />
                     </a>
                   </td>
