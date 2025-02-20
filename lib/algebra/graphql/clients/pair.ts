@@ -158,7 +158,7 @@ export const pot2PumpToMemePair = (
       pot2Pump.participants.length > 0 &&
       !pot2Pump.participants[0].claimed,
     canRefund:
-      pot2Pump.creator?.toLowerCase() ===
+      pot2Pump.creator?.toLowerCase() !==
         pot2Pump.participants?.[0]?.account?.id?.toLowerCase() &&
       !pot2Pump.raisedTokenReachingMinCap &&
       pot2Pump.participants &&
@@ -166,6 +166,8 @@ export const pot2PumpToMemePair = (
       !pot2Pump.participants[0].refunded &&
       pot2Pump.endTime < dayjs().unix(),
   });
+
+  console.log("pot2Pump", pot2Pump);
 
   if (pot2Pump.launchToken?.id) {
     const { priceChange, priceChangePercentage } = calculateToken24hPriceChange(

@@ -104,7 +104,6 @@ export default function App({
                         if (!codeInfo) {
                           return;
                         }
-
                         window.open(
                           `cursor://file/${codeInfo.absolutePath}:${codeInfo.lineNumber}:${codeInfo.columnNumber}`,
                           "_blank"
