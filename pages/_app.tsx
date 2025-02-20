@@ -23,7 +23,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { ApolloProvider } from "@apollo/client";
 import { infoClient } from "@/lib/algebra/graphql/clients";
 import Image from "next/image";
-import SafeProvider from "@safe-global/safe-apps-react-sdk";
+import SafeProvider, { useSafeAppsSDK } from "@safe-global/safe-apps-react-sdk";
 import {
   DynamicContextProvider,
   DynamicWidget,
@@ -85,9 +85,9 @@ export default function App({
       queryClient={queryClient}
     >
       <Analytics />
-      <WagmiProvider config={config}>
-        <SafeProvider>
-          <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <WagmiProvider config={config}>
+          <SafeProvider>
             <RainbowKitProvider
               avatar={CustomAvatar}
               initialChain={berachainNetwork.chain}
@@ -119,9 +119,9 @@ export default function App({
                 </NextUIProvider>
               </ApolloProvider>
             </RainbowKitProvider>
-          </QueryClientProvider>
-        </SafeProvider>
-      </WagmiProvider>
+          </SafeProvider>
+        </WagmiProvider>
+      </QueryClientProvider>
     </trpc.Provider>
   );
 }

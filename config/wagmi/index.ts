@@ -17,6 +17,9 @@ import { createConfig, http, cookieStorage, createStorage } from "wagmi";
 
 const pId = "1d1c8b5204bfbd57502685fc0934a57d";
 const CAPSULE_API_KEY = process.env.NEXT_PUBLIC_CAPSULE_API_KEY!;
+const DAPP_URL =
+  process.env.NEXT_PUBLIC_DAPP_URL ||
+  (typeof window !== "undefined" ? window.location.origin : "");
 
 let customWallets = [
   metaMaskWallet,
@@ -70,4 +73,10 @@ export const config = getDefaultConfig({
   storage: createStorage({
     storage: cookieStorage,
   }),
+  transports: {
+    safe: {
+      allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/],
+      debug: true,
+    },
+  },
 });
