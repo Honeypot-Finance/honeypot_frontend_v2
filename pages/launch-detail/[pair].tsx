@@ -373,7 +373,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
   const pair = useMemo(() => state.pair.value, [state.pair.value]);
 
   return (
-    <div className="w-full px-2 md:px-8 xl:px-0 space-y-4 md:space-y-8 xl:max-w-[1200px] 2xl:max-w-[1500px] mx-auto">
+    <div className="w-full px-2 sm:px-4 md:px-8 xl:px-0 space-y-4 md:space-y-8 xl:max-w-[1200px] 2xl:max-w-[1500px] mx-auto">
       <CardContainer
         type="default"
         showBottomBorder={false}

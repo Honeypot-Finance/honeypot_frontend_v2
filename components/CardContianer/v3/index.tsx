@@ -41,8 +41,7 @@ function CardContainer({
             : "bg-transparent",
         bordered &&
           [
-            "px-4 sm:px-8",
-            "bg-repeat-x",
+            "px-2 sm:px-4 md:px-8 bg-repeat-x",
             showTopBorder && showBottomBorder
               ? [
                   "py-12 sm:py-20",

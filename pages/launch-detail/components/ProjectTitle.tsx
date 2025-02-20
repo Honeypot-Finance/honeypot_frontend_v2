@@ -159,7 +159,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                       className="hover:opacity-80 text-[#5C5C5C]"
                       title="Search on X"
                     >
-                      <BiSearch size={16} />
+                      <BiSearch size={18} />
                     </a>
                   </>
                 )}
@@ -192,7 +192,9 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
               </div>
             ) : pair ? (
               <div className="flex items-center gap-2">
-                <span className="text-xs sm:text-sm text-[#5C5C5C]">Share To</span>
+                <span className="text-xs sm:text-sm text-[#5C5C5C]">
+                  Share To
+                </span>
                 <div
                   className={cn(
                     "text-right flex items-center gap-2 flex-row text-black"
