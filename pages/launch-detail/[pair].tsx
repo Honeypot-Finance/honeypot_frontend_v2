@@ -457,6 +457,9 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
 
           <CardContainer
             variant="dark"
+            loading={!pair}
+            loadingSize={200}
+            loadingText="Loading Data..."
             className={cn("relative min-h-[500px] md:min-h-[665px] px-1 sm:px-2 md:px-4")}
           >
             {pair?.state === 0 && (

@@ -1,5 +1,4 @@
 import { observer, useLocalObservable } from "mobx-react-lite";
-import { SwapAmount } from "../SwapAmount/v3";
 import { swap } from "@/services/swap";
 import { Button } from "@/components/button/button-next";
 import { Token } from "@/services/contract/token";
@@ -8,19 +7,12 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { isEthAddress } from "@/lib/address";
 import { wallet } from "@/services/wallet";
-import { amountFormatted } from "../../lib/format";
 import { liquidity } from "@/services/liquidity";
 import { LoadingContainer } from "../LoadingDisplay/LoadingDisplay";
-import { ItemSelect, SelectItem, SelectState } from "../ItemSelect/v3";
-import { cn, Slider } from "@nextui-org/react";
-import { FaLongArrowAltRight } from "react-icons/fa";
-import TokenLogo from "../TokenLogo/TokenLogo";
-import { Slippage } from "./Slippage";
-import BigNumber from "bignumber.js";
+import { SelectState } from "../ItemSelect/v3";
+import { cn } from "@nextui-org/react";
 import { useInterval } from "@/lib/hooks";
-import { Trigger } from "../Trigger";
 import Link from "next/link";
-import { BsLightningChargeFill } from "react-icons/bs";
 import { VaultAmount } from "../VaultAmount/VaultAmount";
 import { ICHIVaultContract } from "@/services/contract/aquabera/ICHIVault-contract";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
@@ -29,6 +21,7 @@ import { V3SwapCard } from "../algebra/swap/V3SwapCard";
 import { HoneyContainer } from "../CardContianer";
 import { getSingleVaultDetails } from "@/lib/algebra/graphql/clients/vaults";
 import { DOMAIN_MAP } from "honeypot-sdk";
+import { Tab, Tabs } from "@nextui-org/react";
 
 export const LaunchDetailSwapCard = observer(
   ({
@@ -54,10 +47,8 @@ export const LaunchDetailSwapCard = observer(
       amount0: "0",
       amount1: "0",
     });
-    const [currentTab, setCurrentTab] = useState<"Swap" | "LP">("Swap");
     const router = useRouter();
     const isInit = wallet.isInit && liquidity.isInit;
-    const [operate, setOperate] = useState<string>("Swap");
     const state = useLocalObservable(() => ({
       selectState: new SelectState({
         value: 0,
@@ -151,8 +142,6 @@ export const LaunchDetailSwapCard = observer(
       swap.onFromAmountChange();
     }, 3000);
 
-    const [isExpanded, setIsExpanded] = useState(true);
-
     useEffect(() => {
       if (swap.toToken) {
         chart.setChartLabel(
@@ -173,29 +162,36 @@ export const LaunchDetailSwapCard = observer(
     }, [swap.fromToken, swap.toToken]);
 
     return (
-      <SpinnerContainer
-        className={cn(
-          "flex flex-1 justify-around items-center flex-col gap-2 w-full"
-        )}
-        isLoading={false}
-      >
-        <div
-          className={cn(
-            " w-full flex flex-1 flex-col justify-center items-start gap-[23px] bg-[#FFCD4D] rounded-3xl border-3 border-solid border-[#F7931A10] hover:border-[#F7931A] transition-all relative",
-            noBoarder && "border-0"
-          )}
+      <div>
+        <Tabs
+          aria-label="Swap Options"
+          classNames={{
+            base: "relative w-full",
+            tabList: cn(
+              "flex rounded-2xl border border-[#202020] bg-white shadow-[4px_4px_0px_0px_#202020,-4px_4px_0px_0px_#202020]",
+              "py-1.5 sm:py-2 px-2.5 sm:px-3.5 absolute left-1/2 -translate-x-1/2 z-10 -top-5",
+              "overflow-x-auto max-w-[90vw] sm:max-w-none",
+              "p-1 sm:p-4"
+            ),
+            tab: "px-5 py-1 rounded-lg whitespace-nowrap text-xs sm:text-sm sm:text-base",
+            tabContent: "group-data-[selected=true]:text-white",
+            cursor:
+              "bg-[#020202] border border-black shadow-[0.5px_0.5px_0px_0px_#000000] sm:shadow-[2px_2px_0px_0px_#000000]",
+            panel: cn(
+              "flex flex-col h-full w-full gap-y-4 justify-center items-center",
+              "!mt-0"
+            ),
+          }}
         >
-          <Trigger
-            tab={operate}
-            capitalize={true}
-            setTab={setOperate}
-            options={["Swap", "LP"]}
-            callback={(tab) => setCurrentTab(tab as "Swap" | "LP")}
-            className="w-[308px] z-10 absolute top-0 transform -translate-y-1/2 left-1/2 -translate-x-1/2"
-            notification={memePairContract.canClaimLP ? ["LP"] : []}
-          />
-
-          {currentTab === "Swap" && (
+          <Tab
+            key="swap"
+            title="Swap"
+            className={cn(
+              "relative",
+              memePairContract.canClaimLP &&
+                "after:absolute after:content-[''] after:w-2 after:h-2 after:bg-red-500 after:rounded-full after:-top-1 after:-right-1"
+            )}
+          >
             <LoadingContainer isLoading={!isInit}>
               <V3SwapCard
                 fromTokenAddress={inputAddress}
@@ -207,9 +203,16 @@ export const LaunchDetailSwapCard = observer(
                 disableToSelection={true}
               />
             </LoadingContainer>
-          )}
-
-          {currentTab === "LP" && (
+          </Tab>
+          <Tab
+            key="lp"
+            title="LP"
+            className={cn(
+              "relative",
+              memePairContract.canClaimLP &&
+                "after:absolute after:content-[''] after:w-2 after:h-2 after:bg-red-500 after:rounded-full after:-top-1 after:-right-1"
+            )}
+          >
             <LoadingContainer isLoading={!isInit}>
               <HoneyContainer>
                 {memePairContract.canClaimLP && (
@@ -222,12 +225,9 @@ export const LaunchDetailSwapCard = observer(
                     isDisabled={!memePairContract.canClaimLP}
                   >
                     Claim LP
-                    {memePairContract.canClaimLP && (
-                      <div className="absolute -top-0 -right-0 translate-x-1/2 -translate-y-1/2 w-5 h-5 bg-red-500 rounded-full z-10" />
-                    )}
                   </Button>
                 )}
-                <div className=" w-full flex gap-x-2 justify-around *:flex-grow-[1]">
+                <div className="w-full flex gap-x-2 justify-around *:flex-grow-[1]">
                   <Button
                     className="w-full"
                     onClick={async () => {
@@ -271,10 +271,10 @@ export const LaunchDetailSwapCard = observer(
                 </Button>
               </HoneyContainer>
             </LoadingContainer>
-          )}
-        </div>
+          </Tab>
+        </Tabs>
         {extraTokenAction}
-      </SpinnerContainer>
+      </div>
     );
   }
 );

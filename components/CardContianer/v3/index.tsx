@@ -10,6 +10,7 @@ interface HoneyContainerProps {
   className?: string;
   children: ReactNode;
   topOffset?: boolean;
+  loadingSize?: number;
   loadingText?: string;
   showTopBorder?: boolean;
   showBottomBorder?: boolean;
@@ -26,6 +27,7 @@ function CardContainer({
   bordered = true,
   type = "primary",
   topOffset = false,
+  loadingSize = 100,
   variant = "default",
   showTopBorder = true,
   showBottomBorder = true,
@@ -80,7 +82,7 @@ function CardContainer({
       )}
     >
       {loading ? (
-        <LoadingDisplay size={100} text={loadingText} />
+        <LoadingDisplay size={loadingSize} text={loadingText} />
       ) : empty ? (
         <div className="flex flex-col justify-center items-center min-h-[200px] space-y-5">
           <Image

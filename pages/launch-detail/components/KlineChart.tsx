@@ -7,15 +7,7 @@ import { RotateCcw } from "lucide-react";
 import { getBaseUrl } from "@/lib/trpc";
 import { strParams } from "@/lib/advancedChart.util";
 import { wallet } from "@/services/wallet";
-import {
-  TbChartBar,
-  TbChartCandle,
-  TbChartLine,
-  TbChartArea,
-  TbChartDots,
-  TbChartHistogram,
-  TbChartArcs,
-} from "react-icons/tb";
+import { TbChartArea, TbChartHistogram } from "react-icons/tb";
 import Link from "next/link";
 // 为 Window 对象添加 TradingView 相关的类型定义
 declare global {
@@ -80,7 +72,6 @@ type ChartType =
 const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
   const [currentInterval, setCurrentInterval] = useState("60");
   const chartWrapRef = useRef<HTMLDivElement>(null);
-  const [spinning, setSpinning] = useState(true);
   const [chartWidth, setChartWidth] = useState(200);
   const listener = useRef<any>(null);
   const [priceType, setPriceType] = useState<"PRICE" | "MCAP">("PRICE");
@@ -423,25 +414,26 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
           "mainSeriesProperties.candleStyle.borderDownColor": "#F23645",
           "mainSeriesProperties.candleStyle.wickUpColor": "#089981",
           "mainSeriesProperties.candleStyle.wickDownColor": "#F23645",
-          ...(isMobile ? {
-            "scalesProperties.fontSize": 10,
-            "scalesProperties.textColor": "#808080",
-            "scalesProperties.scaleSeriesOnly": true,
-            "mainSeriesProperties.priceAxisProperties.autoScale": true,
-            "mainSeriesProperties.priceAxisProperties.percentage": false,
-            "mainSeriesProperties.priceAxisProperties.log": false,
-            "scalesProperties.showLeftScale": false,
-            "scalesProperties.showRightScale": true,
-            "scalesProperties.alignLabels": true,
-            "paneProperties.rightMargin": 5,
-            "paneProperties.leftMargin": 5,
-          } : {}),
+          ...(isMobile
+            ? {
+                "scalesProperties.fontSize": 10,
+                "scalesProperties.textColor": "#808080",
+                "scalesProperties.scaleSeriesOnly": true,
+                "mainSeriesProperties.priceAxisProperties.autoScale": true,
+                "mainSeriesProperties.priceAxisProperties.percentage": false,
+                "mainSeriesProperties.priceAxisProperties.log": false,
+                "scalesProperties.showLeftScale": false,
+                "scalesProperties.showRightScale": true,
+                "scalesProperties.alignLabels": true,
+                "paneProperties.rightMargin": 5,
+                "paneProperties.leftMargin": 5,
+              }
+            : {}),
         },
         fullscreen: false,
       });
 
       window.tvWidget.onChartReady(() => {
-        setSpinning(false);
         const chart = window.tvWidget.chart();
         chart.priceFormatter().format = formatNumber;
 
@@ -463,14 +455,21 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
         onReady?.();
       });
     }
-  }, [chartWidth, height, chart.chartTarget, onReady, currentInterval, isMobile]);
+  }, [
+    chartWidth,
+    height,
+    chart.chartTarget,
+    onReady,
+    currentInterval,
+    isMobile,
+  ]);
 
   useEffect(() => {
     const resizeChart = () => {
       if (chartWrapRef.current) {
         const newWidth = chartWrapRef.current.clientWidth;
         const newIsMobile = window.innerWidth < 640;
-        
+
         setChartWidth(newWidth);
         if (newIsMobile !== isMobile) {
           setIsMobile(newIsMobile);
@@ -486,7 +485,6 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
   }, [chartWidth, isMobile, initOnReady]);
 
   useEffect(() => {
-    setSpinning(true);
     initOnReady();
   }, [initOnReady, currentInterval]);
 
@@ -599,6 +597,11 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
 
   return (
     <div className="w-full relative rounded-2xl bg-[#202020] overflow-hidden p-2 sm:p-4">
+      {chart.isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-[#202020]/50 z-10">
+          <RotateCcw className="w-8 h-8 animate-spin text-[#FFCD4D]" />
+        </div>
+      )}
       <div className="flex flex-col gap-1">
         {/* Token Info */}
         <div className="flex items-center gap-2">
@@ -633,7 +636,7 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
           </span>
         </div>
       </div>
-      
+
       <div className="flex items-center my-4 bg-[#202020] flex-wrap gap-y-2">
         <div className="relative shrink-0">
           <div className="hidden sm:block space-x-1">
@@ -657,7 +660,9 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
               onClick={() => setShowIntervalMenu(!showIntervalMenu)}
               className="text-xs sm:text-sm text-[#808080] hover:text-[#FFCD4D] transition-colors flex items-center gap-1"
             >
-              <span>{intervals.find(i => i.resolution === currentInterval)?.text}</span>
+              <span>
+                {intervals.find((i) => i.resolution === currentInterval)?.text}
+              </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -668,14 +673,14 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className={`transition-transform ${showIntervalMenu ? 'rotate-180' : ''}`}
+                className={`transition-transform ${showIntervalMenu ? "rotate-180" : ""}`}
               >
-                <path d="m6 9 6 6 6-6"/>
+                <path d="m6 9 6 6 6-6" />
               </svg>
             </button>
 
             {showIntervalMenu && (
-              <div 
+              <div
                 className="absolute top-full left-0 mt-1 bg-[#1E1E1E] border border-gray-700 rounded-md py-1 z-50 min-w-[120px]"
                 onClick={(e) => e.stopPropagation()}
               >
@@ -712,27 +717,27 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
             </span>
           </button>
 
-            {showChartTypeMenu && (
-              <div
-                className="absolute top-full left-0 mt-1 bg-[#1E1E1E] border border-gray-700 rounded-md py-1 z-50 min-w-[180px]"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {chartTypes.map(({ type, icon }) => (
-                  <button
-                    key={type}
-                    onClick={() => handleChartTypeChange(type)}
-                    className={`w-full px-4 py-1.5 flex items-center gap-3 hover:bg-[#2A2A2A] ${
-                      chartType === type ? "text-[#FFCD4D]" : "text-[#808080]"
-                    }`}
-                  >
-                    <span className="opacity-60">{icon}</span>
-                    <span className="flex-1 text-left whitespace-nowrap text-xs sm:text-sm">
-                      {type}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            )}
+          {showChartTypeMenu && (
+            <div
+              className="absolute top-full left-0 mt-1 bg-[#1E1E1E] border border-gray-700 rounded-md py-1 z-50 min-w-[180px]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {chartTypes.map(({ type, icon }) => (
+                <button
+                  key={type}
+                  onClick={() => handleChartTypeChange(type)}
+                  className={`w-full px-4 py-1.5 flex items-center gap-3 hover:bg-[#2A2A2A] ${
+                    chartType === type ? "text-[#FFCD4D]" : "text-[#808080]"
+                  }`}
+                >
+                  <span className="opacity-60">{icon}</span>
+                  <span className="flex-1 text-left whitespace-nowrap text-xs sm:text-sm">
+                    {type}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="h-[20px] mx-2 w-[1px] bg-gray-600" />
@@ -808,20 +813,9 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
 
       <div ref={chartWrapRef} className="relative my-4">
         <div
-          style={{
-            opacity: spinning ? 0.8 : 0,
-            transition: "opacity 0.3s ease-out",
-          }}
-          className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center"
-        >
-          <RotateCcw className="animate-spin" />
-        </div>
-
-        <div
           id="tv_chart_container"
           style={{
             width: "100%",
-            opacity: spinning ? 0 : 1,
             height: isMobile ? "350px" : "500px",
             transition: "opacity 0.3s ease-out",
           }}

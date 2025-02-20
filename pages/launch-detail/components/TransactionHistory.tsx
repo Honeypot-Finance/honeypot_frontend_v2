@@ -108,24 +108,24 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
 
   return (
     <div className="bg-[#202020] rounded-2xl overflow-hidden w-full">
-      <div className="p-6">
-        <div className="border border-[#5C5C5C] rounded-lg overflow-hidden">
-          <table className="w-full">
+      <div className="p-3 sm:p-6">
+        <div className="border border-[#5C5C5C] rounded-lg overflow-hidden overflow-x-auto [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-[#323232] [&::-webkit-scrollbar-thumb]:bg-[#5C5C5C] [&::-webkit-scrollbar-thumb]:rounded-full">
+          <table className="w-full min-w-[800px]">
             <thead className="bg-[#323232] text-white">
               <tr>
-                <th className="py-4 px-6 text-left text-base font-medium">
+                <th className="py-2 sm:py-4 px-3 sm:px-6 text-left text-xs sm:text-base font-medium">
                   Action
                 </th>
-                <th className="py-4 px-6 text-left text-base font-medium">
+                <th className="py-2 sm:py-4 px-3 sm:px-6 text-left text-xs sm:text-base font-medium">
                   Tx Hash
                 </th>
-                <th className="py-4 px-6 text-left text-base font-medium">
+                <th className="py-2 sm:py-4 px-3 sm:px-6 text-left text-xs sm:text-base font-medium">
                   Address
                 </th>
-                <th className="py-4 px-6 text-left text-base font-medium">
+                <th className="py-2 sm:py-4 px-3 sm:px-6 text-left text-xs sm:text-base font-medium">
                   Amount
                 </th>
-                <th className="py-4 px-6 text-right text-base font-medium">
+                <th className="py-2 sm:py-4 px-3 sm:px-6 text-right text-xs sm:text-base font-medium">
                   Time
                 </th>
               </tr>
@@ -133,13 +133,13 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
             <tbody className="text-white divide-y divide-[#5C5C5C]">
               {loading ? (
                 <tr>
-                  <td colSpan={5} className="py-4 px-6 text-center">
+                  <td colSpan={5} className="py-2 sm:py-4 px-3 sm:px-6 text-center text-xs sm:text-base">
                     Loading...
                   </td>
                 </tr>
               ) : transactionsQuery?.transactions.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="py-4 px-6 text-center">
+                  <td colSpan={5} className="py-2 sm:py-4 px-3 sm:px-6 text-center text-xs sm:text-base">
                     No transactions found
                   </td>
                 </tr>
@@ -149,54 +149,54 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                     key={tx.id}
                     className="hover:bg-[#2a2a2a] transition-colors"
                   >
-                    <td className="py-4 px-6">
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 bg-[#FFCD4D] rounded"></div>
+                    <td className="py-2 sm:py-4 px-3 sm:px-6 text-xs sm:text-base">
+                      <div className="flex items-center gap-1 sm:gap-2">
+                        <div className="w-3 h-3 sm:w-4 sm:h-4 bg-[#FFCD4D] rounded"></div>
                         {getActionTypeDisplay(tx.type, getAmountByType(tx as Transaction))}
                       </div>
                     </td>
-                    <td className="py-4 px-6 text-base font-mono">
-                      <div className="flex items-center gap-2">
+                    <td className="py-2 sm:py-4 px-3 sm:px-6 text-xs sm:text-base font-mono">
+                      <div className="flex items-center gap-1 sm:gap-2">
                         <a
                           href={`https://berascan.com/tx/${tx.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="hover:text-[#FFCD4D] flex items-center gap-1"
                         >
-                          {truncate(tx.id, 12)}
-                          <ExternalLink className="size-3" />
+                          {truncate(tx.id, 8)}
+                          <ExternalLink className="size-3 sm:size-4" />
                         </a>
                         <Copy
-                          className="p-1 hover:bg-[#3a3a3a] rounded"
+                          className="p-0.5 sm:p-1 hover:bg-[#3a3a3a] rounded"
                           value={tx.id}
                           content="Copy transaction hash"
                         >
-                          <VscCopy className="size-4" />
+                          <VscCopy className="size-4 sm:size-5" />
                         </Copy>
                       </div>
                     </td>
-                    <td className="py-4 px-6 text-base font-mono">
-                      <div className="flex items-center gap-2">
+                    <td className="py-2 sm:py-4 px-3 sm:px-6 text-xs sm:text-base font-mono">
+                      <div className="flex items-center gap-1 sm:gap-2">
                         <a
                           href={`https://berascan.com/address/${tx.account.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="hover:text-[#FFCD4D] flex items-center gap-1"
                         >
-                          {truncate(tx.account.id, 12)}
-                          <ExternalLink className="size-3" />
+                          {truncate(tx.account.id, 8)}
+                          <ExternalLink className="size-3 sm:size-4" />
                         </a>
                         <Copy
-                          className="p-1 hover:bg-[#3a3a3a] rounded"
+                          className="p-0.5 sm:p-1 hover:bg-[#3a3a3a] rounded"
                           value={tx.account.id}
                           content="Copy address"
                         >
-                          <VscCopy className="size-4" />
+                          <VscCopy className="size-4 sm:size-5" />
                         </Copy>
                       </div>
                     </td>
                     <td 
-                      className={`py-4 px-6 ${
+                      className={`py-2 sm:py-4 px-3 sm:px-6 text-xs sm:text-base ${
                         tx.type === TransactionType.Swap
                           ? new BigNumber(getAmountByType(tx as Transaction)).isGreaterThanOrEqualTo(0)
                             ? "text-[#F23645]"
@@ -209,7 +209,7 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                       {(tx.type === TransactionType.Deposit || tx.type === TransactionType.Refund) &&
                         pair?.raiseToken?.symbol}
                     </td>
-                    <td className="py-4 px-6 text-right text-base">
+                    <td className="py-2 sm:py-4 px-3 sm:px-6 text-right text-xs sm:text-base">
                       {dayjs(parseInt(tx.timestamp) * 1000).format(
                         "YYYY-MM-DD HH:mm:ss"
                       )}
@@ -222,16 +222,16 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
         </div>
       </div>
 
-      <div className="px-6 py-4 flex justify-end border-t border-[#5C5C5C]">
-        <div className="flex items-center gap-6 max-w-[400px]">
-          <div className="flex items-center gap-4">
+      <div className="px-3 sm:px-6 py-2 sm:py-4 flex justify-end border-t border-[#5C5C5C]">
+        <div className="flex items-center gap-3 sm:gap-6 w-full sm:max-w-[400px] justify-between sm:justify-end">
+          <div className="flex items-center gap-2 sm:gap-4">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1 || loading}
-              className="flex items-center gap-2 px-4 py-2 bg-[#2a2a2a] rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#3a3a3a] transition-colors"
+              className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1 sm:py-2 bg-[#2a2a2a] rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#3a3a3a] transition-colors text-xs sm:text-base"
             >
               <svg
-                className="w-4 h-4"
+                className="w-3 h-3 sm:w-4 sm:h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -246,9 +246,9 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
               Previous
             </button>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-base">
               <span className="text-gray-400">Page</span>
-              <span className="px-3 py-1 bg-[#1a1a1a] rounded text-white min-w-[40px] text-center">
+              <span className="px-2 sm:px-3 py-0.5 sm:py-1 bg-[#1a1a1a] rounded text-white min-w-[32px] sm:min-w-[40px] text-center">
                 {page}
               </span>
             </div>
@@ -256,11 +256,11 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
             <button
               onClick={() => setPage((p) => p + 1)}
               disabled={!hasNextPage || loading}
-              className="flex items-center gap-2 px-4 py-2 bg-[#2a2a2a] rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#3a3a3a] transition-colors"
+              className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1 sm:py-2 bg-[#2a2a2a] rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#3a3a3a] transition-colors text-xs sm:text-base"
             >
               Next
               <svg
-                className="w-4 h-4"
+                className="w-3 h-3 sm:w-4 sm:h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -276,9 +276,9 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
           </div>
 
           {loading && (
-            <div className="flex items-center gap-2 text-gray-400">
+            <div className="flex items-center gap-1 sm:gap-2 text-gray-400 text-xs sm:text-base">
               <svg
-                className="animate-spin h-4 w-4"
+                className="animate-spin h-3 w-3 sm:h-4 sm:w-4"
                 fill="none"
                 viewBox="0 0 24 24"
               >
