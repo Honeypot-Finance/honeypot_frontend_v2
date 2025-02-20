@@ -6,6 +6,8 @@ import { LaunchDetailSwapCard } from "@/components/SwapCard/MemeSwap";
 import PottingModal from "@/components/atoms/Pot2PumpComponents/PottingModal";
 import { wallet } from "@/services/wallet";
 
+import { SwapField } from "@/types/algebra/types/swap-field";
+import { useDerivedSwapInfo } from "@/lib/algebra/state/swapStore";
 const SuccessAction = observer(
   ({
     pair,
@@ -14,6 +16,12 @@ const SuccessAction = observer(
     pair: FtoPairContract | MemePairContract;
     refreshTxsCallback?: () => void;
   }) => {
+    const {
+      toggledTrade: trade,
+      currencyBalances,
+      parsedAmount,
+      currencies,
+    } = useDerivedSwapInfo();
     return (
       <LaunchDetailSwapCard
         noBoarder
@@ -24,6 +32,14 @@ const SuccessAction = observer(
         isInputNative={
           pair.raiseToken?.address.toLowerCase() ===
           wallet.currentChain.nativeToken.address.toLowerCase()
+        }
+        disableFromSelection={
+          pair.launchedToken?.address.toLowerCase() ===
+          currencies[SwapField.INPUT]?.wrapped.address.toLowerCase()
+        }
+        disableToSelection={
+          pair.launchedToken?.address.toLowerCase() ===
+          currencies[SwapField.OUTPUT]?.wrapped.address.toLowerCase()
         }
       />
     );
@@ -69,7 +85,10 @@ const FailAction = observer(
             Refund LP
           </Button>
         ) : (
-          <Button className="w-full bg-gray-500" disabled>
+          <Button
+            className="w-full bg-gray-500"
+            disabled
+          >
             You have Refunded
           </Button>
         )}
@@ -86,7 +105,12 @@ const ProcessingAction = observer(
     pair: FtoPairContract | MemePairContract;
     refreshTxsCallback?: () => void;
   }) => {
-    return <PottingModal pair={pair} onSuccess={onSuccess} />;
+    return (
+      <PottingModal
+        pair={pair}
+        onSuccess={onSuccess}
+      />
+    );
   }
 );
 
@@ -101,11 +125,17 @@ const Action = observer(
     switch (pair.state) {
       case 0:
         return (
-          <SuccessAction pair={pair} refreshTxsCallback={refreshTxsCallback} />
+          <SuccessAction
+            pair={pair}
+            refreshTxsCallback={refreshTxsCallback}
+          />
         );
       case 1:
         return (
-          <FailAction pair={pair} refreshTxsCallback={refreshTxsCallback} />
+          <FailAction
+            pair={pair}
+            refreshTxsCallback={refreshTxsCallback}
+          />
         );
       case 2:
         return <>Case 2</>;

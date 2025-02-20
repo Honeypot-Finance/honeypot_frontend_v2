@@ -33,6 +33,8 @@ export const LaunchDetailSwapCard = observer(
     onSwapSuccess,
     isInputNative,
     isOutputNative,
+    disableFromSelection = false,
+    disableToSelection = false,
   }: {
     inputAddress?: string;
     outputAddress?: string;
@@ -42,6 +44,8 @@ export const LaunchDetailSwapCard = observer(
     onSwapSuccess?: () => void;
     isInputNative?: boolean;
     isOutputNative?: boolean;
+    disableFromSelection?: boolean;
+    disableToSelection?: boolean;
   }) => {
     const [values, setValues] = useState<{ amount0: string; amount1: string }>({
       amount0: "0",
@@ -170,7 +174,7 @@ export const LaunchDetailSwapCard = observer(
             tabList: cn(
               "flex rounded-2xl border border-[#202020] bg-white shadow-[4px_4px_0px_0px_#202020,-4px_4px_0px_0px_#202020]",
               "absolute left-1/2 -translate-x-1/2 z-10 -top-5",
-              "overflow-x-auto max-w-[90vw] sm:max-w-none",
+              "overflow-x-auto max-w-[90vw] sm:max-w-none"
             ),
             tab: "px-5 py-1 rounded-lg whitespace-nowrap text-xs sm:text-sm sm:text-base",
             tabContent: "group-data-[selected=true]:text-white",
@@ -199,7 +203,8 @@ export const LaunchDetailSwapCard = observer(
                 isInputNative={isInputNative}
                 isOutputNative={isOutputNative}
                 onSwapSuccess={onSwapSuccess}
-                disableToSelection={true}
+                disableFromSelection={disableFromSelection}
+                disableToSelection={disableToSelection}
               />
             </LoadingContainer>
           </Tab>
