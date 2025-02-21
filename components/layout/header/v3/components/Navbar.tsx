@@ -107,6 +107,7 @@ export const CustomNavbar: React.FC<NavbarProps> = ({ menuList }) => {
                 key={menu.title}
                 className={cn(
                   "h-8 py-0 font-bold bg-transparent text-sm lg:text-base text-black hover:bg-[#202020]/80 hover:text-white",
+                  menu.title === "Dex" && "hidden",
                   menu.routePath === router.pathname
                     ? "bg-[#202020] text-white"
                     : ""
