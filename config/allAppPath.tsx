@@ -61,18 +61,15 @@ export const appPathsList: Menu[] = [
     title: "Pumping",
     routePath: "/pumping",
   },
-  // {
-  //   path: "/derbydashboard",
-  //   title: "Derby Dashboard 🐎",
-  // },
-  // {
-  //   path: "/memewar",
-  //   title: "Meme War ⚔️",
-  // },
   {
     path: "/leaderboard",
     title: "Leaderboard",
     routePath: "/leaderboard",
+  },
+  {
+    title: "Dex",
+    path: "https://wasabee.honeypotfinance.xyz/swap",
+    routePath: "https://wasabee.honeypotfinance.xyz/swap",
   },
 ];
 
