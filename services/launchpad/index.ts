@@ -734,6 +734,7 @@ class LaunchPad {
       description: string;
       projectName: string;
     }) => {
+      console.log("updateProject wallet", wallet);
       await createSiweMessage(
         wallet.account,
         "Sign In With Honeypot",

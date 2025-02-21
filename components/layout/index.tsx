@@ -24,6 +24,7 @@ import { useAutoConnect } from "@/lib/hooks/useAutoconnector";
 import { useSafeAppsSDK } from "@safe-global/safe-apps-react-sdk";
 import { ethers } from "ethers";
 import { SafeAppProvider } from "@safe-global/safe-apps-provider";
+
 export const Layout = ({
   children,
   className,
@@ -58,6 +59,7 @@ export const Layout = ({
         process.env.NODE_ENV === "development"
       )
         return;
+
       popmodal.openModal({
         content: (
           <div className="min-h-[300px] line-[24px]">

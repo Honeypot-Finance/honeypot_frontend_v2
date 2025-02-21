@@ -94,8 +94,14 @@ export const ftoService = {
     creator_api_key?: string;
   }) => {
     let project = await fotProjectDataloader.load({
-      pair: data.pair,
+      pair: data.pair.toLowerCase(),
       chain_id: data.chain_id.toString(),
+    });
+
+    console.log("project: ", {
+      pair: data.pair,
+      chain_id: data.chain_id,
+      project: project,
     });
     let updateFlag = false;
     const publicClient = createPublicClientByChain(chainsMap[data.chain_id]);
