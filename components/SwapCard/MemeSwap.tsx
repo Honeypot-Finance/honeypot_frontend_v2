@@ -221,7 +221,7 @@ export const LaunchDetailSwapCard = observer(
               <HoneyContainer>
                 {memePairContract.canClaimLP && (
                   <Button
-                    className="w-full relative overflow-visible"
+                    className="w-full relative overflow-visible rounded-[8px] border border-black bg-[#FFCD4D] text-[#202020] shadow-[2px_2px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_1px_0px_0px_#000] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
                     isLoading={memePairContract.claimLP.loading}
                     onClick={() => {
                       memePairContract.claimLP.call();
@@ -233,7 +233,7 @@ export const LaunchDetailSwapCard = observer(
                 )}
                 <div className="w-full flex gap-x-2 justify-around *:flex-grow-[1]">
                   <Button
-                    className="w-full"
+                    className="w-full rounded-[8px] border border-black bg-[#FFCD4D] text-[#202020] shadow-[2px_2px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_1px_0px_0px_#000] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={async () => {
                       const lpTokenAddress =
                         await memePairContract.contract.read.lpToken();
@@ -246,7 +246,9 @@ export const LaunchDetailSwapCard = observer(
                     className="w-full"
                     href={`${DOMAIN_MAP.WASABEE_DEX}/pool-detail/${vaultContract?.pool?.address}`}
                   >
-                    <Button className="w-full">Customize Position</Button>
+                    <Button className="w-full rounded-[8px] border border-black bg-[#FFCD4D] text-[#202020] shadow-[2px_2px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_1px_0px_0px_#000] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed">
+                      Customize Position
+                    </Button>
                   </Link>
                 </div>
                 <div className="w-full rounded-[32px] bg-white space-y-2 px-4 py-6 custom-dashed">
@@ -260,7 +262,7 @@ export const LaunchDetailSwapCard = observer(
                 </div>
 
                 <Button
-                  className="w-full"
+                  className="w-full rounded-[8px] border border-black bg-[#FFCD4D] text-[#202020] shadow-[2px_2px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_1px_0px_0px_#000] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
                   isDisabled={!vaultContract?.isInitialized}
                   isLoading={vaultContract?.transactionPending}
                   onClick={async () => {
