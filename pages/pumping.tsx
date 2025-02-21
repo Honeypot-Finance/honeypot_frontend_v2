@@ -1,13 +1,10 @@
 import Link from "next/link";
-import Image from "next/image";
 import { observer } from "mobx-react-lite";
 import { wallet } from "@/services/wallet";
 import { useEffect, useState } from "react";
 import { Tab, Tabs } from "@nextui-org/react";
 import { NextLayoutPage } from "@/types/nextjs";
-import { memewarStore } from "@/services/memewar";
-import { FaExternalLinkAlt } from "react-icons/fa";
-import { Button } from "@/components/button/button-next";
+import { Button } from "@/components/button/v3";
 import Pagination from "@/components/Pagination/Pagination";
 import { LaunchCardV3 } from "@/components/LaunchCard/v3";
 import { Filter } from "@/components/pot2pump/FilterModal";
@@ -17,9 +14,8 @@ import { WrappedNextInputSearchBar } from "@/components/wrappedNextUI/SearchBar/
 import { FilterState } from "@/constants/pot2pump.type";
 import { defaultFilterState } from "@/constants/pot2pump";
 import HoneyContainer from "@/components/CardContianer/HoneyContainer";
-import { hasValue, removeEmptyFields } from "@/lib/utils";
+import { hasValue } from "@/lib/utils";
 import { PAGE_LIMIT } from "@/services/launchpad";
-import search from "./api/udf-data-feed/search";
 
 const MemeLaunchPage: NextLayoutPage = observer(() => {
   const [pumpingProjects, setPumpingProjects] =
@@ -196,37 +192,6 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
               title="Participated MEMEs"
               href="/profile"
             />
-            {/* <Tab href="/launch" title="To Fto projects->" /> */}
-            {/* <Tab
-              href="https://bartio.bonds.yeetit.xyz/"
-              target="_blank"
-              title={
-                <div className="flex items-center text-yellow-400">
-                  <Image
-                    className="size-4"
-                    src="/images/partners/yeet_icon.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <span className="flex items-center justify-center gap-2">
-                    Try Yeet Bond <FaExternalLinkAlt className="inline-block" />
-                  </span>
-                </div>
-              }
-            /> */}
-            {/* <Tab
-              title={
-                <Link
-                  href="/memewar"
-                  className="flex items-center text-rose-600"
-                >
-                  <span className="flex items-center justify-center gap-2">
-                    Meme War ⚔️
-                  </span>
-                </Link>
-              }
-            /> */}
           </Tabs>
         </div>
       </div>
