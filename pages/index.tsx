@@ -437,8 +437,8 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
   }, [api, highPriceTokensList]);
   return (
     <div className="w-full flex flex-col justify-center items-center px-4 font-gliker">
-      <CardContainer className="xl:max-w-[1200px] !pb-[130px]">
-        <div className="flex flex-col justify-center w-full rounded-2xl relative ">
+      <CardContainer className="xl:max-w-[1200px]">
+        <div className="flex flex-col justify-center w-full rounded-2xl gap-y-4">
           {/* Featured Slideshow */}
           <div className="relative">
             {trendingTokensList.length > 0 ? (
@@ -446,7 +446,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                 setApi={setApi}
                 plugins={[
                   Autoplay({
-                    delay: 2000,
+                    delay: 6000,
                   }),
                 ]}
                 opts={{
@@ -480,7 +480,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
             )}
           </div>
           {/* Slide Indicators */}
-          <div className="flex justify-center gap-2 absolute bottom-[-30px] left-0 right-0 z-20">
+          <div className="flex justify-center gap-2 z-20">
             {trendingTokensList?.slice(0, 5).map((_, index) => (
               <button
                 key={index}
@@ -491,7 +491,11 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                   width: currentSlide === index + 1 ? "48px" : "24px",
                   height: "16px",
                 }}
-                onClick={() => setCurrentSlide(index)}
+                onClick={() => {
+                  if (api) {
+                    api.scrollTo(index);
+                  }
+                }}
               />
             ))}
           </div>
@@ -725,8 +729,8 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                     isSelected
                       ? "bg-[#020202] text-white border border-black shadow-[2px_2px_0px_0px_#000000]"
                       : isDisabled
-                      ? "text-gray-400 cursor-not-allowed"
-                      : "text-default-500 hover:bg-gray-100"
+                        ? "text-gray-400 cursor-not-allowed"
+                        : "text-default-500 hover:bg-gray-100"
                   }`}
                 >
                   {tab}
