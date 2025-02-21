@@ -70,7 +70,7 @@ export const PottingModal = observer(
       pair.raiseToken && (
         <div
           className={cn(
-            "flex flex-col w-full z-[100] items-center gap-2 bg-[#FFCD4D] rounded-2xl px-4 py-3 relative pt-4 md:pt-12 pb-[90px] text-black",
+            "flex flex-col w-full  items-center gap-2 bg-[#FFCD4D] rounded-2xl px-4 py-3 relative pt-4 md:pt-12 pb-[90px] text-black",
             boarderLess && "border-none"
           )}
         >
@@ -144,21 +144,33 @@ export const PottingModal = observer(
                 className="grid grid-cols-[repeat(4,auto)] gap-4 w-full mt-4 justify-content-end"
               >
                 {selectedToken?.balance.gte(10) && (
-                  <SelectItem key="10" value="10">
+                  <SelectItem
+                    key="10"
+                    value="10"
+                  >
                     10 {selectedToken?.symbol}
                   </SelectItem>
                 )}
                 {selectedToken?.balance.gte(100) && (
-                  <SelectItem key="100" value="100">
+                  <SelectItem
+                    key="100"
+                    value="100"
+                  >
                     100 {selectedToken?.symbol}
                   </SelectItem>
                 )}
                 {selectedToken?.balance.gte(1000) && (
-                  <SelectItem key="1000" value="1000">
+                  <SelectItem
+                    key="1000"
+                    value="1000"
+                  >
                     1000 {selectedToken?.symbol}
                   </SelectItem>
                 )}
-                <SelectItem key="max" value="max">
+                <SelectItem
+                  key="max"
+                  value="max"
+                >
                   Max
                 </SelectItem>
               </ItemSelect>
@@ -178,7 +190,7 @@ export const PottingModal = observer(
 
                   if (
                     selectedToken?.address.toLowerCase() ===
-                    wallet.currentChain.nativeToken.address.toLowerCase() &&
+                      wallet.currentChain.nativeToken.address.toLowerCase() &&
                     selectedToken.isNative
                   ) {
                     console.log("amount", amount);
