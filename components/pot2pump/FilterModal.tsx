@@ -9,7 +9,7 @@ import {
 import { observer } from "mobx-react-lite";
 import { Pot2PumpPumpingService } from "@/services/launchpad/pot2pump/pumping";
 import { Pot2PumpPumpingService as Pot2PumpService } from "@/services/launchpad/pot2pump/pot2Pump";
-import { Button } from "@/components/button/button-next";
+import { Button } from "@/components/button/v3";
 import { FaSlidersH } from "react-icons/fa";
 import { FilterState } from "@/constants/pot2pump.type";
 import FilterItem from "./components/FilterItem";
@@ -60,13 +60,8 @@ export const Filter = observer(
 
     return (
       <>
-        <Button
-          onPress={onOpen}
-          className="rounded-[8px] border border-black bg-[#FFCD4D] text-[#202020] shadow-[2px_2px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_1px_0px_0px_#000] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
-        >
+        <Button onPress={onOpen}>
           <FaSlidersH className="!text-black size-4" />
-          {/* FIXME: display text */}
-          {/* <span className="!text-black">Filters</span> */}
         </Button>
 
         <Modal

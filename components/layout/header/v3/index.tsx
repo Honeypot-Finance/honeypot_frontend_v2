@@ -68,7 +68,7 @@ export const Header = (props: HtmlHTMLAttributes<any>) => {
 
   return (
     <>
-      <div className={clsx("relative mb-5", props.className)}>
+      <div className={clsx("relative mb-5 sm:mb-10", props.className)}>
         <Navbar
           isMenuOpen={isMenuOpen}
           onMenuOpenChange={setIsMenuOpen}

@@ -6,9 +6,8 @@ import { wallet } from "@/services/wallet";
 import { Tab, Tabs } from "@nextui-org/react";
 import { NextLayoutPage } from "@/types/nextjs";
 import { useCallback, useEffect, useState } from "react";
-import { Button } from "@/components/button/button-next";
 import { LaunchCardV3 } from "@/components/LaunchCard/v3";
-import { FaCrown, FaExternalLinkAlt } from "react-icons/fa";
+import { FaCrown } from "react-icons/fa";
 import Pagination from "@/components/Pagination/Pagination";
 import launchpad, {
   defaultPairFilters,
@@ -28,6 +27,8 @@ import {
   canClaimPot2Pump,
   canRefundPot2Pump,
 } from "@/lib/algebra/graphql/clients/pot2pump";
+import { Button } from "@/components/button/v3";
+import { cn } from "@/lib/utils";
 
 const MemeLaunchPage: NextLayoutPage = observer(() => {
   const [pottingProjects, setPottingProjects] =
@@ -195,41 +196,10 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
           </div>
         )}
 
-        <div
-          id="filter"
-          className="flex flex-col sm:flex-row items-center gap-2 my-4 sm:my-0"
-        >
-          <WrappedNextInputSearchBar
-            className="border border-[#FFCD4D] shadow-[1px_2px_0px_0px_#9B7D2F] placeholder:text-xs"
-            onChange={(e) => {
-              setSearch(e.target.value);
-            }}
-          />
-        </div>
-
-        <div className="w-full relative">
-          <div className="py-2 sm:py-0 sm:absolute right-0 top-0">
-            <div className="flex gap-2">
-              <Filter
-                filtersList={[
-                  {
-                    key: 2,
-                    label: "Participants Count",
-                    category: "participants",
-                  },
-                  {
-                    key: 3,
-                    label: "Deposit Raised Token",
-                    category: "depositraisedtoken",
-                  },
-                ]}
-                filters={filters}
-                setFilters={onChangeFilter}
-                pumpingProjects={pottingProjects}
-              />
-
-              <Button className="rounded-[8px] border border-black bg-[#FFCD4D] text-[#202020] shadow-[2px_2px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_1px_0px_0px_#000] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed">
-                {" "}
+        <div className="w-full relative space-y-4">
+          <div className="py-2 sm:py-0 sm:absolute right-0 top-20">
+            <div className="flex gap-2 justify-end">
+              <Button>
                 <Link
                   href="/launch-token?launchType=meme"
                   className="text-black font-bold"
@@ -258,7 +228,6 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                       });
                   }}
                   disabled={!wallet.account}
-                  className="rounded-[8px] border border-black bg-[#FFCD4D] text-[#202020] shadow-[2px_2px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_1px_0px_0px_#000] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Claim All
                 </Button>
@@ -283,19 +252,52 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                       });
                   }}
                   disabled={!wallet.account}
-                  className="rounded-[8px] border border-black bg-[#FFCD4D] text-[#202020] shadow-[2px_2px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_1px_0px_0px_#000] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Refund All
                 </Button>
               )}
+              <Filter
+                filtersList={[
+                  {
+                    key: 2,
+                    label: "Participants Count",
+                    category: "participants",
+                  },
+                  {
+                    key: 3,
+                    label: "Deposit Raised Token",
+                    category: "depositraisedtoken",
+                  },
+                ]}
+                filters={filters}
+                setFilters={onChangeFilter}
+                pumpingProjects={pottingProjects}
+              />
             </div>
+          </div>
+
+          <div
+            id="filter"
+            className="flex flex-col sm:flex-row items-center gap-2 my-4 sm:my-0"
+          >
+            <WrappedNextInputSearchBar
+              className="border border-[#FFCD4D] shadow-[1px_2px_0px_0px_#9B7D2F] placeholder:text-xs"
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
+            />
           </div>
 
           <Tabs
             aria-label="Options"
             classNames={{
               tabList: "bg-transparent",
-              tab: "flex flex-col items-center gap-2.5 border-0  backdrop-blur-[100px] p-2.5 rounded-[10px]",
+              tabContent: "text-xs sm:text-base p-0 sm:p-2",
+              tab: cn(
+                "rounded-md sm:rounded-lg",
+                "border-0 backdrop-blur-[100px]",
+                "flex flex-col items-center gap-1 sm:gap-2.5"
+              ),
             }}
             className="next-tab"
             onSelectionChange={(key) => {
