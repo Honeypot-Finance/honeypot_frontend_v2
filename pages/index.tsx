@@ -24,6 +24,13 @@ import { NetworkStatus } from "@apollo/client";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Tab, Tabs } from "@nextui-org/react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselApi,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 // 在组件外部定义常量
 
 const POT_TABS = {
@@ -374,18 +381,18 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
     });
   }, [endTimeTokensList.length, pottingNewTokensByEndtime]);
 
-  // Auto scroll effect
-  useEffect(() => {
-    if (!highPriceTokensList?.length) return;
+  // // Auto scroll effect
+  // useEffect(() => {
+  //   if (!highPriceTokensList?.length) return;
 
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) =>
-        prev >= Math.min(4, highPriceTokensList?.length - 1) ? 0 : prev + 1
-      );
-    }, 5000);
+  //   const timer = setInterval(() => {
+  //     // setCurrentSlide((prev) =>
+  //     //   prev >= Math.min(4, highPriceTokensList?.length - 1) ? 0 : prev + 1
+  //     // );
+  //   }, 5000);
 
-    return () => clearInterval(timer);
-  }, [highPriceTokensList]);
+  //   return () => clearInterval(timer);
+  // }, [highPriceTokensList]);
 
   const handleTabClick = (tab: TabType) => {
     setSelectedTabs((prev) => {
@@ -411,56 +418,86 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
     });
   };
 
+  const [api, setApi] = useState<CarouselApi>();
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    if (!highPriceTokensList?.length) return;
+
+    setCount(api.scrollSnapList().length);
+    setCurrentSlide(api.selectedScrollSnap() + 1);
+
+    api.on("select", () => {
+      setCurrentSlide(api.selectedScrollSnap() + 1);
+    });
+  }, [api, highPriceTokensList]);
   return (
     <div className="w-full flex flex-col justify-center items-center px-4 font-gliker">
       <CardContainer className="xl:max-w-[1200px]">
-        <div className="flex flex-col justify-center w-full rounded-2xl relative">
+        <div className="flex flex-col justify-center w-full rounded-2xl gap-y-4">
           {/* Featured Slideshow */}
           <div className="relative">
-            <div className="user-select-none opacity-0 min-h-[200px]">
-              <LaunchCardV3
-                type="featured"
-                pair={highPriceTokensList?.[currentSlide]}
-                action={<></>}
-              />
-            </div>
             {trendingTokensList.length > 0 ? (
-              trendingTokensList
-                ?.sort(
-                  (a, b) =>
-                    Number(b.launchedToken?.priceChange24hPercentage) -
-                    Number(a.launchedToken?.priceChange24hPercentage)
-                )
-                ?.slice(0, 5)
-                ?.map((token, index) => (
-                  <div
-                    key={index}
-                    className={`transition-opacity duration-500 absolute inset-0 ${
-                      currentSlide === index
-                        ? "opacity-100 z-10"
-                        : "opacity-0 z-0"
-                    }`}
-                  >
-                    <LaunchCardV3 type="featured" pair={token} action={<></>} />
-                  </div>
-                ))
+              <Carousel
+                setApi={setApi}
+                plugins={[
+                  Autoplay({
+                    delay: 6000,
+                  }),
+                ]}
+                opts={{
+                  align: "start",
+                  loop: true,
+                }}
+              >
+                <CarouselContent>
+                  {trendingTokensList
+                    ?.sort(
+                      (a, b) =>
+                        Number(b.launchedToken?.priceChange24hPercentage) -
+                        Number(a.launchedToken?.priceChange24hPercentage)
+                    )
+                    ?.slice(0, 5)
+                    ?.map((token, index) => (
+                      <CarouselItem key={index}>
+                        <div key={index}>
+                          <LaunchCardV3
+                            type="featured"
+                            pair={token}
+                            action={<></>}
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                </CarouselContent>
+              </Carousel>
             ) : (
               <LoadingDisplay />
             )}
           </div>
           {/* Slide Indicators */}
-          <div className="flex justify-center gap-2 absolute bottom-1 left-0 right-0 z-20">
-            {trendingTokensList
-              ?.slice(0, 5)
-              .map((_, index) => (
-                <button
-                  key={index}
-                  className={`w-2 h-2 rounded-full ${
-                    currentSlide === index ? "bg-black" : "bg-gray-400"
-                  }`}
-                  onClick={() => setCurrentSlide(index)}
-                />
-              ))}
+          <div className="flex justify-center gap-2 z-20">
+            {trendingTokensList?.slice(0, 5).map((_, index) => (
+              <button
+                key={index}
+                className={`w-2 h-2 rounded-full`}
+                style={{
+                  backgroundColor:
+                    currentSlide === index + 1 ? "black" : "#FEF6C7",
+                  width: currentSlide === index + 1 ? "48px" : "24px",
+                  height: "16px",
+                }}
+                onClick={() => {
+                  if (api) {
+                    api.scrollTo(index);
+                  }
+                }}
+              />
+            ))}
           </div>
         </div>
       </CardContainer>
@@ -483,10 +520,12 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
         aria-label="Options"
         classNames={{
           base: "relative w-full sm:hidden",
-          tabList: "flex rounded-2xl border border-[#202020] bg-white p-4 shadow-[4px_4px_0px_0px_#202020,-4px_4px_0px_0px_#202020] py-1 px-2 absolute left-1/2 -translate-x-1/2 z-10 -top-5 overflow-x-auto max-w-[90vw]",
+          tabList:
+            "flex rounded-2xl border border-[#202020] bg-white p-4 shadow-[4px_4px_0px_0px_#202020,-4px_4px_0px_0px_#202020] py-1 px-2 absolute left-1/2 -translate-x-1/2 z-10 -top-5 overflow-x-auto max-w-[90vw]",
           tab: "px-1.5 py-1 rounded-lg whitespace-nowrap",
           tabContent: "group-data-[selected=true]:text-white text-xs",
-          cursor: "bg-[#020202] border border-black shadow-[2px_2px_0px_0px_#000000]",
+          cursor:
+            "bg-[#020202] border border-black shadow-[2px_2px_0px_0px_#000000]",
           panel: cn(
             "flex flex-col h-full w-full gap-y-4 justify-center items-center bg-[#FFCD4D] rounded-2xl text-[#202020]",
             "px-4 pt-[60px] pb-[60px]",
@@ -499,10 +538,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
           ),
         }}
       >
-        <Tab 
-          key="new" 
-          title="New POTs"
-        >
+        <Tab key="new" title="New POTs">
           <div className="bg-white rounded-3xl p-4 border border-black shadow-[4px_4px_0px_0px_#D29A0D] w-full  max-h-[600px] flex flex-col">
             <CardContainer
               className="h-full flex-1"
@@ -516,17 +552,19 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                   .sort((a, b) => Number(b.startTime) - Number(a.startTime))
                   ?.map((pot2pump, index) => (
                     <motion.div key={index} variants={itemPopUpVariants}>
-                      <LaunchCardV3 type="simple" pair={pot2pump} action={<></>} theme="dark" />
+                      <LaunchCardV3
+                        type="simple"
+                        pair={pot2pump}
+                        action={<></>}
+                        theme="dark"
+                      />
                     </motion.div>
                   ))}
               </div>
             </CardContainer>
           </div>
         </Tab>
-        <Tab 
-          key="almost" 
-          title="Almost"
-        >
+        <Tab key="almost" title="Almost">
           <div className="bg-white rounded-3xl p-4 border border-black shadow-[4px_4px_0px_0px_#D29A0D] w-full  max-h-[600px] flex flex-col">
             <CardContainer
               className="h-full flex-1"
@@ -537,20 +575,26 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
             >
               <div className="flex flex-col gap-4 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2">
                 {nearSuccessTokensList
-                  ?.sort((a, b) => Number(b.pottingPercentageNumber) - Number(a.pottingPercentageNumber))
+                  ?.sort(
+                    (a, b) =>
+                      Number(b.pottingPercentageNumber) -
+                      Number(a.pottingPercentageNumber)
+                  )
                   ?.map((pot2pump, index) => (
                     <motion.div key={index} variants={itemPopUpVariants}>
-                      <LaunchCardV3 type="simple" pair={pot2pump} action={<></>} theme="dark" />
+                      <LaunchCardV3
+                        type="simple"
+                        pair={pot2pump}
+                        action={<></>}
+                        theme="dark"
+                      />
                     </motion.div>
                   ))}
               </div>
             </CardContainer>
           </div>
         </Tab>
-        <Tab 
-          key="moon" 
-          title="Moon 🚀"
-        >
+        <Tab key="moon" title="Moon 🚀">
           <div className="bg-white rounded-3xl p-4 border border-black shadow-[4px_4px_0px_0px_#D29A0D] w-full  max-h-[600px] flex flex-col">
             <CardContainer
               className="h-full flex-1"
@@ -561,20 +605,26 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
             >
               <div className="flex flex-col gap-4 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2">
                 {highPriceTokensList
-                  ?.sort((a, b) => Number(b.launchedToken?.derivedUSD) - Number(a.launchedToken?.derivedUSD))
+                  ?.sort(
+                    (a, b) =>
+                      Number(b.launchedToken?.derivedUSD) -
+                      Number(a.launchedToken?.derivedUSD)
+                  )
                   ?.map((pot2pump, index) => (
                     <motion.div key={index} variants={itemPopUpVariants}>
-                      <LaunchCardV3 type="simple" pair={pot2pump} action={<></>} theme="dark" />
+                      <LaunchCardV3
+                        type="simple"
+                        pair={pot2pump}
+                        action={<></>}
+                        theme="dark"
+                      />
                     </motion.div>
                   ))}
               </div>
             </CardContainer>
           </div>
         </Tab>
-        <Tab 
-          key="trending" 
-          title="Trending"
-        >
+        <Tab key="trending" title="Trending">
           <div className="bg-white rounded-3xl p-4 border border-black shadow-[4px_4px_0px_0px_#D29A0D] w-full ma x-h-[400px] flex flex-col">
             <CardContainer
               className="h-full flex-1"
@@ -585,20 +635,26 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
             >
               <div className="flex flex-col gap-4 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2">
                 {trendingTokensList
-                  ?.sort((a, b) => Number(b.launchedToken?.priceChange24hPercentage) - Number(a.launchedToken?.priceChange24hPercentage))
+                  ?.sort(
+                    (a, b) =>
+                      Number(b.launchedToken?.priceChange24hPercentage) -
+                      Number(a.launchedToken?.priceChange24hPercentage)
+                  )
                   ?.map((pot2pump, index) => (
                     <motion.div key={index} variants={itemPopUpVariants}>
-                      <LaunchCardV3 type="simple" pair={pot2pump} action={<></>} theme="dark" />
+                      <LaunchCardV3
+                        type="simple"
+                        pair={pot2pump}
+                        action={<></>}
+                        theme="dark"
+                      />
                     </motion.div>
                   ))}
               </div>
             </CardContainer>
           </div>
         </Tab>
-        <Tab 
-          key="market-cap" 
-          title="Market Cap"
-        >
+        <Tab key="market-cap" title="Market Cap">
           <div className="bg-white rounded-3xl p-4 border border-black shadow-[4px_4px_0px_0px_#D29A0D] w-full  max-h-[600px] flex flex-col">
             <CardContainer
               className="h-full flex-1"
@@ -609,20 +665,26 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
             >
               <div className="flex flex-col gap-4 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2">
                 {marketCapTokensList
-                  ?.sort((a, b) => Number(b.launchedToken?.marketCap) - Number(a.launchedToken?.marketCap))
+                  ?.sort(
+                    (a, b) =>
+                      Number(b.launchedToken?.marketCap) -
+                      Number(a.launchedToken?.marketCap)
+                  )
                   ?.map((pot2pump, index) => (
                     <motion.div key={index} variants={itemPopUpVariants}>
-                      <LaunchCardV3 type="simple" pair={pot2pump} action={<></>} theme="dark" />
+                      <LaunchCardV3
+                        type="simple"
+                        pair={pot2pump}
+                        action={<></>}
+                        theme="dark"
+                      />
                     </motion.div>
                   ))}
               </div>
             </CardContainer>
           </div>
         </Tab>
-        <Tab 
-          key="new-pumps" 
-          title="New Pumps"
-        >
+        <Tab key="new-pumps" title="New Pumps">
           <div className="bg-white rounded-3xl p-4 border border-black shadow-[4px_4px_0px_0px_#D29A0D] w-full  max-h-[600px] flex flex-col">
             <CardContainer
               className="h-full flex-1"
@@ -636,7 +698,12 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                   ?.sort((a, b) => Number(a.endTime) - Number(b.endTime))
                   ?.map((pot2pump, index) => (
                     <motion.div key={index} variants={itemPopUpVariants}>
-                      <LaunchCardV3 type="simple" pair={pot2pump} action={<></>} theme="dark" />
+                      <LaunchCardV3
+                        type="simple"
+                        pair={pot2pump}
+                        action={<></>}
+                        theme="dark"
+                      />
                     </motion.div>
                   ))}
               </div>
@@ -653,7 +720,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
             {Object.values(POT_TABS).map((tab) => {
               const isSelected = selectedTabs.includes(tab);
               const isDisabled = selectedTabs.length >= 3 && !isSelected;
-              
+
               return (
                 <button
                   key={tab}
@@ -662,8 +729,8 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                     isSelected
                       ? "bg-[#020202] text-white border border-black shadow-[2px_2px_0px_0px_#000000]"
                       : isDisabled
-                      ? "text-gray-400 cursor-not-allowed"
-                      : "text-default-500 hover:bg-gray-100"
+                        ? "text-gray-400 cursor-not-allowed"
+                        : "text-default-500 hover:bg-gray-100"
                   }`}
                 >
                   {tab}
@@ -817,10 +884,12 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                                   ?.sort(
                                     (a, b) =>
                                       Number(
-                                        b.launchedToken?.priceChange24hPercentage
+                                        b.launchedToken
+                                          ?.priceChange24hPercentage
                                       ) -
                                       Number(
-                                        a.launchedToken?.priceChange24hPercentage
+                                        a.launchedToken
+                                          ?.priceChange24hPercentage
                                       )
                                   )
                                   ?.map((pot2pump, index) => (
@@ -881,7 +950,8 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                               >
                                 {endTimeTokensList
                                   ?.sort(
-                                    (a, b) => Number(a.endTime) - Number(b.endTime)
+                                    (a, b) =>
+                                      Number(a.endTime) - Number(b.endTime)
                                   )
                                   ?.map((pot2pump, index) => (
                                     <motion.div

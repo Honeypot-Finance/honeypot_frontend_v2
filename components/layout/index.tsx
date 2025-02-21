@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "./header/v3";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
@@ -16,7 +16,7 @@ import Link from "next/link";
 import ChatWidget from "../ServiceChat";
 import Script from "next/script";
 import { Footer } from "./footer";
-import { chatService, presetQuestions, questionTitles } from "@/services/chat";
+import { chatService, questionTitles } from "@/services/chat";
 import _ from "lodash";
 import { whitelistWallets } from "@/config/whitelist";
 import { InvitationCodeModal } from "../InvitationCodeModal/InvitationCodeModal";
