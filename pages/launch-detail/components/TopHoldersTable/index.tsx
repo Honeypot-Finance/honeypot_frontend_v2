@@ -9,7 +9,7 @@ import Image from "next/image";
 import pot2pumpIcon from "@/public/images/bera/smoking_bera.png";
 import poolIcon from "@/public/images/bera/beekeeperBear.png";
 import { poolExists } from "@/lib/algebra/graphql/clients/pool";
-
+import { shortenAddressString } from "@/lib/utils";
 interface Holder {
   rank: string;
   address: string;
@@ -87,7 +87,7 @@ const HolderAddressDisplay = ({
       </span>
     );
   } else {
-    return address;
+    return shortenAddressString(address);
   }
 };
 
