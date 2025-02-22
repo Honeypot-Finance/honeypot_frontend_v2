@@ -20,10 +20,6 @@ import { chatService, questionTitles } from "@/services/chat";
 import _ from "lodash";
 import { whitelistWallets } from "@/config/whitelist";
 import { InvitationCodeModal } from "../InvitationCodeModal/InvitationCodeModal";
-import { useAutoConnect } from "@/lib/hooks/useAutoconnector";
-import { useSafeAppsSDK } from "@safe-global/safe-apps-react-sdk";
-import { ethers } from "ethers";
-import { SafeAppProvider } from "@safe-global/safe-apps-provider";
 
 export const Layout = ({
   children,
@@ -144,15 +140,6 @@ export const Layout = ({
       {/* {showInviteModal && (
         <InvitationCodeModal onSubmit={handleInviteCodeSubmit} />
       )} */}
-
-      <Script
-        src="/charting_library/charting_library.standalone.js"
-        strategy="beforeInteractive"
-      />
-      <Script
-        src="/datafeeds/udf/dist/bundle.js"
-        strategy="beforeInteractive"
-      />
 
       <AnnouncementBar
         slogans={slogans}
