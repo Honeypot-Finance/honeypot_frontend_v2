@@ -167,7 +167,10 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
               }
             }}
           >
-            <Tab key="all" title="All MEMEs">
+            <Tab
+              key="all"
+              title="All MEMEs"
+            >
               {pumpingProjects && (
                 <Pagination
                   paginationState={pumpingProjects.projectsPage}
@@ -186,7 +189,11 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                 />
               )}
             </Tab>
-            <Tab key="my" title="My MEMEs" href="/profile" />
+            <Tab
+              key="my"
+              title="My MEMEs"
+              href="/profile"
+            />
             <Tab
               key="participated-launch"
               title="Participated MEMEs"
