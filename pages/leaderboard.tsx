@@ -177,7 +177,7 @@ const LeaderboardPage = () => {
               <h2 className="text-xl text-white font-bold">Leaderboard</h2>
             </div>
             <div className="p-6">
-              <div className="border border-[#5C5C5C] rounded-lg overflow-hidden">
+              <div className="border border-[#5C5C5C] rounded-lg overflow-auto">
                 <table className="w-full">
                   <thead className="bg-[#323232] text-white border-b border-[#5C5C5C]">
                     <tr>
@@ -207,7 +207,10 @@ const LeaderboardPage = () => {
                   <tbody className="text-white divide-y divide-[#5C5C5C]">
                     {accountsLoading ? (
                       <tr>
-                        <td colSpan={9} className="py-4 px-6 text-center">
+                        <td
+                          colSpan={9}
+                          className="py-4 px-6 text-center"
+                        >
                           Loading...
                         </td>
                       </tr>
