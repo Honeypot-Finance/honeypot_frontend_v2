@@ -27,6 +27,24 @@ export const GET_PARTICIPANT_DETAIL = gql`
   }
 `;
 
+export const POT_2_PUMP_DYNAMIC_FILTER = gql`
+  query Pot2PumpDynamicFilter(
+    $first: Int
+    $orderBy: Pot2Pump_orderBy
+    $orderDirection: OrderDirection
+    $where: Pot2Pump_filter
+  ) {
+    pot2Pumps(
+      first: $first
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+      where: $where
+    ) {
+      ...Pot2PumpField
+    }
+  }
+`;
+
 export const POT_2_PUMP_POTTING_NEW_TOKENS = gql`
   query Pot2PumpPottingNewTokens($endTime: BigInt) {
     pot2Pumps(
