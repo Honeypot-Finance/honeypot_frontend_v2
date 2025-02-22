@@ -6,7 +6,15 @@ import dayjs from "dayjs";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 import BigNumber from "bignumber.js";
 import { Token } from "@/services/contract/token";
-import { Pot2Pump, Pot2Pump_Filter } from "../generated/graphql";
+import {
+  OrderDirection,
+  Pot2Pump,
+  Pot2Pump_Filter,
+  Pot2Pump_OrderBy,
+  Pot2PumpDynamicFilterDocument,
+  Pot2PumpDynamicFilterQuery,
+  Pot2PumpDynamicFilterQueryVariables,
+} from "../generated/graphql";
 import {
   Pot2PumpPottingNearSuccessDocument,
   Pot2PumpPottingHighPriceDocument,
@@ -474,237 +482,141 @@ export async function fetchPot2PumpList({
   chainId: string;
   filter: SubgraphProjectFilter;
 }): Promise<Pot2PumpListResponse> {
-  let whereCondition: string[] = [];
-  const dynamicFilter: {
-    first?: number;
-    orderBy?: string;
-    orderDirection?: string;
-    where: Pot2Pump_Filter;
-  } = {
+  const dynamicFilter: Pot2PumpDynamicFilterQueryVariables = {
     first: filter.limit,
-    orderBy: filter.orderBy,
-    orderDirection: filter.orderDirection,
+    orderBy: filter.orderBy as Pot2Pump_OrderBy,
+    orderDirection: filter.orderDirection as OrderDirection,
     where: {},
   };
 
+  if (!dynamicFilter.where) {
+    dynamicFilter.where = {};
+  }
+
   if (filter.status === "success") {
-    whereCondition.push(` raisedTokenReachingMinCap: true `);
     dynamicFilter.where.raisedTokenReachingMinCap = true;
   } else if (filter.status === "fail") {
-    whereCondition.push(
-      ` raisedTokenReachingMinCap: false, endTime_lt: ${Math.floor(Date.now() / 1000)} `
-    );
     dynamicFilter.where.raisedTokenReachingMinCap = false;
     dynamicFilter.where.endTime_lt = Math.floor(Date.now() / 1000);
   } else if (filter.status === "processing") {
-    whereCondition.push(
-      ` raisedTokenReachingMinCap: false, endTime_gte: ${Math.floor(Date.now() / 1000)} `
-    );
     dynamicFilter.where.raisedTokenReachingMinCap = false;
     dynamicFilter.where.endTime_gte = Math.floor(Date.now() / 1000);
   }
 
   if (filter.tvl?.min !== undefined) {
     filter.tvl.min.length > 0 &&
-      whereCondition.push(` LaunchTokenTVLUSD_gte: "${filter.tvl.min}" `);
-    dynamicFilter.where.LaunchTokenTVLUSD_gte = filter.tvl.min;
+      (dynamicFilter.where.LaunchTokenTVLUSD_gte = filter.tvl.min);
   }
   if (filter.tvl?.max !== undefined) {
     filter.tvl.max.length > 0 &&
-      whereCondition.push(` LaunchTokenTVLUSD_lte: "${filter.tvl.max}" `);
-    dynamicFilter.where.LaunchTokenTVLUSD_lte = filter.tvl.max;
+      (dynamicFilter.where.LaunchTokenTVLUSD_lte = filter.tvl.max);
   }
 
   if (filter.participants?.min !== undefined) {
-    whereCondition.push(
-      ` participantsCount_gte: "${filter.participants.min}" `
-    );
     dynamicFilter.where.participantsCount_gte = filter.participants.min;
   }
   if (filter.participants?.max !== undefined) {
-    whereCondition.push(
-      ` participantsCount_lte: "${filter.participants.max}" `
-    );
     dynamicFilter.where.participantsCount_lte = filter.participants.max;
   }
 
   if (filter?.marketcap?.min !== undefined) {
-    whereCondition.push(
-      ` LaunchTokenMCAPUSD_gte: "${filter?.marketcap?.min}" `
-    );
     dynamicFilter.where.LaunchTokenMCAPUSD_gte = filter.marketcap.min;
   }
   if (filter?.marketcap?.max !== undefined) {
-    whereCondition.push(
-      ` LaunchTokenMCAPUSD_lte: "${filter?.marketcap?.min}" `
-    );
     dynamicFilter.where.LaunchTokenMCAPUSD_lte = filter.marketcap.min;
   }
 
   if (filter?.daybuys?.min !== undefined) {
-    whereCondition.push(` buyCount_gte: "${filter?.daybuys?.min}" `);
     dynamicFilter.where.buyCount_gte = filter.daybuys.min;
   }
   if (filter?.daybuys?.max !== undefined) {
-    whereCondition.push(` buyCount_lte: "${filter?.daybuys?.max}" `);
     dynamicFilter.where.buyCount_lte = filter.daybuys.max;
   }
 
   if (filter?.daysells?.min !== undefined) {
-    whereCondition.push(` sellCount_gte: "${filter?.daysells?.min}" `);
     dynamicFilter.where.sellCount_gte = filter.daysells.min;
   }
 
   if (filter?.daysells?.max !== undefined) {
-    whereCondition.push(` sellCount_lte: "${filter?.daysells?.max}" `);
     dynamicFilter.where.sellCount_lte = filter.daysells.max;
   }
 
   if (filter?.depositraisedtoken?.min !== undefined) {
-    whereCondition.push(
-      ` DepositRaisedToken_gte: "${filter?.depositraisedtoken?.min}" `
-    );
     dynamicFilter.where.DepositRaisedToken_gte = filter.depositraisedtoken.min;
   }
 
   if (filter?.depositraisedtoken?.max !== undefined) {
-    whereCondition.push(
-      ` DepositRaisedToken_lte: "${filter?.depositraisedtoken?.max}" `
-    );
     dynamicFilter.where.DepositRaisedToken_lte = filter.depositraisedtoken.max;
   }
-
 
   if (filter.search) {
     dynamicFilter.where.searchString_contains = filter.search;
   }
 
   if (filter?.dayvolume?.min !== undefined) {
-    if (filter.search) {
+    if (!dynamicFilter.where.launchToken_) {
+      dynamicFilter.where.launchToken_ = {};
+    }
     dynamicFilter.where.launchToken_.volumeUSD_gte = filter?.dayvolume?.min;
   }
 
   if (filter?.dayvolume?.max !== undefined) {
-    if (filter.search) {
-      launchTokenFilter.and.push({ volumeUSD_lte: filter?.dayvolume?.max });
-    } else {
-      launchTokenFilter.volumeUSD_lte = filter?.dayvolume?.max;
+    if (!dynamicFilter.where.launchToken_) {
+      dynamicFilter.where.launchToken_ = {};
     }
+    dynamicFilter.where.launchToken_.volumeUSD_lte = filter?.dayvolume?.max;
   }
 
   if (filter?.daytxns?.min !== undefined) {
-    if (filter.search) {
-      launchTokenFilter.and.push({ txCount_gte: filter?.daytxns?.min });
-    } else {
-      launchTokenFilter.txCount_gte = filter?.daytxns?.min;
+    if (!dynamicFilter.where.launchToken_) {
+      dynamicFilter.where.launchToken_ = {};
     }
+    dynamicFilter.where.launchToken_.txCount_gte = filter?.daytxns?.min;
   }
 
   if (filter?.daytxns?.max !== undefined) {
-    if (filter.search) {
-      launchTokenFilter.and.push({ txCount_lte: filter?.daytxns?.max });
-    } else {
-      launchTokenFilter.txCount_lte = filter?.daytxns?.max;
+    if (!dynamicFilter.where.launchToken_) {
+      dynamicFilter.where.launchToken_ = {};
     }
+    dynamicFilter.where.launchToken_.txCount_lte = filter?.daytxns?.max;
   }
 
   if (filter?.daychange?.min !== undefined) {
-    if (filter.search) {
-      launchTokenFilter.and.push({
-        priceChange24hPercentage_gte: filter?.daychange?.min,
-      });
-    } else {
-      launchTokenFilter.priceChange24hPercentage_gte = filter?.daychange?.min;
+    if (!dynamicFilter.where.launchToken_) {
+      dynamicFilter.where.launchToken_ = {};
     }
+    dynamicFilter.where.launchToken_.priceChange24hPercentage_gte =
+      filter?.daychange?.min;
   }
 
   if (filter?.daychange?.max !== undefined) {
-    if (filter.search) {
-      launchTokenFilter.and.push({
-        priceChange24hPercentage_lte: filter?.daychange?.max,
-      });
-    } else {
-      launchTokenFilter.priceChange24hPercentage_lte = filter?.daychange?.max;
+    if (!dynamicFilter.where.launchToken_) {
+      dynamicFilter.where.launchToken_ = {};
     }
-  }
-
-  if (Object.keys(launchTokenFilter).length > 0) {
-    const filterString = Object.entries(launchTokenFilter)
-      .map(([key, value]) => {
-        if (key === "and" && Array.isArray(value)) {
-          // Handle the 'and' case specifically
-          const andConditions = value
-            .map((condition) => {
-              if (condition.or && Array.isArray(condition.or)) {
-                // Handle the 'or' case inside 'and'
-                const orConditions = condition.or
-                  .map(
-                    (orCondition: any) =>
-                      `{ ${Object.entries(orCondition)
-                        .map(([k, v]) => `${k}: "${v}"`)
-                        .join(", ")} }`
-                  )
-                  .join(", ");
-                return `{or: [${orConditions}]}`;
-              } else {
-                // Handle normal 'and' conditions
-                return `{ ${Object.entries(condition)
-                  .map(([k, v]) => `${k}: "${v}"`)
-                  .join(", ")} }`;
-              }
-            })
-            .join(", ");
-          return `and: [${andConditions}]`;
-        } else {
-          // For other cases (e.g., txCount_gte)
-          return `${key}: "${value}"`;
-        }
-      })
-      .join(", ");
-
-    console.log("filterString", filterString);
-
-    whereCondition.push(`launchToken_: { ${filterString} }`);
+    dynamicFilter.where.launchToken_.priceChange24hPercentage_lte =
+      filter?.daychange?.max;
   }
 
   if (filter.creator) {
-    whereCondition.push(` creator: "${filter.creator.toLowerCase()}" `);
+    dynamicFilter.where.creator = filter.creator.toLowerCase();
   }
 
   if (filter.participant) {
-    whereCondition.push(
-      ` participants_:{account:"${filter.participant.toLowerCase()}"}`
-    );
+    if (!dynamicFilter.where.participants_) {
+      dynamicFilter.where.participants_ = {};
+    }
+    dynamicFilter.where.participants_.account =
+      filter.participant.toLowerCase();
   }
 
-  const queryParts = [
-    filter.limit ? `first: ${filter.limit}` : "",
-    filter?.currentPage && filter.limit
-      ? `skip: ${filter?.currentPage * filter.limit}`
-      : "",
-    filter.orderBy ? `orderBy: ${filter.orderBy}` : "",
-    filter.orderDirection ? `orderDirection: ${filter.orderDirection}` : "",
-    whereCondition.length > 0
-      ? `where:{ ${whereCondition
-          .map((condition) => `${condition}`)
-          .join(",\n")}}`
-      : "",
-  ].filter(Boolean);
+  console.log("dynamicFilter", dynamicFilter);
 
-  const queryString = queryParts.join(",\n");
-
-  console.log("queryParts", queryParts);
-
-  const query = `
-    query PairsList {
-      pot2Pumps ${queryString.length > 0 ? `(${queryString})` : ""}{
-        ${pop2PumpQuery}
-      }
-    }
-  `;
-
-  const { data } = await infoClient.query<Pot2PumpListData>({
-    query: gql(query),
+  const { data } = await infoClient.query<
+    Pot2PumpDynamicFilterQuery,
+    Pot2PumpDynamicFilterQueryVariables
+  >({
+    query: Pot2PumpDynamicFilterDocument,
+    variables: dynamicFilter,
   });
 
   return {
