@@ -28,6 +28,7 @@ import {
   LaunchContract,
   LaunchContractType,
 } from "@/services/contract/launches/base-launch-contract";
+import { DynamicStringWrapper } from "@/components/atoms/DynamicStringWrapper/DynamicStringWrapper";
 
 export type launchCardVariants =
   | "list"
@@ -147,7 +148,10 @@ const DetailLaunchCard = observer(
               src={!!pair.logoUrl ? pair.logoUrl : "/images/empty-logo.png"}
             />
           </div>
-          <LaunchProgress pair={pair} className="my-3" />
+          <LaunchProgress
+            pair={pair}
+            className="my-3"
+          />
           <div className="grid grid-cols-2 gap-4 text-black [&>*:nth-child(odd)]:text-left [&>*:nth-child(even)]:text-right">
             {/* <div>
               <p className="text-xs opacity-60">Total Raised Token</p>
@@ -434,10 +438,16 @@ const SimpleLaunchCard = observer(
               <div className="grid grid-cols-2 gap-2 flex-grow-[1] text-[#202020]">
                 <div className="flex flex-col gap-y-2">
                   <h3 className="font-bold text-md">
-                    {pair?.launchedToken?.name}
+                    <DynamicStringWrapper
+                      string={pair?.launchedToken?.name ?? ""}
+                      maxLength={10}
+                    />
                   </h3>
                   <p className="text-sm text-[#202020]/[0.67]">
-                    {pair?.launchedToken?.symbol}
+                    <DynamicStringWrapper
+                      string={pair?.launchedToken?.symbol ?? ""}
+                      maxLength={10}
+                    />
                   </p>
                 </div>
                 <div className="flex-grow-[1]  gap-y-2 text-right text-sm flex flex-col justify-start items-end">
@@ -786,10 +796,16 @@ export const LaunchCardV3 = observer(
             {type === "list" && pair && <div>To be implemented</div>}
 
             {type === "trending" && pair && (
-              <TrendingLaunchCard pair={pair} projectType={projectType} />
+              <TrendingLaunchCard
+                pair={pair}
+                projectType={projectType}
+              />
             )}
             {type === "simple" && pair && (
-              <SimpleLaunchCard pair={pair} theme={theme} />
+              <SimpleLaunchCard
+                pair={pair}
+                theme={theme}
+              />
             )}
             {type === "featured" && pair && <FeaturedLaunchCard pair={pair} />}
           </motion.div>
