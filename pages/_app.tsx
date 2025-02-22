@@ -79,6 +79,16 @@ export default function App({
 }) {
   const ComponentLayout = Component.Layout || Layout;
 
+  const [isEthereum, setIsEthereum] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.ethereum) {
+      setIsEthereum(true);
+    }
+  }, []);
+
+  if (!isEthereum) return null;
+
   return (
     <trpc.Provider
       client={trpcQueryClient}
