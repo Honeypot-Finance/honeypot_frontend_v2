@@ -484,6 +484,10 @@ export async function fetchPot2PumpList({
 }): Promise<Pot2PumpListResponse> {
   const dynamicFilter: Pot2PumpDynamicFilterQueryVariables = {
     first: filter.limit,
+    skip:
+      filter.currentPage && filter.limit
+        ? filter.currentPage * filter.limit
+        : 0,
     orderBy: filter.orderBy as Pot2Pump_OrderBy,
     orderDirection: filter.orderDirection as OrderDirection,
     where: {},

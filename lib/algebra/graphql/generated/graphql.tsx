@@ -12985,6 +12985,7 @@ export type GetParticipantDetailQuery = { __typename?: 'Query', participants: Ar
 
 export type Pot2PumpDynamicFilterQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Pot2Pump_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<Pot2Pump_Filter>;
@@ -14509,9 +14510,10 @@ export type GetParticipantDetailLazyQueryHookResult = ReturnType<typeof useGetPa
 export type GetParticipantDetailSuspenseQueryHookResult = ReturnType<typeof useGetParticipantDetailSuspenseQuery>;
 export type GetParticipantDetailQueryResult = Apollo.QueryResult<GetParticipantDetailQuery, GetParticipantDetailQueryVariables>;
 export const Pot2PumpDynamicFilterDocument = gql`
-    query Pot2PumpDynamicFilter($first: Int, $orderBy: Pot2Pump_orderBy, $orderDirection: OrderDirection, $where: Pot2Pump_filter) {
+    query Pot2PumpDynamicFilter($first: Int, $skip: Int, $orderBy: Pot2Pump_orderBy, $orderDirection: OrderDirection, $where: Pot2Pump_filter) {
   pot2Pumps(
     first: $first
+    skip: $skip
     orderBy: $orderBy
     orderDirection: $orderDirection
     where: $where
@@ -14534,6 +14536,7 @@ export const Pot2PumpDynamicFilterDocument = gql`
  * const { data, loading, error } = usePot2PumpDynamicFilterQuery({
  *   variables: {
  *      first: // value for 'first'
+ *      skip: // value for 'skip'
  *      orderBy: // value for 'orderBy'
  *      orderDirection: // value for 'orderDirection'
  *      where: // value for 'where'

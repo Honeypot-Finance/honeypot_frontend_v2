@@ -30,12 +30,14 @@ export const GET_PARTICIPANT_DETAIL = gql`
 export const POT_2_PUMP_DYNAMIC_FILTER = gql`
   query Pot2PumpDynamicFilter(
     $first: Int
+    $skip: Int
     $orderBy: Pot2Pump_orderBy
     $orderDirection: OrderDirection
     $where: Pot2Pump_filter
   ) {
     pot2Pumps(
       first: $first
+      skip: $skip
       orderBy: $orderBy
       orderDirection: $orderDirection
       where: $where
