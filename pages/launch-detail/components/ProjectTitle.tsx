@@ -15,6 +15,8 @@ import { cn } from "@nextui-org/theme";
 import Link from "next/link";
 import { BiLinkExternal } from "react-icons/bi";
 import Image from "next/image";
+import { Tooltip } from "@nextui-org/react";
+import { WrappedTooltip } from "@/components/wrappedNextUI/Tooltip/Tooltip";
 
 interface ProjectTitleProps {
   name?: string;
@@ -114,34 +116,40 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
             ) : (
               <>
                 {telegram && (
-                  <a
-                    href={telegram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-80 text-[#5C5C5C]"
-                  >
-                    <FaTelegram size={16} />
-                  </a>
+                  <WrappedTooltip content="Telegram">
+                    <a
+                      href={telegram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:opacity-80 text-[#5C5C5C]"
+                    >
+                      <FaTelegram size={16} />
+                    </a>
+                  </WrappedTooltip>
                 )}
                 {twitter && (
-                  <a
-                    href={twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-80 text-[#5C5C5C]"
-                  >
-                    <FaXTwitter size={16} />
-                  </a>
+                  <WrappedTooltip content="Twitter">
+                    <a
+                      href={twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:opacity-80 text-[#5C5C5C]"
+                    >
+                      <FaXTwitter size={16} />
+                    </a>
+                  </WrappedTooltip>
                 )}
                 {website && (
-                  <a
-                    href={website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-80 text-[#5C5C5C]"
-                  >
-                    <FaGlobe size={16} />
-                  </a>
+                  <WrappedTooltip content="Website">
+                    <a
+                      href={website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:opacity-80 text-[#5C5C5C]"
+                    >
+                      <FaGlobe size={16} />
+                    </a>
+                  </WrappedTooltip>
                 )}
                 {address && (
                   <>
@@ -154,27 +162,30 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                         </div>
                       }
                     />
-                    <a
-                      href={`https://x.com/search?q=($${displayName} or ${address})`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:opacity-80 text-[#5C5C5C]"
-                      title="Search on X"
-                    >
-                      <BiSearch size={18} />
-                    </a>
+                    <WrappedTooltip content="Search on Twitter">
+                      <a
+                        href={`https://x.com/search?q=($${displayName} or ${address})`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:opacity-80 text-[#5C5C5C]"
+                      >
+                        <BiSearch size={18} />
+                      </a>
+                    </WrappedTooltip>
                   </>
                 )}
                 {pair?.state === 0 && (
-                  <a
-                    href={`https://www.defined.fi/berachain/${pair?.launchedToken?.address}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-80 text-[#5C5C5C] text-lg"
-                    title="defined.fi"
-                  >
-                    {`𝔻`}
-                  </a>
+                  <WrappedTooltip content="Defined.fi">
+                    <a
+                      href={`https://www.defined.fi/berachain/${pair?.launchedToken?.address}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:opacity-80 text-[#5C5C5C] text-lg"
+                      title="defined.fi"
+                    >
+                      {`𝔻`}
+                    </a>
+                  </WrappedTooltip>
                 )}
                 <div className="hidden md:block">
                   <PairStatus
