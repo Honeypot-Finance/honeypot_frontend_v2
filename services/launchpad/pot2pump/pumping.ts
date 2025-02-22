@@ -31,6 +31,8 @@ export class Pot2PumpPumpingService {
       filter: filter,
     });
 
+    console.log("res", res);
+
     if (res.status === "success") {
       return { items: res.data.pairs, filterUpdates: res.data.filterUpdates };
     } else {
