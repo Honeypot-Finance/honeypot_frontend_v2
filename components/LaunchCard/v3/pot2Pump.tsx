@@ -42,7 +42,7 @@ const ComponentContainer = ({
 };
 
 //-------------------------------------Detail Components-------------------------------------//
-const TimeLineComponent = observer(({ pair }: { pair: Pot2Pump }) => {
+const TimeLineComponent = observer(({ pair }: { pair: MemePairContract }) => {
   const endedDisplay = <span>Ended!</span>;
 
   return (
@@ -54,7 +54,7 @@ const TimeLineComponent = observer(({ pair }: { pair: Pot2Pump }) => {
             <Countdown
               date={Number(pair?.endTime) * 1000}
               renderer={({ days, hours, minutes, seconds, completed }) => {
-                if (completed || pair.raisedTokenReachingMinCap) {
+                if (completed || pair.raisedTokenMinCap) {
                   return endedDisplay;
                 } else {
                   return (
@@ -303,21 +303,21 @@ const DetailLaunchCard = observer(
     action,
     projectType,
   }: {
-    pair: Pot2Pump;
+    pair: MemePairContract;
     action: React.ReactNode;
     projectType: "meme" | "fto";
   }) => {
-    const { projectInfo } = useProjectInfo(pair.id);
+    const { projectInfo } = useProjectInfo(pair.address);
 
     // 计算进度百分比
-    const progressPercentage = new BigNumber(pair.DepositRaisedToken)
-      .div(new BigNumber(pair.raisedTokenMinCap))
+    const progressPercentage = new BigNumber(pair.depositedRaisedToken ?? 0)
+      .div(new BigNumber(pair.raisedTokenMinCap ?? 0))
       .times(100)
       .toFixed(2);
 
     // 计算进度值
-    const progressValue = new BigNumber(pair.DepositRaisedToken)
-      .div(new BigNumber(pair.raisedTokenMinCap))
+    const progressValue = new BigNumber(pair.depositedRaisedToken ?? 0)
+      .div(new BigNumber(pair.raisedTokenMinCap ?? 0))
       .toNumber();
 
     return (
@@ -326,24 +326,26 @@ const DetailLaunchCard = observer(
           className="absolute right-0 top-[1rem] text-black"
           options={[
             optionsPresets.copy({
-              copyText: pair?.launchToken?.id ?? "",
+              copyText: pair?.launchedToken?.address ?? "",
               displayText: "Copy Token address",
               copysSuccessText: "Token address copied",
             }),
             optionsPresets.importTokenToWallet({
-              token: Token.getToken({ address: pair?.launchToken?.id }),
+              token: Token.getToken({
+                address: pair?.launchedToken?.address ?? "",
+              }),
             }),
             optionsPresets.share({
-              shareUrl: `${window.location.origin}/launch-detail/${pair.launchToken.id}`,
+              shareUrl: `${window.location.origin}/launch-detail/${pair.launchedToken?.address}`,
               displayText: "Share this project",
               shareText:
                 projectType === "meme"
                   ? "My Meme FTO eats bonding burves for breakfast. Inflate & innovation with Boneypot. Den moon 🌙: " +
-                    pair?.launchToken?.name
-                  : "Checkout this Token: " + pair?.launchToken?.name,
+                    pair?.launchedToken?.name
+                  : "Checkout this Token: " + pair?.launchedToken?.name,
             }),
             optionsPresets.viewOnExplorer({
-              address: pair?.id ?? "",
+              address: pair?.address ?? "",
             }),
           ]}
         />
@@ -364,9 +366,9 @@ const DetailLaunchCard = observer(
         <div className="text-[#202020]">
           <div className="flex justify-between items-start">
             <div>
-              <h3 className="font-bold text-xl">{pair?.launchToken?.name}</h3>
+              <h3 className="font-bold text-xl">{pair?.launchedToken?.name}</h3>
               <p className="text-sm  text-[#202020]/[0.67]">
-                {pair?.launchToken?.symbol}
+                {pair?.launchedToken?.symbol}
               </p>
             </div>
             <Image
@@ -395,11 +397,11 @@ const DetailLaunchCard = observer(
             <div className="flex items-center justify-between text-sm">
               <span className="space-x-0.5">
                 <span>
-                  {new BigNumber(pair.DepositRaisedToken)
-                    .div(Math.pow(10, Number(pair.raisedToken.decimals)))
+                  {new BigNumber(pair.depositedRaisedToken ?? 0)
+                    .div(Math.pow(10, Number(pair.raiseToken?.decimals ?? 18)))
                     .toFixed(3)}
                 </span>
-                <span> {pair.raisedToken.name}</span>
+                <span> {pair.raiseToken?.name}</span>
               </span>
               <span className="font-bold">{progressPercentage}%</span>
             </div>
@@ -410,18 +412,18 @@ const DetailLaunchCard = observer(
             <p className="text-xs opacity-60">Total Raised Token</p>
             <p className="font-semibold">
               <span>
-                {new BigNumber(pair.DepositRaisedToken)
-                  .multipliedBy(pair?.raisedToken?.derivedUSD || 0)
+                {new BigNumber(pair.depositedRaisedToken ?? 0)
+                  .multipliedBy(pair?.raiseToken?.derivedUSD || 0)
                   .toFormat(3)}
                 &nbsp;
-                {pair?.raisedToken?.name}
+                {pair?.raiseToken?.name}
               </span>
             </p>
           </div>
           <div className="text-right">
             <p className="text-xs opacity-60">Participants Count</p>
             <p className="font-semibold">
-              <span>{pair.participantsCount}</span>
+              <span>{pair.participantsCount?.toFormat(0)}</span>
             </p>
           </div>
         </div>
@@ -438,24 +440,24 @@ const DetailLaunchCard = observer(
   }
 );
 
-const TrendingLaunchCard = observer(({ pair }: { pair: Pot2Pump }) => {
-  const { projectInfo } = useProjectInfo(pair.id);
+const TrendingLaunchCard = observer(({ pair }: { pair: MemePairContract }) => {
+  const { projectInfo } = useProjectInfo(pair.address);
 
   // 计算进度百分比
-  const progressPercentage = new BigNumber(pair.DepositRaisedToken)
-    .div(new BigNumber(pair.raisedTokenMinCap))
+  const progressPercentage = new BigNumber(pair.depositedRaisedToken ?? 0)
+    .div(new BigNumber(pair.raisedTokenMinCap ?? 0))
     .times(100)
     .toFixed(2);
 
   // 计算进度值
-  const progressValue = new BigNumber(pair.DepositRaisedToken)
-    .div(new BigNumber(pair.raisedTokenMinCap))
+  const progressValue = new BigNumber(pair.depositedRaisedToken ?? 0)
+    .div(new BigNumber(pair.raisedTokenMinCap ?? 0))
     .toNumber();
 
   return (
     <Link
       className="flex flex-col bg-white px-4 py-6 border-none rounded-3xl shadow-[2px_2px_0px_0px_#925425] relative overflow-hidden"
-      href={`/launch-detail/${pair.launchToken.id}`}
+      href={`/launch-detail/${pair.launchedToken?.address}`}
     >
       <div className="bg-[url('/images/pumping/inline-border.png')] bg-top h-6 absolute top-0 left-0 w-full bg-contain"></div>
       <Image
@@ -473,9 +475,9 @@ const TrendingLaunchCard = observer(({ pair }: { pair: Pot2Pump }) => {
       <div className="text-[#202020]">
         <div className="flex justify-between items-start mt-4">
           <div>
-            <h3 className="font-bold text-xl">{pair?.launchToken?.name}</h3>
+            <h3 className="font-bold text-xl">{pair?.launchedToken?.name}</h3>
             <p className="text-sm text-muted-foreground text-[#202020]/[0.67]">
-              {pair?.launchToken?.symbol}
+              {pair?.launchedToken?.symbol}
             </p>
           </div>
           <Image
@@ -496,14 +498,14 @@ const TrendingLaunchCard = observer(({ pair }: { pair: Pot2Pump }) => {
           <span className="text-sm text-[#202020]/80">Total Raised</span>
           <div className="flex justify-between items-center">
             <span className="font-semibold">
-              {new BigNumber(pair.DepositRaisedToken).toFixed(0)}
+              {new BigNumber(pair.depositedRaisedToken ?? 0).toFixed(0)}
             </span>
             <span>
-              {new BigNumber(pair.raisedTokenMinCap)
+              {new BigNumber(pair.raisedTokenMinCap ?? 0)
                 .div(Math.pow(10, 18))
                 .toFixed(0)}
               &nbsp;
-              {pair?.raisedToken?.name}
+              {pair?.raiseToken?.name}
             </span>
           </div>
           <ProgressBar
@@ -527,7 +529,7 @@ export const LaunchCardV3 = observer(
     className,
   }: {
     type?: launchCardVariants;
-    pair?: Pot2Pump;
+    pair?: MemePairContract;
     action: React.ReactNode;
   } & Partial<HTMLAttributes<any>>) => {
     const projectType: "meme" | "fto" = "meme";

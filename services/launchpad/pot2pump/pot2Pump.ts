@@ -1,11 +1,8 @@
 import { wallet } from "@/services/wallet";
 import { PAGE_LIMIT, SubgraphProjectFilter } from "..";
 import { IndexerPaginationState } from "@/services/utils";
-import {
-  fetchPot2PumpList,
-  fetchPot2Pumps,
-} from "@/lib/algebra/graphql/clients/pair";
-import { Pot2Pump } from "@/lib/algebra/graphql/clients/type";
+import { fetchPot2PumpList } from "@/lib/algebra/graphql/clients/pair";
+import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 
 export class Pot2PumpPumpingService {
   DEFAULT_FILTER: SubgraphProjectFilter = {
@@ -17,7 +14,10 @@ export class Pot2PumpPumpingService {
     orderDirection: "desc",
   };
 
-  projectsPage = new IndexerPaginationState<SubgraphProjectFilter, Pot2Pump>({
+  projectsPage = new IndexerPaginationState<
+    SubgraphProjectFilter,
+    MemePairContract
+  >({
     namespace: "projectsPage",
     defaultFilter: this.DEFAULT_FILTER,
     LoadNextPageFunction: async (filter) =>
@@ -30,15 +30,8 @@ export class Pot2PumpPumpingService {
       filter: filter,
     });
 
-    const data = await fetchPot2Pumps({
-      chainId: String(wallet.currentChainId),
-      filter: filter,
-    });
-
-    console.log("query data", data);
-
     if (res.status === "success") {
-      return { items: data.pot2Pumps };
+      return { items: res.data.pairs };
     } else {
       return {
         items: [],
