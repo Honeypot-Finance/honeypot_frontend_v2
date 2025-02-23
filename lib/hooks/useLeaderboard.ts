@@ -18,17 +18,17 @@ export function useLeaderboard() {
 
   const stats = data?.factories[0]
     ? {
-        totalTrades: {
-          title: "Total Trades",
-          value: data.factories[0].txCount,
+        totalMemeCreated: {
+          title: "Total Meme Created",
+          value: data.factories[0].totalMemeCreated,
         },
-        totalVolume: {
-          title: "Total Volume",
-          value: formatValue(data.factories[0].untrackedVolumeUSD).usd,
+        totalSuccessedMeme: {
+          title: "Total Successed Meme",
+          value: data.factories[0].totalSuccessedMeme,
         },
-        tvl: {
-          title: "TVL",
-          value: formatValue(data.factories[0].totalValueLockedUSD).usd,
+        totalDepositedUSD: {
+          title: "Total Deposited USD",
+          value: data.factories[0].totalDepositedUSD,
         },
       }
     : null;

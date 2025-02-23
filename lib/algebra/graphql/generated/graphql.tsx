@@ -1646,8 +1646,11 @@ export type Factory = {
   id: Scalars['ID']['output'];
   owner: Scalars['ID']['output'];
   poolCount: Scalars['BigInt']['output'];
+  totalDepositedUSD: Scalars['BigDecimal']['output'];
   totalFeesMatic: Scalars['BigDecimal']['output'];
   totalFeesUSD: Scalars['BigDecimal']['output'];
+  totalMemeCreated: Scalars['BigInt']['output'];
+  totalSuccessedMeme: Scalars['BigInt']['output'];
   totalValueLockedMatic: Scalars['BigDecimal']['output'];
   totalValueLockedMaticUntracked: Scalars['BigDecimal']['output'];
   totalValueLockedUSD: Scalars['BigDecimal']['output'];
@@ -1703,6 +1706,14 @@ export type Factory_Filter = {
   poolCount_lte?: InputMaybe<Scalars['BigInt']['input']>;
   poolCount_not?: InputMaybe<Scalars['BigInt']['input']>;
   poolCount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalDepositedUSD?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositedUSD_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositedUSD_gte?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositedUSD_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
+  totalDepositedUSD_lt?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositedUSD_lte?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositedUSD_not?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositedUSD_not_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
   totalFeesMatic?: InputMaybe<Scalars['BigDecimal']['input']>;
   totalFeesMatic_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
   totalFeesMatic_gte?: InputMaybe<Scalars['BigDecimal']['input']>;
@@ -1719,6 +1730,22 @@ export type Factory_Filter = {
   totalFeesUSD_lte?: InputMaybe<Scalars['BigDecimal']['input']>;
   totalFeesUSD_not?: InputMaybe<Scalars['BigDecimal']['input']>;
   totalFeesUSD_not_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
+  totalMemeCreated?: InputMaybe<Scalars['BigInt']['input']>;
+  totalMemeCreated_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalMemeCreated_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalMemeCreated_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalMemeCreated_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalMemeCreated_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalMemeCreated_not?: InputMaybe<Scalars['BigInt']['input']>;
+  totalMemeCreated_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalSuccessedMeme?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSuccessedMeme_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSuccessedMeme_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSuccessedMeme_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalSuccessedMeme_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSuccessedMeme_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSuccessedMeme_not?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSuccessedMeme_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   totalValueLockedMatic?: InputMaybe<Scalars['BigDecimal']['input']>;
   totalValueLockedMaticUntracked?: InputMaybe<Scalars['BigDecimal']['input']>;
   totalValueLockedMaticUntracked_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
@@ -1791,8 +1818,11 @@ export enum Factory_OrderBy {
   Id = 'id',
   Owner = 'owner',
   PoolCount = 'poolCount',
+  TotalDepositedUsd = 'totalDepositedUSD',
   TotalFeesMatic = 'totalFeesMatic',
   TotalFeesUsd = 'totalFeesUSD',
+  TotalMemeCreated = 'totalMemeCreated',
+  TotalSuccessedMeme = 'totalSuccessedMeme',
   TotalValueLockedMatic = 'totalValueLockedMatic',
   TotalValueLockedMaticUntracked = 'totalValueLockedMaticUntracked',
   TotalValueLockedUsd = 'totalValueLockedUSD',
