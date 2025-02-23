@@ -92,6 +92,7 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
   }, [filters, pottingProjects, search]);
 
   const onChangeFilter = (data: any) => {
+    console.log("onChangeFilter", data);
     setSearch("");
     setFilters(data);
   };
@@ -265,8 +266,8 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                   },
                   {
                     key: 3,
-                    label: "Deposit Raised Token",
-                    category: "depositraisedtoken",
+                    label: "Pumping Percentage",
+                    category: "depositraisedtokenpercentage",
                   },
                 ]}
                 filters={filters}
@@ -315,7 +316,10 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
               }
             }}
           >
-            <Tab key="all" title="All MEMEs">
+            <Tab
+              key="all"
+              title="All MEMEs"
+            >
               {pottingProjects && (
                 <Pagination
                   paginationState={pottingProjects.projectsPage}
@@ -334,7 +338,10 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                 />
               )}
             </Tab>
-            <Tab key="my" title="My MEMEs">
+            <Tab
+              key="my"
+              title="My MEMEs"
+            >
               {myProjects && (
                 <Pagination
                   paginationState={myProjects.myLaunches}
@@ -353,7 +360,10 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                 />
               )}
             </Tab>
-            <Tab key="participated-launch" title="Participated MEMEs">
+            <Tab
+              key="participated-launch"
+              title="Participated MEMEs"
+            >
               {myProjects && (
                 <Pagination
                   paginationState={myProjects.participatedPairs}

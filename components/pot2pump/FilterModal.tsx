@@ -37,7 +37,7 @@ type category =
   | "daysells"
   | "dayvolume"
   | "daychange"
-  | "depositraisedtoken";
+  | "depositraisedtokenpercentage";
 
 export const Filter = observer(
   ({ filters, setFilters, pumpingProjects, filtersList }: FilterProps) => {

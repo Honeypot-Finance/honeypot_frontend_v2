@@ -175,7 +175,7 @@ export const pot2PumpToMemePair = (
       pot2Pump.endTime < dayjs().unix(),
   });
 
-  console.log("pot2Pump", pot2Pump);
+  // console.log("pot2Pump", pot2Pump);
 
   if (pot2Pump.launchToken?.id) {
     const { priceChange, priceChangePercentage } = calculateToken24hPriceChange(
@@ -482,6 +482,7 @@ export async function fetchPot2PumpList({
   chainId: string;
   filter: SubgraphProjectFilter;
 }): Promise<Pot2PumpListResponse> {
+  console.log("filter", filter);
   const dynamicFilter: Pot2PumpDynamicFilterQueryVariables = {
     first: filter.limit,
     skip:
@@ -545,12 +546,19 @@ export async function fetchPot2PumpList({
     dynamicFilter.where.sellCount_lte = filter.daysells.max;
   }
 
-  if (filter?.depositraisedtoken?.min !== undefined) {
-    dynamicFilter.where.DepositRaisedToken_gte = filter.depositraisedtoken.min;
+  console.log(
+    "filter.depositRaisedTokenPercentageToMinCap",
+    filter.depositRaisedTokenPercentageToMinCap
+  );
+
+  if (filter?.depositRaisedTokenPercentageToMinCap?.min !== undefined) {
+    dynamicFilter.where.depositRaisedTokenPercentageToMinCap_gte =
+      filter.depositRaisedTokenPercentageToMinCap.min;
   }
 
-  if (filter?.depositraisedtoken?.max !== undefined) {
-    dynamicFilter.where.DepositRaisedToken_lte = filter.depositraisedtoken.max;
+  if (filter?.depositRaisedTokenPercentageToMinCap?.max !== undefined) {
+    dynamicFilter.where.depositRaisedTokenPercentageToMinCap_lte =
+      filter.depositRaisedTokenPercentageToMinCap.max;
   }
 
   if (filter.search) {
