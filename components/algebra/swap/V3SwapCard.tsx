@@ -4,8 +4,10 @@ import SwapParamsV3 from "./SwapParams/SwapParamsV3";
 import CardContainer from "../../CardContianer/v3";
 import PoweredByAlgebra from "../common/PoweredByAlgebra";
 import { Token } from "@/services/contract/token";
+import { PresetPair } from "./SwapPair/SwapPairV3";
 
 interface V3SwapCardProps {
+  presetPairs?: PresetPair[];
   fromTokenAddress?: string;
   toTokenAddress?: string;
   disableSelection?: boolean;
@@ -22,6 +24,7 @@ interface V3SwapCardProps {
 }
 
 export function V3SwapCard({
+  presetPairs,
   fromTokenAddress,
   toTokenAddress,
   disableSelection,
@@ -37,6 +40,7 @@ export function V3SwapCard({
   return (
     <CardContainer>
       <SwapPairV3
+        presetPairs={presetPairs}
         fromTokenAddress={fromTokenAddress}
         toTokenAddress={toTokenAddress}
         disableSelection={disableSelection}

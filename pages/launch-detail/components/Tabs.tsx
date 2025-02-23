@@ -84,7 +84,8 @@ const Tabs = observer(
             ),
             tab: "px-1 sm:px-2 py-1 rounded-lg whitespace-nowrap text-xs sm:text-sm sm:text-base",
             tabContent: "group-data-[selected=true]:text-white",
-            cursor: "bg-[#020202] border border-black shadow-[0.5px_0.5px_0px_0px_#000000] sm:shadow-[2px_2px_0px_0px_#000000]",
+            cursor:
+              "bg-[#020202] border border-black shadow-[0.5px_0.5px_0px_0px_#000000] sm:shadow-[2px_2px_0px_0px_#000000]",
             panel: cn(
               "flex flex-col h-full w-full gap-y-4 justify-center items-center bg-[#FFCD4D] rounded-2xl text-[#202020]",
               "px-2 sm:px-4 pt-[50px] sm:pt-[70px] pb-[50px] sm:pb-[70px]",
@@ -96,7 +97,10 @@ const Tabs = observer(
             ),
           }}
         >
-          <Tab key="comment" title="Comments">
+          <Tab
+            key="comment"
+            title="Comments"
+          >
             {pair && (
               <DiscussionArea
                 pairDatabaseId={pair.databaseId ?? -1}
@@ -104,7 +108,10 @@ const Tabs = observer(
               />
             )}
           </Tab>
-          <Tab key="txs" title="Transactions">
+          <Tab
+            key="txs"
+            title="Transactions"
+          >
             <TransactionHistory
               pairAddress={pair?.address ?? ""}
               pair={pair as MemePairContract}
@@ -114,7 +121,10 @@ const Tabs = observer(
 
           {pair?.state === 0 && (
             <>
-              <Tab key="holders" title="Top 10 Holders">
+              <Tab
+                key="holders"
+                title="Top 10 Holders"
+              >
                 <div className="w-full">
                   <h1 className="text-[var(--Heading,#0D0D0D)] text-center text-shadow-[2px_4px_0px_#AF7F3D] webkit-text-stroke-[2px] text-stroke-white font-gliker text-[32px] md:text-[64px] font-normal leading-[110%] tracking-[1.28px] mb-4 md:mb-12">
                     Top 10 Holders
@@ -128,7 +138,10 @@ const Tabs = observer(
                   />
                 </div>
               </Tab>
-              <Tab key="votingspace" title="Voting Space">
+              <Tab
+                key="votingspace"
+                title="Voting Space"
+              >
                 <div className="flex flex-col justify-center items-center gap-2 w-full">
                   {pair &&
                     (pair.beravoteSpaceId ? (
@@ -136,6 +149,8 @@ const Tabs = observer(
                         <iframe
                           className="w-full aspect-video"
                           src={`https://beravote.com/space/${pair.beravoteSpaceId}`}
+                          referrerPolicy="strict-origin-when-cross-origin"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         >
                           {" "}
                         </iframe>

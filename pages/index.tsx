@@ -32,6 +32,7 @@ import {
   CarouselApi,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import { CartoonButton } from "@/components/atoms/CartoonButton/CartoonButton";
 // 在组件外部定义常量
 
 const POT_TABS = {
@@ -812,9 +813,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                     className="relative flex flex-col px-2 overflow-hidden gap-y-2"
                   >
                     <div>
-                      <div className="rounded-small dark:bg-default bg-[#FFCD4D] border border-black shadow-[2px_2px_0px_0px_#000000] text-sm inline-block p-2">
-                        {tab}
-                      </div>
+                      <CartoonButton>{tab}</CartoonButton>
                     </div>
                     <div className="flex flex-col gap-6 py-4 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1  [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2 shadow-inner px-2">
                       {(() => {
