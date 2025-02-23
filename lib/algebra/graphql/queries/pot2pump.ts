@@ -47,6 +47,19 @@ export const POT_2_PUMP_DYNAMIC_FILTER = gql`
   }
 `;
 
+export const POT_2_PUMP_PUMPING_POPULAR = gql`
+  query Pot2PumpPumpingPopular {
+    pot2Pumps(
+      first: 25
+      orderBy: launchToken__holderCount
+      orderDirection: desc
+      where: { raisedTokenReachingMinCap: true }
+    ) {
+      ...Pot2PumpField
+    }
+  }
+`;
+
 export const POT_2_PUMP_POTTING_NEW_TOKENS = gql`
   query Pot2PumpPottingNewTokens($endTime: BigInt) {
     pot2Pumps(
