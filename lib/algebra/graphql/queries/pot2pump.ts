@@ -93,7 +93,7 @@ export const POT_2_PUMP_PUMPING_HIGH_PRICE = gql`
   query Pot2PumpPottingHighPrice {
     pot2Pumps(
       first: 25
-      orderBy: LaunchTokenTVLUSD
+      orderBy: launchToken__derivedUSD
       orderDirection: desc
       where: { raisedTokenReachingMinCap: true }
     ) {
@@ -119,7 +119,7 @@ export const POT_2_PUMP_POTTING_MARKET_CAP = gql`
   query Pot2PumpPottingMarketCap {
     pot2Pumps(
       first: 25
-      orderBy: LaunchTokenMCAPUSD
+      orderBy: launchToken__marketCap
       orderDirection: desc
       where: { raisedTokenReachingMinCap: true }
     ) {
@@ -163,8 +163,6 @@ export const POT2_PUMP_FRAGMENT = gql`
     id
     launchTokenInitialPrice
     DepositLaunchToken
-    LaunchTokenTVLUSD
-    LaunchTokenMCAPUSD
     raisedTokenMinCap
     depositRaisedTokenPercentageToMinCap
     raisedTokenReachingMinCap

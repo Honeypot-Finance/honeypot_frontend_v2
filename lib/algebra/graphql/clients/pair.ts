@@ -510,12 +510,16 @@ export async function fetchPot2PumpList({
   }
 
   if (filter.tvl?.min !== undefined) {
-    filter.tvl.min.length > 0 &&
-      (dynamicFilter.where.LaunchTokenTVLUSD_gte = filter.tvl.min);
+    if (!dynamicFilter.where.launchToken_) {
+      dynamicFilter.where.launchToken_ = {};
+    }
+    dynamicFilter.where.launchToken_.totalValueLockedUSD_gte = filter.tvl.min;
   }
   if (filter.tvl?.max !== undefined) {
-    filter.tvl.max.length > 0 &&
-      (dynamicFilter.where.LaunchTokenTVLUSD_lte = filter.tvl.max);
+    if (!dynamicFilter.where.launchToken_) {
+      dynamicFilter.where.launchToken_ = {};
+    }
+    dynamicFilter.where.launchToken_.totalValueLockedUSD_lte = filter.tvl.max;
   }
 
   if (filter.participants?.min !== undefined) {
@@ -526,10 +530,16 @@ export async function fetchPot2PumpList({
   }
 
   if (filter?.marketcap?.min !== undefined) {
-    dynamicFilter.where.LaunchTokenMCAPUSD_gte = filter.marketcap.min;
+    if (!dynamicFilter.where.launchToken_) {
+      dynamicFilter.where.launchToken_ = {};
+    }
+    dynamicFilter.where.launchToken_.marketCap_gte = filter.marketcap.min;
   }
   if (filter?.marketcap?.max !== undefined) {
-    dynamicFilter.where.LaunchTokenMCAPUSD_lte = filter.marketcap.min;
+    if (!dynamicFilter.where.launchToken_) {
+      dynamicFilter.where.launchToken_ = {};
+    }
+    dynamicFilter.where.launchToken_.marketCap_lte = filter.marketcap.max;
   }
 
   if (filter?.daybuys?.min !== undefined) {
@@ -546,11 +556,6 @@ export async function fetchPot2PumpList({
   if (filter?.daysells?.max !== undefined) {
     dynamicFilter.where.sellCount_lte = filter.daysells.max;
   }
-
-  console.log(
-    "filter.depositRaisedTokenPercentageToMinCap",
-    filter.depositraisedtokenpercentage
-  );
 
   if (filter?.depositraisedtokenpercentage?.min !== undefined) {
     dynamicFilter.where.depositRaisedTokenPercentageToMinCap_gte =
