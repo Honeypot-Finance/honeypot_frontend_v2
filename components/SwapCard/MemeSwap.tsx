@@ -86,11 +86,18 @@ export const LaunchDetailSwapCard = observer(
             address: inputAddress,
             isNative: isInputNative,
           });
+
+          const fromTokenWrapped = Token.getToken({
+            address: wallet.currentChain.nativeToken.address,
+            isNative: false,
+          });
+
           const toToken = Token.getToken({
             address: outputAddress,
             isNative: isOutputNative,
           });
           newPresetPairs.push({ fromToken, toToken });
+          newPresetPairs.push({ fromToken: fromTokenWrapped, toToken });
         }
       }
 
@@ -112,12 +119,14 @@ export const LaunchDetailSwapCard = observer(
       ) {
         const fromToken = Token.getToken({
           address: wallet.currentChain.nativeToken.address,
-          isNative: isInputNative,
+          isNative: true,
         });
+
         const toToken = Token.getToken({
           address: memePairContract.launchedToken!.address,
           isNative: isOutputNative,
         });
+
         newPresetPairs.push({ fromToken, toToken });
       }
 
@@ -262,6 +271,8 @@ export const LaunchDetailSwapCard = observer(
                 bordered={false}
                 isInputNative={isInputNative}
                 isOutputNative={isOutputNative}
+                showPresetInput={true}
+                showPresetOutput={false}
                 onSwapSuccess={onSwapSuccess}
                 disableFromSelection={disableFromSelection}
                 disableToSelection={disableToSelection}

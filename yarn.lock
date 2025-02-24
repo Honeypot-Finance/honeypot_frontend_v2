@@ -5249,6 +5249,17 @@
     "@babel/traverse" "^7.20.5"
     "@babel/types" "7.20.5"
 
+"@react-dev-inspector/babel-plugin@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@react-dev-inspector/babel-plugin/-/babel-plugin-2.0.1.tgz#4d41e3be0e7c5b471586ca289f2da52615d5293a"
+  integrity sha512-V2MzN9dj3uZu6NvAjSxXwa3+FOciVIuwAUwPLpO6ji5xpUyx8E6UiEng1QqzttdpacKHFKtkNYjtQAE+Lsqa5A==
+  dependencies:
+    "@babel/core" "^7.20.5"
+    "@babel/generator" "^7.20.5"
+    "@babel/parser" "^7.20.5"
+    "@babel/traverse" "^7.20.5"
+    "@babel/types" "7.20.5"
+
 "@react-dev-inspector/middleware@2.0.1":
   version "2.0.1"
   resolved "https://registry.npmjs.org/@react-dev-inspector/middleware/-/middleware-2.0.1.tgz"

@@ -45,6 +45,8 @@ interface SwapPairV3Props {
   isOutputNative?: boolean;
   disableFromSelection?: boolean;
   disableToSelection?: boolean;
+  showPresetInput?: boolean;
+  showPresetOutput?: boolean;
 }
 
 const SwapPairV3 = ({
@@ -59,6 +61,8 @@ const SwapPairV3 = ({
   isOutputNative,
   disableFromSelection,
   disableToSelection,
+  showPresetInput,
+  showPresetOutput,
 }: SwapPairV3Props) => {
   const {
     toggledTrade: trade,
@@ -342,7 +346,9 @@ const SwapPairV3 = ({
                 );
               }}
             >
-              {pair.fromToken.symbol}-{pair.toToken.symbol}
+              {showPresetInput && pair.fromToken.symbol}
+              {showPresetOutput && showPresetInput && "-"}
+              {showPresetOutput && pair.toToken.symbol}
             </CartoonButton>
           ))}
         </div>

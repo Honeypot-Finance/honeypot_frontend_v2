@@ -21,6 +21,8 @@ interface V3SwapCardProps {
   staticToTokenList?: Token[];
   isInputNative?: boolean;
   isOutputNative?: boolean;
+  showPresetInput?: boolean;
+  showPresetOutput?: boolean;
 }
 
 export function V3SwapCard({
@@ -36,6 +38,8 @@ export function V3SwapCard({
   isOutputNative,
   disableFromSelection,
   disableToSelection,
+  showPresetInput,
+  showPresetOutput,
 }: V3SwapCardProps) {
   return (
     <CardContainer>
@@ -51,6 +55,8 @@ export function V3SwapCard({
         isOutputNative={isOutputNative}
         disableFromSelection={disableFromSelection}
         disableToSelection={disableToSelection}
+        showPresetInput={showPresetInput}
+        showPresetOutput={showPresetOutput}
       />
       <SwapParamsV3 />
       <SwapButtonV3 />
