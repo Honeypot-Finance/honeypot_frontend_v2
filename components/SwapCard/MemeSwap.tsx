@@ -89,7 +89,7 @@ export const LaunchDetailSwapCard = observer(
 
           const fromTokenWrapped = Token.getToken({
             address: wallet.currentChain.nativeToken.address,
-            isNative: true,
+            isNative: inputAddress !== wallet.currentChain.nativeToken.address,
           });
 
           const toToken = Token.getToken({

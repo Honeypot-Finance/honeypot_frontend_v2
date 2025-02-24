@@ -14277,7 +14277,9 @@ export type PoolFeeDataSuspenseQueryHookResult = ReturnType<typeof usePoolFeeDat
 export type PoolFeeDataQueryResult = Apollo.QueryResult<PoolFeeDataQuery, PoolFeeDataQueryVariables>;
 export const PoolsByTokenPairDocument = gql`
     query PoolsByTokenPair($token0: ID!, $token1: ID!) {
-  pools(where: {token0_: {id: $token0}, token1_: {id: $token1}}) {
+  pools(
+    where: {or: [{token0_: {id: $token0}, token1_: {id: $token1}}, {token0_: {id: $token1}, token1_: {id: $token0}}]}
+  ) {
     ...PoolFields
   }
 }

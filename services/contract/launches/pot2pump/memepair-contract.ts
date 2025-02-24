@@ -14,8 +14,9 @@ import {
 import { wallet } from "@/services/wallet";
 import { ICHIVaultContract } from "../../aquabera/ICHIVault-contract";
 import { BaseLaunchContract } from "../base-launch-contract";
-import { Pot2Pump } from "@/lib/algebra/graphql/generated/graphql";
-
+import { Pool, Pot2Pump } from "@/lib/algebra/graphql/generated/graphql";
+import { PairContract } from "../../dex/liquidity/pair-contract";
+import { poolsByTokenPair } from "@/lib/algebra/graphql/clients/pool";
 export class MemePairContract implements BaseLaunchContract {
   static contractMap: Record<string, MemePairContract> = {};
   static loadContract(
@@ -71,6 +72,7 @@ export class MemePairContract implements BaseLaunchContract {
   vaultBalance = BigInt(0);
   indexerDataLoaded = false;
   userDepositedRaisedTokenWithoutDecimals = new BigNumber(0);
+  raisedandLaunchTokenPairPool: Pool | undefined = undefined;
 
   constructor(args: Partial<MemePairContract>) {
     Object.assign(this, args);
@@ -513,6 +515,30 @@ export class MemePairContract implements BaseLaunchContract {
     await Promise.all([this.getProjectInfo(force), this.getCanRefund()]);
 
     this.isInit = true;
+  }
+
+  async loadRaisedandLaunchTokenPairPool() {
+    if (!this.raiseToken || !this.launchedToken) {
+      return;
+    }
+
+    const poolAddress = await poolsByTokenPair(
+      this.raiseToken.address.toLowerCase(),
+      this.launchedToken.address.toLowerCase()
+    );
+
+    console.log("poolAddress", poolAddress);
+
+    if (!poolAddress) {
+      return;
+    }
+
+    this.raisedandLaunchTokenPairPool = poolAddress[0] as Pool;
+
+    console.log(
+      "this.raisedandLaunchTokenPairPool",
+      this.raisedandLaunchTokenPairPool
+    );
   }
 
   async getParticipantDetail() {

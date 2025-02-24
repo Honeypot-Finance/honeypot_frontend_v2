@@ -18,7 +18,7 @@ import {
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { z } from "zod";
+import { promise, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { trpcClient } from "@/lib/trpc";
 import { UploadImage } from "@/components/UploadImage/UploadImage";
@@ -264,13 +264,17 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
 
       await pair.init({ force: true });
 
-      pair.raiseToken?.init(false, {
-        loadIndexerTokenData: true,
-      });
+      await Promise.all([
+        await pair.raiseToken?.init(false, {
+          loadIndexerTokenData: true,
+        }),
 
-      pair.launchedToken?.init(false, {
-        loadIndexerTokenData: true,
-      });
+        await pair.launchedToken?.init(false, {
+          loadIndexerTokenData: true,
+        }),
+      ]);
+
+      pair.loadRaisedandLaunchTokenPairPool();
 
       return pair;
     }),
