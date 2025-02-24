@@ -4,9 +4,6 @@ export const GET_POT2_PUMP_DETAIL = gql`
   query GetPot2PumpDetail($id: ID!, $accountId: ID) {
     pot2Pump(id: $id) {
       ...Pot2PumpField
-      participants(where: { account_: { id: $accountId } }) {
-        ...ParticipantFields
-      }
     }
   }
 `;
@@ -17,12 +14,6 @@ export const GET_PARTICIPANT_DETAIL = gql`
       where: { account_: { id: $accountId }, pot2Pump_: { id: $pot2PumpId } }
     ) {
       ...ParticipantFields
-      pot2Pump {
-        ...Pot2PumpField
-      }
-      account {
-        ...AccountField
-      }
     }
   }
 `;
@@ -34,6 +25,7 @@ export const POT_2_PUMP_DYNAMIC_FILTER = gql`
     $orderBy: Pot2Pump_orderBy
     $orderDirection: OrderDirection
     $where: Pot2Pump_filter
+    $accountId: ID
   ) {
     pot2Pumps(
       first: $first
@@ -43,6 +35,17 @@ export const POT_2_PUMP_DYNAMIC_FILTER = gql`
       where: $where
     ) {
       ...Pot2PumpField
+      participants(where: { account_: { id: $accountId } }) {
+        id
+        amount
+        totalRefundAmount
+        totalclaimLqAmount
+        claimed
+        refunded
+        account {
+          id
+        }
+      }
     }
   }
 `;
@@ -185,9 +188,6 @@ export const POT2_PUMP_FRAGMENT = gql`
     participantTransactionHistorys {
       ...ParticipantTransactionHistoryFields
     }
-    # participants {
-    #   ...ParticipantFields
-    # }
   }
 `;
 
@@ -210,6 +210,17 @@ export const PARTICIPANT_FRAGMENT = gql`
     }
     pot2Pump {
       ...Pot2PumpField
+      participants(where: { account_: { id: $accountId } }) {
+        id
+        amount
+        totalRefundAmount
+        totalclaimLqAmount
+        claimed
+        refunded
+        account {
+          id
+        }
+      }
     }
   }
 `;

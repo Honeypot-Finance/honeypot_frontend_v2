@@ -173,8 +173,10 @@ export const pot2PumpToMemePair = (
       pot2Pump.participants.length > 0 &&
       !pot2Pump.participants[0].refunded &&
       pot2Pump.endTime < dayjs().unix(),
+    userDepositedRaisedTokenWithoutDecimals:
+      new BigNumber(pot2Pump.participants?.[0]?.amount) ?? new BigNumber(0),
   });
-
+  console.log("pot2Pump contract", contract);
   console.log("pot2Pump", pot2Pump);
 
   if (pot2Pump.launchToken?.id) {
@@ -491,6 +493,7 @@ export async function fetchPot2PumpList({
     orderBy: filter.orderBy as Pot2Pump_OrderBy,
     orderDirection: filter.orderDirection as OrderDirection,
     where: {},
+    accountId: filter.userAccountId,
   };
 
   if (!dynamicFilter.where) {
