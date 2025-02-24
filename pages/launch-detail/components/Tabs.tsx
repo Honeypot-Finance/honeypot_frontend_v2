@@ -146,14 +146,14 @@ const Tabs = observer(
                   {pair &&
                     (pair.beravoteSpaceId ? (
                       <>
-                        <iframe
+                        {/* <iframe
                           className="w-full aspect-video"
                           src={`https://beravote.com/space/${pair.beravoteSpaceId}`}
                           referrerPolicy="strict-origin-when-cross-origin"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         >
                           {" "}
-                        </iframe>
+                        </iframe> */}
                         <Link
                           href={`https://beravote.com/space/${pair.beravoteSpaceId}`}
                         >
