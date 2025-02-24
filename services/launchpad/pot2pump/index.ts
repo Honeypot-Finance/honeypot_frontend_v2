@@ -65,6 +65,7 @@ export class Pot2PumpService {
   LoadMoreMyLaunchesPage = async (filter: SubgraphProjectFilter) => {
     console.log("filter", filter);
 
+    filter.userAccountId = wallet.account.toLowerCase();
     const res = await fetchPot2PumpList({
       chainId: String(wallet.currentChainId),
       filter: filter,
@@ -81,6 +82,7 @@ export class Pot2PumpService {
 
   LoadMoreParticipatedPage = async (filter: SubgraphProjectFilter) => {
     console.log("filter", filter);
+    filter.userAccountId = wallet.account.toLowerCase();
     const res = await fetchPot2PumpList({
       chainId: String(wallet.currentChainId),
       filter: filter,
