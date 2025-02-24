@@ -17,6 +17,7 @@ import { ERC20ABI } from "@/lib/abis/erc20";
 import { MemePairContract } from "./../contract/launches/pot2pump/memepair-contract";
 import { PageRequest } from "./../indexer/indexerTypes";
 import { fetchPairsList } from "@/lib/algebra/graphql/clients/pair";
+import { FilterState } from "@/constants/pot2pump.type";
 
 export const PAGE_LIMIT = 9;
 
@@ -55,43 +56,7 @@ export type SubgraphProjectFilter = {
   orderBy?: string;
   orderDirection?: string;
   userAccountId?: string;
-  tvl?: {
-    min?: string;
-    max?: string;
-  };
-  participants?: {
-    min?: string;
-    max?: string;
-  };
-  marketcap?: {
-    min?: string;
-    max?: string;
-  };
-  daytxns?: {
-    min?: string;
-    max?: string;
-  };
-  daybuys?: {
-    min?: string;
-    max?: string;
-  };
-  daysells?: {
-    min?: string;
-    max?: string;
-  };
-  dayvolume?: {
-    min?: string;
-    max?: string;
-  };
-  daychange?: {
-    min?: string;
-    max?: string;
-  };
-  depositraisedtokenpercentage?: {
-    min?: string;
-    max?: string;
-  };
-};
+} & FilterState;
 
 export const defaultPairFilters: {
   all: PairFilter;

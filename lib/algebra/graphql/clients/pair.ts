@@ -28,6 +28,7 @@ import {
 } from "../generated/graphql";
 import { filter } from "lodash";
 import { calculateToken24hPriceChange } from "../utils/calculateToken24hChange";
+import { wallet } from "@/services/wallet";
 
 type SubgraphToken = {
   id: string;
@@ -492,7 +493,7 @@ export async function fetchPot2PumpList({
     orderBy: filter.orderBy as Pot2Pump_OrderBy,
     orderDirection: filter.orderDirection as OrderDirection,
     where: {},
-    accountId: filter.userAccountId,
+    accountId: filter.userAccountId ?? wallet.account.toLowerCase(),
   };
 
   if (!dynamicFilter.where) {
@@ -507,6 +508,14 @@ export async function fetchPot2PumpList({
   } else if (filter.status === "processing") {
     dynamicFilter.where.raisedTokenReachingMinCap = false;
     dynamicFilter.where.endTime_gte = Math.floor(Date.now() / 1000);
+  }
+
+  if (filter.raiseToken?.token?.address !== undefined) {
+    if (!dynamicFilter.where.raisedToken_) {
+      dynamicFilter.where.raisedToken_ = {};
+    }
+    dynamicFilter.where.raisedToken_.id =
+      filter.raiseToken.token.address.toLowerCase();
   }
 
   if (filter.tvl?.min !== undefined) {
@@ -626,8 +635,6 @@ export async function fetchPot2PumpList({
     dynamicFilter.where.participants_.account =
       filter.participant.toLowerCase();
   }
-
-  console.log("dynamicFilter", dynamicFilter);
 
   const { data } = await infoClient.query<
     Pot2PumpDynamicFilterQuery,
