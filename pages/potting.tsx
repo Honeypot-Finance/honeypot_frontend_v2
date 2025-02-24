@@ -69,6 +69,7 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
   }, [wallet.isInit]);
 
   useEffect(() => {
+    console.log("pottingProjects", pottingProjects);
     if (pottingProjects) {
       console.log("hasValue(filters)", hasValue(filters), filters);
       if (hasValue(filters)) {

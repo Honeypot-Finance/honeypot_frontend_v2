@@ -86,7 +86,7 @@ export type SubgraphProjectFilter = {
     min?: string;
     max?: string;
   };
-  depositRaisedTokenPercentageToMinCap?: {
+  depositraisedtokenpercentage?: {
     min?: string;
     max?: string;
   };

@@ -548,17 +548,17 @@ export async function fetchPot2PumpList({
 
   console.log(
     "filter.depositRaisedTokenPercentageToMinCap",
-    filter.depositRaisedTokenPercentageToMinCap
+    filter.depositraisedtokenpercentage
   );
 
-  if (filter?.depositRaisedTokenPercentageToMinCap?.min !== undefined) {
+  if (filter?.depositraisedtokenpercentage?.min !== undefined) {
     dynamicFilter.where.depositRaisedTokenPercentageToMinCap_gte =
-      filter.depositRaisedTokenPercentageToMinCap.min;
+      Number(filter.depositraisedtokenpercentage.min) / 100;
   }
 
-  if (filter?.depositRaisedTokenPercentageToMinCap?.max !== undefined) {
+  if (filter?.depositraisedtokenpercentage?.max !== undefined) {
     dynamicFilter.where.depositRaisedTokenPercentageToMinCap_lte =
-      filter.depositRaisedTokenPercentageToMinCap.max;
+      Number(filter.depositraisedtokenpercentage.max) / 100;
   }
 
   if (filter.search) {
