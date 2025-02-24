@@ -118,6 +118,9 @@ export const optionsPresets = {
         }
         await token.init();
         token.watch();
+        WrappedToastify.success({
+          message: "Token added to wallet",
+        });
       },
     };
   },
@@ -129,7 +132,7 @@ export const optionsPresets = {
     displayText?: string;
   }) => {
     return {
-      icon: <BiLink />,
+      icon: <BiLink size={18} />,
       display: displayText ?? "View on explorer",
       onClick: () => {
         window.open(`https://berascan.com/address/${address}`, "_blank");

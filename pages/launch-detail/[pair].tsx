@@ -397,7 +397,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
               "grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0 text-[#202020]"
             )}
           >
-            <OptionsDropdown
+            {/* <OptionsDropdown
               className="p-0 m-0 absolute right-2.5 sm:right-5 top-2 z-10 text-black"
               options={[
                 optionsPresets.copy({
@@ -434,7 +434,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
                   },
                 },
               ]}
-            />
+            /> */}
             <ProjectTitle
               className="col-span-1"
               pair={pair ?? undefined}
