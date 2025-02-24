@@ -172,7 +172,13 @@ const Tabs = observer(
                         {pair.isProvider ? (
                           <BeraVoteForm pair={pair} />
                         ) : (
-                          <h3>this project does not have voting space</h3>
+                          <>
+                            <h3>this project does not have voting space</h3>
+                            <p>
+                              Please contact the project team to get a voting
+                              space
+                            </p>
+                          </>
                         )}
                       </>
                     ))}
