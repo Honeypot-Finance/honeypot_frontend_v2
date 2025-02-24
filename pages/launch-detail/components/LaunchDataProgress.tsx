@@ -58,7 +58,7 @@ export const LaunchDataProgress = observer(
           depositedRaisedToken={pair?.depositedRaisedToken}
           raiseTokenSymbol={pair?.raiseToken?.symbol ?? "Raise Token"}
         />
-
+        {/* 
         <TokenAddress address={pair?.launchedToken?.address} />
 
         {pair.raiseToken && (
@@ -69,7 +69,7 @@ export const LaunchDataProgress = observer(
             startTimeDisplay={pair?.startTimeDisplay}
             endTimeDisplay={pair?.endTimeDisplay}
           />
-        )}
+        )} */}
 
         <div className="w-full h-[1px] bg-[#52493D]"></div>
         <div className="space-y-1.5">
