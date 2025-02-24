@@ -63,9 +63,9 @@ export class Pot2PumpService {
   });
 
   LoadMoreMyLaunchesPage = async (filter: SubgraphProjectFilter) => {
-    let res;
+    console.log("filter", filter);
 
-    res = await fetchPot2PumpList({
+    const res = await fetchPot2PumpList({
       chainId: String(wallet.currentChainId),
       filter: filter,
     });
@@ -80,9 +80,8 @@ export class Pot2PumpService {
   };
 
   LoadMoreParticipatedPage = async (filter: SubgraphProjectFilter) => {
-    let res;
-
-    res = await fetchPot2PumpList({
+    console.log("filter", filter);
+    const res = await fetchPot2PumpList({
       chainId: String(wallet.currentChainId),
       filter: filter,
     });

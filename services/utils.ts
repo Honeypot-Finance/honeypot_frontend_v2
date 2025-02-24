@@ -514,7 +514,7 @@ export class IndexerPaginationState<
       ...this.filter,
       ...filter,
     };
-    console.log("this.filter", this.filter);
+    console.log("this.filter", JSON.stringify(this.filter));
     this.reloadPage();
   }, 500);
 
@@ -543,6 +543,7 @@ export class IndexerPaginationState<
     this.isLoading = true;
 
     try {
+      console.log("this.filter.loadMore", JSON.stringify(this.filter));
       const { items, filterUpdates: newFilter } =
         await this.LoadNextPageFunction(this.filter);
 

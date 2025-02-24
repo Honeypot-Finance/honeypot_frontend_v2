@@ -50,9 +50,11 @@ export const SWAP_FRAGMENT = gql`
     }
     token0 {
       id
+      symbol
     }
     token1 {
       id
+      symbol
     }
     sender
     recipient

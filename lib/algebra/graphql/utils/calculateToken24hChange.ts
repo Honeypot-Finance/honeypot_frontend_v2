@@ -16,12 +16,12 @@ export const calculateToken24hPriceChange: (token: Token) => {
   const timeHourIndex = Math.floor(Number(timeNow) / 3600);
   const tokenHourNowUnix = timeHourIndex * 3600;
 
-  console.log("calculateToken24hPriceChange time data", {
-    timeNow,
-    timeHourIndex,
-    tokenHourNowUnix,
-    tokenHourData,
-  });
+  // console.log("calculateToken24hPriceChange time data", {
+  //   timeNow,
+  //   timeHourIndex,
+  //   tokenHourNowUnix,
+  //   tokenHourData,
+  // });
 
   let price24h = 0;
   let price48h = 0;

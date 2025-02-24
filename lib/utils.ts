@@ -93,6 +93,8 @@ export function removeEmptyFields(obj: FilterObject): FilterObject {
     }
   }
 
+  console.log("cleanedObject", cleanedObject);
+
   return cleanedObject;
 }
 
