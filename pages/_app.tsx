@@ -79,15 +79,20 @@ export default function App({
 }) {
   const ComponentLayout = Component.Layout || Layout;
 
-  const [isEthereum, setIsEthereum] = useState(false);
+  // const [isEthereum, setIsEthereum] = useState(false);
 
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.ethereum) {
-      setIsEthereum(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined" && window.ethereum) {
+  //     setIsEthereum(true);
+  //   }
+  // }, []);
 
-  if (!isEthereum) return null;
+  // if (!isEthereum)
+  //   return (
+  //     <div className="flex h-screen w-screen items-center justify-center">
+  //       <div className="text-2xl font-bold">No wallet found</div>
+  //     </div>
+  //   );
 
   return (
     <trpc.Provider

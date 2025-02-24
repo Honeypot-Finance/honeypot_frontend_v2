@@ -26,8 +26,15 @@ import { PairContract } from "@/services/contract/dex/liquidity/pair-contract";
 import { Token as AlgebraToken } from "@cryptoalgebra/sdk";
 import { wallet } from "@/services/wallet";
 import { AlgebraPoolContract } from "@/services/contract/algebra/algebra-pool-contract";
+import { CartoonButton } from "@/components/atoms/CartoonButton/CartoonButton";
+
+export interface PresetPair {
+  fromToken: Token;
+  toToken: Token;
+}
 
 interface SwapPairV3Props {
+  presetPairs?: PresetPair[];
   fromTokenAddress?: string;
   toTokenAddress?: string;
   disableSelection?: boolean;
@@ -41,6 +48,7 @@ interface SwapPairV3Props {
 }
 
 const SwapPairV3 = ({
+  presetPairs,
   fromTokenAddress,
   toTokenAddress,
   disableSelection,
@@ -295,6 +303,50 @@ const SwapPairV3 = ({
 
   return (
     <div className="flex flex-col gap-1 relative bg-white custom-dashed px-[18px] py-6 w-full">
+      {presetPairs && presetPairs.length > 0 && (
+        <div className="flex gap-2 items-center">
+          <p className="">Quick Select:</p>
+          {presetPairs?.map((pair, index) => (
+            <CartoonButton
+              key={index}
+              onClick={() => {
+                handleInputSelect(
+                  Object.assign(
+                    new AlgebraToken(
+                      wallet.currentChainId,
+                      pair.fromToken.address,
+                      Number(pair.fromToken.decimals),
+                      pair.fromToken.symbol,
+                      pair.fromToken.name
+                    ),
+                    {
+                      isNative: pair.fromToken.isNative,
+                      isToken: !pair.fromToken.isNative,
+                    }
+                  )
+                );
+                handleOutputSelect(
+                  Object.assign(
+                    new AlgebraToken(
+                      wallet.currentChainId,
+                      pair.toToken.address,
+                      Number(pair.toToken.decimals),
+                      pair.toToken.symbol,
+                      pair.toToken.name
+                    ),
+                    {
+                      isNative: pair.toToken.isNative,
+                      isToken: !pair.toToken.isNative,
+                    }
+                  )
+                );
+              }}
+            >
+              {pair.fromToken.symbol}-{pair.toToken.symbol}
+            </CartoonButton>
+          ))}
+        </div>
+      )}
       <TokenCardV3
         staticTokenList={staticFromTokenList}
         value={formattedAmounts[SwapField.INPUT] || ""}

@@ -22,6 +22,7 @@ import { HoneyContainer } from "../CardContianer";
 import { getSingleVaultDetails } from "@/lib/algebra/graphql/clients/vaults";
 import { DOMAIN_MAP } from "honeypot-sdk";
 import { Tab, Tabs } from "@nextui-org/react";
+import { PresetPair } from "../algebra/swap/SwapPair/SwapPairV3";
 
 export const LaunchDetailSwapCard = observer(
   ({
@@ -51,6 +52,7 @@ export const LaunchDetailSwapCard = observer(
       amount0: "0",
       amount1: "0",
     });
+    const [presetPairs, setPresetPairs] = useState<PresetPair[]>([]);
     const router = useRouter();
     const isInit = wallet.isInit && liquidity.isInit;
     const state = useLocalObservable(() => ({
@@ -69,6 +71,63 @@ export const LaunchDetailSwapCard = observer(
     const onAmountChange = (amount0: string, amount1: string) => {
       setValues({ amount0, amount1 });
     };
+
+    useEffect(() => {
+      const newPresetPairs = [];
+      if (inputAddress && outputAddress) {
+        if (
+          !presetPairs.find(
+            (pair) =>
+              pair.fromToken.address === inputAddress &&
+              pair.toToken.address === outputAddress
+          )
+        ) {
+          const fromToken = Token.getToken({
+            address: inputAddress,
+            isNative: isInputNative,
+          });
+          const toToken = Token.getToken({
+            address: outputAddress,
+            isNative: isOutputNative,
+          });
+          newPresetPairs.push({ fromToken, toToken });
+        }
+      }
+
+      if (
+        !memePairContract.launchedToken?.address ||
+        !wallet.currentChain.nativeToken.address
+      ) {
+        return;
+      }
+
+      if (
+        !newPresetPairs.find(
+          (pair) =>
+            pair.fromToken.address.toLowerCase() ===
+              wallet.currentChain.nativeToken.address.toLowerCase() ||
+            pair.toToken.address.toLowerCase() ===
+              wallet.currentChain.nativeToken.address.toLowerCase()
+        )
+      ) {
+        const fromToken = Token.getToken({
+          address: wallet.currentChain.nativeToken.address,
+          isNative: isInputNative,
+        });
+        const toToken = Token.getToken({
+          address: memePairContract.launchedToken!.address,
+          isNative: isOutputNative,
+        });
+        newPresetPairs.push({ fromToken, toToken });
+      }
+
+      setPresetPairs(newPresetPairs);
+    }, [
+      inputAddress,
+      outputAddress,
+      memePairContract.launchedToken?.address,
+      wallet.currentChain?.nativeToken?.address,
+    ]);
 
     useEffect(() => {
       if (!wallet.isInit) {
@@ -197,6 +256,7 @@ export const LaunchDetailSwapCard = observer(
           >
             <LoadingContainer isLoading={!isInit}>
               <V3SwapCard
+                presetPairs={presetPairs}
                 fromTokenAddress={inputAddress}
                 toTokenAddress={outputAddress}
                 bordered={false}

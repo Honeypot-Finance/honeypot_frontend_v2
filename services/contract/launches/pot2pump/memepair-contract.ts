@@ -70,6 +70,7 @@ export class MemePairContract implements BaseLaunchContract {
   beravoteSpaceId = "";
   vaultBalance = BigInt(0);
   indexerDataLoaded = false;
+  userDepositedRaisedTokenWithoutDecimals = new BigNumber(0);
 
   constructor(args: Partial<MemePairContract>) {
     Object.assign(this, args);
@@ -82,6 +83,20 @@ export class MemePairContract implements BaseLaunchContract {
       ...this,
       ...args,
     });
+  }
+
+  get userDepositedRaisedToken() {
+    return this.userDepositedRaisedTokenWithoutDecimals && this.raiseToken
+      ? this.userDepositedRaisedTokenWithoutDecimals.div(
+          new BigNumber(10).pow(this.raiseToken.decimals)
+        )
+      : new BigNumber(0);
+  }
+
+  get userDepositedRaisedTokenUSDAmount() {
+    return this.userDepositedRaisedToken?.multipliedBy(
+      this.raiseToken?.derivedUSD ?? new BigNumber(0)
+    );
   }
 
   get priceChangeDisplay() {

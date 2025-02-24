@@ -11,6 +11,7 @@ import {
   useTopPot2PumpDeployer,
   useTopParticipateAccounts,
 } from "@/lib/hooks/useAccounts";
+import { DynamicFormatAmount } from "@/lib/algebra/utils/common/formatAmount";
 
 interface LeaderboardItem {
   rank: number;
@@ -56,24 +57,25 @@ const LeaderboardPage = () => {
     { title: "Users", value: usersLoading ? "Loading..." : totalUsers },
     stats
       ? {
-          title: stats.totalTrades.title,
-          value: stats.totalTrades.value,
+          title: stats.totalMemeCreated.title,
+          value: stats.totalMemeCreated.value,
         }
-      : { title: "Total Trades", value: "-" },
+      : { title: "Total Meme Created", value: "-" },
     stats
       ? {
-          title: stats.totalVolume.title,
-          value: stats.totalVolume.value,
-          subValue: "USD",
+          title: stats.totalSuccessedMeme.title,
+          value: stats.totalSuccessedMeme.value,
         }
-      : { title: "Total Volume", value: "-" },
+      : { title: "Total Successed Meme", value: "-" },
     stats
       ? {
-          title: stats.tvl.title,
-          value: stats.tvl.value,
-          subValue: "USD",
+          title: stats.totalDepositedUSD.title,
+          value: DynamicFormatAmount({
+            amount: stats.totalDepositedUSD.value,
+            decimals: 2,
+          }),
         }
-      : { title: "TVL", value: "-" },
+      : { title: "Total Deposited USD", value: "-" },
   ];
 
   // 将这个变量重命名为 topStats
@@ -100,16 +102,19 @@ const LeaderboardPage = () => {
       <div className="max-w-[1200px] w-full mx-auto">
         <div className="max-w-full xl:max-w-[1200px] mx-auto">
           {/* 顶部统计卡片 */}
-          {/* <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
             {statsCards.map((stat, index) => (
-              <div key={index} className="bg-[#202020] rounded-2xl p-5">
+              <div
+                key={index}
+                className="bg-[#202020] rounded-2xl p-5"
+              >
                 <div className="text-gray-400 text-sm mb-2">{stat.title}</div>
                 <div className="text-white text-xl font-medium">
                   {statsLoading ? "Loading..." : stat.value}
                 </div>
               </div>
             ))}
-          </div> */}
+          </div>
 
           {/* Top Traders/Deployers/Participants */}
           {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">

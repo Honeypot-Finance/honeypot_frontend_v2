@@ -64,13 +64,16 @@ const nextConfig = {
         port: "",
         hostname: "cdn.alphakek.ai",
       },
+      {
+        protocol: "https",
+        port: "",
+        hostname: "pump.mypinata.cloud",
+      },
     ],
     domains: ["cdn.alphakek.ai"],
   },
 
-  transpilePackages: [
-    "styled-components",
-  ],
+  transpilePackages: ["styled-components"],
 };
 
 export default nextConfig;

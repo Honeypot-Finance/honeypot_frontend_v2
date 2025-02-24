@@ -54,6 +54,7 @@ export type SubgraphProjectFilter = {
   participant?: string;
   orderBy?: string;
   orderDirection?: string;
+  userAccountId?: string;
   tvl?: {
     min?: string;
     max?: string;

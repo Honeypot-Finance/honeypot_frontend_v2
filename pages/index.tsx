@@ -17,6 +17,7 @@ import {
   usePot2PumpPottingTrendingQuery,
   usePot2PumpPottingMarketCapQuery,
   usePot2PumpPottingNewTokensByEndtimeQuery,
+  usePot2PumpPumpingPopularQuery,
 } from "@/lib/algebra/graphql/generated/graphql";
 import { LoadingDisplay } from "honeypot-ui";
 import CardContainer from "@/components/CardContianer/v3";
@@ -31,6 +32,7 @@ import {
   CarouselApi,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import { CartoonButton } from "@/components/atoms/CartoonButton/CartoonButton";
 // 在组件外部定义常量
 
 const POT_TABS = {
@@ -38,7 +40,7 @@ const POT_TABS = {
   ALMOST: "Almost",
   MOON: "Moon 🚀",
   TRENDING: "Trending",
-  MARKET_CAP: "Market Cap",
+  POPULAR: "Popular",
   NEW_PUMPS: "New Pumps",
 } as const;
 
@@ -57,7 +59,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
   const [trendingTokensList, setTrendingTokensList] = useState<
     MemePairContract[]
   >([]);
-  const [marketCapTokensList, setMarketCapTokensList] = useState<
+  const [popularCapTokensList, setPopularCapTokensList] = useState<
     MemePairContract[]
   >([]);
   const [endTimeTokensList, setEndTimeTokensList] = useState<
@@ -72,9 +74,14 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
     // 从 localStorage 读取保存的标签，如果没有则使用默认值
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem(STORAGE_KEY);
-      return saved
-        ? JSON.parse(saved)
-        : [POT_TABS.NEW, POT_TABS.ALMOST, POT_TABS.NEW_PUMPS];
+      const Json = JSON.parse(saved ?? "[]");
+      const result: TabType[] = [];
+      for (const item of Json) {
+        if (Object.values(POT_TABS).includes(item)) {
+          result.push(item);
+        }
+      }
+      return result;
     }
     return [POT_TABS.NEW, POT_TABS.ALMOST, POT_TABS.NEW_PUMPS];
   });
@@ -139,17 +146,17 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
     trendingNetworkStatus === NetworkStatus.loading;
 
   const {
-    data: pottingMarketCapTokens,
-    networkStatus: marketCapNetworkStatus,
-  } = usePot2PumpPottingMarketCapQuery({
+    data: pumpingPopularTokens,
+    networkStatus: pumpingPopularNetworkStatus,
+  } = usePot2PumpPumpingPopularQuery({
     fetchPolicy: "network-only",
     notifyOnNetworkStatusChange: true,
     pollInterval: 5000,
     skip: !wallet.isInit,
   });
 
-  const isMarketCapInitialLoading =
-    marketCapNetworkStatus === NetworkStatus.loading;
+  const isPumpingPopularInitialLoading =
+    pumpingPopularNetworkStatus === NetworkStatus.loading;
 
   const {
     data: pottingNewTokensByEndtime,
@@ -311,18 +318,18 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
   }, [pottingTrendingTokens, trendingTokensList.length]);
 
   useEffect(() => {
-    if (!pottingMarketCapTokens) return;
+    if (!pumpingPopularTokens) return;
 
     const list = pot2PumpListToMemePairList(
-      (pottingMarketCapTokens?.pot2Pumps as Partial<Pot2Pump>[]) ?? []
+      (pumpingPopularTokens?.pot2Pumps as Partial<Pot2Pump>[]) ?? []
     );
 
-    if (!marketCapTokensList.length) {
-      setMarketCapTokensList(list);
+    if (!popularCapTokensList.length) {
+      setPopularCapTokensList(list);
       return;
     }
 
-    setMarketCapTokensList((prev) => {
+    setPopularCapTokensList((prev) => {
       list.map((item) => {
         if (!prev.find((item2) => item.address === item2.address)) {
           prev.push(item);
@@ -339,7 +346,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
       });
       return prev;
     });
-  }, [marketCapTokensList.length, pottingMarketCapTokens]);
+  }, [popularCapTokensList.length, pumpingPopularTokens]);
 
   useEffect(() => {
     if (!pottingNewTokensByEndtime) return;
@@ -538,7 +545,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
           ),
         }}
       >
-        <Tab key="new" title="New POTs">
+        <Tab
+          key="new"
+          title="New POTs"
+        >
           <div className="bg-white rounded-3xl p-4 border border-black shadow-[4px_4px_0px_0px_#D29A0D] w-full  max-h-[600px] flex flex-col">
             <CardContainer
               className="h-full flex-1"
@@ -551,7 +561,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                 {newTokensList
                   .sort((a, b) => Number(b.startTime) - Number(a.startTime))
                   ?.map((pot2pump, index) => (
-                    <motion.div key={index} variants={itemPopUpVariants}>
+                    <motion.div
+                      key={index}
+                      variants={itemPopUpVariants}
+                    >
                       <LaunchCardV3
                         type="simple"
                         pair={pot2pump}
@@ -564,7 +577,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
             </CardContainer>
           </div>
         </Tab>
-        <Tab key="almost" title="Almost">
+        <Tab
+          key="almost"
+          title="Almost"
+        >
           <div className="bg-white rounded-3xl p-4 border border-black shadow-[4px_4px_0px_0px_#D29A0D] w-full  max-h-[600px] flex flex-col">
             <CardContainer
               className="h-full flex-1"
@@ -581,7 +597,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                       Number(a.pottingPercentageNumber)
                   )
                   ?.map((pot2pump, index) => (
-                    <motion.div key={index} variants={itemPopUpVariants}>
+                    <motion.div
+                      key={index}
+                      variants={itemPopUpVariants}
+                    >
                       <LaunchCardV3
                         type="simple"
                         pair={pot2pump}
@@ -594,7 +613,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
             </CardContainer>
           </div>
         </Tab>
-        <Tab key="moon" title="Moon 🚀">
+        <Tab
+          key="moon"
+          title="Moon 🚀"
+        >
           <div className="bg-white rounded-3xl p-4 border border-black shadow-[4px_4px_0px_0px_#D29A0D] w-full  max-h-[600px] flex flex-col">
             <CardContainer
               className="h-full flex-1"
@@ -611,7 +633,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                       Number(a.launchedToken?.derivedUSD)
                   )
                   ?.map((pot2pump, index) => (
-                    <motion.div key={index} variants={itemPopUpVariants}>
+                    <motion.div
+                      key={index}
+                      variants={itemPopUpVariants}
+                    >
                       <LaunchCardV3
                         type="simple"
                         pair={pot2pump}
@@ -624,7 +649,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
             </CardContainer>
           </div>
         </Tab>
-        <Tab key="trending" title="Trending">
+        <Tab
+          key="trending"
+          title="Trending"
+        >
           <div className="bg-white rounded-3xl p-4 border border-black shadow-[4px_4px_0px_0px_#D29A0D] w-full ma x-h-[400px] flex flex-col">
             <CardContainer
               className="h-full flex-1"
@@ -641,7 +669,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                       Number(a.launchedToken?.priceChange24hPercentage)
                   )
                   ?.map((pot2pump, index) => (
-                    <motion.div key={index} variants={itemPopUpVariants}>
+                    <motion.div
+                      key={index}
+                      variants={itemPopUpVariants}
+                    >
                       <LaunchCardV3
                         type="simple"
                         pair={pot2pump}
@@ -654,24 +685,30 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
             </CardContainer>
           </div>
         </Tab>
-        <Tab key="market-cap" title="Market Cap">
+        <Tab
+          key="popular"
+          title="Popular"
+        >
           <div className="bg-white rounded-3xl p-4 border border-black shadow-[4px_4px_0px_0px_#D29A0D] w-full  max-h-[600px] flex flex-col">
             <CardContainer
               className="h-full flex-1"
-              loading={isMarketCapInitialLoading}
+              loading={isPumpingPopularInitialLoading}
               bordered={false}
               type="default"
               loadingText="Loading..."
             >
               <div className="flex flex-col gap-4 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2">
-                {marketCapTokensList
+                {popularCapTokensList
                   ?.sort(
                     (a, b) =>
-                      Number(b.launchedToken?.marketCap) -
-                      Number(a.launchedToken?.marketCap)
+                      Number(b.launchedToken?.holderCount) -
+                      Number(a.launchedToken?.holderCount)
                   )
                   ?.map((pot2pump, index) => (
-                    <motion.div key={index} variants={itemPopUpVariants}>
+                    <motion.div
+                      key={index}
+                      variants={itemPopUpVariants}
+                    >
                       <LaunchCardV3
                         type="simple"
                         pair={pot2pump}
@@ -684,7 +721,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
             </CardContainer>
           </div>
         </Tab>
-        <Tab key="new-pumps" title="New Pumps">
+        <Tab
+          key="new-pumps"
+          title="New Pumps"
+        >
           <div className="bg-white rounded-3xl p-4 border border-black shadow-[4px_4px_0px_0px_#D29A0D] w-full  max-h-[600px] flex flex-col">
             <CardContainer
               className="h-full flex-1"
@@ -697,7 +737,10 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                 {endTimeTokensList
                   ?.sort((a, b) => Number(a.endTime) - Number(b.endTime))
                   ?.map((pot2pump, index) => (
-                    <motion.div key={index} variants={itemPopUpVariants}>
+                    <motion.div
+                      key={index}
+                      variants={itemPopUpVariants}
+                    >
                       <LaunchCardV3
                         type="simple"
                         pair={pot2pump}
@@ -770,9 +813,7 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                     className="relative flex flex-col px-2 overflow-hidden gap-y-2"
                   >
                     <div>
-                      <div className="rounded-small dark:bg-default bg-[#FFCD4D] border border-black shadow-[2px_2px_0px_0px_#000000] text-sm inline-block p-2">
-                        {tab}
-                      </div>
+                      <CartoonButton>{tab}</CartoonButton>
                     </div>
                     <div className="flex flex-col gap-6 py-4 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1  [&::-webkit-scrollbar-track]:bg-white [-webkit-scrollbar]:mr-0 [&::-webkit-scrollbar]:mr-2 pr-2 shadow-inner px-2">
                       {(() => {
@@ -907,21 +948,21 @@ const Pot2PumpOverviewPage: NextLayoutPage = observer(() => {
                                   ))}
                               </CardContainer>
                             );
-                          case POT_TABS.MARKET_CAP:
+                          case POT_TABS.POPULAR:
                             return (
                               <CardContainer
                                 className="h-auto"
-                                loading={isMarketCapInitialLoading}
+                                loading={isPumpingPopularInitialLoading}
                                 bordered={false}
                                 type="default"
                                 loadingText="Loading..."
-                                empty={!marketCapTokensList?.length}
+                                empty={!popularCapTokensList?.length}
                               >
-                                {marketCapTokensList
+                                {popularCapTokensList
                                   ?.sort(
                                     (a, b) =>
-                                      Number(b.launchedToken?.marketCap) -
-                                      Number(a.launchedToken?.marketCap)
+                                      Number(b.launchedToken?.holderCount) -
+                                      Number(a.launchedToken?.holderCount)
                                   )
                                   ?.map((pot2pump, index) => (
                                     <motion.div

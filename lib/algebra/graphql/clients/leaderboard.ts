@@ -11,6 +11,10 @@ export const LEADERBOARD_QUERY = gql`
       totalValueLockedMatic
       untrackedVolumeUSD
       totalValueLockedUSDUntracked
+
+      totalMemeCreated
+      totalSuccessedMeme
+      totalDepositedUSD
     }
   }
 `;
@@ -115,6 +119,9 @@ type Factory = {
   totalValueLockedMatic: string;
   untrackedVolumeUSD: string;
   totalValueLockedUSDUntracked: string;
+  totalMemeCreated: string;
+  totalSuccessedMeme: string;
+  totalDepositedUSD: string;
 };
 
 export type FactoryData = {

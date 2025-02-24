@@ -65,21 +65,12 @@ const ProjectActions = ({
   pair: LaunchContract;
   type: launchCardVariants;
 }) => {
-  if (projectType === "meme") {
-    return (
-      <MemeProjectActions
-        pair={pair as MemePairContract}
-        type={type}
-      ></MemeProjectActions>
-    );
-  } else {
-    return (
-      <FtoProjectActions
-        pair={pair as FtoPairContract}
-        type={type}
-      ></FtoProjectActions>
-    );
-  }
+  return (
+    <MemeProjectActions
+      pair={pair as MemePairContract}
+      type={type}
+    ></MemeProjectActions>
+  );
 };
 
 //-------------------------------------Launch Card Variants-------------------------------------//
@@ -177,6 +168,32 @@ const DetailLaunchCard = observer(
                       ? pair.participantsCount.toFormat(0)
                       : "-"}
                   </span>
+                </p>
+              </div>
+            )}
+
+            {pair.depositedRaisedTokenWithoutDecimals?.gt(0) && (
+              <div>
+                <p className="text-xs opacity-60">Your Deposit</p>
+                <p className="font-semibold">
+                  <span>
+                    {DynamicFormatAmount({
+                      amount: pair.userDepositedRaisedToken?.toString() ?? "0",
+                      decimals: 5,
+                      // endWith: pair.raiseToken?.symbol,
+                    })}
+                  </span>
+                  <br />(
+                  <span>
+                    {DynamicFormatAmount({
+                      amount:
+                        pair.userDepositedRaisedTokenUSDAmount?.toString() ??
+                        "0",
+                      decimals: 3,
+                      endWith: "$",
+                    })}
+                  </span>
+                  )
                 </p>
               </div>
             )}

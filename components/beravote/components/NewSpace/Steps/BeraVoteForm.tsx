@@ -15,7 +15,7 @@ import { trpcClient } from "@/lib/trpc";
 import { toast } from "react-toastify";
 import { createSiweMessage } from "@/lib/siwe";
 
-const payContract = "0x7833fE2A60123b1873a6EB3277506df1416F829a";
+const payContract = "0x166a064C9D0E243fea5d9afA3E7B06a8b94E05F9";
 const ethersProvider =
   typeof window !== "undefined" && window.ethereum
     ? new ethers.providers.Web3Provider(window.ethereum)
