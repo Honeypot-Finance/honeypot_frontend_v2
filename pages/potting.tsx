@@ -270,6 +270,11 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                     label: "Pumping Percentage",
                     category: "depositraisedtokenpercentage",
                   },
+                  {
+                    key: 4,
+                    label: "Token",
+                    category: "raiseToken",
+                  },
                 ]}
                 filters={filters}
                 setFilters={onChangeFilter}
