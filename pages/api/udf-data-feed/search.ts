@@ -5,8 +5,7 @@ import {
   SearchSymbolResultItem,
   SearchSymbolsCallback,
 } from "@/public/static/charting_library/charting_library";
-import { chains, chainsMap } from "@/lib/chain";
-import { Network, networks, networksMap } from "@/services/chain";
+import { Network, networks, networksMap } from "@/services/network";
 import { appRouter, caller } from "@/server/_app";
 
 export default async function handler(

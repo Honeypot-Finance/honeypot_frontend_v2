@@ -1,4 +1,4 @@
-import { Network, networksMap } from "@/services/chain";
+import { Network, networksMap } from "@/services/network";
 import NetworkManager from "@/services/network";
 import React, { useState, useEffect } from "react";
 

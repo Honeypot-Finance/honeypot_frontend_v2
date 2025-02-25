@@ -23,12 +23,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { ApolloProvider } from "@apollo/client";
 import { infoClient } from "@/lib/algebra/graphql/clients";
 import Image from "next/image";
-import SafeProvider, { useSafeAppsSDK } from "@safe-global/safe-apps-react-sdk";
-import {
-  DynamicContextProvider,
-  DynamicWidget,
-} from "@dynamic-labs/sdk-react-core";
-import { berachainNetwork } from "@/services/chain";
+import SafeProvider from "@safe-global/safe-apps-react-sdk";
+import { berachainNetwork } from "@/services/network";
 // enableStaticRendering(true)
 const queryClient = new QueryClient({
   defaultOptions: {

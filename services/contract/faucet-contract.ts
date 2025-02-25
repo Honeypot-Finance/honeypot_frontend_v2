@@ -8,8 +8,6 @@ import { makeAutoObservable } from "mobx";
 import { get } from "http";
 import { getContract } from "viem";
 import { faucetABI } from "@/lib/abis/faucet";
-import { ContractWrite } from "../utils";
-import { berachainNetwork, networksMap } from "../chain";
 import { DailyFaucetABI } from "@/lib/abis/faucet/daily-faucet";
 import { Token } from "./token";
 import { trpcClient } from "@/lib/trpc";

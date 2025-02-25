@@ -4,7 +4,7 @@ import { getContract } from "viem";
 import { ethers } from "ethers";
 import { createPublicClientByChain } from "../client";
 import { getCacheKey } from "../cache";
-import { networksMap } from "@/services/chain";
+import { networksMap } from "@/services/network";
 import { factoryABI } from "../abis/factory";
 import { ERC20ABI } from "../abis/erc20";
 import { kv } from "../kv";

@@ -10,7 +10,6 @@ import { debounce } from "lodash";
 import dayjs from "dayjs";
 import { chart } from "./chart";
 import { zeroAddress } from "viem";
-import { networksMap } from "./chain";
 
 class Swap {
   fromToken: Token | undefined = undefined;

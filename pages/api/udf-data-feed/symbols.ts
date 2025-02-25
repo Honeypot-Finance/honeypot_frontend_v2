@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { LibrarySymbolInfo } from "@/public/static/charting_library/charting_library";
-import { chains, chainsMap } from "@/lib/chain";
+import { chainsMap } from "@/lib/chain";
 
 export default function handler(
   req: NextApiRequest,

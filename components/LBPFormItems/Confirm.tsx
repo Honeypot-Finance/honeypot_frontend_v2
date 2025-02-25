@@ -10,7 +10,7 @@ import {
   parseEther,
   parseUnits,
 } from "viem";
-import { LiquidityBootstrapPoolFactoryAddress } from "@/services/chain";
+import { LiquidityBootstrapPoolFactoryAddress } from "@/services/network";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import { config } from "@/config/wagmi";
 import { WrappedToastify } from "@/lib/wrappedToastify";
