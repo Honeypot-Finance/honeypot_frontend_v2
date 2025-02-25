@@ -122,6 +122,7 @@ const Action = observer(
     pair: FtoPairContract | MemePairContract;
     refreshTxsCallback?: () => void;
   }) => {
+    if (!wallet.isInit) return null;
     switch (pair.state) {
       case 0:
         return (

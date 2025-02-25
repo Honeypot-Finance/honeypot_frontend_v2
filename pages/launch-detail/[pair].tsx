@@ -499,7 +499,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
           </CardContainer>
 
           <div className="bg-transparent rounded-2xl space-y-3 col-span-1">
-            {pair && (
+            {wallet.isInit && pair && (
               <Action
                 pair={pair}
                 refreshTxsCallback={triggerRefresh}

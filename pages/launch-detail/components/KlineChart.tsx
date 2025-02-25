@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { chart } from "@/services/chart";
@@ -6,9 +8,11 @@ import { Token } from "@/services/contract/token";
 import { RotateCcw } from "lucide-react";
 import { getBaseUrl } from "@/lib/trpc";
 import { strParams } from "@/lib/advancedChart.util";
-import { wallet } from "@/services/wallet";
 import { TbChartArea, TbChartHistogram } from "react-icons/tb";
 import Link from "next/link";
+import { chain } from "@/services/chain";
+import dynamic from 'next/dynamic';
+
 // 为 Window 对象添加 TradingView 相关的类型定义
 declare global {
   interface Window {
@@ -55,8 +59,6 @@ interface KlineChartProps {
   onReady?: () => void;
 }
 
-const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
 // 添加图表类型定义
 type ChartType =
   | "Bars"
@@ -69,7 +71,14 @@ type ChartType =
   | "High-low"
   | "Columns";
 
-const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
+// 使用动态导入并禁用SSR
+const KlineChart = dynamic(() => Promise.resolve(KlineChartComponent), { 
+  ssr: false 
+});
+
+const KlineChartComponent = observer(({ height = 400, onReady }: KlineChartProps) => {
+  // 获取时区信息，但仅在客户端执行
+  const [timeZone, setTimeZone] = useState<string>('UTC');
   const [currentInterval, setCurrentInterval] = useState("60");
   const chartWrapRef = useRef<HTMLDivElement>(null);
   const [chartWidth, setChartWidth] = useState(200);
@@ -81,7 +90,13 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
   const [showTrades, setShowTrades] = useState(true);
   const [screenshotUrl, setScreenshotUrl] = useState<string | null>(null);
   const [showIntervalMenu, setShowIntervalMenu] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // 在组件挂载时设置时区和移动设备检测
+  useEffect(() => {
+    setTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
+    setIsMobile(window.innerWidth < 640);
+  }, []);
 
   const intervals = [
     { text: "1s", resolution: "1S" },
@@ -309,6 +324,8 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
   ];
 
   const initOnReady = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    
     window.Datafeeds.UDFCompatibleDatafeed.prototype.resolveSymbol = function (
       symbolName: string,
       onSymbolResolvedCallback: any,
@@ -352,7 +369,7 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
       window.tvWidget = new window.TradingView.widget({
         symbol: strParams(
           chart.chartTarget as Token,
-          wallet.currentChainId,
+          chain.currentChainId,
           chart.tokenNumber,
           chart.currencyCode
         ),
@@ -462,6 +479,8 @@ const KlineChart = observer(({ height = 400, onReady }: KlineChartProps) => {
     onReady,
     currentInterval,
     isMobile,
+    timeZone,
+    chartType,
   ]);
 
   useEffect(() => {

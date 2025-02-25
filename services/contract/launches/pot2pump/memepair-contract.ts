@@ -12,10 +12,10 @@ import {
   subgraphPot2PumpToMemePair,
 } from "@/lib/algebra/graphql/clients/pot2pump";
 import { wallet } from "@/services/wallet";
+import { chain } from "@/services/chain";
 import { ICHIVaultContract } from "../../aquabera/ICHIVault-contract";
 import { BaseLaunchContract } from "../base-launch-contract";
-import { Pool, Pot2Pump } from "@/lib/algebra/graphql/generated/graphql";
-import { PairContract } from "../../dex/liquidity/pair-contract";
+import { Pool } from "@/lib/algebra/graphql/generated/graphql";
 import { poolsByTokenPair } from "@/lib/algebra/graphql/clients/pool";
 export class MemePairContract implements BaseLaunchContract {
   static contractMap: Record<string, MemePairContract> = {};
@@ -193,10 +193,16 @@ export class MemePairContract implements BaseLaunchContract {
   }
 
   get contract() {
+    if (!chain.isInit) {
+      throw new Error("Get contract failed, please select a chain first");
+    }
     return getContract({
       address: this.address as `0x${string}`,
       abi: this.abi,
-      client: { public: wallet.publicClient, wallet: wallet.walletClient },
+      client: {
+        public: chain.publicClient!,
+        wallet: wallet.walletClient,
+      },
     });
   }
 
@@ -370,10 +376,15 @@ export class MemePairContract implements BaseLaunchContract {
   }
 
   async getProjectInfo(force?: boolean) {
-    console.log("force", force);
+    if (!chain.isInit) {
+      throw new Error("Get project info failed, please select a chain first");
+    }
+
+    const currentChainId = chain.currentChainId;
+
     if (!force) {
       const cachedProjectInfo = localStorage.getItem(
-        `projectInfo-${wallet.currentChainId}-${this.address.toLowerCase()}`
+        `projectInfo-${currentChainId}-${this.address.toLowerCase()}`
       );
 
       if (
@@ -387,7 +398,7 @@ export class MemePairContract implements BaseLaunchContract {
     }
 
     const res = await trpcClient.projects.getProjectInfo.query({
-      chain_id: wallet.currentChainId,
+      chain_id: chain.currentChainId,
       pair: this.address,
     });
 
@@ -446,7 +457,7 @@ export class MemePairContract implements BaseLaunchContract {
     }
 
     localStorage.setItem(
-      `projectInfo-${wallet.currentChainId}-${this.address.toLowerCase()}`,
+      `projectInfo-${currentChainId}-${this.address.toLowerCase()}`,
       JSON.stringify({
         databaseId: res.id,
         socials: this.socials,
@@ -504,9 +515,14 @@ export class MemePairContract implements BaseLaunchContract {
       this.getVaultBalance(),
       //this.getParticipantDetail(),
     ]).catch((error) => {
+      if (!chain.isInit) {
+        throw new Error("Init meme pair failed, please select a chain first");
+      }
       console.error(error, `init-memepair-error-${this.address}`);
+      // 优先使用 chain.currentChainId
+      const currentChainId = chain.currentChainId;
       trpcClient.projects.revalidateProjectType.mutate({
-        chain_id: wallet.currentChainId,
+        chain_id: currentChainId,
         pair: this.address,
       });
       return;
@@ -581,9 +597,15 @@ export class MemePairContract implements BaseLaunchContract {
   }
 
   getIsValidated() {
-    this.isValidated = wallet.currentChain?.validatedFtoAddresses.includes(
-      this.address.toLowerCase()
-    );
+    if (!chain.isInit) {
+      throw new Error("Get isValidated failed, please select a chain first");
+    }
+    // 优先使用 chain.currentChain，如果不存在则使用 wallet.currentChain
+    const currentChain = chain.currentChain || wallet.currentChain;
+    this.isValidated =
+      currentChain?.validatedFtoAddresses.includes(
+        this.address.toLowerCase()
+      ) || false;
   }
   async getCanClaimLP() {
     try {

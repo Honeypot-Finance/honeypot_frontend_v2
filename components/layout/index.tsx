@@ -154,17 +154,14 @@ export const Layout = observer(
         <InvitationCodeModal onSubmit={handleInviteCodeSubmit} />
       )} */}
 
-        <AnnouncementBar
-          slogans={slogans}
-          interval={5000}
-        />
+        <AnnouncementBar slogans={slogans} interval={5000} />
         {/* <GuideModal /> */}
         <ChatWidget />
 
         <ConfettiComponent />
         <PopOverModal />
         <Header />
-        {!showInviteModal &&
+        {/* {!showInviteModal &&
         (whitelistWallets.includes(address?.toLowerCase() as string) ||
           whitelistWallets.length === 0) ? (
           currentChain ? (
@@ -195,7 +192,10 @@ export const Layout = observer(
               </p>
             </div>
           </div>
-        )}
+        )} */}
+
+        <div className="flex-1 flex">{children}</div>
+
         <Footer />
       </div>
     );

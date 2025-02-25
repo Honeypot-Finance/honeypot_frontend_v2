@@ -29,6 +29,7 @@ import {
 } from "@/lib/algebra/graphql/clients/pot2pump";
 import { Button } from "@/components/button/v3";
 import { cn } from "@/lib/utils";
+import { chain } from "@/services/chain";
 
 const MemeLaunchPage: NextLayoutPage = observer(() => {
   const [pottingProjects, setPottingProjects] =
@@ -60,13 +61,13 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
   }, [updateMostSuccessProjects]);
 
   useEffect(() => {
-    if (!wallet.isInit) {
+    if (!chain.isInit) {
       return;
     }
     const newProjects = new Pot2PumpPottingService();
     setPottingProjects(newProjects);
     newProjects.projectsPage.reloadPage();
-  }, [wallet.isInit]);
+  }, []);
 
   useEffect(() => {
     console.log("pottingProjects", pottingProjects);
@@ -322,10 +323,7 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
               }
             }}
           >
-            <Tab
-              key="all"
-              title="All MEMEs"
-            >
+            <Tab key="all" title="All MEMEs">
               {pottingProjects && (
                 <Pagination
                   paginationState={pottingProjects.projectsPage}
@@ -344,50 +342,48 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                 />
               )}
             </Tab>
-            <Tab
-              key="my"
-              title="My MEMEs"
-            >
-              {myProjects && (
-                <Pagination
-                  paginationState={myProjects.myLaunches}
-                  render={(project) => (
-                    <LaunchCardV3
-                      key={project.address}
-                      pair={project}
-                      action={<></>}
-                      type="simple"
+            {wallet.isInit && (
+              <>
+                <Tab key="my" title="My MEMEs">
+                  {myProjects && (
+                    <Pagination
+                      paginationState={myProjects.myLaunches}
+                      render={(project) => (
+                        <LaunchCardV3
+                          key={project.address}
+                          pair={project}
+                          action={<></>}
+                          type="simple"
+                        />
+                      )}
+                      classNames={{
+                        itemsContainer:
+                          "grid gap-8 grid-cols-1 md:grid-cols-2 xl:gap-6 xl:grid-cols-3",
+                      }}
                     />
                   )}
-                  classNames={{
-                    itemsContainer:
-                      "grid gap-8 grid-cols-1 md:grid-cols-2 xl:gap-6 xl:grid-cols-3",
-                  }}
-                />
-              )}
-            </Tab>
-            <Tab
-              key="participated-launch"
-              title="Participated MEMEs"
-            >
-              {myProjects && (
-                <Pagination
-                  paginationState={myProjects.participatedPairs}
-                  render={(project) => (
-                    <LaunchCardV3
-                      key={project.address}
-                      pair={project}
-                      action={<></>}
-                      type="simple"
+                </Tab>
+                <Tab key="participated-launch" title="Participated MEMEs">
+                  {myProjects && (
+                    <Pagination
+                      paginationState={myProjects.participatedPairs}
+                      render={(project) => (
+                        <LaunchCardV3
+                          key={project.address}
+                          pair={project}
+                          action={<></>}
+                          type="simple"
+                        />
+                      )}
+                      classNames={{
+                        itemsContainer:
+                          "grid gap-8 grid-cols-1 md:grid-cols-2 xl:gap-6 xl:grid-cols-3",
+                      }}
                     />
                   )}
-                  classNames={{
-                    itemsContainer:
-                      "grid gap-8 grid-cols-1 md:grid-cols-2 xl:gap-6 xl:grid-cols-3",
-                  }}
-                />
-              )}
-            </Tab>
+                </Tab>
+              </>
+            )}
             {/* <Tab href="/launch" title="To Fto projects->" /> */}
             {/* <Tab
               href="https://bartio.bonds.yeetit.xyz/"
