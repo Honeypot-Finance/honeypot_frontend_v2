@@ -17,8 +17,19 @@ import CardContainer from "@/components/CardContianer/v3";
 import Image from "next/image";
 import Copy from "@/components/Copy/v3";
 import { cn } from "@/lib/utils";
-
+import { notificationService } from "@/services/notification";
+import { Notification } from "@/components/atoms/Notification/Notification";
 export const Profile = observer(() => {
+  const [notify, setNotify] = useState(false);
+  useEffect(() => {
+    setNotify(
+      notificationService.isClaimableProject ||
+        notificationService.isRefundableProject
+    );
+  }, [
+    notificationService.isClaimableProject,
+    notificationService.isRefundableProject,
+  ]);
   return (
     <div className="w-full max-w-[1200px] mx-auto px-2 sm:px-4 xl:px-0 font-gliker">
       <div className="flex flex-col gap-4 sm:gap-6">
@@ -45,9 +56,13 @@ export const Profile = observer(() => {
                           className="text-[#4D4D4D] hover:text-[#0D0D0D] hover:underline decoration-2 transition-colors truncate flex-1 min-w-0"
                           href={`https://berascan.com/address/${wallet.account}`}
                         >
-                          {truncate(wallet.account || '', 16)}
+                          {truncate(wallet.account || "", 16)}
                         </Link>
-                        <Copy value={wallet.account} copyTip="Copy address" className="ml-2 flex-shrink-0" />
+                        <Copy
+                          value={wallet.account}
+                          copyTip="Copy address"
+                          className="ml-2 flex-shrink-0"
+                        />
                       </div>
                     </div>
                   </div>
@@ -72,10 +87,22 @@ export const Profile = observer(() => {
                 ),
               }}
             >
-              <Tab key="my-launch" title="My Launch">
+              <Tab
+                key="my-launch"
+                title="My Launch"
+              >
                 <MyLaunches />
               </Tab>
-              <Tab key="participated-launch" title="Participated Launch">
+              <Tab
+                key="participated-launch"
+                title={
+                  <>
+                    <Notification notify={notify}>
+                      <span>Participated Launch</span>
+                    </Notification>
+                  </>
+                }
+              >
                 <ParticipatedLaunches />
               </Tab>
             </Tabs>

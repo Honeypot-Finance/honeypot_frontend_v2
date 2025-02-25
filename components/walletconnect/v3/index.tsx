@@ -1,10 +1,13 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, useEffect, useState } from "react";
 import Image from "next/image";
 import { useConnect, useConnectors } from "wagmi";
 import { BiWallet } from "react-icons/bi";
 import { BsPerson } from "react-icons/bs";
 import Link from "next/link";
+import { Notification } from "@/components/atoms/Notification/Notification";
+import { observer } from "mobx-react-lite";
+import { notificationService } from "@/services/notification";
 
 const ConnectButtonCustom = (props: ButtonHTMLAttributes<any>) => {
   return (
@@ -15,11 +18,23 @@ const ConnectButtonCustom = (props: ButtonHTMLAttributes<any>) => {
     ></button>
   );
 };
-export const WalletConnect = () => {
+export const WalletConnect = observer(() => {
+  const [notify, setNotify] = useState(false);
   const { connect } = useConnect();
   const connectors = useConnectors();
 
   const mockConnector = connectors.find((connector) => connector.id === "mock");
+
+  useEffect(() => {
+    setNotify(
+      notificationService.isClaimableProject ||
+        notificationService.isRefundableProject
+    );
+  }, [
+    notificationService.isClaimableProject,
+    notificationService.isRefundableProject,
+  ]);
+
   return (
     <div className="flex flex-col items-center">
       <Image
@@ -59,16 +74,18 @@ export const WalletConnect = () => {
                 })}
               >
                 <div className="flex w-full items-center gap-x-2 lg:gap-x-3 justify-between">
-                  <Link
-                    href="/profile"
-                    className="flex items-center justify-center bg-white rounded-full p-1.5 lg:p-2 shrink-0"
-                  >
-                    <BsPerson
-                      size={24}
-                      className="size-4 lg:size-6"
-                      color="#202020"
-                    />
-                  </Link>
+                  <Notification notify={notify}>
+                    <Link
+                      href="/profile"
+                      className="flex items-center justify-center bg-white rounded-full p-1.5 lg:p-2 shrink-0"
+                    >
+                      <BsPerson
+                        size={24}
+                        className="size-4 lg:size-6"
+                        color="#202020"
+                      />
+                    </Link>
+                  </Notification>
                   {(() => {
                     if (!connected) {
                       return (
@@ -151,4 +168,4 @@ export const WalletConnect = () => {
       </div>
     </div>
   );
-};
+});
