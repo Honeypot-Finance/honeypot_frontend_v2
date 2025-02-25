@@ -153,7 +153,7 @@ const ProjectStats: React.FC<ProjectStatsProps> = observer(
           )}
           <div className="flex flex-col items-center gap-1 md:gap-1.5">
             <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
-              LPs
+              Pools
             </span>
             <span className="text-sm md:text-[15px] font-bold">
               {Number(pair?.launchedToken?.poolCount || 0).toLocaleString()}
