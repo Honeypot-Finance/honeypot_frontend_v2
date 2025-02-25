@@ -98,7 +98,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
             />
           </div>
         )}
-        <div className="flex items-center flex-col gap-3">
+        <div className="">
           <div className="hidden md:flex items-center gap-1">
             {isLoading ? (
               <Skeleton className="h-8 w-[60px] bg-slate-200" />
@@ -245,13 +245,18 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                       },
                     ].map((item) => {
                       return (
-                        <div key={item.display} onClick={() => item.onClick()}>
-                          {
-                            <div className="hover:opacity-80 text-[#5C5C5C] cursor-pointer">
-                              {item.icon}
-                            </div>
-                          }
-                        </div>
+                        <WrappedTooltip
+                          key={item.display}
+                          content={item.display}
+                        >
+                          <div onClick={() => item.onClick()}>
+                            {
+                              <div className="hover:opacity-80 text-[#5C5C5C] cursor-pointer">
+                                {item.icon}
+                              </div>
+                            }
+                          </div>
+                        </WrappedTooltip>
                       );
                     })}
                   </>
