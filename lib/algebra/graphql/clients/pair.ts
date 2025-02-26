@@ -183,6 +183,8 @@ export const pot2PumpToMemePair = (
       pot2Pump.launchToken
     );
 
+    console.log("pot2Pump.priceChangePercentage", priceChangePercentage);
+
     contract.launchedToken = Token.getToken({
       address: pot2Pump.launchToken?.id,
       name: pot2Pump.launchToken?.name,
@@ -196,14 +198,12 @@ export const pot2PumpToMemePair = (
       initialUSD: pot2Pump.launchToken?.initialUSD,
       totalValueLockedUSD: pot2Pump.launchToken?.totalValueLockedUSD,
       poolCount: Number(pot2Pump.launchToken?.poolCount),
-      priceChange24hPercentage: priceChangePercentage.toString(),
+      priceChange: Number(priceChange).toFixed(5),
+      priceChange24hPercentage: Number(priceChangePercentage).toFixed(5),
     });
   }
 
   if (pot2Pump.raisedToken?.id) {
-    const { priceChange, priceChangePercentage } = calculateToken24hPriceChange(
-      pot2Pump.raisedToken
-    );
     contract.raiseToken = Token.getToken({
       address: pot2Pump.raisedToken?.id,
       name: pot2Pump.raisedToken?.name,
@@ -217,7 +217,6 @@ export const pot2PumpToMemePair = (
       initialUSD: pot2Pump.raisedToken?.initialUSD,
       totalValueLockedUSD: pot2Pump.raisedToken?.totalValueLockedUSD,
       poolCount: Number(pot2Pump.raisedToken?.poolCount),
-      priceChange24hPercentage: priceChangePercentage.toString(),
     });
   }
 

@@ -512,7 +512,7 @@ const SimpleLaunchCard = observer(
                     </span>
                   </span> */}
                     <span>
-                      Price Change(24h):{" "}
+                      Change 24h:{" "}
                       <span
                         className={cn(
                           Number(
@@ -525,11 +525,13 @@ const SimpleLaunchCard = observer(
                             : "text-red-500"
                         )}
                       >
-                        {formatAmountWithAlphabetSymbol(
-                          pair?.launchedToken?.priceChange24hPercentage ?? "0",
-                          2
-                        )}
-                        %
+                        {DynamicFormatAmount({
+                          amount:
+                            pair?.launchedToken?.priceChange24hPercentage ??
+                            "0",
+                          decimals: 2,
+                          endWith: "%",
+                        })}
                       </span>
                     </span>
                     <div className="text-right flex flex-row gap-2 items-center *:flex-grow-[1]">

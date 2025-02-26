@@ -66,6 +66,7 @@ export class Token implements BaseContract {
   initialUSD = "";
   totalValueLockedUSD = "";
   poolCount = 0;
+  priceChange = "";
   priceChange24hPercentage = "";
   pot2pumpAddress: Address | undefined | null = undefined;
 
