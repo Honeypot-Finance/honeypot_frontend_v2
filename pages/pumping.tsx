@@ -106,11 +106,6 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                   category: "tvl",
                 },
                 {
-                  key: 1,
-                  label: "Liquidity",
-                  category: "liquidity",
-                },
-                {
                   key: 3,
                   label: "Market cap",
                   category: "marketcap",
@@ -172,7 +167,10 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
               }
             }}
           >
-            <Tab key="all" title="All MEMEs">
+            <Tab
+              key="all"
+              title="All MEMEs"
+            >
               {pumpingProjects && (
                 <Pagination
                   paginationState={pumpingProjects.projectsPage}
