@@ -22,7 +22,7 @@ import {
   GhostAlgebraPoolPair,
   GhostAlgebraPairResponse,
 } from "./../indexerTypes";
-import { networksMap } from "@/services/chain";
+import { networksMap } from "@/services/network";
 import { PageInfo } from "@/services/utils";
 import dayjs from "dayjs";
 

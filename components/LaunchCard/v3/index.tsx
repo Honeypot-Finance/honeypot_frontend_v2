@@ -1,7 +1,7 @@
 import { FtoPairContract } from "@/services/contract/launches/fto/ftopair-contract";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, useEffect } from "react";
 import { cn } from "@/lib/tailwindcss";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -235,16 +235,19 @@ const DetailLaunchCard = observer(
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs opacity-60">TVL</p>
+                  <p className="text-xs opacity-60">Liquidity</p>
                   <p className="font-semibold">
                     <span>
                       {pair?.launchedToken?.totalValueLockedUSD
                         ? "$ " +
-                          (Number(pair.launchedToken.totalValueLockedUSD) <
-                          0.001
+                          (Number(
+                            pair.raisedandLaunchTokenPairPool
+                              ?.totalValueLockedUSD
+                          ) < 0.001
                             ? "<0.001"
                             : Number(
-                                pair.launchedToken.totalValueLockedUSD
+                                pair.raisedandLaunchTokenPairPool
+                                  ?.totalValueLockedUSD
                               ).toFixed(3))
                         : "--"}
                     </span>
@@ -512,7 +515,7 @@ const SimpleLaunchCard = observer(
                     </span>
                   </span> */}
                     <span>
-                      Price Change(24h):{" "}
+                      Change 24h:{" "}
                       <span
                         className={cn(
                           Number(
@@ -525,11 +528,13 @@ const SimpleLaunchCard = observer(
                             : "text-red-500"
                         )}
                       >
-                        {formatAmountWithAlphabetSymbol(
-                          pair?.launchedToken?.priceChange24hPercentage ?? "0",
-                          2
-                        )}
-                        %
+                        {DynamicFormatAmount({
+                          amount:
+                            pair?.launchedToken?.priceChange24hPercentage ??
+                            "0",
+                          decimals: 2,
+                          endWith: "%",
+                        })}
                       </span>
                     </span>
                     <div className="text-right flex flex-row gap-2 items-center *:flex-grow-[1]">
@@ -559,13 +564,14 @@ const SimpleLaunchCard = observer(
                   </p>
                 </div>
                 <div className="text-xs ">
-                  <p className="text-xs opacity-60">TVL</p>
+                  <p className="text-xs opacity-60">Liquidity</p>
                   <p className="font-semibold">
                     <span>
-                      {pair?.launchedToken?.totalValueLockedUSD
+                      {pair?.raisedandLaunchTokenPairPool?.totalValueLockedUSD
                         ? "$ " +
                           formatAmountWithAlphabetSymbol(
-                            pair.launchedToken?.totalValueLockedUSD ?? "0",
+                            pair.raisedandLaunchTokenPairPool
+                              ?.totalValueLockedUSD ?? "0",
                             5
                           )
                         : "--"}
@@ -590,13 +596,13 @@ const SimpleLaunchCard = observer(
             )}
           </Link>
 
-          {pair.state === 3 && (
+          {wallet.isInit && pair.state === 3 && (
             <PottingModalButton
               pair={pair as MemePairContract}
               className="pop-button absolute bottom-0 right-0 translate-y-1/2 -translate-x-1/4 z-10 opacity-0 group-hover:opacity-100"
             />
           )}
-          {pair.state === 0 && (
+          {wallet.isInit && pair.state === 0 && (
             <PumpingModalButton
               pair={pair as MemePairContract}
               className="absolute bottom-0 right-0 translate-y-1/2 -translate-x-1/4 z-10 opacity-0 group-hover:opacity-100"
@@ -727,13 +733,14 @@ const FeaturedLaunchCard = observer(({ pair }: { pair: LaunchContract }) => {
 
                 <div className="flex items-center justify-between">
                   <span className="text-sm sm:text-base font-medium text-[#202020]/60">
-                    TVL:
+                    Liquidity
                   </span>
                   <span className="font-bold">
                     $
-                    {pair?.launchedToken?.totalValueLockedUSD
+                    {pair?.raisedandLaunchTokenPairPool?.totalValueLockedUSD
                       ? formatAmountWithAlphabetSymbol(
-                          pair.launchedToken?.totalValueLockedUSD ?? "0",
+                          pair.raisedandLaunchTokenPairPool
+                            ?.totalValueLockedUSD ?? "0",
                           5
                         )
                       : "--"}
@@ -784,9 +791,17 @@ export const LaunchCardV3 = observer(
     action: React.ReactNode;
     theme?: "light" | "dark";
   } & Partial<HTMLAttributes<any>>) => {
-    if (!pair) return <></>;
-    const projectType: LaunchContractType = getLaunchContractType(pair);
+    const projectType: LaunchContractType = pair
+      ? getLaunchContractType(pair)
+      : "meme";
 
+    useEffect(() => {
+      if (pair) {
+        pair.loadRaisedandLaunchTokenPairPool();
+      }
+    }, [pair]);
+
+    if (!pair) return <></>;
     return (
       <>
         {!wallet.currentChain?.blacklist?.memeBlacklist?.includes(

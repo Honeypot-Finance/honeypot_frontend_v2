@@ -19,7 +19,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import SearchIcon from "../svg/SearchIcon";
-import { berachainNetwork } from "@/services/chain";
+import { berachainNetwork } from "@/services/network";
 import Image from "next/image";
 import { useReadContract } from "wagmi";
 import { ERC20ABI } from "@/lib/abis/erc20";

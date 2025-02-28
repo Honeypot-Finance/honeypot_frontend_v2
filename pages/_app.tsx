@@ -16,6 +16,7 @@ import { config } from "@/config/wagmi";
 import { trpc, trpcQueryClient } from "../lib/trpc";
 import { useEffect, useMemo, useState } from "react";
 import { wallet } from "@/services/wallet";
+import { chain } from "@/services/chain";
 import { DM_Sans, Inter } from "next/font/google";
 import { Inspector, InspectParams } from "react-dev-inspector";
 import { Analytics } from "@vercel/analytics/react";
@@ -23,12 +24,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { ApolloProvider } from "@apollo/client";
 import { infoClient } from "@/lib/algebra/graphql/clients";
 import Image from "next/image";
-import SafeProvider, { useSafeAppsSDK } from "@safe-global/safe-apps-react-sdk";
-import {
-  DynamicContextProvider,
-  DynamicWidget,
-} from "@dynamic-labs/sdk-react-core";
-import { berachainNetwork } from "@/services/chain";
+import SafeProvider from "@safe-global/safe-apps-react-sdk";
+import { berachainNetwork } from "@/services/network";
 // enableStaticRendering(true)
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -53,10 +50,19 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
   });
 
   useEffect(() => {
-    if (walletClient?.account) {
+    if (walletClient) {
       wallet.initWallet(walletClient);
+
+      if (walletClient.chain?.id) {
+        chain.initChain(walletClient.chain.id);
+      }
     }
   }, [walletClient]);
+
+  // Initial chain setup - will use default chain if wallet not connected
+  useEffect(() => {
+    chain.initChain();
+  }, []);
 
   return children;
 };
@@ -97,10 +103,7 @@ export default function App({
   //   );
 
   return (
-    <trpc.Provider
-      client={trpcQueryClient}
-      queryClient={queryClient}
-    >
+    <trpc.Provider client={trpcQueryClient} queryClient={queryClient}>
       <Analytics />
       <QueryClientProvider client={queryClient}>
         <WagmiProvider config={config}>

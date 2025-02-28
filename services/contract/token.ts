@@ -8,7 +8,7 @@ import { amountFormatted } from "@/lib/format";
 import { ERC20ABI } from "@/lib/abis/erc20";
 import { faucetABI } from "@/lib/abis/faucet";
 import { watchAsset } from "viem/actions";
-import { networksMap } from "../chain";
+import { networksMap } from "../network";
 import { WrappedToastify } from "@/lib/wrappedToastify";
 import { trpcClient } from "@/lib/trpc";
 import NetworkManager from "../network";
@@ -66,6 +66,7 @@ export class Token implements BaseContract {
   initialUSD = "";
   totalValueLockedUSD = "";
   poolCount = 0;
+  priceChange = "";
   priceChange24hPercentage = "";
   pot2pumpAddress: Address | undefined | null = undefined;
 

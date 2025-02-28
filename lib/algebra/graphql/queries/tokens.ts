@@ -20,7 +20,7 @@ export const TOKEN_FRAGMENT = gql`
     pot2Pump {
       id
     }
-    tokenHourData {
+    tokenHourData(orderBy: periodStartUnix, orderDirection: desc) {
       periodStartUnix
       priceUSD
       feesUSD

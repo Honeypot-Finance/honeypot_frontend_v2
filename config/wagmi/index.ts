@@ -1,4 +1,4 @@
-import { networks } from "@/services/chain";
+import { networks } from "@/services/network";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import {
@@ -14,7 +14,6 @@ import { injected, safe } from "wagmi/connectors";
 // import { capsuleWallet } from "./capsualWallet";
 // import { berasigWallet } from "./berasigWallet";
 import { createConfig, http, cookieStorage, createStorage } from "wagmi";
-import { berachain } from "@/lib/chain";
 
 const pId = "1d1c8b5204bfbd57502685fc0934a57d";
 const CAPSULE_API_KEY = process.env.NEXT_PUBLIC_CAPSULE_API_KEY!;

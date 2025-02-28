@@ -28,6 +28,7 @@ import {
 } from "../generated/graphql";
 import { filter } from "lodash";
 import { calculateToken24hPriceChange } from "../utils/calculateToken24hChange";
+import { wallet } from "@/services/wallet";
 
 type SubgraphToken = {
   id: string;
@@ -182,6 +183,8 @@ export const pot2PumpToMemePair = (
       pot2Pump.launchToken
     );
 
+    console.log("pot2Pump.priceChangePercentage", priceChangePercentage);
+
     contract.launchedToken = Token.getToken({
       address: pot2Pump.launchToken?.id,
       name: pot2Pump.launchToken?.name,
@@ -195,14 +198,12 @@ export const pot2PumpToMemePair = (
       initialUSD: pot2Pump.launchToken?.initialUSD,
       totalValueLockedUSD: pot2Pump.launchToken?.totalValueLockedUSD,
       poolCount: Number(pot2Pump.launchToken?.poolCount),
-      priceChange24hPercentage: priceChangePercentage.toString(),
+      priceChange: Number(priceChange).toFixed(5),
+      priceChange24hPercentage: Number(priceChangePercentage).toFixed(5),
     });
   }
 
   if (pot2Pump.raisedToken?.id) {
-    const { priceChange, priceChangePercentage } = calculateToken24hPriceChange(
-      pot2Pump.raisedToken
-    );
     contract.raiseToken = Token.getToken({
       address: pot2Pump.raisedToken?.id,
       name: pot2Pump.raisedToken?.name,
@@ -216,7 +217,6 @@ export const pot2PumpToMemePair = (
       initialUSD: pot2Pump.raisedToken?.initialUSD,
       totalValueLockedUSD: pot2Pump.raisedToken?.totalValueLockedUSD,
       poolCount: Number(pot2Pump.raisedToken?.poolCount),
-      priceChange24hPercentage: priceChangePercentage.toString(),
     });
   }
 
@@ -492,7 +492,7 @@ export async function fetchPot2PumpList({
     orderBy: filter.orderBy as Pot2Pump_OrderBy,
     orderDirection: filter.orderDirection as OrderDirection,
     where: {},
-    accountId: filter.userAccountId,
+    accountId: filter.userAccountId ?? wallet.account.toLowerCase(),
   };
 
   if (!dynamicFilter.where) {
@@ -507,6 +507,14 @@ export async function fetchPot2PumpList({
   } else if (filter.status === "processing") {
     dynamicFilter.where.raisedTokenReachingMinCap = false;
     dynamicFilter.where.endTime_gte = Math.floor(Date.now() / 1000);
+  }
+
+  if (filter.raiseToken?.token?.address !== undefined) {
+    if (!dynamicFilter.where.raisedToken_) {
+      dynamicFilter.where.raisedToken_ = {};
+    }
+    dynamicFilter.where.raisedToken_.id =
+      filter.raiseToken.token.address.toLowerCase();
   }
 
   if (filter.tvl?.min !== undefined) {
@@ -626,8 +634,6 @@ export async function fetchPot2PumpList({
     dynamicFilter.where.participants_.account =
       filter.participant.toLowerCase();
   }
-
-  console.log("dynamicFilter", dynamicFilter);
 
   const { data } = await infoClient.query<
     Pot2PumpDynamicFilterQuery,

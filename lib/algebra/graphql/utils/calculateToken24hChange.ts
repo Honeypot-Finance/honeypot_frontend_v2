@@ -5,16 +5,9 @@ export const calculateToken24hPriceChange: (token: Token) => {
   priceChangePercentage: number;
 } = (token: Token) => {
   const tokenHourData = token.tokenHourData;
-  if (!tokenHourData) {
-    return {
-      priceChange: 0,
-      priceChangePercentage: 0,
-    };
-  }
 
   const timeNow = dayjs().unix();
   const timeHourIndex = Math.floor(Number(timeNow) / 3600);
-  const tokenHourNowUnix = timeHourIndex * 3600;
 
   // console.log("calculateToken24hPriceChange time data", {
   //   timeNow,
@@ -23,51 +16,48 @@ export const calculateToken24hPriceChange: (token: Token) => {
   //   tokenHourData,
   // });
 
-  let price24h = 0;
-  let price48h = 0;
+  let price24h = Number(token.derivedUSD);
+  let priceBefore24h = 0;
 
   //find first available price
-  for (let i = 0; i < 24; i++) {
-    const hourTimestamp = tokenHourNowUnix - i * 3600;
+  // for (let i = 0; i < 24; i++) {
+  //   const hourTimestamp = tokenHourNowUnix - i * 3600;
+  //   const hourData = tokenHourData.find((hourData) => {
+  //     return Number(hourData.periodStartUnix) === hourTimestamp;
+  //   });
+  //   if (hourData) {
+  //     price24h = Number(hourData.priceUSD);
+  //     break;
+  //   }
+  // }
+
+  //find first available price after 24 hours
+  for (let i = 24; i < 100; i++) {
+    const hourTimestamp = (timeHourIndex - i) * 3600;
     const hourData = tokenHourData.find((hourData) => {
       return Number(hourData.periodStartUnix) === hourTimestamp;
     });
     if (hourData) {
-      price24h = Number(hourData.priceUSD);
+      priceBefore24h = Number(hourData.priceUSD);
       break;
     }
   }
 
-  //calculate average price of token in the last 48 hours
-  for (let i = 24; i < 48; i++) {
-    const hourTimestamp = tokenHourNowUnix - i * 3600;
-    const hourData = tokenHourData.find((hourData) => {
-      return Number(hourData.periodStartUnix) === hourTimestamp;
-    });
-    if (hourData) {
-      price48h = Number(hourData.priceUSD);
-      break;
-    }
+  if (priceBefore24h === 0) {
+    priceBefore24h = Number(token.initialUSD);
   }
 
-  if (price48h === 0) {
-    price48h = token.initialUSD;
-  }
+  console.log("calculateToken24hPriceChange price data", {
+    price24h: Number(price24h),
+    priceBefore24h: Number(priceBefore24h),
+    priceChange: Number(price24h) - Number(priceBefore24h),
+    priceChangePercentage:
+      100 - (Number(price24h) / Number(priceBefore24h)) * 100,
+  });
 
-  if (price48h === 0) {
-    return {
-      priceChange: price24h,
-      priceChangePercentage: 100,
-    };
-  } else if (price24h === 0) {
-    return {
-      priceChange: -price48h,
-      priceChangePercentage: 0,
-    };
-  } else {
-    return {
-      priceChange: price24h - price48h,
-      priceChangePercentage: ((price24h - price48h) / price48h) * 100,
-    };
-  }
+  return {
+    priceChange: Number(price24h) - Number(priceBefore24h),
+    priceChangePercentage:
+      (Number(price24h) / Number(priceBefore24h)) * 100 - 100,
+  };
 };

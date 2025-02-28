@@ -18,7 +18,7 @@ import {
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { z } from "zod";
+import { promise, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { trpcClient } from "@/lib/trpc";
 import { UploadImage } from "@/components/UploadImage/UploadImage";
@@ -264,13 +264,17 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
 
       await pair.init({ force: true });
 
-      pair.raiseToken?.init(false, {
-        loadIndexerTokenData: true,
-      });
+      await Promise.all([
+        await pair.raiseToken?.init(false, {
+          loadIndexerTokenData: true,
+        }),
 
-      pair.launchedToken?.init(false, {
-        loadIndexerTokenData: true,
-      });
+        await pair.launchedToken?.init(false, {
+          loadIndexerTokenData: true,
+        }),
+      ]);
+
+      pair.loadRaisedandLaunchTokenPairPool();
 
       return pair;
     }),
@@ -374,7 +378,10 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
 
   return (
     <div className="w-full px-2 sm:px-4 md:px-8 xl:px-0 space-y-4 md:space-y-8 xl:max-w-[1200px] 2xl:max-w-[1500px] mx-auto">
-      <CardContainer type="default" showBottomBorder={false}>
+      <CardContainer
+        type="default"
+        showBottomBorder={false}
+      >
         {state.pair.value && (
           <Modal
             isOpen={isOpen}
@@ -452,7 +459,10 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
               className="col-span-1"
               description={pair?.description}
             />
-            <ProjectStats className="col-span-1" pair={pair} />
+            <ProjectStats
+              className="col-span-1"
+              pair={pair}
+            />
           </div>
 
           <CardContainer
@@ -460,9 +470,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
             loading={!pair}
             loadingSize={200}
             loadingText="Loading Data..."
-            className={cn(
-              "relative min-h-[500px] md:min-h-[665px] px-1 sm:px-2 md:px-4"
-            )}
+            className={cn("relative min-h-[500px] px-1 sm:px-2 md:px-4")}
           >
             {pair?.state === 0 && (
               <div className="md:block w-full">
@@ -491,12 +499,20 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
           </CardContainer>
 
           <div className="bg-transparent rounded-2xl space-y-3 col-span-1">
-            {pair && <Action pair={pair} refreshTxsCallback={triggerRefresh} />}
+            {wallet.isInit && pair && (
+              <Action
+                pair={pair}
+                refreshTxsCallback={triggerRefresh}
+              />
+            )}
           </div>
         </div>
 
         <div className="mt-6 md:mt-16 w-full">
-          <Tabs pair={pair} refreshTrigger={refreshTrigger} />
+          <Tabs
+            pair={pair}
+            refreshTrigger={refreshTrigger}
+          />
         </div>
       </CardContainer>
     </div>

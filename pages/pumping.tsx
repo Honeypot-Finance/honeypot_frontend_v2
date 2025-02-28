@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { observer } from "mobx-react-lite";
-import { wallet } from "@/services/wallet";
 import { useEffect, useState } from "react";
 import { Tab, Tabs } from "@nextui-org/react";
 import { NextLayoutPage } from "@/types/nextjs";
@@ -16,6 +15,7 @@ import { defaultFilterState } from "@/constants/pot2pump";
 import HoneyContainer from "@/components/CardContianer/HoneyContainer";
 import { hasValue } from "@/lib/utils";
 import { PAGE_LIMIT } from "@/services/launchpad";
+import { chain } from "@/services/chain";
 
 const MemeLaunchPage: NextLayoutPage = observer(() => {
   const [pumpingProjects, setPumpingProjects] =
@@ -25,7 +25,7 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (!wallet.isInit) {
+    if (!chain.isInit) {
       return;
     }
     // launchpad.setCurrentLaunchpadType("meme");
@@ -40,7 +40,7 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
     const newPumpingProjects = new Pot2PumpPumpingService();
     setPumpingProjects(newPumpingProjects);
     newPumpingProjects.projectsPage.reloadPage();
-  }, [wallet.isInit]);
+  }, [chain.isInit]);
 
   const onChangeFilter = (data: any) => {
     setFilters(data);
@@ -140,6 +140,11 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                   label: "24H change (%)",
                   category: "daychange",
                 },
+                {
+                  key: 9,
+                  label: "Raised Token",
+                  category: "raiseToken",
+                },
               ]}
               filters={filters}
               setFilters={onChangeFilter}
@@ -167,10 +172,7 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
               }
             }}
           >
-            <Tab
-              key="all"
-              title="All MEMEs"
-            >
+            <Tab key="all" title="All MEMEs">
               {pumpingProjects && (
                 <Pagination
                   paginationState={pumpingProjects.projectsPage}
@@ -189,16 +191,6 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                 />
               )}
             </Tab>
-            <Tab
-              key="my"
-              title="My MEMEs"
-              href="/profile"
-            />
-            <Tab
-              key="participated-launch"
-              title="Participated MEMEs"
-              href="/profile"
-            />
           </Tabs>
         </div>
       </div>
