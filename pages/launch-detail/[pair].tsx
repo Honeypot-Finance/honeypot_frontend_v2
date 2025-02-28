@@ -1,9 +1,8 @@
 import { useRouter } from "next/router";
-import { observer, useLocalObservable } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import launchpad from "@/services/launchpad";
 import { NextLayoutPage } from "@/types/nextjs";
-import { AsyncState } from "@/services/utils";
 import { FtoPairContract } from "@/services/contract/launches/fto/ftopair-contract";
 import { wallet } from "@/services/wallet";
 import { Button } from "@/components/button/button-next";
@@ -18,11 +17,8 @@ import {
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { promise, z } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { trpcClient } from "@/lib/trpc";
-import { UploadImage } from "@/components/UploadImage/UploadImage";
-import { useAccount } from "wagmi";
 import { chart } from "@/services/chart";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 import { WrappedToastify } from "@/lib/wrappedToastify";
@@ -33,13 +29,12 @@ import KlineChart from "./components/KlineChart";
 import { LaunchDataProgress } from "./components/LaunchDataProgress";
 import { cn } from "@/lib/tailwindcss";
 import CardContainer from "@/components/CardContianer/v3";
-import {
-  OptionsDropdown,
-  optionsPresets,
-} from "@/components/OptionsDropdown/OptionsDropdown";
-import { LucideFileEdit } from "lucide-react";
 import ProjectDescription from "./components/ProjectDescription";
 import ProjectStats from "./components/ProjectStats";
+import { useLaunchTokenQuery } from "@/lib/hooks/useLaunchTokenQuery";
+import { Pot2Pump } from "@/lib/algebra/graphql/generated/graphql";
+import { pot2PumpToMemePair } from "@/lib/algebra/graphql/clients/pair";
+import { chain } from "@/services/chain";
 
 export const UpdateProjectModal = observer(
   ({ pair }: { pair: FtoPairContract | MemePairContract }) => {
@@ -209,7 +204,7 @@ export const UpdateProjectModal = observer(
                 handleSubmit(async (data) => {
                   await launchpad.updateProject.call({
                     pair: pair.address,
-                    chain_id: wallet.currentChainId,
+                    chain_id: chain.currentChainId,
                     projectName: data.projectName,
                     description: data.description,
                     twitter: data.twitter || "",
@@ -247,7 +242,7 @@ export const UpdateProjectModal = observer(
   }
 );
 
-const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
+const MemeView = observer(() => {
   const router = useRouter();
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const triggerRefresh = useCallback(() => {
@@ -255,70 +250,48 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
   }, []);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { pair: launchTokenAddress } = router.query;
 
-  const state = useLocalObservable(() => ({
-    pair: new AsyncState(async ({ pairAddress }: { pairAddress: string }) => {
-      const pair = MemePairContract.loadContract(pairAddress, {
-        address: pairAddress as string,
-      });
+  const { data: pairData, loading: pot2PumpLoading } = useLaunchTokenQuery(
+    launchTokenAddress as string
+  );
 
-      await pair.init({ force: true });
-
-      await Promise.all([
-        await pair.raiseToken?.init(false, {
-          loadIndexerTokenData: true,
-        }),
-
-        await pair.launchedToken?.init(false, {
-          loadIndexerTokenData: true,
-        }),
-      ]);
-
-      pair.loadRaisedandLaunchTokenPairPool();
-
-      return pair;
-    }),
-  }));
-
-  const account = useAccount();
+  const pair = useMemo(() => {
+    if (pairData?.pot2Pumps?.[0]) {
+      return pot2PumpToMemePair(pairData.pot2Pumps[0] as Partial<Pot2Pump>);
+    }
+  }, [pairData]);
 
   // remind provider to edit project details
   useEffect(() => {
-    if (
-      !state.pair.value ||
-      !state.pair.value.isInit ||
-      !state.pair.value.isProvider
-    )
-      return;
+    if (!pair || !pair.isInit || !pair.isProvider) return;
 
     if (
-      !state.pair.value.logoUrl ||
-      !state.pair.value.projectName ||
-      !state.pair.value.description ||
-      !state.pair.value.twitter ||
-      !state.pair.value.website ||
-      !state.pair.value.telegram
+      !pair.logoUrl ||
+      !pair.projectName ||
+      !pair.description ||
+      !pair.twitter ||
+      !pair.website ||
+      !pair.telegram
     ) {
       WrappedToastify.warn({
         message: (
           <div>
             <ul className="list-disc list-inside">
-              {!state.pair.value.logoUrl && (
-                <li className="text-orange-400">no icon</li>
-              )}
-              {!state.pair.value.projectName && (
+              {!pair.logoUrl && <li className="text-orange-400">no icon</li>}
+              {!pair.projectName && (
                 <li className="text-orange-400">no project name</li>
               )}
-              {!state.pair.value.description && (
+              {!pair.description && (
                 <li className="text-orange-400">no description</li>
               )}
-              {!state.pair.value.twitter && (
+              {!pair.twitter && (
                 <li className="text-orange-400">no twitter link</li>
               )}
-              {!state.pair.value.website && (
+              {!pair.website && (
                 <li className="text-orange-400">no website link</li>
               )}
-              {!state.pair.value.telegram && (
+              {!pair.telegram && (
                 <li className="text-orange-400">no telegram link</li>
               )}
             </ul>
@@ -343,46 +316,22 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
       });
       return () => toast.dismiss();
     }
-  }, [
-    pairAddress,
-    account.address,
-    state.pair.value?.isProvider,
-    state.pair.value,
-    onOpen,
-    router.query.edit,
-    router,
-  ]);
+  }, [pair, onOpen, router.query.edit, router]);
 
   useEffect(() => {
-    if (!wallet.isInit || !pairAddress) {
-      return;
-    }
-
-    state.pair.call({
-      pairAddress: pairAddress as string,
-    });
-  }, [wallet.isInit, pairAddress]);
-
-  useEffect(() => {
-    if (!state.pair.value?.launchedToken) {
+    if (!pair?.launchedToken) {
       return;
     }
     chart.setCurrencyCode("USD");
     chart.setTokenNumber(0);
-    chart.setChartTarget(state.pair.value.launchedToken);
-    chart.setChartLabel(state.pair.value.launchedToken?.displayName + "/USD");
-    console.log("chart", chart);
-  }, [state.pair.value, state.pair.value?.launchedToken]);
-
-  const pair = useMemo(() => state.pair.value, [state.pair.value]);
+    chart.setChartTarget(pair.launchedToken);
+    chart.setChartLabel(pair.launchedToken?.displayName + "/USD");
+  }, [pair, pair?.launchedToken]);
 
   return (
     <div className="w-full px-2 sm:px-4 md:px-8 xl:px-0 space-y-4 md:space-y-8 xl:max-w-[1200px] 2xl:max-w-[1500px] mx-auto">
-      <CardContainer
-        type="default"
-        showBottomBorder={false}
-      >
-        {state.pair.value && (
+      <CardContainer type="default" showBottomBorder={false}>
+        {pair && (
           <Modal
             isOpen={isOpen}
             onOpenChange={onOpenChange}
@@ -394,7 +343,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
               base: "max-h-[70vh] overflow-y-auto",
             }}
           >
-            <UpdateProjectModal pair={state.pair.value}></UpdateProjectModal>
+            <UpdateProjectModal pair={pair}></UpdateProjectModal>
           </Modal>
         )}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_500px] gap-4 md:gap-x-4 md:gap-y-14 w-full @container">
@@ -404,44 +353,6 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
               "grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0 text-[#202020]"
             )}
           >
-            {/* <OptionsDropdown
-              className="p-0 m-0 absolute right-2.5 sm:right-5 top-2 z-10 text-black"
-              options={[
-                optionsPresets.copy({
-                  copyText: pair?.launchedToken?.address ?? "",
-                  displayText: "Copy Token address",
-                  copysSuccessText: "Token address copied",
-                }),
-                optionsPresets.share({
-                  shareUrl: `${window.location.origin}/launch-detail/${pair?.launchedToken?.address}`,
-                  displayText: "Share this project",
-                  shareText: "Checkout this Token: " + pair?.projectName,
-                }),
-                optionsPresets.importTokenToWallet({
-                  token: pair?.launchedToken,
-                }),
-                optionsPresets.viewOnExplorer({
-                  address: pair?.address ?? "",
-                }),
-                {
-                  icon: <LucideFileEdit />,
-                  display: "Update Project",
-                  onClick: () => {
-                    if (!pair) return;
-
-                    if (
-                      pair.provider.toLowerCase() !==
-                      wallet.account.toLowerCase()
-                    ) {
-                      toast.warning("You are not the owner of this project");
-                      return;
-                    }
-
-                    onOpen();
-                  },
-                },
-              ]}
-            /> */}
             <ProjectTitle
               className="col-span-1"
               pair={pair ?? undefined}
@@ -459,10 +370,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
               className="col-span-1"
               description={pair?.description}
             />
-            <ProjectStats
-              className="col-span-1"
-              pair={pair}
-            />
+            <ProjectStats className="col-span-1" pair={pair} />
           </div>
 
           <CardContainer
@@ -500,19 +408,13 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
 
           <div className="bg-transparent rounded-2xl space-y-3 col-span-1">
             {wallet.isInit && pair && (
-              <Action
-                pair={pair}
-                refreshTxsCallback={triggerRefresh}
-              />
+              <Action pair={pair} refreshTxsCallback={triggerRefresh} />
             )}
           </div>
         </div>
 
         <div className="mt-6 md:mt-16 w-full">
-          <Tabs
-            pair={pair}
-            refreshTrigger={refreshTrigger}
-          />
+          {pair && <Tabs pair={pair} refreshTrigger={refreshTrigger} />}
         </div>
       </CardContainer>
     </div>
@@ -520,56 +422,7 @@ const MemeView = observer(({ pairAddress }: { pairAddress: string }) => {
 });
 
 const LaunchPage: NextLayoutPage = observer(() => {
-  const [pairAddress, setPairAddress] = useState<string | null>(null);
-  const router = useRouter();
-  const { pair: launchTokenAddress } = router.query;
-
-  useEffect(() => {
-    if (!launchTokenAddress || !wallet.isInit) return;
-
-    wallet.contracts.memeFacade
-      .getPairByLaunchTokenAddress(launchTokenAddress as `0x${string}`)
-      .then((pairAddress) => {
-        setPairAddress(pairAddress.toLowerCase());
-      });
-  }, [launchTokenAddress, wallet.isInit]);
-
-  const [projectInfo, setProjectInfo] = useState<{
-    name?: string | null;
-    description?: string | null;
-    provider?: string;
-    project_type?: string | null;
-    id?: number;
-    twitter?: string | null;
-    telegram?: string | null;
-    website?: string | null;
-    logo_url?: string | null;
-    banner_url?: string | null;
-  } | null>(null);
-
-  useEffect(() => {
-    if (!pairAddress || !wallet.isInit) {
-      return;
-    }
-    console.log("pairAddress", pairAddress);
-    trpcClient.projects.getProjectInfo
-      .query({
-        pair: (pairAddress as string).toLowerCase(),
-        chain_id: wallet.currentChainId,
-      })
-      .then((data) => {
-        console.log("data", data);
-        setProjectInfo(data);
-      });
-  }, [pairAddress, wallet.isInit]);
-
-  return (
-    <>
-      {projectInfo && projectInfo?.project_type === "meme" && (
-        <MemeView pairAddress={pairAddress as string} />
-      )}
-    </>
-  );
+  return <MemeView />;
 });
 
 export default LaunchPage;

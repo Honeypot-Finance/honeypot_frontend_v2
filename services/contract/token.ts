@@ -276,6 +276,7 @@ export class Token implements BaseContract {
   }
 
   async loadName(force?: boolean) {
+    if (!wallet.isInit) return;
     if (this.address === zeroAddress || this.isNative) {
       this.name = wallet.currentChain.nativeToken.name;
       return;
@@ -304,6 +305,7 @@ export class Token implements BaseContract {
   }
 
   async loadSymbol(force?: boolean) {
+    if (!wallet.isInit) return;
     if (this.isNative || this.address === zeroAddress) {
       this.symbol = wallet.currentChain.nativeToken.symbol;
       return;
@@ -422,6 +424,7 @@ export class Token implements BaseContract {
   }
 
   async getBalance() {
+    if (!wallet.isInit) return;
     try {
       const balance =
         this.isNative || this.address === zeroAddress
