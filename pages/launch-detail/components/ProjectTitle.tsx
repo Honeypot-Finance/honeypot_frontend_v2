@@ -56,11 +56,11 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
   return (
     <div
       className={cn(
-        "flex items-end justify-between md:items-center md:justify-start gap-x-4 md:gap-x-[7.5px]",
+        "flex items-end md:items-center md:justify-start gap-x-4 md:gap-x-[7.5px] justify-center",
         className
       )}
     >
-      <div className="flex flex-col items-center gap-2 md:gap-0">
+      <div className="flex flex-col items-center gap-2 md:gap-0 ">
         <div className="size-10 md:size-[77px] flex items-center justify-center rounded-full shrink-0">
           <Image
             width={77}
