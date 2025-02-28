@@ -19,6 +19,12 @@ import {
 } from "../generated/graphql";
 import { pot2PumpListToMemePairList, pot2PumpToMemePair } from "./pair";
 
+export const getPot2PumpContractByLaunchToken = async (launchToken: string) => {
+  const pot2Pump = await getPot2PumpByLaunchToken(launchToken);
+
+  return pot2Pump ? pot2PumpToMemePair(pot2Pump as Partial<Pot2Pump>) : null;
+};
+
 export const getPot2PumpByLaunchToken = async (launchToken: string) => {
   const res = await infoClient.query<
     GetPot2PumpByLaunchTokenQuery,
