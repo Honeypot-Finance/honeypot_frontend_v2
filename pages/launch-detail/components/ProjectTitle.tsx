@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createElement } from "react";
 import { FaXTwitter } from "react-icons/fa6";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FaTelegram, FaGlobe } from "react-icons/fa";
@@ -15,8 +15,12 @@ import { cn } from "@nextui-org/theme";
 import Link from "next/link";
 import { BiLinkExternal } from "react-icons/bi";
 import Image from "next/image";
-import { Tooltip } from "@nextui-org/react";
+import { Tooltip, useDisclosure } from "@nextui-org/react";
 import { WrappedTooltip } from "@/components/wrappedNextUI/Tooltip/Tooltip";
+import { optionsPresets } from "@/components/OptionsDropdown/OptionsDropdown";
+import { LucideFileEdit } from "lucide-react";
+import { wallet } from "@/services/wallet";
+import { toast } from "react-toastify";
 
 interface ProjectTitleProps {
   name?: string;
@@ -46,14 +50,17 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
   className,
 }) => {
   const isLoading = !pair;
+
+  const { onOpen } = useDisclosure();
+
   return (
     <div
       className={cn(
-        "flex items-end justify-between md:items-center md:justify-start gap-x-4 md:gap-x-[7.5px]",
+        "flex items-end md:items-center md:justify-start gap-x-4 md:gap-x-[7.5px] justify-center",
         className
       )}
     >
-      <div className="flex flex-col items-center gap-2 md:gap-0">
+      <div className="flex flex-col items-center gap-2 md:gap-0 ">
         <div className="size-10 md:size-[77px] flex items-center justify-center rounded-full shrink-0">
           <Image
             width={77}
@@ -91,7 +98,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
             />
           </div>
         )}
-        <div className="flex items-center flex-col gap-3">
+        <div className="">
           <div className="hidden md:flex items-center gap-1">
             {isLoading ? (
               <Skeleton className="h-8 w-[60px] bg-slate-200" />
@@ -151,6 +158,43 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                     </a>
                   </WrappedTooltip>
                 )}
+
+                {/*[
+                optionsPresets.copy({
+                  copyText: pair?.launchedToken?.address ?? "",
+                  displayText: "Copy Token address",
+                  copysSuccessText: "Token address copied",
+                }),
+                optionsPresets.share({
+                  shareUrl: `${window.location.origin}/launch-detail/${pair?.launchedToken?.address}`,
+                  displayText: "Share this project",
+                  shareText: "Checkout this Token: " + pair?.projectName,
+                }),
+                optionsPresets.importTokenToWallet({
+                  token: pair?.launchedToken,
+                }),
+                optionsPresets.viewOnExplorer({
+                  address: pair?.address ?? "",
+                }),
+                {
+                  icon: <LucideFileEdit />,
+                  display: "Update Project",
+                  onClick: () => {
+                    if (!pair) return;
+
+                    if (
+                      pair.provider.toLowerCase() !==
+                      wallet.account.toLowerCase()
+                    ) {
+                      toast.warning("You are not the owner of this project");
+                      return;
+                    }
+
+                    onOpen();
+                  },
+                },
+              ] */}
+
                 {address && (
                   <>
                     <Copy
@@ -172,6 +216,49 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                         <BiSearch size={18} />
                       </a>
                     </WrappedTooltip>
+
+                    {[
+                      optionsPresets.importTokenToWallet({
+                        token: pair?.launchedToken,
+                      }),
+                      optionsPresets.viewOnExplorer({
+                        address: pair?.address ?? "",
+                      }),
+                      {
+                        icon: <LucideFileEdit size={14} />,
+                        display: "Update Project",
+                        onClick: () => {
+                          if (!pair) return;
+
+                          if (
+                            pair.provider.toLowerCase() !==
+                            wallet.account.toLowerCase()
+                          ) {
+                            toast.warning(
+                              "You are not the owner of this project"
+                            );
+                            return;
+                          }
+
+                          onOpen();
+                        },
+                      },
+                    ].map((item) => {
+                      return (
+                        <WrappedTooltip
+                          key={item.display}
+                          content={item.display}
+                        >
+                          <div onClick={() => item.onClick()}>
+                            {
+                              <div className="hover:opacity-80 text-[#5C5C5C] cursor-pointer">
+                                {item.icon}
+                              </div>
+                            }
+                          </div>
+                        </WrappedTooltip>
+                      );
+                    })}
                   </>
                 )}
                 {pair?.state === 0 && (
@@ -197,14 +284,14 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
               </>
             )}
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-start gap-1">
             {isLoading ? (
               <div className="flex items-center gap-2">
                 <Skeleton className="h-6 w-16 bg-slate-200" />
                 <Skeleton className="h-6 w-16 bg-slate-200" />
               </div>
             ) : pair ? (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center self-start gap-2">
                 <span className="text-xs sm:text-sm text-[#5C5C5C]">
                   Share To
                 </span>
@@ -216,7 +303,10 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                   <Link
                     className="cursor-pointer flex items-center gap-2 hover:text-primary flex-col"
                     target="_blank"
-                    href={`https://twitter.com/intent/tweet?text=${pot2PumpShareContent(pair, "twitter")}%0A%0A${pot2pumpShareLink(pair)}`}
+                    href={`https://twitter.com/intent/tweet?text=${pot2PumpShareContent(
+                      pair,
+                      "twitter"
+                    )}%0A%0A${pot2pumpShareLink(pair)}`}
                   >
                     <div className="flex items-center gap-1 hover:text-black/40">
                       X
@@ -226,7 +316,9 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                   <Link
                     className="cursor-pointer flex items-center gap-2 hover:text-primary flex-col"
                     target="_blank"
-                    href={`https://telegram.me/share/url?url=${pot2pumpShareLink(pair)}%0A&text=${pot2PumpShareContent(pair, "telegram")}`}
+                    href={`https://telegram.me/share/url?url=${pot2pumpShareLink(
+                      pair
+                    )}%0A&text=${pot2PumpShareContent(pair, "telegram")}`}
                   >
                     <div className="flex items-center gap-1 hover:text-black/40">
                       TG
