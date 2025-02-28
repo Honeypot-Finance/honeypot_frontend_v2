@@ -1,5 +1,13 @@
 import { gql } from "@apollo/client";
 
+export const GET_POT2PUMP_BY_LAUNCH_TOKEN = gql`
+  query GetPot2PumpByLaunchToken($launchToken: String!) {
+    pot2Pumps(where: { launchToken: $launchToken }) {
+      ...Pot2PumpField
+    }
+  }
+`;
+
 export const GET_POT2_PUMP_DETAIL = gql`
   query GetPot2PumpDetail($id: ID!, $accountId: ID) {
     pot2Pump(id: $id) {

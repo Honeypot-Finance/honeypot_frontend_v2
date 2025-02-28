@@ -12971,6 +12971,13 @@ export type UserActivePositionsQuery = { __typename?: 'Query', positions: Array<
 
 export type PositionFieldsFragment = { __typename?: 'Position', id: string, owner: any, liquidity: any, depositedToken0: any, depositedToken1: any, withdrawnToken0: any, withdrawnToken1: any, pool: { __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> }, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> } };
 
+export type GetPot2PumpByLaunchTokenQueryVariables = Exact<{
+  launchToken: Scalars['String']['input'];
+}>;
+
+
+export type GetPot2PumpByLaunchTokenQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }> };
+
 export type GetPot2PumpDetailQueryVariables = Exact<{
   id: Scalars['ID']['input'];
   accountId?: InputMaybe<Scalars['ID']['input']>;
@@ -14438,6 +14445,46 @@ export type UserActivePositionsQueryHookResult = ReturnType<typeof useUserActive
 export type UserActivePositionsLazyQueryHookResult = ReturnType<typeof useUserActivePositionsLazyQuery>;
 export type UserActivePositionsSuspenseQueryHookResult = ReturnType<typeof useUserActivePositionsSuspenseQuery>;
 export type UserActivePositionsQueryResult = Apollo.QueryResult<UserActivePositionsQuery, UserActivePositionsQueryVariables>;
+export const GetPot2PumpByLaunchTokenDocument = gql`
+    query GetPot2PumpByLaunchToken($launchToken: String!) {
+  pot2Pumps(where: {launchToken: $launchToken}) {
+    ...Pot2PumpField
+  }
+}
+    ${Pot2PumpFieldFragmentDoc}`;
+
+/**
+ * __useGetPot2PumpByLaunchTokenQuery__
+ *
+ * To run a query within a React component, call `useGetPot2PumpByLaunchTokenQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPot2PumpByLaunchTokenQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPot2PumpByLaunchTokenQuery({
+ *   variables: {
+ *      launchToken: // value for 'launchToken'
+ *   },
+ * });
+ */
+export function useGetPot2PumpByLaunchTokenQuery(baseOptions: Apollo.QueryHookOptions<GetPot2PumpByLaunchTokenQuery, GetPot2PumpByLaunchTokenQueryVariables> & ({ variables: GetPot2PumpByLaunchTokenQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPot2PumpByLaunchTokenQuery, GetPot2PumpByLaunchTokenQueryVariables>(GetPot2PumpByLaunchTokenDocument, options);
+      }
+export function useGetPot2PumpByLaunchTokenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPot2PumpByLaunchTokenQuery, GetPot2PumpByLaunchTokenQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPot2PumpByLaunchTokenQuery, GetPot2PumpByLaunchTokenQueryVariables>(GetPot2PumpByLaunchTokenDocument, options);
+        }
+export function useGetPot2PumpByLaunchTokenSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetPot2PumpByLaunchTokenQuery, GetPot2PumpByLaunchTokenQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetPot2PumpByLaunchTokenQuery, GetPot2PumpByLaunchTokenQueryVariables>(GetPot2PumpByLaunchTokenDocument, options);
+        }
+export type GetPot2PumpByLaunchTokenQueryHookResult = ReturnType<typeof useGetPot2PumpByLaunchTokenQuery>;
+export type GetPot2PumpByLaunchTokenLazyQueryHookResult = ReturnType<typeof useGetPot2PumpByLaunchTokenLazyQuery>;
+export type GetPot2PumpByLaunchTokenSuspenseQueryHookResult = ReturnType<typeof useGetPot2PumpByLaunchTokenSuspenseQuery>;
+export type GetPot2PumpByLaunchTokenQueryResult = Apollo.QueryResult<GetPot2PumpByLaunchTokenQuery, GetPot2PumpByLaunchTokenQueryVariables>;
 export const GetPot2PumpDetailDocument = gql`
     query GetPot2PumpDetail($id: ID!, $accountId: ID) {
   pot2Pump(id: $id) {

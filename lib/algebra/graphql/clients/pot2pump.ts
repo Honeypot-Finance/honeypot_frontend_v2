@@ -13,8 +13,24 @@ import {
   GetParticipantDetailQuery,
   GetParticipantDetailQueryVariables,
   GetPot2PumpDetailQueryVariables,
+  GetPot2PumpByLaunchTokenDocument,
+  GetPot2PumpByLaunchTokenQuery,
+  GetPot2PumpByLaunchTokenQueryVariables,
 } from "../generated/graphql";
 import { pot2PumpListToMemePairList, pot2PumpToMemePair } from "./pair";
+
+export const getPot2PumpByLaunchToken = async (launchToken: string) => {
+  const res = await infoClient.query<
+    GetPot2PumpByLaunchTokenQuery,
+    GetPot2PumpByLaunchTokenQueryVariables
+  >({
+    query: GetPot2PumpByLaunchTokenDocument,
+    variables: { launchToken: launchToken.toLowerCase() },
+    fetchPolicy: "network-only",
+  });
+
+  return res.data?.pot2Pumps[0] ?? null;
+};
 
 export const getPot2PumpDetail = async (id: string, accountId?: string) => {
   const res = await infoClient.query<
