@@ -260,7 +260,7 @@ export const berachainNetwork = new Network({
       name: "NECT",
       symbol: "NECT",
       decimals: 18,
-      logoURI: "/images/icons/tokens/nect-token-icon.jpg",
+      logoURI: "/images/icons/tokens/nect-token-icon.png",
       isPopular: true,
     },
     "0x467aa1bfa3dcc714f7c16b3d779200431f6a833b": {
