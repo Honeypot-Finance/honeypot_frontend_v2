@@ -462,8 +462,8 @@ const MEMELaunchModal: NextLayoutPage = observer(() => {
     setValue,
   } = useForm<FormValues>({
     defaultValues: {
-      logoUrl: "/images/empty-logo.png"
-    }
+      logoUrl: "/images/empty-logo.png",
+    },
   });
   const router = useRouter();
   const state = useLocalObservable(() => ({
@@ -578,7 +578,8 @@ const MEMELaunchModal: NextLayoutPage = observer(() => {
               )}
             />
             <div className="text-black opacity-50 text-center text-sm">
-               Click icon to upload new token icon <span className="text-red-500">*</span>
+              Click icon to upload new token icon{" "}
+              <span className="text-red-500">*</span>
             </div>
             {errors.logoUrl && (
               <span className="text-red-500 text-center text-sm">
@@ -633,6 +634,54 @@ const MEMELaunchModal: NextLayoutPage = observer(() => {
             )}
           </div>
 
+          {wallet.isInit && (
+            <div className="flex flex-col gap-2">
+              <label className={labelBaseClass}>
+                Raise Token <span className="text-red-500">*</span>
+              </label>
+              <WarppedNextSelect
+                isRequired
+                defaultSelectedKeys={[
+                  wallet.currentChain.raisedTokenData[0].address,
+                ]}
+                items={wallet.currentChain?.raisedTokenData}
+                selectorIcon={<></>}
+                onSelectionChange={(value) => {
+                  state.setRaisedTokenAddress(value.currentKey ?? "");
+                }}
+                {...register("raisedToken")}
+              >
+                {wallet.currentChain?.raisedTokenData.map((token) => (
+                  <SelectItem
+                    key={token.address}
+                    value={token.address}
+                    startContent={
+                      <TokenLogo
+                        size={24}
+                        token={Token.getToken({
+                          address: token.address,
+                        })}
+                        addtionalClasses="rounded-full"
+                      />
+                    }
+                  >
+                    {amountFormatted(
+                      new BigNumber(token.amount.toString())
+                        .div(10 ** 18)
+                        .toString(),
+                      {
+                        prefix: "",
+                        decimals: 0,
+                        fixed: 3,
+                        symbol: ` ${token.symbol}`,
+                      }
+                    )}
+                  </SelectItem>
+                ))}
+              </WarppedNextSelect>
+            </div>
+          )}
+
           <div className="custom-dashed-less-round">
             <Accordion
               variant="bordered"
@@ -650,54 +699,6 @@ const MEMELaunchModal: NextLayoutPage = observer(() => {
                   base: "border-none",
                 }}
               >
-                {wallet.isInit && (
-                  <div className="flex flex-col gap-2">
-                    <label className={labelBaseClass}>
-                      Raise Token <span className="text-red-500">*</span>
-                    </label>
-                    <WarppedNextSelect
-                      isRequired
-                      defaultSelectedKeys={[
-                        wallet.currentChain.raisedTokenData[1].address,
-                      ]}
-                      items={wallet.currentChain?.raisedTokenData}
-                      selectorIcon={<></>}
-                      onSelectionChange={(value) => {
-                        state.setRaisedTokenAddress(value.currentKey ?? "");
-                      }}
-                      {...register("raisedToken")}
-                    >
-                      {wallet.currentChain?.raisedTokenData.map((token) => (
-                        <SelectItem
-                          key={token.address}
-                          value={token.address}
-                          startContent={
-                            <TokenLogo
-                              size={24}
-                              token={Token.getToken({
-                                address: token.address,
-                              })}
-                              addtionalClasses="rounded-full"
-                            />
-                          }
-                        >
-                          {amountFormatted(
-                            new BigNumber(token.amount.toString())
-                              .div(10 ** 18)
-                              .toString(),
-                            {
-                              prefix: "",
-                              decimals: 0,
-                              fixed: 3,
-                              symbol: ` ${token.symbol}`,
-                            }
-                          )}
-                        </SelectItem>
-                      ))}
-                    </WarppedNextSelect>
-                  </div>
-                )}
-
                 <div className="flex flex-col gap-2">
                   <label className={labelBaseClass}>
                     Description{" "}
