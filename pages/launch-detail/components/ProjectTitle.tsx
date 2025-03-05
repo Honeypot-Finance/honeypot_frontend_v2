@@ -88,6 +88,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
           )}
         </div>
       </div>
+
       <div className="flex flex-col gap-4 items-start">
         {!isLoading && (
           <div className="md:hidden">
@@ -110,6 +111,35 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
             ) : name ? (
               <div className="text-sm text-[#5C5C5C]/60">({name})</div>
             ) : null}
+
+            {pair?.isProvider && (
+              <WrappedTooltip
+                key={"Update Project"}
+                content={"Update Project"}
+              >
+                <div
+                  onClick={() => {
+                    if (!pair) return;
+
+                    if (
+                      pair.provider.toLowerCase() !==
+                      wallet.account.toLowerCase()
+                    ) {
+                      toast.warning("You are not the owner of this project");
+                      return;
+                    }
+
+                    onOpen();
+                  }}
+                >
+                  {
+                    <div className="hover:opacity-80 text-[#5C5C5C] cursor-pointer">
+                      {<LucideFileEdit size={14} />}
+                    </div>
+                  }
+                </div>
+              </WrappedTooltip>
+            )}
           </div>
           <div className="flex items-center gap-1">
             {isLoading ? (
@@ -224,25 +254,6 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
                       optionsPresets.viewOnExplorer({
                         address: pair?.address ?? "",
                       }),
-                      {
-                        icon: <LucideFileEdit size={14} />,
-                        display: "Update Project",
-                        onClick: () => {
-                          if (!pair) return;
-
-                          if (
-                            pair.provider.toLowerCase() !==
-                            wallet.account.toLowerCase()
-                          ) {
-                            toast.warning(
-                              "You are not the owner of this project"
-                            );
-                            return;
-                          }
-
-                          onOpen();
-                        },
-                      },
                     ].map((item) => {
                       return (
                         <WrappedTooltip
