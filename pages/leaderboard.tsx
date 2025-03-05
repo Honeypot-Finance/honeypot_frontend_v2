@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { debounce } from "lodash";
+import { debounce, endsWith } from "lodash";
 import { Link, Tooltip } from "@nextui-org/react";
 import { useTotalUsers } from "@/lib/hooks/useTotalUsers";
 import CardContainer from "@/components/CardContianer/v3";
@@ -12,6 +12,7 @@ import {
   useTopParticipateAccounts,
 } from "@/lib/hooks/useAccounts";
 import { DynamicFormatAmount } from "@/lib/algebra/utils/common/formatAmount";
+import { Account_OrderBy } from "@/lib/algebra/graphql/generated/graphql";
 
 interface LeaderboardItem {
   rank: number;
@@ -36,12 +37,15 @@ const LeaderboardPage = () => {
   const pageSize = 10;
   const { stats, loading: statsLoading } = useLeaderboard();
   const { totalUsers, loading: usersLoading } = useTotalUsers();
+  const [accountOrderBy, setAccountOrderBy] = useState<Account_OrderBy>(
+    Account_OrderBy.ParticipateCount
+  );
   const {
     accounts,
     loading: accountsLoading,
     hasMore,
     loadMore,
-  } = useAccounts(page, pageSize, searchAddress);
+  } = useAccounts(page, pageSize, searchAddress, accountOrderBy);
   const { accounts: topSwapAccounts, loading: topSwapAccountsLoading } =
     useTopParticipateAccounts();
   const {
@@ -201,11 +205,31 @@ const LeaderboardPage = () => {
                       {/* <th className="py-4 px-6 text-center text-base font-medium whitespace-nowrap">
                           Holding Pools
                         </th> */}
-                      {/* <th className="py-4 px-6 text-center text-base font-medium whitespace-nowrap">
-                        Meme Tokens
-                      </th> */}
-                      <th className="py-4 px-6 text-center text-base font-medium whitespace-nowrap">
+                      <th
+                        className="py-4 px-6 text-center text-base font-medium whitespace-nowrap cursor-pointer"
+                        onClick={() =>
+                          setAccountOrderBy(Account_OrderBy.Pot2PumpLaunchCount)
+                        }
+                      >
+                        Launches
+                      </th>
+                      <th
+                        className="py-4 px-6 text-center text-base font-medium whitespace-nowrap cursor-pointer"
+                        onClick={() =>
+                          setAccountOrderBy(Account_OrderBy.ParticipateCount)
+                        }
+                      >
                         Participations
+                      </th>
+                      <th
+                        className="py-4 px-6 text-center text-base font-medium whitespace-nowrap cursor-pointer"
+                        onClick={() =>
+                          setAccountOrderBy(
+                            Account_OrderBy.TotalDepositPot2pumpUsd
+                          )
+                        }
+                      >
+                        total deposite
                       </th>
                     </tr>
                   </thead>
@@ -220,47 +244,48 @@ const LeaderboardPage = () => {
                         </td>
                       </tr>
                     ) : (
-                      accounts
-                        .sort((a, b) => b.participateCount - a.participateCount)
-                        .map((item, index) => (
-                          <tr
-                            key={item.walletAddress}
-                            className="hover:bg-[#2a2a2a] transition-colors"
-                          >
-                            <td className="py-4 px-6 text-base font-mono text-blue-400">
-                              <div className="flex items-center gap-2">
-                                <div className="w-4 h-4 bg-[#FFCD4D] rounded"></div>
-                                <Tooltip
-                                  content={item.walletAddress}
-                                  placement="top"
+                      accounts.map((item, index) => (
+                        <tr
+                          key={item.walletAddress}
+                          className="hover:bg-[#2a2a2a] transition-colors"
+                        >
+                          <td className="py-4 px-6 text-base font-mono text-blue-400">
+                            <div className="flex items-center gap-2">
+                              <div className="w-4 h-4 bg-[#FFCD4D] rounded"></div>
+                              <Tooltip
+                                content={item.walletAddress}
+                                placement="top"
+                              >
+                                <Link
+                                  href={`https://berascan.com/address/${item.walletAddress}`}
+                                  target="_blank"
+                                  className="text-blue-400"
                                 >
-                                  <Link
-                                    href={`https://berascan.com/address/${item.walletAddress}`}
-                                    target="_blank"
-                                    className="text-blue-400"
-                                  >
-                                    {item.walletAddress}
-                                  </Link>
-                                </Tooltip>
-                              </div>
-                            </td>
-                            {/* <td className="py-4 px-6 text-base">
+                                  {item.walletAddress}
+                                </Link>
+                              </Tooltip>
+                            </div>
+                          </td>
+                          {/* <td className="py-4 px-6 text-base">
                             {formatVolume(item.totalSpend)}
                           </td>
                           <td className="py-4 px-6 text-center text-base">
                             {item.swapCount}
                           </td> */}
-                            {/* <td className="py-4 px-6 text-center text-base">
-                              {item.poolHoldingCount}
-                            </td> */}
-                            {/* <td className="py-4 px-6 text-center text-base">
-                            {item.memeTokenCount}
-                          </td> */}
-                            <td className="py-4 px-6 text-center text-base">
-                              {item.participateCount}
-                            </td>
-                          </tr>
-                        ))
+                          <td className="py-4 px-6 text-center text-base">
+                            {item.pot2PumpLaunchCount}
+                          </td>
+                          <td className="py-4 px-6 text-center text-base">
+                            {item.participateCount}
+                          </td>
+                          <td className="py-4 px-6 text-center text-base">
+                            {DynamicFormatAmount({
+                              amount: item.totalDepositPot2pumpUSD,
+                              endWith: "$",
+                            })}
+                          </td>
+                        </tr>
+                      ))
                     )}
                   </tbody>
                 </table>

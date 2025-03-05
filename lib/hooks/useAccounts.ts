@@ -13,11 +13,14 @@ import {
 } from "../algebra/graphql/clients/leaderboard";
 import dayjs from "dayjs";
 import { ALGEBRA_ROUTER } from "@/config/algebra/addresses";
+import { orderBy } from "lodash";
+import { Account_OrderBy } from "../algebra/graphql/generated/graphql";
 
 export function useAccounts(
   page: number = 1,
   pageSize: number = 10,
-  searchAddress: string = ""
+  searchAddress: string = "",
+  orderBy: Account_OrderBy
 ) {
   const { data, loading, error, fetchMore } = useQuery<AccountsQueryData>(
     searchAddress
@@ -27,8 +30,8 @@ export function useAccounts(
       variables: {
         skip: (page - 1) * pageSize,
         first: pageSize,
+        orderBy: orderBy,
         address: !!searchAddress ? searchAddress.toLowerCase() : undefined,
-        exclude: [ALGEBRA_ROUTER.toLowerCase()],
       },
     }
   );
@@ -42,6 +45,8 @@ export function useAccounts(
       memeTokenCount: parseInt(account.memeTokenHoldingCount),
       transactions: parseInt(account.platformTxCount),
       participateCount: parseInt(account.participateCount),
+      totalDepositPot2pumpUSD: account.totalDepositPot2pumpUSD,
+      pot2PumpLaunchCount: account.pot2PumpLaunchCount,
       lastActive: account.transaction[0]
         ? dayjs(parseInt(account.transaction[0].timestamp) * 1000).format(
             "MM/DD/YYYY, h:mm:ss A"
@@ -71,11 +76,7 @@ export function useAccounts(
 export function useTopSwapAccounts() {
   const { data, loading, error } = useQuery<TopSwapAccountsQueryData>(
     TOP_SWAP_ACCOUNTS_QUERY,
-    {
-      variables: {
-        exclude: [ALGEBRA_ROUTER.toLowerCase()],
-      },
-    }
+    {}
   );
   return {
     accounts:
