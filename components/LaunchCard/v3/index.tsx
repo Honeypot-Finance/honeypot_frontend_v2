@@ -143,7 +143,7 @@ const DetailLaunchCard = observer(
             pair={pair}
             className="my-3"
           />
-          <div className="grid grid-cols-2 gap-4 text-black [&>*:nth-child(odd)]:text-left [&>*:nth-child(even)]:text-right">
+          <div className="grid grid-cols-3 gap-2 text-black justify-start">
             {/* <div>
               <p className="text-xs opacity-60">Total Raised Token</p>
               <p className="font-semibold">
@@ -176,20 +176,20 @@ const DetailLaunchCard = observer(
               <div>
                 <p className="text-xs opacity-60">Your Deposit</p>
                 <p className="font-semibold">
-                  <span>
+                  <span className="">
                     {DynamicFormatAmount({
                       amount: pair.userDepositedRaisedToken?.toString() ?? "0",
-                      decimals: 5,
+                      decimals: 2,
                       // endWith: pair.raiseToken?.symbol,
                     })}
-                  </span>
-                  <br />(
+                  </span>{" "}
+                  (
                   <span>
                     {DynamicFormatAmount({
                       amount:
                         pair.userDepositedRaisedTokenUSDAmount?.toString() ??
                         "0",
-                      decimals: 3,
+                      decimals: 2,
                       endWith: "$",
                     })}
                   </span>
@@ -226,10 +226,11 @@ const DetailLaunchCard = observer(
                   <p className="font-semibold">
                     <span>
                       {pair?.launchedToken?.volumeUSD
-                        ? "$ " +
-                          (Number(pair.launchedToken.volumeUSD) < 0.001
-                            ? "<0.001"
-                            : Number(pair.launchedToken.volumeUSD).toFixed(3))
+                        ? DynamicFormatAmount({
+                            amount: Number(pair.launchedToken.volumeUSD),
+                            beginWith: "$",
+                            decimals: 3,
+                          })
                         : "--"}
                     </span>
                   </p>
@@ -239,16 +240,14 @@ const DetailLaunchCard = observer(
                   <p className="font-semibold">
                     <span>
                       {pair?.launchedToken?.totalValueLockedUSD
-                        ? "$ " +
-                          (Number(
-                            pair.raisedandLaunchTokenPairPool
-                              ?.totalValueLockedUSD
-                          ) < 0.001
-                            ? "<0.001"
-                            : Number(
-                                pair.raisedandLaunchTokenPairPool
-                                  ?.totalValueLockedUSD
-                              ).toFixed(3))
+                        ? DynamicFormatAmount({
+                            amount: Number(
+                              pair.raisedandLaunchTokenPairPool
+                                ?.totalValueLockedUSD
+                            ),
+                            beginWith: "$",
+                            decimals: 3,
+                          })
                         : "--"}
                     </span>
                   </p>
@@ -258,10 +257,11 @@ const DetailLaunchCard = observer(
                   <p className="font-semibold">
                     <span>
                       {pair?.launchedToken?.derivedUSD
-                        ? "$ " +
-                          (Number(pair.launchedToken.derivedUSD) < 0.001
-                            ? "<0.001"
-                            : Number(pair.launchedToken.derivedUSD).toFixed(3))
+                        ? DynamicFormatAmount({
+                            amount: Number(pair.launchedToken.derivedUSD),
+                            beginWith: "$",
+                            decimals: 3,
+                          })
                         : "--"}
                     </span>
                   </p>
@@ -281,14 +281,14 @@ const DetailLaunchCard = observer(
                       )}
                     >
                       {pair?.launchedToken?.priceChange24hPercentage &&
-                      Number(pair?.launchedToken?.priceChange24hPercentage) !==
-                        0
-                        ? `${formatAmountWithAlphabetSymbol(
-                            pair?.launchedToken?.priceChange24hPercentage ??
-                              "0",
-                            2
-                          )}%`
-                        : "--"}
+                        DynamicFormatAmount({
+                          amount:
+                            Number(
+                              pair?.launchedToken?.priceChange24hPercentage
+                            ) ?? 0,
+                          decimals: 2,
+                          endWith: "%",
+                        })}
                     </span>
                   </p>
                 </div>
