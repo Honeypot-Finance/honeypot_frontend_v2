@@ -13471,7 +13471,6 @@ export const AccountFieldFragmentDoc = gql`
   platformTxCount
   holdingPoolCount
   totalSpendUSD
-  totalDepositPot2pumpUSD
   vaultShares {
     ...VaultShareField
   }
