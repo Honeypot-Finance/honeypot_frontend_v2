@@ -39,6 +39,7 @@ export const ACCOUNTS_WITH_ADDRESS_QUERY = gql`
       platformTxCount
       participateCount
       totalSpendUSD
+      totalDepositPot2pumpUSD
       pot2PumpLaunchCount
       transaction(first: 1, orderBy: timestamp, orderDirection: desc) {
         timestamp
@@ -62,6 +63,7 @@ export const ACCOUNTS_WITHOUT_ADDRESS_QUERY = gql`
       platformTxCount
       participateCount
       totalSpendUSD
+      totalDepositPot2pumpUSD
       pot2PumpLaunchCount
       transaction(first: 1, orderBy: timestamp, orderDirection: desc) {
         timestamp
@@ -106,6 +108,7 @@ export const TOP_PARTICIPATE_ACCOUNTS_QUERY = gql`
     ) {
       id
       participateCount
+      totalDepositPot2pumpUSD
     }
   }
 `;
