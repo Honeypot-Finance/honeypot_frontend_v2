@@ -13,7 +13,7 @@ import {
   Tabs as NextUITabs,
   useDisclosure,
 } from "@nextui-org/react";
-import { UpdateProjectModal } from "../[pair]";
+import UpdateProjectModal from "./ProjectTitle";
 import TransactionHistory from "./TransactionHistory";
 import TopHoldersTable from "./TopHoldersTable";
 
@@ -68,7 +68,7 @@ const Tabs = observer(
               base: "max-h-[70vh] overflow-y-scroll",
             }}
           >
-            <UpdateProjectModal pair={pair}></UpdateProjectModal>
+            <UpdateProjectModal pair={pair as MemePairContract}></UpdateProjectModal>
           </Modal>
         )}
 

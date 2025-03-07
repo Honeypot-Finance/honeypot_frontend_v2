@@ -1,27 +1,10 @@
 import { useRouter } from "next/router";
 import { observer } from "mobx-react-lite";
 import { useEffect, useMemo, useState, useCallback } from "react";
-import launchpad from "@/services/launchpad";
 import { NextLayoutPage } from "@/types/nextjs";
-import { FtoPairContract } from "@/services/contract/launches/fto/ftopair-contract";
 import { wallet } from "@/services/wallet";
-import { Button } from "@/components/button/button-next";
 import Image from "next/image";
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  useDisclosure,
-} from "@nextui-org/react";
-import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { chart } from "@/services/chart";
-import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
-import { WrappedToastify } from "@/lib/wrappedToastify";
 import Action from "./components/Action";
 import Tabs from "./components/Tabs";
 import ProjectTitle from "./components/ProjectTitle";
@@ -34,7 +17,6 @@ import ProjectStats from "./components/ProjectStats";
 import { useLaunchTokenQuery } from "@/lib/hooks/useLaunchTokenQuery";
 import { Pot2Pump } from "@/lib/algebra/graphql/generated/graphql";
 import { pot2PumpToMemePair } from "@/lib/algebra/graphql/clients/pair";
-import { chain } from "@/services/chain";
 import NotConnetctedDisplay from "@/components/NotConnetctedDisplay/NotConnetctedDisplay";
 
 const MemeView = observer(() => {
@@ -68,10 +50,7 @@ const MemeView = observer(() => {
 
   return (
     <div className="w-full px-2 sm:px-4 md:px-8 xl:px-0 space-y-4 md:space-y-8 xl:max-w-[1200px] 2xl:max-w-[1500px] mx-auto">
-      <CardContainer
-        type="default"
-        showBottomBorder={false}
-      >
+      <CardContainer type="default" showBottomBorder={false}>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_500px] gap-4 md:gap-x-4 md:gap-y-14 w-full @container">
           <div
             className={cn(
@@ -96,10 +75,7 @@ const MemeView = observer(() => {
               className="col-span-1"
               description={pair?.description}
             />
-            <ProjectStats
-              className="col-span-1"
-              pair={pair}
-            />
+            <ProjectStats className="col-span-1" pair={pair} />
           </div>
 
           <CardContainer
@@ -137,10 +113,7 @@ const MemeView = observer(() => {
 
           <div className="bg-transparent rounded-2xl space-y-3 col-span-1">
             {wallet.isInit && pair ? (
-              <Action
-                pair={pair}
-                refreshTxsCallback={triggerRefresh}
-              />
+              <Action pair={pair} refreshTxsCallback={triggerRefresh} />
             ) : (
               <NotConnetctedDisplay />
             )}
@@ -148,12 +121,7 @@ const MemeView = observer(() => {
         </div>
 
         <div className="mt-6 md:mt-16 w-full">
-          {pair && (
-            <Tabs
-              pair={pair}
-              refreshTrigger={refreshTrigger}
-            />
-          )}
+          {pair && <Tabs pair={pair} refreshTrigger={refreshTrigger} />}
         </div>
       </CardContainer>
     </div>
