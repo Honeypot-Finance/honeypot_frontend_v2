@@ -1,4 +1,4 @@
-import React, { createElement } from "react";
+import React, { createElement, useEffect } from "react";
 import { FaXTwitter } from "react-icons/fa6";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FaTelegram, FaGlobe } from "react-icons/fa";
@@ -15,12 +15,29 @@ import { cn } from "@nextui-org/theme";
 import Link from "next/link";
 import { BiLinkExternal } from "react-icons/bi";
 import Image from "next/image";
-import { Tooltip, useDisclosure } from "@nextui-org/react";
+import {
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalContent,
+  Tooltip,
+  useDisclosure,
+  ModalHeader,
+} from "@nextui-org/react";
 import { WrappedTooltip } from "@/components/wrappedNextUI/Tooltip/Tooltip";
 import { optionsPresets } from "@/components/OptionsDropdown/OptionsDropdown";
 import { LucideFileEdit } from "lucide-react";
 import { wallet } from "@/services/wallet";
 import { toast } from "react-toastify";
+import { Button } from "@/components/button/v3";
+import { observer } from "mobx-react-lite";
+import { WrappedToastify } from "@/lib/wrappedToastify";
+import launchpad from "@/services/launchpad";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { chain } from "@/services/chain";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { useRouter } from "next/router";
 
 interface ProjectTitleProps {
   name?: string;
@@ -35,6 +52,212 @@ interface ProjectTitleProps {
   pair?: MemePairContract;
   className?: string;
 }
+
+export const UpdateProjectModal = observer(
+  ({ pair }: { pair: MemePairContract }) => {
+    const {
+      register,
+      handleSubmit,
+      control,
+      formState: { errors },
+    } = useForm({
+      resolver: zodResolver(
+        z
+          .object({
+            projectName: z.string(),
+            description: z.string(),
+            twitter: z.union([
+              z.string().url().startsWith("https://x.com/"),
+              z.string().url().startsWith("https://twitter.com/"),
+              z.literal(""),
+            ]),
+            website: z.string().url().startsWith("https://").or(z.literal("")),
+            telegram: z.union([
+              z.string().startsWith("https://t.me/"),
+              z.string().startsWith("@"),
+              z.literal(""),
+            ]),
+          })
+          .transform((data) => {
+            const mutateTelegram = (telegram: string | undefined | null) => {
+              if (telegram && telegram.startsWith("@")) {
+                return `https://t.me/${telegram.split("@")[1]}`;
+              }
+
+              return telegram;
+            };
+            return {
+              ...data,
+              telegram: mutateTelegram(data.telegram),
+            };
+          })
+      ),
+    });
+
+    const inputBaseClass =
+      "w-full bg-white rounded-[12px] md:rounded-[16px] px-3 md:px-4 py-2 md:py-[18px] text-black outline-none border border-black shadow-[0px_332px_93px_0px_rgba(0,0,0,0.00),0px_212px_85px_0px_rgba(0,0,0,0.01),0px_119px_72px_0px_rgba(0,0,0,0.05),0px_53px_53px_0px_rgba(0,0,0,0.09),0px_13px_29px_0px_rgba(0,0,0,0.10)] placeholder:text-black/50 text-sm md:text-base font-medium h-[40px] md:h-[60px]";
+
+    const labelBaseClass = "text-black text-sm md:text-base font-medium";
+
+    const FormBody = observer(({ onClose }: any) => (
+      <>
+        <ModalHeader className="flex flex-col gap-1 text-black">
+          Update {pair.launchedToken?.displayName}
+        </ModalHeader>
+        <ModalBody>
+          <div className="w-full rounded-[24px] md:rounded-[32px] bg-white space-y-5 px-4 md:px-8 py-4 md:py-6 custom-dashed">
+            {/* <div className="flex flex-col gap-4">
+              <UploadImage
+                blobName={pair.address + "_logo"}
+                imagePath={
+                  !!pair.logoUrl ? pair.logoUrl : "/images/project_honey.png"
+                }
+                onUpload={async (url) => {
+                  console.log(url);
+                  await launchpad.updateProjectLogo.call({
+                    logo_url: url,
+                    pair: pair.address,
+                    chain_id: wallet.currentChainId,
+                  });
+                  pair.logoUrl = url;
+                }}
+              />
+              <div className="text-black opacity-50 text-center text-sm">
+                Click icon to upload new token icon
+              </div>
+            </div> */}
+            <div className="flex flex-col gap-2">
+              <label className={labelBaseClass}>Project Name</label>
+              <input
+                type="text"
+                {...register("projectName", {
+                  value: pair.projectName,
+                  required: "Project name is required",
+                })}
+                className={inputBaseClass}
+                placeholder="Enter project name"
+              />
+              {errors.projectName && (
+                <span className="text-red-500 text-sm">
+                  {errors.projectName.message as any}
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className={labelBaseClass}>Description</label>
+              <input
+                type="text"
+                {...register("description", {
+                  value: pair.description,
+                  required: "Description is required",
+                })}
+                className={inputBaseClass}
+                placeholder="Enter description"
+              />
+              {errors.description && (
+                <span className="text-red-500 text-sm">
+                  {errors.description.message as any}
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className={labelBaseClass}>
+                Twitter <span className="text-black/50">(Optional)</span>
+              </label>
+              <input
+                type="text"
+                {...register("twitter", {
+                  value: pair.twitter,
+                })}
+                className={inputBaseClass}
+                placeholder="Enter Twitter URL"
+              />
+              {errors.twitter && (
+                <span className="text-red-500 text-sm">
+                  {errors.twitter.message as any}
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className={labelBaseClass}>
+                Website <span className="text-black/50">(Optional)</span>
+              </label>
+              <input
+                type="text"
+                {...register("website", {
+                  value: pair.website,
+                })}
+                className={inputBaseClass}
+                placeholder="Enter website URL"
+              />
+              {errors.website && (
+                <span className="text-red-500 text-sm">
+                  {errors.website.message as any}
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className={labelBaseClass}>
+                Telegram <span className="text-black/50">(Optional)</span>
+              </label>
+              <input
+                type="text"
+                {...register("telegram", {
+                  value: pair.telegram,
+                })}
+                className={inputBaseClass}
+                placeholder="Enter Telegram URL"
+              />
+              {errors.telegram && (
+                <span className="text-red-500 text-sm">
+                  {errors.telegram.message as any}
+                </span>
+              )}
+            </div>
+            <Button
+              isLoading={launchpad.updateProject.loading}
+              className="bg-black text-white font-bold border-2 border-black hover:bg-black/90 w-full"
+              onPress={async () => {
+                handleSubmit(async (data) => {
+                  await launchpad.updateProject.call({
+                    pair: pair.address,
+                    chain_id: chain.currentChainId,
+                    projectName: data.projectName,
+                    description: data.description,
+                    twitter: data.twitter || "",
+                    website: data.website || "",
+                    telegram: data.telegram || "",
+                  });
+                  if (launchpad.updateProject.error) {
+                    WrappedToastify.error({
+                      message: "Update failed",
+                      title: "Update Project Detail",
+                    });
+                    return;
+                  }
+                  await pair.getProjectInfo();
+                  WrappedToastify.success({
+                    message: "Update success",
+                    title: "Update Project Detail",
+                  });
+                  onClose();
+                })();
+              }}
+            >
+              Submit
+            </Button>
+          </div>
+        </ModalBody>
+        <ModalFooter></ModalFooter>
+      </>
+    ));
+    return (
+      <ModalContent className="bg-[#FFCD4D]">
+        {(onClose) => <FormBody onClose={onClose}></FormBody>}
+      </ModalContent>
+    );
+  }
+);
 
 const ProjectTitle: React.FC<ProjectTitleProps> = ({
   name,
@@ -51,7 +274,63 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
 }) => {
   const isLoading = !pair;
 
-  const { onOpen } = useDisclosure();
+  const router = useRouter();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  // remind provider to edit project details
+  useEffect(() => {
+    if (!pair || !pair.isInit || !pair.isProvider) return;
+
+    if (
+      !pair.logoUrl ||
+      !pair.projectName ||
+      !pair.description ||
+      !pair.twitter ||
+      !pair.website ||
+      !pair.telegram
+    ) {
+      WrappedToastify.warn({
+        message: (
+          <div>
+            <ul className="list-disc list-inside">
+              {!pair.logoUrl && <li className="text-orange-400">no icon</li>}
+              {!pair.projectName && (
+                <li className="text-orange-400">no project name</li>
+              )}
+              {!pair.description && (
+                <li className="text-orange-400">no description</li>
+              )}
+              {!pair.twitter && (
+                <li className="text-orange-400">no twitter link</li>
+              )}
+              {!pair.website && (
+                <li className="text-orange-400">no website link</li>
+              )}
+              {!pair.telegram && (
+                <li className="text-orange-400">no telegram link</li>
+              )}
+            </ul>
+            <p>
+              Click{" "}
+              <span
+                onClick={() => {
+                  onOpen();
+                  toast.dismiss();
+                }}
+                className="text-blue-500 cursor-pointer"
+              >
+                here
+              </span>{" "}
+              to update the project
+            </p>
+          </div>
+        ),
+        options: {
+          autoClose: false,
+        },
+      });
+      return () => toast.dismiss();
+    }
+  }, [pair, onOpen, router.query.edit, router]);
 
   return (
     <div
@@ -60,6 +339,21 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
         className
       )}
     >
+      {pair && (
+        <Modal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          classNames={{
+            body: "bg-[#FFCD4D]",
+            header: "bg-[#FFCD4D]",
+            footer: "bg-[#FFCD4D]",
+            closeButton: "hover:bg-black/5",
+            base: "max-h-[70vh] overflow-y-auto",
+          }}
+        >
+          <UpdateProjectModal pair={pair}></UpdateProjectModal>
+        </Modal>
+      )}
       <div className="flex flex-col items-center gap-2 md:gap-0 ">
         <div className="size-10 md:size-[77px] flex items-center justify-center rounded-full shrink-0">
           <Image
