@@ -348,18 +348,18 @@ const KlineChartComponent = observer(
           });
         };
 
-      window.Datafeeds.UDFCompatibleDatafeed.prototype.subscribeBars = (
-        symbolInfo: any,
-        resolution: any,
-        onRealtimeCallback: any,
-        subscribeUID: any,
-        onResetCacheNeededCallback: any
-      ) => {
-        listener.current = {
-          onRealtimeCallback,
-          resolution,
-        };
-      };
+      // window.Datafeeds.UDFCompatibleDatafeed.prototype.subscribeBars = (
+      //   symbolInfo: any,
+      //   resolution: any,
+      //   onRealtimeCallback: any,
+      //   subscribeUID: any,
+      //   onResetCacheNeededCallback: any
+      // ) => {
+      //   listener.current = {
+      //     onRealtimeCallback,
+      //     resolution,
+      //   };
+      // };
 
       const datafeed = new window.Datafeeds.UDFCompatibleDatafeed(
         `${getBaseUrl()}/api/udf-data-feed`,
