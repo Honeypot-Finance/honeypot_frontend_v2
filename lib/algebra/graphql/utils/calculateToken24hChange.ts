@@ -9,15 +9,18 @@ export const calculateToken24hPriceChange: (token: Token) => {
   const timeNow = dayjs().unix();
   const timeHourIndex = Math.floor(Number(timeNow) / 3600);
 
-  // console.log("calculateToken24hPriceChange time data", {
-  //   timeNow,
-  //   timeHourIndex,
-  //   tokenHourNowUnix,
-  //   tokenHourData,
-  // });
+  console.log("calculateToken24hPriceChange time data", {
+    token: token.symbol,
+    timeNow,
+    timeHourIndex,
+    tokenHourData,
+  });
 
   let price24h = Number(token.derivedUSD);
-  let priceBefore24h = 0;
+  let priceBefore24h =
+    tokenHourData.filter(
+      (hour) => hour.periodStartUnix < (timeHourIndex - 24) * 3600
+    )[0]?.priceUSD ?? 0;
 
   //find first available price
   // for (let i = 0; i < 24; i++) {
@@ -32,16 +35,18 @@ export const calculateToken24hPriceChange: (token: Token) => {
   // }
 
   //find first available price after 24 hours
-  for (let i = 24; i < 100; i++) {
-    const hourTimestamp = (timeHourIndex - i) * 3600;
-    const hourData = tokenHourData.find((hourData) => {
-      return Number(hourData.periodStartUnix) === hourTimestamp;
-    });
-    if (hourData) {
-      priceBefore24h = Number(hourData.priceUSD);
-      break;
-    }
-  }
+  // tokenHourData.filter((hour)=>hour.periodStartUnix<(timeHourIndex - 24) * 3600)[0]
+
+  // for (let i = 24; i < 100; i++) {
+  //   const hourTimestamp = (timeHourIndex - i) * 3600;
+  //   const hourData = tokenHourData.find((hourData) => {
+  //     return Number(hourData.periodStartUnix) === hourTimestamp;
+  //   });
+  //   if (hourData) {
+  //     priceBefore24h = Number(hourData.priceUSD);
+  //     break;
+  //   }
+  // }
 
   if (priceBefore24h === 0) {
     priceBefore24h = Number(token.initialUSD);
