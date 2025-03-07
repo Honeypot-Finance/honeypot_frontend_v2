@@ -38,7 +38,7 @@ const LeaderboardPage = () => {
   const { stats, loading: statsLoading } = useLeaderboard();
   const { totalUsers, loading: usersLoading } = useTotalUsers();
   const [accountOrderBy, setAccountOrderBy] = useState<Account_OrderBy>(
-    Account_OrderBy.ParticipateCount
+    Account_OrderBy.TotalDepositPot2pumpUsd
   );
   const {
     accounts,
