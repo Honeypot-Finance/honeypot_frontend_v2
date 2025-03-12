@@ -10,6 +10,8 @@ import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair
 import {
   pot2pumpShareLink,
   pot2PumpShareContent,
+  dedicatedPot2PumpShareLink,
+  dedicatedPot2PumpShareTwitterContent,
 } from "@/config/socialSharingContents";
 import { cn } from "@nextui-org/theme";
 import Link from "next/link";
@@ -679,6 +681,10 @@ export const ProjectTitleDedicated = observer(
 
         <div className="flex flex-col gap-4 items-start">
           <div className="">
+            <div className="text-2xl">{token.token.symbol}</div>
+            <div className="text-sm text-[#5C5C5C]/60">
+              ({token.token.name})
+            </div>
             <div className="flex items-center gap-1">
               <>
                 {token.telegram && (
@@ -717,42 +723,6 @@ export const ProjectTitleDedicated = observer(
                     </a>
                   </WrappedTooltip>
                 )}
-
-                {/*[
-                optionsPresets.copy({
-                  copyText: pair?.launchedToken?.address ?? "",
-                  displayText: "Copy Token address",
-                  copysSuccessText: "Token address copied",
-                }),
-                optionsPresets.share({
-                  shareUrl: `${window.location.origin}/launch-detail/${pair?.launchedToken?.address}`,
-                  displayText: "Share this project",
-                  shareText: "Checkout this Token: " + pair?.projectName,
-                }),
-                optionsPresets.importTokenToWallet({
-                  token: pair?.launchedToken,
-                }),
-                optionsPresets.viewOnExplorer({
-                  address: pair?.address ?? "",
-                }),
-                {
-                  icon: <LucideFileEdit />,
-                  display: "Update Project",
-                  onClick: () => {
-                    if (!pair) return;
-
-                    if (
-                      pair.provider.toLowerCase() !==
-                      wallet.account.toLowerCase()
-                    ) {
-                      toast.warning("You are not the owner of this project");
-                      return;
-                    }
-
-                    onOpen();
-                  },
-                },
-              ] */}
 
                 {token.token.address && (
                   <>
@@ -828,10 +798,9 @@ export const ProjectTitleDedicated = observer(
                     <Link
                       className="cursor-pointer flex items-center gap-2 hover:text-primary flex-col"
                       target="_blank"
-                      href={`https://twitter.com/intent/tweet?text=${pot2PumpShareContent(
-                        token.token,
-                        "twitter"
-                      )}%0A%0A${pot2pumpShareLink(token.token)}`}
+                      href={`https://twitter.com/intent/tweet?text=${dedicatedPot2PumpShareTwitterContent(
+                        token
+                      )}%0A%0A${dedicatedPot2PumpShareLink(token)}`}
                     >
                       <div className="flex items-center gap-1 hover:text-black/40">
                         X
@@ -841,9 +810,9 @@ export const ProjectTitleDedicated = observer(
                     <Link
                       className="cursor-pointer flex items-center gap-2 hover:text-primary flex-col"
                       target="_blank"
-                      href={`https://telegram.me/share/url?url=${pot2pumpShareLink(
-                        token.token
-                      )}%0A&text=${pot2PumpShareContent(token.token, "telegram")}`}
+                      href={`https://telegram.me/share/url?url=${dedicatedPot2PumpShareLink(
+                        token
+                      )}%0A&text=${dedicatedPot2PumpShareTwitterContent(token)}`}
                     >
                       <div className="flex items-center gap-1 hover:text-black/40">
                         TG

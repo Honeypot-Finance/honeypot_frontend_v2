@@ -32,6 +32,19 @@ Trade now on:
 `;
 };
 
+export const dedicatedPot2PumpShareTwitterContent = (
+  token: DedicatedPot2Pump
+) => `
+🚀 Pot2Pump
+💥 Ticker: ${token.token.symbol} 
+🔹 Full Name: ${token.token.displayName}  
+
+📈 Price Growth since Launch: ${Number(token.token.priceChange24hPercentage).toFixed(2)}%     
+💵 USD Price: $${Number(token.token.derivedUSD).toExponential(3)} 
+
+🔗 ${window.location.origin}/launch-detail/${token.tokenAddress}
+`;
+
 export const pot2PumpPottingShareTwitterContent = (pair: MemePairContract) => `
 🚀$${pair.launchedToken?.symbol} now launched on @honeypotfinance pot2pump - #Berachain #Meteora.
 

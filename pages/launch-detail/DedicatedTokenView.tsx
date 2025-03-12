@@ -5,20 +5,21 @@ import { NextLayoutPage } from "@/types/nextjs";
 import { wallet } from "@/services/wallet";
 import Image from "next/image";
 import { chart } from "@/services/chart";
-import Action from "./components/Action";
-import Tabs from "./components/Tabs";
+import Action, { DedicatedAction } from "./components/Action";
+import Tabs, { DedicatedTabs } from "./components/Tabs";
 import ProjectTitle, { ProjectTitleDedicated } from "./components/ProjectTitle";
 import KlineChart from "./components/KlineChart";
 import { LaunchDataProgress } from "./components/LaunchDataProgress";
 import { cn } from "@/lib/tailwindcss";
 import CardContainer from "@/components/CardContianer/v3";
 import ProjectDescription from "./components/ProjectDescription";
-import ProjectStats from "./components/ProjectStats";
+import ProjectStats, { DedicatedProjectStats } from "./components/ProjectStats";
 import { useLaunchTokenQuery } from "@/lib/hooks/useLaunchTokenQuery";
 import { Pot2Pump } from "@/lib/algebra/graphql/generated/graphql";
 import { pot2PumpToMemePair } from "@/lib/algebra/graphql/clients/pair";
 import NotConnetctedDisplay from "@/components/NotConnetctedDisplay/NotConnetctedDisplay";
 import { dedicatedPot2pumps } from "@/config/dedicatedPot2pump";
+import { chain } from "@/services/chain";
 
 export const DedicatedTokenView = observer(() => {
   const router = useRouter();
@@ -35,6 +36,21 @@ export const DedicatedTokenView = observer(() => {
   );
 
   useEffect(() => {
+    if (!dedicatedPot2pump || !(chain.isInit || wallet.isInit)) {
+      return;
+    }
+
+    dedicatedPot2pump.token
+      .init(true, {
+        loadIndexerTokenData: true,
+        loadTotalSupply: true,
+      })
+      .then(() => {
+        console.log(dedicatedPot2pump.token);
+      });
+  }, [dedicatedPot2pump, chain.isInit, wallet.isInit]);
+
+  useEffect(() => {
     if (!dedicatedPot2pump?.token) {
       return;
     }
@@ -45,7 +61,20 @@ export const DedicatedTokenView = observer(() => {
   }, [dedicatedPot2pump?.token]);
 
   return (
-    <div className="w-full px-2 sm:px-4 md:px-8 xl:px-0 space-y-4 md:space-y-8 xl:max-w-[1200px] 2xl:max-w-[1500px] mx-auto">
+    <div
+      className={cn(
+        "w-full px-2 sm:px-4 md:px-8 xl:px-0 space-y-4 md:space-y-8 xl:max-w-[1200px] 2xl:max-w-[1500px] mx-auto"
+      )}
+    >
+      {dedicatedPot2pump?.bannerURI && (
+        <Image
+          src={dedicatedPot2pump?.bannerURI ?? ""}
+          alt="banner"
+          width={1000}
+          height={0}
+          className="w-full h-auto"
+        />
+      )}
       <CardContainer
         type="default"
         showBottomBorder={false}
@@ -63,69 +92,47 @@ export const DedicatedTokenView = observer(() => {
                 token={dedicatedPot2pump}
               />
             )}
-            {/* <ProjectDescription
+            <ProjectDescription
               className="col-span-1"
-              description={pair?.description}
+              description={dedicatedPot2pump?.description}
             />
-            <ProjectStats
-              className="col-span-1"
-              pair={pair}
-            /> */}
+            {dedicatedPot2pump && (
+              <DedicatedProjectStats
+                className="col-span-1"
+                token={dedicatedPot2pump}
+              />
+            )}
           </div>
-          {/* 
+
           <CardContainer
             variant="dark"
-            loading={!pair}
+            loading={!dedicatedPot2pump?.token}
             loadingSize={200}
             loadingText="Loading Data..."
             className={cn("relative min-h-[500px] px-1 sm:px-2 md:px-4")}
           >
-            {pair?.state === 0 && (
-              <div className="md:block w-full">
-                <KlineChart height={500} />
-              </div>
-            )}
-
-            {pair?.state === 1 && (
-              <div className="flex flex-col gap-y-3 md:gap-y-5">
-                <div className="flex flex-col gap-y-2">
-                  <h2 className="text-xl md:text-2xl font-bold text-black text-center w-full">
-                    This Project has Failed!
-                  </h2>
-                  <Image
-                    className="w-full h-auto"
-                    src="/images/bera/deadfaceBear.webp"
-                    width={1000}
-                    height={0}
-                    alt="dead face"
-                  />
-                </div>
-              </div>
-            )}
-
-            {pair?.state === 3 && <LaunchDataProgress pair={pair} />}
+            <div className="md:block w-full">
+              <KlineChart height={500} />
+            </div>
           </CardContainer>
 
           <div className="bg-transparent rounded-2xl space-y-3 col-span-1">
-            {wallet.isInit && pair ? (
-              <Action
-                pair={pair}
+            {wallet.isInit && dedicatedPot2pump?.token ? (
+              <DedicatedAction
+                token={dedicatedPot2pump}
                 refreshTxsCallback={triggerRefresh}
               />
             ) : (
               <NotConnetctedDisplay />
             )}
-          </div> */}
+          </div>
         </div>
 
-        {/* <div className="mt-6 md:mt-16 w-full">
-          {pair && (
-            <Tabs
-              pair={pair}
-              refreshTrigger={refreshTrigger}
-            />
+        <div className="mt-6 md:mt-16 w-full">
+          {dedicatedPot2pump?.token && (
+            <DedicatedTabs token={dedicatedPot2pump} />
           )}
-        </div> */}
+        </div>
       </CardContainer>
     </div>
   );
