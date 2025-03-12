@@ -38,6 +38,8 @@ import { chain } from "@/services/chain";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/router";
+import { Token } from "@/services/contract/token";
+import { DedicatedPot2Pump } from "@/config/dedicatedPot2pump";
 
 interface ProjectTitleProps {
   name?: string;
@@ -639,5 +641,224 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({
     </div>
   );
 };
+
+export const ProjectTitleDedicated = observer(
+  ({ token, className }: { token: DedicatedPot2Pump; className?: string }) => {
+    return (
+      <div
+        className={cn(
+          "flex items-end md:items-center md:justify-start gap-x-4 md:gap-x-[7.5px] justify-center",
+          className
+        )}
+      >
+        <div className="flex flex-col items-center gap-2 md:gap-0 ">
+          <div className="size-10 md:size-[77px] flex items-center justify-center rounded-full shrink-0">
+            <Image
+              width={77}
+              height={77}
+              objectFit="cover"
+              className="rounded-full"
+              sizes="(max-width: 640px) 40px,77px"
+              alt={token.token.name || "honey"}
+              src={!!token.logoURI ? token.logoURI : "/images/empty-logo.png"}
+            />
+          </div>
+          <div className="flex flex-col items-center gap-0.5 md:hidden">
+            <>
+              <div className="text-base font-medium">
+                {token.token.displayName}
+              </div>
+              {token.token.name && (
+                <div className="text-xs text-[#5C5C5C]/60">
+                  ({token.token.name})
+                </div>
+              )}
+            </>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4 items-start">
+          <div className="">
+            <div className="flex items-center gap-1">
+              <>
+                {token.telegram && (
+                  <WrappedTooltip content="Telegram">
+                    <a
+                      href={token.telegram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:opacity-80 text-[#5C5C5C]"
+                    >
+                      <FaTelegram size={16} />
+                    </a>
+                  </WrappedTooltip>
+                )}
+                {token.twitter && (
+                  <WrappedTooltip content="Twitter">
+                    <a
+                      href={token.twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:opacity-80 text-[#5C5C5C]"
+                    >
+                      <FaXTwitter size={16} />
+                    </a>
+                  </WrappedTooltip>
+                )}
+                {token.website && (
+                  <WrappedTooltip content="Website">
+                    <a
+                      href={token.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:opacity-80 text-[#5C5C5C]"
+                    >
+                      <FaGlobe size={16} />
+                    </a>
+                  </WrappedTooltip>
+                )}
+
+                {/*[
+                optionsPresets.copy({
+                  copyText: pair?.launchedToken?.address ?? "",
+                  displayText: "Copy Token address",
+                  copysSuccessText: "Token address copied",
+                }),
+                optionsPresets.share({
+                  shareUrl: `${window.location.origin}/launch-detail/${pair?.launchedToken?.address}`,
+                  displayText: "Share this project",
+                  shareText: "Checkout this Token: " + pair?.projectName,
+                }),
+                optionsPresets.importTokenToWallet({
+                  token: pair?.launchedToken,
+                }),
+                optionsPresets.viewOnExplorer({
+                  address: pair?.address ?? "",
+                }),
+                {
+                  icon: <LucideFileEdit />,
+                  display: "Update Project",
+                  onClick: () => {
+                    if (!pair) return;
+
+                    if (
+                      pair.provider.toLowerCase() !==
+                      wallet.account.toLowerCase()
+                    ) {
+                      toast.warning("You are not the owner of this project");
+                      return;
+                    }
+
+                    onOpen();
+                  },
+                },
+              ] */}
+
+                {token.token.address && (
+                  <>
+                    <Copy
+                      content="Copy address"
+                      value={token.token.address}
+                      displayContent={
+                        <div className="relative hover:opacity-80 text-[#5C5C5C]">
+                          <VscCopy size={16} />
+                        </div>
+                      }
+                    />
+                    <WrappedTooltip content="Search on Twitter">
+                      <a
+                        href={`https://x.com/search?q=($${token.token.symbol} or ${token.token.address})`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:opacity-80 text-[#5C5C5C]"
+                      >
+                        <BiSearch size={18} />
+                      </a>
+                    </WrappedTooltip>
+
+                    {[
+                      optionsPresets.importTokenToWallet({
+                        token: token.token,
+                      }),
+                      optionsPresets.viewOnExplorer({
+                        address: token.token.address ?? "",
+                      }),
+                    ].map((item) => {
+                      return (
+                        <WrappedTooltip
+                          key={item.display}
+                          content={item.display}
+                        >
+                          <div onClick={() => item.onClick()}>
+                            {
+                              <div className="hover:opacity-80 text-[#5C5C5C] cursor-pointer">
+                                {item.icon}
+                              </div>
+                            }
+                          </div>
+                        </WrappedTooltip>
+                      );
+                    })}
+                  </>
+                )}
+                <WrappedTooltip content="Defined.fi">
+                  <a
+                    href={`https://www.defined.fi/berachain/${token.token.address}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-80 text-[#5C5C5C] text-lg"
+                    title="defined.fi"
+                  >
+                    {`𝔻`}
+                  </a>
+                </WrappedTooltip>
+              </>
+            </div>
+            <div className="flex items-start gap-1">
+              {
+                <div className="flex items-center self-start gap-2">
+                  <span className="text-xs sm:text-sm text-[#5C5C5C]">
+                    Share To
+                  </span>
+                  <div
+                    className={cn(
+                      "text-right flex items-center gap-2 flex-row text-black"
+                    )}
+                  >
+                    <Link
+                      className="cursor-pointer flex items-center gap-2 hover:text-primary flex-col"
+                      target="_blank"
+                      href={`https://twitter.com/intent/tweet?text=${pot2PumpShareContent(
+                        token.token,
+                        "twitter"
+                      )}%0A%0A${pot2pumpShareLink(token.token)}`}
+                    >
+                      <div className="flex items-center gap-1 hover:text-black/40">
+                        X
+                        <BiLinkExternal />
+                      </div>
+                    </Link>
+                    <Link
+                      className="cursor-pointer flex items-center gap-2 hover:text-primary flex-col"
+                      target="_blank"
+                      href={`https://telegram.me/share/url?url=${pot2pumpShareLink(
+                        token.token
+                      )}%0A&text=${pot2PumpShareContent(token.token, "telegram")}`}
+                    >
+                      <div className="flex items-center gap-1 hover:text-black/40">
+                        TG
+                        <BiLinkExternal />
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+);
 
 export default ProjectTitle;

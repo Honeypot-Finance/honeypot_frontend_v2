@@ -1,11 +1,15 @@
 import { DynamicFormatAmount } from "@/lib/algebra/utils/common/formatAmount";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 import { DOMAIN_MAP } from "honeypot-sdk";
+import { DedicatedPot2Pump } from "./dedicatedPot2pump";
 
 type platformMap = "telegram" | "twitter";
 
 export const pot2pumpShareLink = (pair: MemePairContract) =>
   `${DOMAIN_MAP.POT2PUMP}/launch-detail/${pair.launchedToken?.address}`;
+
+export const dedicatedPot2PumpShareLink = (token: DedicatedPot2Pump) =>
+  `${DOMAIN_MAP.POT2PUMP}/launch-detail/${token.tokenAddress}`;
 
 // $BM now trading on @honeypotfinance - #Berachain  #Meteora.
 // 📈 24h Change: +X%

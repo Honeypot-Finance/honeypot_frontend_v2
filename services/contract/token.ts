@@ -69,6 +69,7 @@ export class Token implements BaseContract {
   priceChange = "";
   priceChange24hPercentage = "";
   pot2pumpAddress: Address | undefined | null = undefined;
+  isDedicatedPot2PumpPage = false;
 
   // determines the order of the token in the list
   get priority() {
