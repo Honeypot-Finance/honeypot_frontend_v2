@@ -1,17 +1,17 @@
 import { Input } from "@/components/algebra/ui/input";
 import { formatBalance } from "@/lib/algebra/utils/common/formatBalance";
 import { formatUSD } from "@/lib//algebra/utils/common/formatUSD";
-import { Currency, Percent } from "@cryptoalgebra/wasabee-sdk";
+import { Currency, Percent } from "@cryptoalgebra/sdk";
 import { useEffect, useMemo, useState } from "react";
 import { useAccount, useBalance, useWatchBlockNumber } from "wagmi";
 import { Address, zeroAddress } from "viem";
 import { TokenSelector } from "@/components/TokenSelector/v3";
-import { Token as AlgebraToken } from "@cryptoalgebra/wasabee-sdk";
+import { Token as AlgebraToken } from "@cryptoalgebra/sdk";
 import { wallet } from "@/services/wallet";
 import { Token } from "@/services/contract/token";
 import { Slider } from "@nextui-org/react";
 import { debounce } from "lodash";
-import NativeCurrency from "@cryptoalgebra/wasabee-sdk/dist/entities/NativeCurrency";
+import NativeCurrency from "@cryptoalgebra/sdk/dist/entities/NativeCurrency";
 import {
   ItemSelect,
   SelectState,
@@ -37,14 +37,20 @@ const Settings = () => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant={"icon"} size={"icon"}>
+        <Button
+          variant={"icon"}
+          size={"icon"}
+        >
           <SettingsIcon />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="z-[9999]">
         <CardContianer addtionalClassName="flex-col gap-2">
           <div className="text-md font-bold">Transaction Settings</div>
-          <Separator orientation={"horizontal"} className="bg-border" />
+          <Separator
+            orientation={"horizontal"}
+            className="bg-border"
+          />
           <SlippageTolerance />
           <TransactionDeadline />
           <Multihop />
@@ -289,6 +295,8 @@ interface TokenSwapCardProps {
   label?: string;
   disableSelection?: boolean;
   showInput?: boolean;
+  staticTokenList?: Token[];
+  showSettings?: boolean;
 }
 
 const TokenCardV3 = ({
@@ -306,6 +314,8 @@ const TokenCardV3 = ({
   label,
   showInput = true,
   disableSelection,
+  staticTokenList,
+  showSettings = true,
 }: TokenSwapCardProps) => {
   const { address: account } = useAccount();
   useWatchBlockNumber({
@@ -370,7 +380,7 @@ const TokenCardV3 = ({
               )}
             </div>
           )}
-          {showInput && <Settings />}
+          {showInput && showSettings && <Settings />}
         </div>
       </div>
 
@@ -378,6 +388,7 @@ const TokenCardV3 = ({
         <div className="grid grid-cols-[max-content_auto] w-full">
           <div className="flex-grow">
             <TokenSelector
+              staticTokenList={staticTokenList}
               value={
                 currency?.wrapped.address
                   ? Token.getToken({
@@ -511,16 +522,28 @@ const TokenCardV3 = ({
             }
             className="grid grid-cols-2 lg:grid-cols-4 gap-[16px] justify-around w-full"
           >
-            <SelectItem className="rounded-[30px] px-[24px]" value={0.25}>
+            <SelectItem
+              className="rounded-[30px] px-[24px]"
+              value={0.25}
+            >
               25%
             </SelectItem>
-            <SelectItem className="rounded-[30px] px-[24px]" value={0.5}>
+            <SelectItem
+              className="rounded-[30px] px-[24px]"
+              value={0.5}
+            >
               50%
             </SelectItem>
-            <SelectItem className="rounded-[30px] px-[24px]" value={0.75}>
+            <SelectItem
+              className="rounded-[30px] px-[24px]"
+              value={0.75}
+            >
               75%
             </SelectItem>
-            <SelectItem className="rounded-[30px] px-[24px]" value={1}>
+            <SelectItem
+              className="rounded-[30px] px-[24px]"
+              value={1}
+            >
               100%
             </SelectItem>
           </ItemSelect>

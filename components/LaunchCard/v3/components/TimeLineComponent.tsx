@@ -27,8 +27,10 @@ export const TimeLineComponent = observer(
       .times(100)
       .toFixed(2);
 
-    // 如果进度超过100%，不显示组件
-    if (Number(progressPercentage) >= 100) {
+    if (
+      Number(progressPercentage) >= 100 ||
+      (pair?.endTime && Number(pair.endTime) * 1000 < Date.now())
+    ) {
       return null;
     }
 

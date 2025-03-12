@@ -15,7 +15,7 @@ import {
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { defichainEvm, mainnet } from "viem/chains";
-import { berachainBartioTestnet, berachain } from "@/lib/chain";
+import { berachain } from "@/lib/chain";
 import { z } from "zod";
 
 const ethPublicClient = createPublicClientByChain({

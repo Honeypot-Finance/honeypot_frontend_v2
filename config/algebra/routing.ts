@@ -1,5 +1,5 @@
-import { WNATIVE, Token, ChainId } from "@cryptoalgebra/wasabee-sdk";
-import { STABLECOINS } from "./tokens";
+import { WNATIVE, Token, ChainId } from "@cryptoalgebra/sdk";
+import { STABLECOINS, VALIDATED_TOKENS } from "./tokens";
 
 type ChainTokenList = {
   readonly [chainId: number]: Token[];
@@ -16,8 +16,12 @@ const WNATIVE_ONLY: ChainTokenList = Object.fromEntries(
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WNATIVE_ONLY,
   // [ChainId.Holesky]: [...WNATIVE_ONLY[ChainId.Holesky], STABLECOINS.USDT],
-  // [ChainId.BerachainTestnet]: [
-  //   ...WNATIVE_ONLY[ChainId.BerachainTestnet],
-  //   STABLECOINS.USDT,
-  // ],
+  [ChainId.BerachainMainnet]: [
+    ...WNATIVE_ONLY[ChainId.BerachainMainnet],
+    STABLECOINS.USDT,
+    STABLECOINS.HONEY,
+    STABLECOINS.USDT,
+    VALIDATED_TOKENS.THPOT,
+    VALIDATED_TOKENS.NECT,
+  ],
 };

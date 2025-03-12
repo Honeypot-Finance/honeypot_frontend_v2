@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { Currency } from "@cryptoalgebra/wasabee-sdk";
+import { Currency } from "@cryptoalgebra/sdk";
 import { Button } from "@/components/algebra/ui/button";
 import {
   IDerivedMintInfo,

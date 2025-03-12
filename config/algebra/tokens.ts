@@ -1,4 +1,4 @@
-import { Token } from "@cryptoalgebra/wasabee-sdk";
+import { Token } from "@cryptoalgebra/sdk";
 import { DEFAULT_CHAIN_ID } from "./default-chain-id";
 
 export const STABLECOINS = {
@@ -23,11 +23,21 @@ export const STABLECOINS = {
     "USDT",
     "USDT"
   ),
+};
+
+export const VALIDATED_TOKENS = {
   THPOT: new Token(
     DEFAULT_CHAIN_ID,
     "0xfc5e3743E9FAC8BB60408797607352E24Db7d65E",
     18,
     "Test Honeypot Finance",
     "tHPOT"
+  ),
+  NECT: new Token(
+    DEFAULT_CHAIN_ID,
+    "0x1cE0a25D13CE4d52071aE7e02Cf1F6606F4C79d3",
+    18,
+    "NECT",
+    "NECT"
   ),
 };

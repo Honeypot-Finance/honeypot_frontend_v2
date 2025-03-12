@@ -41,6 +41,7 @@ export type Account = {
   platformTxCount: Scalars['BigInt']['output'];
   pot2PumpLaunchCount: Scalars['BigInt']['output'];
   swapCount: Scalars['BigInt']['output'];
+  totalDepositPot2pumpUSD: Scalars['BigDecimal']['output'];
   totalSpendUSD: Scalars['BigDecimal']['output'];
   transaction: Array<Transaction>;
   vaultShares?: Maybe<Array<VaultShare>>;
@@ -145,6 +146,14 @@ export type Account_Filter = {
   swapCount_lte?: InputMaybe<Scalars['BigInt']['input']>;
   swapCount_not?: InputMaybe<Scalars['BigInt']['input']>;
   swapCount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalDepositPot2pumpUSD?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositPot2pumpUSD_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositPot2pumpUSD_gte?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositPot2pumpUSD_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
+  totalDepositPot2pumpUSD_lt?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositPot2pumpUSD_lte?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositPot2pumpUSD_not?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositPot2pumpUSD_not_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
   totalSpendUSD?: InputMaybe<Scalars['BigDecimal']['input']>;
   totalSpendUSD_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
   totalSpendUSD_gte?: InputMaybe<Scalars['BigDecimal']['input']>;
@@ -167,6 +176,7 @@ export enum Account_OrderBy {
   PlatformTxCount = 'platformTxCount',
   Pot2PumpLaunchCount = 'pot2PumpLaunchCount',
   SwapCount = 'swapCount',
+  TotalDepositPot2pumpUsd = 'totalDepositPot2pumpUSD',
   TotalSpendUsd = 'totalSpendUSD',
   Transaction = 'transaction',
   VaultShares = 'vaultShares'
@@ -801,6 +811,7 @@ export enum Burn_OrderBy {
   Token0HolderCount = 'token0__holderCount',
   Token0Id = 'token0__id',
   Token0InitialUsd = 'token0__initialUSD',
+  Token0LiquidityUsd = 'token0__liquidityUSD',
   Token0MarketCap = 'token0__marketCap',
   Token0Name = 'token0__name',
   Token0PoolCount = 'token0__poolCount',
@@ -823,6 +834,7 @@ export enum Burn_OrderBy {
   Token1HolderCount = 'token1__holderCount',
   Token1Id = 'token1__id',
   Token1InitialUsd = 'token1__initialUSD',
+  Token1LiquidityUsd = 'token1__liquidityUSD',
   Token1MarketCap = 'token1__marketCap',
   Token1Name = 'token1__name',
   Token1PoolCount = 'token1__poolCount',
@@ -1644,8 +1656,11 @@ export type Factory = {
   id: Scalars['ID']['output'];
   owner: Scalars['ID']['output'];
   poolCount: Scalars['BigInt']['output'];
+  totalDepositedUSD: Scalars['BigDecimal']['output'];
   totalFeesMatic: Scalars['BigDecimal']['output'];
   totalFeesUSD: Scalars['BigDecimal']['output'];
+  totalMemeCreated: Scalars['BigInt']['output'];
+  totalSuccessedMeme: Scalars['BigInt']['output'];
   totalValueLockedMatic: Scalars['BigDecimal']['output'];
   totalValueLockedMaticUntracked: Scalars['BigDecimal']['output'];
   totalValueLockedUSD: Scalars['BigDecimal']['output'];
@@ -1701,6 +1716,14 @@ export type Factory_Filter = {
   poolCount_lte?: InputMaybe<Scalars['BigInt']['input']>;
   poolCount_not?: InputMaybe<Scalars['BigInt']['input']>;
   poolCount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalDepositedUSD?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositedUSD_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositedUSD_gte?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositedUSD_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
+  totalDepositedUSD_lt?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositedUSD_lte?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositedUSD_not?: InputMaybe<Scalars['BigDecimal']['input']>;
+  totalDepositedUSD_not_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
   totalFeesMatic?: InputMaybe<Scalars['BigDecimal']['input']>;
   totalFeesMatic_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
   totalFeesMatic_gte?: InputMaybe<Scalars['BigDecimal']['input']>;
@@ -1717,6 +1740,22 @@ export type Factory_Filter = {
   totalFeesUSD_lte?: InputMaybe<Scalars['BigDecimal']['input']>;
   totalFeesUSD_not?: InputMaybe<Scalars['BigDecimal']['input']>;
   totalFeesUSD_not_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
+  totalMemeCreated?: InputMaybe<Scalars['BigInt']['input']>;
+  totalMemeCreated_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalMemeCreated_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalMemeCreated_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalMemeCreated_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalMemeCreated_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalMemeCreated_not?: InputMaybe<Scalars['BigInt']['input']>;
+  totalMemeCreated_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalSuccessedMeme?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSuccessedMeme_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSuccessedMeme_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSuccessedMeme_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalSuccessedMeme_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSuccessedMeme_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSuccessedMeme_not?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSuccessedMeme_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   totalValueLockedMatic?: InputMaybe<Scalars['BigDecimal']['input']>;
   totalValueLockedMaticUntracked?: InputMaybe<Scalars['BigDecimal']['input']>;
   totalValueLockedMaticUntracked_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
@@ -1789,8 +1828,11 @@ export enum Factory_OrderBy {
   Id = 'id',
   Owner = 'owner',
   PoolCount = 'poolCount',
+  TotalDepositedUsd = 'totalDepositedUSD',
   TotalFeesMatic = 'totalFeesMatic',
   TotalFeesUsd = 'totalFeesUSD',
+  TotalMemeCreated = 'totalMemeCreated',
+  TotalSuccessedMeme = 'totalSuccessedMeme',
   TotalValueLockedMatic = 'totalValueLockedMatic',
   TotalValueLockedMaticUntracked = 'totalValueLockedMaticUntracked',
   TotalValueLockedUsd = 'totalValueLockedUSD',
@@ -2206,6 +2248,7 @@ export enum HoldingToken_OrderBy {
   AccountPlatformTxCount = 'account__platformTxCount',
   AccountPot2PumpLaunchCount = 'account__pot2PumpLaunchCount',
   AccountSwapCount = 'account__swapCount',
+  AccountTotalDepositPot2pumpUsd = 'account__totalDepositPot2pumpUSD',
   AccountTotalSpendUsd = 'account__totalSpendUSD',
   HoldingValue = 'holdingValue',
   Id = 'id',
@@ -2217,6 +2260,7 @@ export enum HoldingToken_OrderBy {
   TokenHolderCount = 'token__holderCount',
   TokenId = 'token__id',
   TokenInitialUsd = 'token__initialUSD',
+  TokenLiquidityUsd = 'token__liquidityUSD',
   TokenMarketCap = 'token__marketCap',
   TokenName = 'token__name',
   TokenPoolCount = 'token__poolCount',
@@ -2715,6 +2759,7 @@ export enum LiquidatorData_OrderBy {
   AccountPlatformTxCount = 'account__platformTxCount',
   AccountPot2PumpLaunchCount = 'account__pot2PumpLaunchCount',
   AccountSwapCount = 'account__swapCount',
+  AccountTotalDepositPot2pumpUsd = 'account__totalDepositPot2pumpUSD',
   AccountTotalSpendUsd = 'account__totalSpendUSD',
   Amount0 = 'amount0',
   Amount1 = 'amount1',
@@ -2765,6 +2810,7 @@ export enum LiquidatorData_OrderBy {
   Token0HolderCount = 'token0__holderCount',
   Token0Id = 'token0__id',
   Token0InitialUsd = 'token0__initialUSD',
+  Token0LiquidityUsd = 'token0__liquidityUSD',
   Token0MarketCap = 'token0__marketCap',
   Token0Name = 'token0__name',
   Token0PoolCount = 'token0__poolCount',
@@ -2787,6 +2833,7 @@ export enum LiquidatorData_OrderBy {
   Token1HolderCount = 'token1__holderCount',
   Token1Id = 'token1__id',
   Token1InitialUsd = 'token1__initialUSD',
+  Token1LiquidityUsd = 'token1__liquidityUSD',
   Token1MarketCap = 'token1__marketCap',
   Token1Name = 'token1__name',
   Token1PoolCount = 'token1__poolCount',
@@ -3047,6 +3094,7 @@ export enum MemeRacer_OrderBy {
   TokenHolderCount = 'token__holderCount',
   TokenId = 'token__id',
   TokenInitialUsd = 'token__initialUSD',
+  TokenLiquidityUsd = 'token__liquidityUSD',
   TokenMarketCap = 'token__marketCap',
   TokenName = 'token__name',
   TokenPoolCount = 'token__poolCount',
@@ -3336,6 +3384,7 @@ export enum Mint_OrderBy {
   Token0HolderCount = 'token0__holderCount',
   Token0Id = 'token0__id',
   Token0InitialUsd = 'token0__initialUSD',
+  Token0LiquidityUsd = 'token0__liquidityUSD',
   Token0MarketCap = 'token0__marketCap',
   Token0Name = 'token0__name',
   Token0PoolCount = 'token0__poolCount',
@@ -3358,6 +3407,7 @@ export enum Mint_OrderBy {
   Token1HolderCount = 'token1__holderCount',
   Token1Id = 'token1__id',
   Token1InitialUsd = 'token1__initialUSD',
+  Token1LiquidityUsd = 'token1__liquidityUSD',
   Token1MarketCap = 'token1__marketCap',
   Token1Name = 'token1__name',
   Token1PoolCount = 'token1__poolCount',
@@ -3546,6 +3596,7 @@ export enum ParticipantTransactionHistory_OrderBy {
   AccountPlatformTxCount = 'account__platformTxCount',
   AccountPot2PumpLaunchCount = 'account__pot2PumpLaunchCount',
   AccountSwapCount = 'account__swapCount',
+  AccountTotalDepositPot2pumpUsd = 'account__totalDepositPot2pumpUSD',
   AccountTotalSpendUsd = 'account__totalSpendUSD',
   ActionType = 'actionType',
   ClaimLqAmount = 'claimLqAmount',
@@ -3563,8 +3614,6 @@ export enum ParticipantTransactionHistory_OrderBy {
   Pot2Pump = 'pot2Pump',
   Pot2PumpDepositLaunchToken = 'pot2Pump__DepositLaunchToken',
   Pot2PumpDepositRaisedToken = 'pot2Pump__DepositRaisedToken',
-  Pot2PumpLaunchTokenMcapusd = 'pot2Pump__LaunchTokenMCAPUSD',
-  Pot2PumpLaunchTokenTvlusd = 'pot2Pump__LaunchTokenTVLUSD',
   Pot2PumpBuyCount = 'pot2Pump__buyCount',
   Pot2PumpCreatedAt = 'pot2Pump__createdAt',
   Pot2PumpCreator = 'pot2Pump__creator',
@@ -3690,6 +3739,7 @@ export enum Participant_OrderBy {
   AccountPlatformTxCount = 'account__platformTxCount',
   AccountPot2PumpLaunchCount = 'account__pot2PumpLaunchCount',
   AccountSwapCount = 'account__swapCount',
+  AccountTotalDepositPot2pumpUsd = 'account__totalDepositPot2pumpUSD',
   AccountTotalSpendUsd = 'account__totalSpendUSD',
   Amount = 'amount',
   Claimed = 'claimed',
@@ -3699,8 +3749,6 @@ export enum Participant_OrderBy {
   Pot2Pump = 'pot2Pump',
   Pot2PumpDepositLaunchToken = 'pot2Pump__DepositLaunchToken',
   Pot2PumpDepositRaisedToken = 'pot2Pump__DepositRaisedToken',
-  Pot2PumpLaunchTokenMcapusd = 'pot2Pump__LaunchTokenMCAPUSD',
-  Pot2PumpLaunchTokenTvlusd = 'pot2Pump__LaunchTokenTVLUSD',
   Pot2PumpBuyCount = 'pot2Pump__buyCount',
   Pot2PumpCreatedAt = 'pot2Pump__createdAt',
   Pot2PumpCreator = 'pot2Pump__creator',
@@ -3837,11 +3885,7 @@ export enum Plugin_OrderBy {
 
 export type Pool = {
   __typename?: 'Pool';
-  aprDayData: Array<PoolDayData>;
-  aprHourData: Array<PoolHourData>;
-  aprMonthData: Array<PoolMonthData>;
   aprPercentage: Scalars['BigDecimal']['output'];
-  aprWeekData: Array<PoolWeekData>;
   burns: Array<Burn>;
   collectedFeesToken0: Scalars['BigDecimal']['output'];
   collectedFeesToken1: Scalars['BigDecimal']['output'];
@@ -3890,42 +3934,6 @@ export type Pool = {
   volumeToken0: Scalars['BigDecimal']['output'];
   volumeToken1: Scalars['BigDecimal']['output'];
   volumeUSD: Scalars['BigDecimal']['output'];
-};
-
-
-export type PoolAprDayDataArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<PoolDayData_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<PoolDayData_Filter>;
-};
-
-
-export type PoolAprHourDataArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<PoolHourData_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<PoolHourData_Filter>;
-};
-
-
-export type PoolAprMonthDataArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<PoolMonthData_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<PoolMonthData_Filter>;
-};
-
-
-export type PoolAprWeekDataArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<PoolWeekData_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<PoolWeekData_Filter>;
 };
 
 
@@ -5497,9 +5505,6 @@ export type Pool_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Pool_Filter>>>;
-  aprDayData_?: InputMaybe<PoolDayData_Filter>;
-  aprHourData_?: InputMaybe<PoolHourData_Filter>;
-  aprMonthData_?: InputMaybe<PoolMonthData_Filter>;
   aprPercentage?: InputMaybe<Scalars['BigDecimal']['input']>;
   aprPercentage_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
   aprPercentage_gte?: InputMaybe<Scalars['BigDecimal']['input']>;
@@ -5508,7 +5513,6 @@ export type Pool_Filter = {
   aprPercentage_lte?: InputMaybe<Scalars['BigDecimal']['input']>;
   aprPercentage_not?: InputMaybe<Scalars['BigDecimal']['input']>;
   aprPercentage_not_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
-  aprWeekData_?: InputMaybe<PoolWeekData_Filter>;
   burns_?: InputMaybe<Burn_Filter>;
   collectedFeesToken0?: InputMaybe<Scalars['BigDecimal']['input']>;
   collectedFeesToken0_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
@@ -5869,11 +5873,7 @@ export type Pool_Filter = {
 };
 
 export enum Pool_OrderBy {
-  AprDayData = 'aprDayData',
-  AprHourData = 'aprHourData',
-  AprMonthData = 'aprMonthData',
   AprPercentage = 'aprPercentage',
-  AprWeekData = 'aprWeekData',
   Burns = 'burns',
   CollectedFeesToken0 = 'collectedFeesToken0',
   CollectedFeesToken1 = 'collectedFeesToken1',
@@ -5915,6 +5915,7 @@ export enum Pool_OrderBy {
   Token0HolderCount = 'token0__holderCount',
   Token0Id = 'token0__id',
   Token0InitialUsd = 'token0__initialUSD',
+  Token0LiquidityUsd = 'token0__liquidityUSD',
   Token0MarketCap = 'token0__marketCap',
   Token0Name = 'token0__name',
   Token0PoolCount = 'token0__poolCount',
@@ -5938,6 +5939,7 @@ export enum Pool_OrderBy {
   Token1HolderCount = 'token1__holderCount',
   Token1Id = 'token1__id',
   Token1InitialUsd = 'token1__initialUSD',
+  Token1LiquidityUsd = 'token1__liquidityUSD',
   Token1MarketCap = 'token1__marketCap',
   Token1Name = 'token1__name',
   Token1PoolCount = 'token1__poolCount',
@@ -6631,6 +6633,7 @@ export enum Position_OrderBy {
   Token0HolderCount = 'token0__holderCount',
   Token0Id = 'token0__id',
   Token0InitialUsd = 'token0__initialUSD',
+  Token0LiquidityUsd = 'token0__liquidityUSD',
   Token0MarketCap = 'token0__marketCap',
   Token0Name = 'token0__name',
   Token0PoolCount = 'token0__poolCount',
@@ -6654,6 +6657,7 @@ export enum Position_OrderBy {
   Token1HolderCount = 'token1__holderCount',
   Token1Id = 'token1__id',
   Token1InitialUsd = 'token1__initialUSD',
+  Token1LiquidityUsd = 'token1__liquidityUSD',
   Token1MarketCap = 'token1__marketCap',
   Token1Name = 'token1__name',
   Token1PoolCount = 'token1__poolCount',
@@ -6683,8 +6687,6 @@ export type Pot2Pump = {
   __typename?: 'Pot2Pump';
   DepositLaunchToken: Scalars['BigInt']['output'];
   DepositRaisedToken: Scalars['BigInt']['output'];
-  LaunchTokenMCAPUSD: Scalars['BigDecimal']['output'];
-  LaunchTokenTVLUSD: Scalars['BigDecimal']['output'];
   buyCount: Scalars['BigInt']['output'];
   createdAt: Scalars['BigInt']['output'];
   creator: Scalars['String']['output'];
@@ -6741,22 +6743,6 @@ export type Pot2Pump_Filter = {
   DepositRaisedToken_lte?: InputMaybe<Scalars['BigInt']['input']>;
   DepositRaisedToken_not?: InputMaybe<Scalars['BigInt']['input']>;
   DepositRaisedToken_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  LaunchTokenMCAPUSD?: InputMaybe<Scalars['BigDecimal']['input']>;
-  LaunchTokenMCAPUSD_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
-  LaunchTokenMCAPUSD_gte?: InputMaybe<Scalars['BigDecimal']['input']>;
-  LaunchTokenMCAPUSD_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
-  LaunchTokenMCAPUSD_lt?: InputMaybe<Scalars['BigDecimal']['input']>;
-  LaunchTokenMCAPUSD_lte?: InputMaybe<Scalars['BigDecimal']['input']>;
-  LaunchTokenMCAPUSD_not?: InputMaybe<Scalars['BigDecimal']['input']>;
-  LaunchTokenMCAPUSD_not_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
-  LaunchTokenTVLUSD?: InputMaybe<Scalars['BigDecimal']['input']>;
-  LaunchTokenTVLUSD_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
-  LaunchTokenTVLUSD_gte?: InputMaybe<Scalars['BigDecimal']['input']>;
-  LaunchTokenTVLUSD_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
-  LaunchTokenTVLUSD_lt?: InputMaybe<Scalars['BigDecimal']['input']>;
-  LaunchTokenTVLUSD_lte?: InputMaybe<Scalars['BigDecimal']['input']>;
-  LaunchTokenTVLUSD_not?: InputMaybe<Scalars['BigDecimal']['input']>;
-  LaunchTokenTVLUSD_not_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Pot2Pump_Filter>>>;
@@ -6950,8 +6936,6 @@ export type Pot2Pump_Filter = {
 export enum Pot2Pump_OrderBy {
   DepositLaunchToken = 'DepositLaunchToken',
   DepositRaisedToken = 'DepositRaisedToken',
-  LaunchTokenMcapusd = 'LaunchTokenMCAPUSD',
-  LaunchTokenTvlusd = 'LaunchTokenTVLUSD',
   BuyCount = 'buyCount',
   CreatedAt = 'createdAt',
   Creator = 'creator',
@@ -6967,6 +6951,7 @@ export enum Pot2Pump_OrderBy {
   LaunchTokenHolderCount = 'launchToken__holderCount',
   LaunchTokenId = 'launchToken__id',
   LaunchTokenInitialUsd = 'launchToken__initialUSD',
+  LaunchTokenLiquidityUsd = 'launchToken__liquidityUSD',
   LaunchTokenMarketCap = 'launchToken__marketCap',
   LaunchTokenName = 'launchToken__name',
   LaunchTokenPoolCount = 'launchToken__poolCount',
@@ -6994,6 +6979,7 @@ export enum Pot2Pump_OrderBy {
   RaisedTokenHolderCount = 'raisedToken__holderCount',
   RaisedTokenId = 'raisedToken__id',
   RaisedTokenInitialUsd = 'raisedToken__initialUSD',
+  RaisedTokenLiquidityUsd = 'raisedToken__liquidityUSD',
   RaisedTokenMarketCap = 'raisedToken__marketCap',
   RaisedTokenName = 'raisedToken__name',
   RaisedTokenPoolCount = 'raisedToken__poolCount',
@@ -9447,6 +9433,7 @@ export type Swap = {
   amount0: Scalars['BigDecimal']['output'];
   amount1: Scalars['BigDecimal']['output'];
   amountUSD: Scalars['BigDecimal']['output'];
+  amountUSDUntracked: Scalars['BigDecimal']['output'];
   id: Scalars['ID']['output'];
   liquidity: Scalars['BigInt']['output'];
   logIndex?: Maybe<Scalars['BigInt']['output']>;
@@ -9482,6 +9469,14 @@ export type Swap_Filter = {
   amount1_not?: InputMaybe<Scalars['BigDecimal']['input']>;
   amount1_not_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
   amountUSD?: InputMaybe<Scalars['BigDecimal']['input']>;
+  amountUSDUntracked?: InputMaybe<Scalars['BigDecimal']['input']>;
+  amountUSDUntracked_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
+  amountUSDUntracked_gte?: InputMaybe<Scalars['BigDecimal']['input']>;
+  amountUSDUntracked_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
+  amountUSDUntracked_lt?: InputMaybe<Scalars['BigDecimal']['input']>;
+  amountUSDUntracked_lte?: InputMaybe<Scalars['BigDecimal']['input']>;
+  amountUSDUntracked_not?: InputMaybe<Scalars['BigDecimal']['input']>;
+  amountUSDUntracked_not_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
   amountUSD_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
   amountUSD_gte?: InputMaybe<Scalars['BigDecimal']['input']>;
   amountUSD_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
@@ -9659,6 +9654,7 @@ export enum Swap_OrderBy {
   Amount0 = 'amount0',
   Amount1 = 'amount1',
   AmountUsd = 'amountUSD',
+  AmountUsdUntracked = 'amountUSDUntracked',
   Id = 'id',
   Liquidity = 'liquidity',
   LogIndex = 'logIndex',
@@ -9714,6 +9710,7 @@ export enum Swap_OrderBy {
   Token0HolderCount = 'token0__holderCount',
   Token0Id = 'token0__id',
   Token0InitialUsd = 'token0__initialUSD',
+  Token0LiquidityUsd = 'token0__liquidityUSD',
   Token0MarketCap = 'token0__marketCap',
   Token0Name = 'token0__name',
   Token0PoolCount = 'token0__poolCount',
@@ -9736,6 +9733,7 @@ export enum Swap_OrderBy {
   Token1HolderCount = 'token1__holderCount',
   Token1Id = 'token1__id',
   Token1InitialUsd = 'token1__initialUSD',
+  Token1LiquidityUsd = 'token1__liquidityUSD',
   Token1MarketCap = 'token1__marketCap',
   Token1Name = 'token1__name',
   Token1PoolCount = 'token1__poolCount',
@@ -10469,6 +10467,7 @@ export type Token = {
   holders: Array<HoldingToken>;
   id: Scalars['ID']['output'];
   initialUSD: Scalars['BigDecimal']['output'];
+  liquidityUSD: Scalars['BigDecimal']['output'];
   marketCap: Scalars['BigDecimal']['output'];
   name: Scalars['String']['output'];
   poolCount: Scalars['BigInt']['output'];
@@ -10692,6 +10691,7 @@ export enum TokenDayData_OrderBy {
   TokenHolderCount = 'token__holderCount',
   TokenId = 'token__id',
   TokenInitialUsd = 'token__initialUSD',
+  TokenLiquidityUsd = 'token__liquidityUSD',
   TokenMarketCap = 'token__marketCap',
   TokenName = 'token__name',
   TokenPoolCount = 'token__poolCount',
@@ -10880,6 +10880,7 @@ export enum TokenHourData_OrderBy {
   TokenHolderCount = 'token__holderCount',
   TokenId = 'token__id',
   TokenInitialUsd = 'token__initialUSD',
+  TokenLiquidityUsd = 'token__liquidityUSD',
   TokenMarketCap = 'token__marketCap',
   TokenName = 'token__name',
   TokenPoolCount = 'token__poolCount',
@@ -10962,6 +10963,14 @@ export type Token_Filter = {
   initialUSD_lte?: InputMaybe<Scalars['BigDecimal']['input']>;
   initialUSD_not?: InputMaybe<Scalars['BigDecimal']['input']>;
   initialUSD_not_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
+  liquidityUSD?: InputMaybe<Scalars['BigDecimal']['input']>;
+  liquidityUSD_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
+  liquidityUSD_gte?: InputMaybe<Scalars['BigDecimal']['input']>;
+  liquidityUSD_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
+  liquidityUSD_lt?: InputMaybe<Scalars['BigDecimal']['input']>;
+  liquidityUSD_lte?: InputMaybe<Scalars['BigDecimal']['input']>;
+  liquidityUSD_not?: InputMaybe<Scalars['BigDecimal']['input']>;
+  liquidityUSD_not_in?: InputMaybe<Array<Scalars['BigDecimal']['input']>>;
   marketCap?: InputMaybe<Scalars['BigDecimal']['input']>;
   marketCap_gt?: InputMaybe<Scalars['BigDecimal']['input']>;
   marketCap_gte?: InputMaybe<Scalars['BigDecimal']['input']>;
@@ -11120,14 +11129,13 @@ export enum Token_OrderBy {
   Holders = 'holders',
   Id = 'id',
   InitialUsd = 'initialUSD',
+  LiquidityUsd = 'liquidityUSD',
   MarketCap = 'marketCap',
   Name = 'name',
   PoolCount = 'poolCount',
   Pot2Pump = 'pot2Pump',
   Pot2PumpDepositLaunchToken = 'pot2Pump__DepositLaunchToken',
   Pot2PumpDepositRaisedToken = 'pot2Pump__DepositRaisedToken',
-  Pot2PumpLaunchTokenMcapusd = 'pot2Pump__LaunchTokenMCAPUSD',
-  Pot2PumpLaunchTokenTvlusd = 'pot2Pump__LaunchTokenTVLUSD',
   Pot2PumpBuyCount = 'pot2Pump__buyCount',
   Pot2PumpCreatedAt = 'pot2Pump__createdAt',
   Pot2PumpCreator = 'pot2Pump__creator',
@@ -11351,6 +11359,7 @@ export enum Transaction_OrderBy {
   AccountPlatformTxCount = 'account__platformTxCount',
   AccountPot2PumpLaunchCount = 'account__pot2PumpLaunchCount',
   AccountSwapCount = 'account__swapCount',
+  AccountTotalDepositPot2pumpUsd = 'account__totalDepositPot2pumpUSD',
   AccountTotalSpendUsd = 'account__totalSpendUSD',
   BlockNumber = 'blockNumber',
   Burns = 'burns',
@@ -12437,6 +12446,7 @@ export enum VaultShare_OrderBy {
   UserPlatformTxCount = 'user__platformTxCount',
   UserPot2PumpLaunchCount = 'user__pot2PumpLaunchCount',
   UserSwapCount = 'user__swapCount',
+  UserTotalDepositPot2pumpUsd = 'user__totalDepositPot2pumpUSD',
   UserTotalSpendUsd = 'user__totalSpendUSD',
   Vault = 'vault',
   VaultShareBalance = 'vaultShareBalance',
@@ -12842,16 +12852,16 @@ export type AllAccountsQueryVariables = Exact<{
 }>;
 
 
-export type AllAccountsQuery = { __typename?: 'Query', accounts: Array<{ __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> }> };
+export type AllAccountsQuery = { __typename?: 'Query', accounts: Array<{ __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, totalDepositPot2pumpUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> }> };
 
 export type SingleAccountDetailsQueryVariables = Exact<{
   accountId: Scalars['ID']['input'];
 }>;
 
 
-export type SingleAccountDetailsQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> } | null };
+export type SingleAccountDetailsQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, totalDepositPot2pumpUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> } | null };
 
-export type AccountFieldFragment = { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> };
+export type AccountFieldFragment = { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, totalDepositPot2pumpUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> };
 
 export type HoldingTokenFieldFragment = { __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } };
 
@@ -12904,7 +12914,7 @@ export type AllRacersQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AllRacersQuery = { __typename?: 'Query', memeRacers: Array<{ __typename?: 'MemeRacer', id: string, currentScore: any, token: { __typename?: 'Token', symbol: string, initialUSD: any, derivedUSD: any, totalSupply: any }, hourData: Array<{ __typename?: 'MemeRacerHourData', timestamp: any, score: any, usdAtThisHour: any }> }> };
 
-export type PoolFieldsFragment = { __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> };
+export type PoolFieldsFragment = { __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> };
 
 export type PoolHourDataFieldsFragment = { __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number };
 
@@ -12923,7 +12933,7 @@ export type PoolsListQueryVariables = Exact<{
 }>;
 
 
-export type PoolsListQuery = { __typename?: 'Query', pools: Array<{ __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> }> };
+export type PoolsListQuery = { __typename?: 'Query', pools: Array<{ __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> }> };
 
 export type AllTicksQueryVariables = Exact<{
   poolAddress: Scalars['String']['input'];
@@ -12938,14 +12948,14 @@ export type SinglePoolQueryVariables = Exact<{
 }>;
 
 
-export type SinglePoolQuery = { __typename?: 'Query', pool?: { __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> } | null };
+export type SinglePoolQuery = { __typename?: 'Query', pool?: { __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> } | null };
 
 export type MultiplePoolsQueryVariables = Exact<{
   poolIds?: InputMaybe<Array<Scalars['ID']['input']> | Scalars['ID']['input']>;
 }>;
 
 
-export type MultiplePoolsQuery = { __typename?: 'Query', pools: Array<{ __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> }> };
+export type MultiplePoolsQuery = { __typename?: 'Query', pools: Array<{ __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> }> };
 
 export type PoolFeeDataQueryVariables = Exact<{
   poolId?: InputMaybe<Scalars['String']['input']>;
@@ -12960,32 +12970,39 @@ export type PoolsByTokenPairQueryVariables = Exact<{
 }>;
 
 
-export type PoolsByTokenPairQuery = { __typename?: 'Query', pools: Array<{ __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> }> };
+export type PoolsByTokenPairQuery = { __typename?: 'Query', pools: Array<{ __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> }> };
 
 export type LiquidatorDataQueryVariables = Exact<{
   account: Scalars['String']['input'];
 }>;
 
 
-export type LiquidatorDataQuery = { __typename?: 'Query', liquidatorDatas: Array<{ __typename?: 'LiquidatorData', id: string, totalLiquidityUsd: any, pool: { __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> } }> };
+export type LiquidatorDataQuery = { __typename?: 'Query', liquidatorDatas: Array<{ __typename?: 'LiquidatorData', id: string, totalLiquidityUsd: any, pool: { __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> } }> };
 
-export type LiquidatorDataFieldsFragment = { __typename?: 'LiquidatorData', id: string, totalLiquidityUsd: any, pool: { __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> } };
+export type LiquidatorDataFieldsFragment = { __typename?: 'LiquidatorData', id: string, totalLiquidityUsd: any, pool: { __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> } };
 
 export type UserPositionsQueryVariables = Exact<{
   account: Scalars['Bytes']['input'];
 }>;
 
 
-export type UserPositionsQuery = { __typename?: 'Query', positions: Array<{ __typename?: 'Position', id: string, owner: any, liquidity: any, depositedToken0: any, depositedToken1: any, withdrawnToken0: any, withdrawnToken1: any, pool: { __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> }, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null } }> };
+export type UserPositionsQuery = { __typename?: 'Query', positions: Array<{ __typename?: 'Position', id: string, owner: any, liquidity: any, depositedToken0: any, depositedToken1: any, withdrawnToken0: any, withdrawnToken1: any, pool: { __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> }, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> } }> };
 
 export type UserActivePositionsQueryVariables = Exact<{
   account: Scalars['Bytes']['input'];
 }>;
 
 
-export type UserActivePositionsQuery = { __typename?: 'Query', positions: Array<{ __typename?: 'Position', id: string, owner: any, liquidity: any, depositedToken0: any, depositedToken1: any, withdrawnToken0: any, withdrawnToken1: any, pool: { __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> }, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null } }> };
+export type UserActivePositionsQuery = { __typename?: 'Query', positions: Array<{ __typename?: 'Position', id: string, owner: any, liquidity: any, depositedToken0: any, depositedToken1: any, withdrawnToken0: any, withdrawnToken1: any, pool: { __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> }, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> } }> };
 
-export type PositionFieldsFragment = { __typename?: 'Position', id: string, owner: any, liquidity: any, depositedToken0: any, depositedToken1: any, withdrawnToken0: any, withdrawnToken1: any, pool: { __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> }, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null } };
+export type PositionFieldsFragment = { __typename?: 'Position', id: string, owner: any, liquidity: any, depositedToken0: any, depositedToken1: any, withdrawnToken0: any, withdrawnToken1: any, pool: { __typename?: 'Pool', id: string, fee: any, sqrtPrice: any, liquidity: any, tick: any, tickSpacing: any, totalValueLockedUSD: any, volumeUSD: any, feesUSD: any, untrackedFeesUSD: any, token0Price: any, token1Price: any, txCount: any, createdAtTimestamp: any, aprPercentage: any, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, poolHourData: Array<{ __typename?: 'PoolHourData', feesUSD: any, id: string, tvlUSD: any, txCount: any, volumeUSD: any, periodStartUnix: number }>, poolDayData: Array<{ __typename?: 'PoolDayData', feesUSD: any, id: string, txCount: any, volumeUSD: any, tvlUSD: any, date: number }>, poolWeekData: Array<{ __typename?: 'PoolWeekData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, week: number }>, poolMonthData: Array<{ __typename?: 'PoolMonthData', feesUSD: any, tvlUSD: any, volumeUSD: any, id: string, month: number }> }, token0: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, token1: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> } };
+
+export type GetPot2PumpByLaunchTokenQueryVariables = Exact<{
+  launchToken: Scalars['String']['input'];
+}>;
+
+
+export type GetPot2PumpByLaunchTokenQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }> };
 
 export type GetPot2PumpDetailQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -12993,7 +13010,7 @@ export type GetPot2PumpDetailQueryVariables = Exact<{
 }>;
 
 
-export type GetPot2PumpDetailQuery = { __typename?: 'Query', pot2Pump?: { __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, LaunchTokenTVLUSD: any, LaunchTokenMCAPUSD: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, participants: Array<{ __typename?: 'Participant', id: string, amount: any, totalRefundAmount: any, totalclaimLqAmount: any, claimed: boolean, refunded: boolean, account: { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> }, pot2Pump: { __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, LaunchTokenTVLUSD: any, LaunchTokenMCAPUSD: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> } }>, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> } | null };
+export type GetPot2PumpDetailQuery = { __typename?: 'Query', pot2Pump?: { __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> } | null };
 
 export type GetParticipantDetailQueryVariables = Exact<{
   accountId: Scalars['ID']['input'];
@@ -13001,61 +13018,78 @@ export type GetParticipantDetailQueryVariables = Exact<{
 }>;
 
 
-export type GetParticipantDetailQuery = { __typename?: 'Query', participants: Array<{ __typename?: 'Participant', id: string, amount: any, totalRefundAmount: any, totalclaimLqAmount: any, claimed: boolean, refunded: boolean, pot2Pump: { __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, LaunchTokenTVLUSD: any, LaunchTokenMCAPUSD: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }, account: { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> } }> };
+export type GetParticipantDetailQuery = { __typename?: 'Query', participants: Array<{ __typename?: 'Participant', id: string, amount: any, totalRefundAmount: any, totalclaimLqAmount: any, claimed: boolean, refunded: boolean, account: { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, totalDepositPot2pumpUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> }, pot2Pump: { __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, participants: Array<{ __typename?: 'Participant', id: string, amount: any, totalRefundAmount: any, totalclaimLqAmount: any, claimed: boolean, refunded: boolean, account: { __typename?: 'Account', id: string } }>, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> } }> };
+
+export type Pot2PumpDynamicFilterQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Pot2Pump_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Pot2Pump_Filter>;
+  accountId?: InputMaybe<Scalars['ID']['input']>;
+}>;
+
+
+export type Pot2PumpDynamicFilterQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, participants: Array<{ __typename?: 'Participant', id: string, amount: any, totalRefundAmount: any, totalclaimLqAmount: any, claimed: boolean, refunded: boolean, account: { __typename?: 'Account', id: string } }>, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }> };
+
+export type Pot2PumpPumpingPopularQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type Pot2PumpPumpingPopularQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }> };
 
 export type Pot2PumpPottingNewTokensQueryVariables = Exact<{
   endTime?: InputMaybe<Scalars['BigInt']['input']>;
 }>;
 
 
-export type Pot2PumpPottingNewTokensQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, LaunchTokenTVLUSD: any, LaunchTokenMCAPUSD: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }> };
+export type Pot2PumpPottingNewTokensQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }> };
 
 export type Pot2PumpPottingNearSuccessQueryVariables = Exact<{
   endTime?: InputMaybe<Scalars['BigInt']['input']>;
 }>;
 
 
-export type Pot2PumpPottingNearSuccessQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, LaunchTokenTVLUSD: any, LaunchTokenMCAPUSD: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }> };
+export type Pot2PumpPottingNearSuccessQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }> };
 
 export type Pot2PumpPottingHighPriceQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type Pot2PumpPottingHighPriceQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, LaunchTokenTVLUSD: any, LaunchTokenMCAPUSD: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }> };
+export type Pot2PumpPottingHighPriceQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }> };
 
 export type Pot2PumpPottingTrendingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type Pot2PumpPottingTrendingQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, LaunchTokenTVLUSD: any, LaunchTokenMCAPUSD: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }> };
+export type Pot2PumpPottingTrendingQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }> };
 
 export type Pot2PumpPottingMarketCapQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type Pot2PumpPottingMarketCapQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, LaunchTokenTVLUSD: any, LaunchTokenMCAPUSD: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }> };
+export type Pot2PumpPottingMarketCapQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }> };
 
 export type Pot2PumpPottingNewTokensByEndtimeQueryVariables = Exact<{
   endTime?: InputMaybe<Scalars['BigInt']['input']>;
 }>;
 
 
-export type Pot2PumpPottingNewTokensByEndtimeQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, LaunchTokenTVLUSD: any, LaunchTokenMCAPUSD: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }> };
+export type Pot2PumpPottingNewTokensByEndtimeQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> }> };
 
 export type GetLatestPumpingTokenQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetLatestPumpingTokenQuery = { __typename?: 'Query', pot2Pumps: Array<{ __typename?: 'Pot2Pump', id: string, launchToken: { __typename?: 'Token', symbol: string, name: string } }> };
 
-export type Pot2PumpFieldFragment = { __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, LaunchTokenTVLUSD: any, LaunchTokenMCAPUSD: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> };
+export type Pot2PumpFieldFragment = { __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> };
 
 export type ParticipantTransactionHistoryFieldsFragment = { __typename?: 'ParticipantTransactionHistory', id: string };
 
-export type ParticipantFieldsFragment = { __typename?: 'Participant', id: string, amount: any, totalRefundAmount: any, totalclaimLqAmount: any, claimed: boolean, refunded: boolean, account: { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> }, pot2Pump: { __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, LaunchTokenTVLUSD: any, LaunchTokenMCAPUSD: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> } };
+export type ParticipantFieldsFragment = { __typename?: 'Participant', id: string, amount: any, totalRefundAmount: any, totalclaimLqAmount: any, claimed: boolean, refunded: boolean, account: { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, totalDepositPot2pumpUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> }, pot2Pump: { __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, participants: Array<{ __typename?: 'Participant', id: string, amount: any, totalRefundAmount: any, totalclaimLqAmount: any, claimed: boolean, refunded: boolean, account: { __typename?: 'Account', id: string } }>, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> } };
 
 export type CanClaimPot2PumpParticipantQueryVariables = Exact<{
   accountId: Scalars['ID']['input'];
 }>;
 
 
-export type CanClaimPot2PumpParticipantQuery = { __typename?: 'Query', participants: Array<{ __typename?: 'Participant', id: string, amount: any, totalRefundAmount: any, totalclaimLqAmount: any, claimed: boolean, refunded: boolean, account: { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> }, pot2Pump: { __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, LaunchTokenTVLUSD: any, LaunchTokenMCAPUSD: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> } }> };
+export type CanClaimPot2PumpParticipantQuery = { __typename?: 'Query', participants: Array<{ __typename?: 'Participant', id: string, amount: any, totalRefundAmount: any, totalclaimLqAmount: any, claimed: boolean, refunded: boolean, account: { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, totalDepositPot2pumpUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> }, pot2Pump: { __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, participants: Array<{ __typename?: 'Participant', id: string, amount: any, totalRefundAmount: any, totalclaimLqAmount: any, claimed: boolean, refunded: boolean, account: { __typename?: 'Account', id: string } }>, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> } }> };
 
 export type CanRefundPot2PumpParticipantQueryVariables = Exact<{
   accountId: Scalars['ID']['input'];
@@ -13063,23 +13097,23 @@ export type CanRefundPot2PumpParticipantQueryVariables = Exact<{
 }>;
 
 
-export type CanRefundPot2PumpParticipantQuery = { __typename?: 'Query', participants: Array<{ __typename?: 'Participant', id: string, amount: any, totalRefundAmount: any, totalclaimLqAmount: any, claimed: boolean, refunded: boolean, account: { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> }, pot2Pump: { __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, LaunchTokenTVLUSD: any, LaunchTokenMCAPUSD: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> } }> };
+export type CanRefundPot2PumpParticipantQuery = { __typename?: 'Query', participants: Array<{ __typename?: 'Participant', id: string, amount: any, totalRefundAmount: any, totalclaimLqAmount: any, claimed: boolean, refunded: boolean, account: { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, totalDepositPot2pumpUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> }, pot2Pump: { __typename?: 'Pot2Pump', id: string, launchTokenInitialPrice: any, DepositLaunchToken: any, raisedTokenMinCap: any, depositRaisedTokenPercentageToMinCap: any, raisedTokenReachingMinCap: boolean, DepositRaisedToken: any, creator: string, participantsCount: any, totalRefundAmount: any, totalClaimLpAmount: any, buyCount: any, sellCount: any, createdAt: any, endTime: any, state: any, searchString: string, participants: Array<{ __typename?: 'Participant', id: string, amount: any, totalRefundAmount: any, totalclaimLqAmount: any, claimed: boolean, refunded: boolean, account: { __typename?: 'Account', id: string } }>, launchToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, raisedToken: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }, participantTransactionHistorys: Array<{ __typename?: 'ParticipantTransactionHistory', id: string }> } }> };
 
-export type TokenFieldsFragment = { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null };
+export type TokenFieldsFragment = { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> };
 
 export type MultipleTokensQueryVariables = Exact<{
   tokenIds: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
 }>;
 
 
-export type MultipleTokensQuery = { __typename?: 'Query', tokens: Array<{ __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }> };
+export type MultipleTokensQuery = { __typename?: 'Query', tokens: Array<{ __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }> };
 
 export type SingleTokenQueryVariables = Exact<{
   tokenId: Scalars['ID']['input'];
 }>;
 
 
-export type SingleTokenQuery = { __typename?: 'Query', token?: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null } | null };
+export type SingleTokenQuery = { __typename?: 'Query', token?: { __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> } | null };
 
 export type TokenTop10HoldersQueryVariables = Exact<{
   tokenId: Scalars['ID']['input'];
@@ -13091,11 +13125,11 @@ export type TokenTop10HoldersQuery = { __typename?: 'Query', token?: { __typenam
 export type AllTokensQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllTokensQuery = { __typename?: 'Query', tokens: Array<{ __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null }> };
+export type AllTokensQuery = { __typename?: 'Query', tokens: Array<{ __typename?: 'Token', id: string, symbol: string, name: string, decimals: any, derivedMatic: any, derivedUSD: any, initialUSD: any, txCount: any, holderCount: any, totalSupply: any, volumeUSD: any, totalValueLockedUSD: any, marketCap: any, poolCount: any, priceChange24hPercentage: any, pot2Pump?: { __typename?: 'Pot2Pump', id: string } | null, tokenHourData: Array<{ __typename?: 'TokenHourData', periodStartUnix: number, priceUSD: any, feesUSD: any, untrackedVolumeUSD: any }> }> };
 
-export type TransactionFieldsFragment = { __typename?: 'Transaction', id: string, timestamp: any, type: TransactionType, gasLimit: any, gasPrice: any, blockNumber: any, account: { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> }, mints: Array<{ __typename?: 'Mint', id: string }>, burns: Array<{ __typename?: 'Burn', id: string }>, swaps: Array<{ __typename?: 'Swap', id: string, timestamp: any, sender: any, recipient: any, liquidity: any, origin: any, amount0: any, amount1: any, amountUSD: any, price: any, tick: any, logIndex?: any | null, transaction: { __typename?: 'Transaction', id: string }, pool: { __typename?: 'Pool', id: string }, token0: { __typename?: 'Token', id: string }, token1: { __typename?: 'Token', id: string } }>, flashed: Array<{ __typename?: 'Flash', id: string }>, collects: Array<{ __typename?: 'Collect', id: string }>, depositRaisedTokens: Array<{ __typename?: 'DepositRaisedToken', id: string, timestamp: any, amount: any, origin: any, logIndex?: any | null, poolAddress?: any | null, transaction: { __typename?: 'Transaction', id: string } }>, refunds: Array<{ __typename?: 'Refund', id: string, timestamp: any, amount: any, origin: any, logIndex?: any | null, poolAddress: any, transaction: { __typename?: 'Transaction', id: string } }>, claimLps: Array<{ __typename?: 'ClaimLp', id: string, timestamp: any, amount: any, origin: any, logIndex?: any | null, poolAddress: any, transaction: { __typename?: 'Transaction', id: string } }> };
+export type TransactionFieldsFragment = { __typename?: 'Transaction', id: string, timestamp: any, type: TransactionType, gasLimit: any, gasPrice: any, blockNumber: any, account: { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, totalDepositPot2pumpUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> }, mints: Array<{ __typename?: 'Mint', id: string }>, burns: Array<{ __typename?: 'Burn', id: string }>, swaps: Array<{ __typename?: 'Swap', id: string, timestamp: any, sender: any, recipient: any, liquidity: any, origin: any, amount0: any, amount1: any, amountUSD: any, price: any, tick: any, logIndex?: any | null, transaction: { __typename?: 'Transaction', id: string }, pool: { __typename?: 'Pool', id: string }, token0: { __typename?: 'Token', id: string, symbol: string }, token1: { __typename?: 'Token', id: string, symbol: string } }>, flashed: Array<{ __typename?: 'Flash', id: string }>, collects: Array<{ __typename?: 'Collect', id: string }>, depositRaisedTokens: Array<{ __typename?: 'DepositRaisedToken', id: string, timestamp: any, amount: any, origin: any, logIndex?: any | null, poolAddress?: any | null, transaction: { __typename?: 'Transaction', id: string } }>, refunds: Array<{ __typename?: 'Refund', id: string, timestamp: any, amount: any, origin: any, logIndex?: any | null, poolAddress: any, transaction: { __typename?: 'Transaction', id: string } }>, claimLps: Array<{ __typename?: 'ClaimLp', id: string, timestamp: any, amount: any, origin: any, logIndex?: any | null, poolAddress: any, transaction: { __typename?: 'Transaction', id: string } }> };
 
-export type SwapFieldsFragment = { __typename?: 'Swap', id: string, timestamp: any, sender: any, recipient: any, liquidity: any, origin: any, amount0: any, amount1: any, amountUSD: any, price: any, tick: any, logIndex?: any | null, transaction: { __typename?: 'Transaction', id: string }, pool: { __typename?: 'Pool', id: string }, token0: { __typename?: 'Token', id: string }, token1: { __typename?: 'Token', id: string } };
+export type SwapFieldsFragment = { __typename?: 'Swap', id: string, timestamp: any, sender: any, recipient: any, liquidity: any, origin: any, amount0: any, amount1: any, amountUSD: any, price: any, tick: any, logIndex?: any | null, transaction: { __typename?: 'Transaction', id: string }, pool: { __typename?: 'Pool', id: string }, token0: { __typename?: 'Token', id: string, symbol: string }, token1: { __typename?: 'Token', id: string, symbol: string } };
 
 export type DepositRaisedTokenFieldsFragment = { __typename?: 'DepositRaisedToken', id: string, timestamp: any, amount: any, origin: any, logIndex?: any | null, poolAddress?: any | null, transaction: { __typename?: 'Transaction', id: string } };
 
@@ -13118,7 +13152,7 @@ export type TransactionsQueryVariables = Exact<{
 }>;
 
 
-export type TransactionsQuery = { __typename?: 'Query', transactions: Array<{ __typename?: 'Transaction', id: string, timestamp: any, type: TransactionType, gasLimit: any, gasPrice: any, blockNumber: any, account: { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> }, mints: Array<{ __typename?: 'Mint', id: string }>, burns: Array<{ __typename?: 'Burn', id: string }>, swaps: Array<{ __typename?: 'Swap', id: string, timestamp: any, sender: any, recipient: any, liquidity: any, origin: any, amount0: any, amount1: any, amountUSD: any, price: any, tick: any, logIndex?: any | null, transaction: { __typename?: 'Transaction', id: string }, pool: { __typename?: 'Pool', id: string }, token0: { __typename?: 'Token', id: string }, token1: { __typename?: 'Token', id: string } }>, flashed: Array<{ __typename?: 'Flash', id: string }>, collects: Array<{ __typename?: 'Collect', id: string }>, depositRaisedTokens: Array<{ __typename?: 'DepositRaisedToken', id: string, timestamp: any, amount: any, origin: any, logIndex?: any | null, poolAddress?: any | null, transaction: { __typename?: 'Transaction', id: string } }>, refunds: Array<{ __typename?: 'Refund', id: string, timestamp: any, amount: any, origin: any, logIndex?: any | null, poolAddress: any, transaction: { __typename?: 'Transaction', id: string } }>, claimLps: Array<{ __typename?: 'ClaimLp', id: string, timestamp: any, amount: any, origin: any, logIndex?: any | null, poolAddress: any, transaction: { __typename?: 'Transaction', id: string } }> }> };
+export type TransactionsQuery = { __typename?: 'Query', transactions: Array<{ __typename?: 'Transaction', id: string, timestamp: any, type: TransactionType, gasLimit: any, gasPrice: any, blockNumber: any, account: { __typename?: 'Account', id: string, swapCount: any, memeTokenHoldingCount: any, pot2PumpLaunchCount: any, participateCount: any, platformTxCount: any, holdingPoolCount: any, totalSpendUSD: any, totalDepositPot2pumpUSD: any, vaultShares?: Array<{ __typename?: 'VaultShare', id: string, vaultShareBalance: any, vault: { __typename?: 'IchiVault', id: string } }> | null, transaction: Array<{ __typename?: 'Transaction', id: string, timestamp: any }>, holder: Array<{ __typename?: 'HoldingToken', id: string, holdingValue: any, token: { __typename?: 'Token', id: string, symbol: string, derivedUSD: any } }>, participant: Array<{ __typename?: 'Participant', id: string, pot2Pump: { __typename?: 'Pot2Pump', id: string } }> }, mints: Array<{ __typename?: 'Mint', id: string }>, burns: Array<{ __typename?: 'Burn', id: string }>, swaps: Array<{ __typename?: 'Swap', id: string, timestamp: any, sender: any, recipient: any, liquidity: any, origin: any, amount0: any, amount1: any, amountUSD: any, price: any, tick: any, logIndex?: any | null, transaction: { __typename?: 'Transaction', id: string }, pool: { __typename?: 'Pool', id: string }, token0: { __typename?: 'Token', id: string, symbol: string }, token1: { __typename?: 'Token', id: string, symbol: string } }>, flashed: Array<{ __typename?: 'Flash', id: string }>, collects: Array<{ __typename?: 'Collect', id: string }>, depositRaisedTokens: Array<{ __typename?: 'DepositRaisedToken', id: string, timestamp: any, amount: any, origin: any, logIndex?: any | null, poolAddress?: any | null, transaction: { __typename?: 'Transaction', id: string } }>, refunds: Array<{ __typename?: 'Refund', id: string, timestamp: any, amount: any, origin: any, logIndex?: any | null, poolAddress: any, transaction: { __typename?: 'Transaction', id: string } }>, claimLps: Array<{ __typename?: 'ClaimLp', id: string, timestamp: any, amount: any, origin: any, logIndex?: any | null, poolAddress: any, transaction: { __typename?: 'Transaction', id: string } }> }> };
 
 export type SwapsQueryVariables = Exact<{
   where?: InputMaybe<Swap_Filter>;
@@ -13127,7 +13161,7 @@ export type SwapsQueryVariables = Exact<{
 }>;
 
 
-export type SwapsQuery = { __typename?: 'Query', swaps: Array<{ __typename?: 'Swap', id: string, timestamp: any, sender: any, recipient: any, liquidity: any, origin: any, amount0: any, amount1: any, amountUSD: any, price: any, tick: any, logIndex?: any | null, transaction: { __typename?: 'Transaction', id: string }, pool: { __typename?: 'Pool', id: string }, token0: { __typename?: 'Token', id: string }, token1: { __typename?: 'Token', id: string } }> };
+export type SwapsQuery = { __typename?: 'Query', swaps: Array<{ __typename?: 'Swap', id: string, timestamp: any, sender: any, recipient: any, liquidity: any, origin: any, amount0: any, amount1: any, amountUSD: any, price: any, tick: any, logIndex?: any | null, transaction: { __typename?: 'Transaction', id: string }, pool: { __typename?: 'Pool', id: string }, token0: { __typename?: 'Token', id: string, symbol: string }, token1: { __typename?: 'Token', id: string, symbol: string } }> };
 
 export type DepositRaisedTokenQueryVariables = Exact<{
   where?: InputMaybe<DepositRaisedToken_Filter>;
@@ -13260,6 +13294,12 @@ export const TokenFieldsFragmentDoc = gql`
   priceChange24hPercentage
   pot2Pump {
     id
+  }
+  tokenHourData(orderBy: periodStartUnix, orderDirection: desc) {
+    periodStartUnix
+    priceUSD
+    feesUSD
+    untrackedVolumeUSD
   }
 }
     `;
@@ -13431,6 +13471,7 @@ export const AccountFieldFragmentDoc = gql`
   platformTxCount
   holdingPoolCount
   totalSpendUSD
+  totalDepositPot2pumpUSD
   vaultShares {
     ...VaultShareField
   }
@@ -13458,8 +13499,6 @@ export const Pot2PumpFieldFragmentDoc = gql`
   id
   launchTokenInitialPrice
   DepositLaunchToken
-  LaunchTokenTVLUSD
-  LaunchTokenMCAPUSD
   raisedTokenMinCap
   depositRaisedTokenPercentageToMinCap
   raisedTokenReachingMinCap
@@ -13499,6 +13538,17 @@ export const ParticipantFieldsFragmentDoc = gql`
   }
   pot2Pump {
     ...Pot2PumpField
+    participants(where: {account_: {id: $accountId}}) {
+      id
+      amount
+      totalRefundAmount
+      totalclaimLqAmount
+      claimed
+      refunded
+      account {
+        id
+      }
+    }
   }
 }
     ${AccountFieldFragmentDoc}
@@ -13525,9 +13575,11 @@ export const SwapFieldsFragmentDoc = gql`
   }
   token0 {
     id
+    symbol
   }
   token1 {
     id
+    symbol
   }
   sender
   recipient
@@ -14259,7 +14311,9 @@ export type PoolFeeDataSuspenseQueryHookResult = ReturnType<typeof usePoolFeeDat
 export type PoolFeeDataQueryResult = Apollo.QueryResult<PoolFeeDataQuery, PoolFeeDataQueryVariables>;
 export const PoolsByTokenPairDocument = gql`
     query PoolsByTokenPair($token0: ID!, $token1: ID!) {
-  pools(where: {token0_: {id: $token0}, token1_: {id: $token1}}) {
+  pools(
+    where: {or: [{token0_: {id: $token0}, token1_: {id: $token1}}, {token0_: {id: $token1}, token1_: {id: $token0}}]}
+  ) {
     ...PoolFields
   }
 }
@@ -14418,17 +14472,53 @@ export type UserActivePositionsQueryHookResult = ReturnType<typeof useUserActive
 export type UserActivePositionsLazyQueryHookResult = ReturnType<typeof useUserActivePositionsLazyQuery>;
 export type UserActivePositionsSuspenseQueryHookResult = ReturnType<typeof useUserActivePositionsSuspenseQuery>;
 export type UserActivePositionsQueryResult = Apollo.QueryResult<UserActivePositionsQuery, UserActivePositionsQueryVariables>;
+export const GetPot2PumpByLaunchTokenDocument = gql`
+    query GetPot2PumpByLaunchToken($launchToken: String!) {
+  pot2Pumps(where: {launchToken: $launchToken}) {
+    ...Pot2PumpField
+  }
+}
+    ${Pot2PumpFieldFragmentDoc}`;
+
+/**
+ * __useGetPot2PumpByLaunchTokenQuery__
+ *
+ * To run a query within a React component, call `useGetPot2PumpByLaunchTokenQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPot2PumpByLaunchTokenQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPot2PumpByLaunchTokenQuery({
+ *   variables: {
+ *      launchToken: // value for 'launchToken'
+ *   },
+ * });
+ */
+export function useGetPot2PumpByLaunchTokenQuery(baseOptions: Apollo.QueryHookOptions<GetPot2PumpByLaunchTokenQuery, GetPot2PumpByLaunchTokenQueryVariables> & ({ variables: GetPot2PumpByLaunchTokenQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPot2PumpByLaunchTokenQuery, GetPot2PumpByLaunchTokenQueryVariables>(GetPot2PumpByLaunchTokenDocument, options);
+      }
+export function useGetPot2PumpByLaunchTokenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPot2PumpByLaunchTokenQuery, GetPot2PumpByLaunchTokenQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPot2PumpByLaunchTokenQuery, GetPot2PumpByLaunchTokenQueryVariables>(GetPot2PumpByLaunchTokenDocument, options);
+        }
+export function useGetPot2PumpByLaunchTokenSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetPot2PumpByLaunchTokenQuery, GetPot2PumpByLaunchTokenQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetPot2PumpByLaunchTokenQuery, GetPot2PumpByLaunchTokenQueryVariables>(GetPot2PumpByLaunchTokenDocument, options);
+        }
+export type GetPot2PumpByLaunchTokenQueryHookResult = ReturnType<typeof useGetPot2PumpByLaunchTokenQuery>;
+export type GetPot2PumpByLaunchTokenLazyQueryHookResult = ReturnType<typeof useGetPot2PumpByLaunchTokenLazyQuery>;
+export type GetPot2PumpByLaunchTokenSuspenseQueryHookResult = ReturnType<typeof useGetPot2PumpByLaunchTokenSuspenseQuery>;
+export type GetPot2PumpByLaunchTokenQueryResult = Apollo.QueryResult<GetPot2PumpByLaunchTokenQuery, GetPot2PumpByLaunchTokenQueryVariables>;
 export const GetPot2PumpDetailDocument = gql`
     query GetPot2PumpDetail($id: ID!, $accountId: ID) {
   pot2Pump(id: $id) {
     ...Pot2PumpField
-    participants(where: {account_: {id: $accountId}}) {
-      ...ParticipantFields
-    }
   }
 }
-    ${Pot2PumpFieldFragmentDoc}
-${ParticipantFieldsFragmentDoc}`;
+    ${Pot2PumpFieldFragmentDoc}`;
 
 /**
  * __useGetPot2PumpDetailQuery__
@@ -14467,17 +14557,9 @@ export const GetParticipantDetailDocument = gql`
     query GetParticipantDetail($accountId: ID!, $pot2PumpId: ID!) {
   participants(where: {account_: {id: $accountId}, pot2Pump_: {id: $pot2PumpId}}) {
     ...ParticipantFields
-    pot2Pump {
-      ...Pot2PumpField
-    }
-    account {
-      ...AccountField
-    }
   }
 }
-    ${ParticipantFieldsFragmentDoc}
-${Pot2PumpFieldFragmentDoc}
-${AccountFieldFragmentDoc}`;
+    ${ParticipantFieldsFragmentDoc}`;
 
 /**
  * __useGetParticipantDetailQuery__
@@ -14512,6 +14594,112 @@ export type GetParticipantDetailQueryHookResult = ReturnType<typeof useGetPartic
 export type GetParticipantDetailLazyQueryHookResult = ReturnType<typeof useGetParticipantDetailLazyQuery>;
 export type GetParticipantDetailSuspenseQueryHookResult = ReturnType<typeof useGetParticipantDetailSuspenseQuery>;
 export type GetParticipantDetailQueryResult = Apollo.QueryResult<GetParticipantDetailQuery, GetParticipantDetailQueryVariables>;
+export const Pot2PumpDynamicFilterDocument = gql`
+    query Pot2PumpDynamicFilter($first: Int, $skip: Int, $orderBy: Pot2Pump_orderBy, $orderDirection: OrderDirection, $where: Pot2Pump_filter, $accountId: ID) {
+  pot2Pumps(
+    first: $first
+    skip: $skip
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+  ) {
+    ...Pot2PumpField
+    participants(where: {account_: {id: $accountId}}) {
+      id
+      amount
+      totalRefundAmount
+      totalclaimLqAmount
+      claimed
+      refunded
+      account {
+        id
+      }
+    }
+  }
+}
+    ${Pot2PumpFieldFragmentDoc}`;
+
+/**
+ * __usePot2PumpDynamicFilterQuery__
+ *
+ * To run a query within a React component, call `usePot2PumpDynamicFilterQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePot2PumpDynamicFilterQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePot2PumpDynamicFilterQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
+ *      orderBy: // value for 'orderBy'
+ *      orderDirection: // value for 'orderDirection'
+ *      where: // value for 'where'
+ *      accountId: // value for 'accountId'
+ *   },
+ * });
+ */
+export function usePot2PumpDynamicFilterQuery(baseOptions?: Apollo.QueryHookOptions<Pot2PumpDynamicFilterQuery, Pot2PumpDynamicFilterQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<Pot2PumpDynamicFilterQuery, Pot2PumpDynamicFilterQueryVariables>(Pot2PumpDynamicFilterDocument, options);
+      }
+export function usePot2PumpDynamicFilterLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Pot2PumpDynamicFilterQuery, Pot2PumpDynamicFilterQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<Pot2PumpDynamicFilterQuery, Pot2PumpDynamicFilterQueryVariables>(Pot2PumpDynamicFilterDocument, options);
+        }
+export function usePot2PumpDynamicFilterSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<Pot2PumpDynamicFilterQuery, Pot2PumpDynamicFilterQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<Pot2PumpDynamicFilterQuery, Pot2PumpDynamicFilterQueryVariables>(Pot2PumpDynamicFilterDocument, options);
+        }
+export type Pot2PumpDynamicFilterQueryHookResult = ReturnType<typeof usePot2PumpDynamicFilterQuery>;
+export type Pot2PumpDynamicFilterLazyQueryHookResult = ReturnType<typeof usePot2PumpDynamicFilterLazyQuery>;
+export type Pot2PumpDynamicFilterSuspenseQueryHookResult = ReturnType<typeof usePot2PumpDynamicFilterSuspenseQuery>;
+export type Pot2PumpDynamicFilterQueryResult = Apollo.QueryResult<Pot2PumpDynamicFilterQuery, Pot2PumpDynamicFilterQueryVariables>;
+export const Pot2PumpPumpingPopularDocument = gql`
+    query Pot2PumpPumpingPopular {
+  pot2Pumps(
+    first: 25
+    orderBy: launchToken__holderCount
+    orderDirection: desc
+    where: {raisedTokenReachingMinCap: true}
+  ) {
+    ...Pot2PumpField
+  }
+}
+    ${Pot2PumpFieldFragmentDoc}`;
+
+/**
+ * __usePot2PumpPumpingPopularQuery__
+ *
+ * To run a query within a React component, call `usePot2PumpPumpingPopularQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePot2PumpPumpingPopularQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePot2PumpPumpingPopularQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePot2PumpPumpingPopularQuery(baseOptions?: Apollo.QueryHookOptions<Pot2PumpPumpingPopularQuery, Pot2PumpPumpingPopularQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<Pot2PumpPumpingPopularQuery, Pot2PumpPumpingPopularQueryVariables>(Pot2PumpPumpingPopularDocument, options);
+      }
+export function usePot2PumpPumpingPopularLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Pot2PumpPumpingPopularQuery, Pot2PumpPumpingPopularQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<Pot2PumpPumpingPopularQuery, Pot2PumpPumpingPopularQueryVariables>(Pot2PumpPumpingPopularDocument, options);
+        }
+export function usePot2PumpPumpingPopularSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<Pot2PumpPumpingPopularQuery, Pot2PumpPumpingPopularQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<Pot2PumpPumpingPopularQuery, Pot2PumpPumpingPopularQueryVariables>(Pot2PumpPumpingPopularDocument, options);
+        }
+export type Pot2PumpPumpingPopularQueryHookResult = ReturnType<typeof usePot2PumpPumpingPopularQuery>;
+export type Pot2PumpPumpingPopularLazyQueryHookResult = ReturnType<typeof usePot2PumpPumpingPopularLazyQuery>;
+export type Pot2PumpPumpingPopularSuspenseQueryHookResult = ReturnType<typeof usePot2PumpPumpingPopularSuspenseQuery>;
+export type Pot2PumpPumpingPopularQueryResult = Apollo.QueryResult<Pot2PumpPumpingPopularQuery, Pot2PumpPumpingPopularQueryVariables>;
 export const Pot2PumpPottingNewTokensDocument = gql`
     query Pot2PumpPottingNewTokens($endTime: BigInt) {
   pot2Pumps(
@@ -14606,7 +14794,7 @@ export const Pot2PumpPottingHighPriceDocument = gql`
     query Pot2PumpPottingHighPrice {
   pot2Pumps(
     first: 25
-    orderBy: LaunchTokenTVLUSD
+    orderBy: launchToken__derivedUSD
     orderDirection: desc
     where: {raisedTokenReachingMinCap: true}
   ) {
@@ -14694,7 +14882,7 @@ export const Pot2PumpPottingMarketCapDocument = gql`
     query Pot2PumpPottingMarketCap {
   pot2Pumps(
     first: 25
-    orderBy: LaunchTokenMCAPUSD
+    orderBy: launchToken__marketCap
     orderDirection: desc
     where: {raisedTokenReachingMinCap: true}
   ) {
@@ -14739,8 +14927,8 @@ export const Pot2PumpPottingNewTokensByEndtimeDocument = gql`
   pot2Pumps(
     first: 25
     orderBy: endTime
-    orderDirection: asc
-    where: {raisedTokenReachingMinCap: false, endTime_gt: $endTime}
+    orderDirection: desc
+    where: {raisedTokenReachingMinCap: true}
   ) {
     ...Pot2PumpField
   }

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { ADDRESS_ZERO } from "@cryptoalgebra/wasabee-sdk";
+import { ADDRESS_ZERO } from "@cryptoalgebra/sdk";
 import { useFarmHarvest } from "@/lib/algebra/hooks/farming/useFarmHarvest";
 import { useFarmUnstake } from "@/lib/algebra/hooks/farming/useFarmStake";
 import { useAccount } from "wagmi";

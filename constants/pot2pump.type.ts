@@ -1,43 +1,28 @@
-export interface FilterState {
-    tvl: {
-        min?: string;
-        max?: string;
-    };
-    participants: {
-        min?: string;
-        max?: string;
-    };
-    liquidity: {
-        min?: string;
-        max?: string;
-    };
-    marketcap: {
-        min?: string;
-        max?: string;
-    };
-    daytxns: {
-        min?: string;
-        max?: string;
-    };
-    daybuys: {
-        min?: string;
-        max?: string;
-    };
-    daysells: {
-        min?: string;
-        max?: string;
-    };
-    dayvolume: {
-        min?: string;
-        max?: string;
-    };
-    daychange: {
-        min?: string;
-        max?: string;
-    };
-    depositraisedtoken: {
-        min?: string;
-        max?: string;
-    }
+import { Token } from "@/services/contract/token";
 
+export type FilterField = RangeFilterField | TokenFilterField;
+
+export type RangeFilterField = {
+  inputType: "range";
+  min?: string;
+  max?: string;
+};
+
+export type TokenFilterField = {
+  inputType: "token";
+  token?: Token;
+};
+
+export interface FilterState {
+  tvl?: RangeFilterField;
+  participants?: RangeFilterField;
+  liquidity?: RangeFilterField;
+  marketcap?: RangeFilterField;
+  daytxns?: RangeFilterField;
+  daybuys?: RangeFilterField;
+  daysells?: RangeFilterField;
+  dayvolume?: RangeFilterField;
+  daychange?: RangeFilterField;
+  depositraisedtokenpercentage?: RangeFilterField;
+  raiseToken?: TokenFilterField;
 }

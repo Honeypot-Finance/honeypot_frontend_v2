@@ -7,7 +7,7 @@ type Props = {
   label: string;
 };
 
-const FilterItem = ({ min, max, onChange, label }: Props) => {
+const FilterRangeItem = ({ min, max, onChange, label }: Props) => {
   return (
     <div className="flex flex-col gap-2">
       <label className="text-black text-base font-medium">{label}</label>
@@ -35,4 +35,4 @@ const FilterItem = ({ min, max, onChange, label }: Props) => {
   );
 };
 
-export default FilterItem;
+export default FilterRangeItem;

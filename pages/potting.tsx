@@ -6,9 +6,8 @@ import { wallet } from "@/services/wallet";
 import { Tab, Tabs } from "@nextui-org/react";
 import { NextLayoutPage } from "@/types/nextjs";
 import { useCallback, useEffect, useState } from "react";
-import { Button } from "@/components/button/button-next";
 import { LaunchCardV3 } from "@/components/LaunchCard/v3";
-import { FaCrown, FaExternalLinkAlt } from "react-icons/fa";
+import { FaCrown } from "react-icons/fa";
 import Pagination from "@/components/Pagination/Pagination";
 import launchpad, {
   defaultPairFilters,
@@ -18,19 +17,35 @@ import { Filter } from "@/components/pot2pump/FilterModal";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 import { defaultContainerVariants, itemPopUpVariants } from "@/lib/animation";
 import { Pot2PumpPottingService } from "@/services/launchpad/pot2pump/potting";
+import { Pot2PumpService } from "@/services/launchpad/pot2pump";
 import { WrappedNextInputSearchBar } from "@/components/wrappedNextUI/SearchBar/WrappedInputSearchBar";
 import { FilterState } from "@/constants/pot2pump.type";
 import { defaultFilterState } from "@/constants/pot2pump";
 import { hasValue, removeEmptyFields } from "@/lib/utils";
+import { Address } from "viem";
+import {
+  canClaimPot2Pump,
+  canRefundPot2Pump,
+} from "@/lib/algebra/graphql/clients/pot2pump";
+import { Button } from "@/components/button/v3";
+import { cn } from "@/lib/utils";
+import { chain } from "@/services/chain";
 
 const MemeLaunchPage: NextLayoutPage = observer(() => {
   const [pottingProjects, setPottingProjects] =
     useState<Pot2PumpPottingService>();
+  const [myProjects, setMyProjects] = useState<Pot2PumpService>();
   const [mostSuccessProjects, setMostSuccessProjects] = useState<
     MemePairContract[] | null
   >(null);
   const [filters, setFilters] = useState<FilterState>(defaultFilterState);
   const [search, setSearch] = useState("");
+  const [canClaimPot2PumpList, setCanClaimPot2PumpList] = useState<
+    MemePairContract[]
+  >([]);
+  const [canRefundPot2PumpList, setCanRefundPot2PumpList] = useState<
+    MemePairContract[]
+  >([]);
 
   const updateMostSuccessProjects = useCallback(() => {
     mostSuccessProjects?.forEach((pair) => {
@@ -46,15 +61,16 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
   }, [updateMostSuccessProjects]);
 
   useEffect(() => {
-    if (!wallet.isInit) {
+    if (!chain.isInit) {
       return;
     }
     const newProjects = new Pot2PumpPottingService();
     setPottingProjects(newProjects);
     newProjects.projectsPage.reloadPage();
-  }, [wallet.isInit]);
+  }, []);
 
   useEffect(() => {
+    console.log("pottingProjects", pottingProjects);
     if (pottingProjects) {
       console.log("hasValue(filters)", hasValue(filters), filters);
       if (hasValue(filters)) {
@@ -78,9 +94,30 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
   }, [filters, pottingProjects, search]);
 
   const onChangeFilter = (data: any) => {
+    console.log("onChangeFilter", data);
     setSearch("");
     setFilters(data);
   };
+
+  const initPot2Pumps = () => {
+    const newPumpingProjects = new Pot2PumpService();
+    setMyProjects(newPumpingProjects);
+    newPumpingProjects.myLaunches.reloadPage();
+    newPumpingProjects.participatedPairs.reloadPage();
+    canClaimPot2Pump(wallet.account).then((res) => {
+      setCanClaimPot2PumpList(res);
+    });
+    canRefundPot2Pump(wallet.account).then((res) => {
+      setCanRefundPot2PumpList(res);
+    });
+  };
+
+  useEffect(() => {
+    if (!wallet.isInit) {
+      return;
+    }
+    initPot2Pumps();
+  }, [wallet.isInit]);
 
   return (
     <div className="w-full grow flex flex-col font-gliker">
@@ -162,21 +199,66 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
           </div>
         )}
 
-        <div
-          id="filter"
-          className="flex flex-col sm:flex-row items-center gap-2 my-4 sm:my-0"
-        >
-          <WrappedNextInputSearchBar
-            className="border border-[#FFCD4D] shadow-[1px_2px_0px_0px_#9B7D2F] placeholder:text-xs"
-            onChange={(e) => {
-              setSearch(e.target.value);
-            }}
-          />
-        </div>
+        <div className="w-full relative space-y-4">
+          <div className="py-2 sm:py-0 sm:absolute right-0 top-20">
+            <div className="flex gap-2 justify-end">
+              <Button>
+                <Link
+                  href="/launch-token?launchType=meme"
+                  className="text-black font-bold"
+                >
+                  Launch Token
+                </Link>
+              </Button>
 
-        <div className="w-full relative">
-          <div className="py-2 sm:py-0 sm:absolute right-0 top-0">
-            <div className="flex gap-2">
+              {canClaimPot2PumpList.length > 0 && (
+                <Button
+                  onPress={() => {
+                    wallet.contracts.memeFacade.claimAllUserLP
+                      .call(
+                        [
+                          wallet.account as Address,
+                          canClaimPot2PumpList.map(
+                            (pair) => pair.launchedToken?.address as Address
+                          ),
+                        ],
+                        {
+                          gas: BigInt(10000000),
+                        }
+                      )
+                      .then(() => {
+                        initPot2Pumps();
+                      });
+                  }}
+                  disabled={!wallet.account}
+                >
+                  Claim All
+                </Button>
+              )}
+              {canRefundPot2PumpList.length > 0 && (
+                <Button
+                  onPress={() => {
+                    wallet.contracts.memeFacade.refundAllUserToken
+                      .call(
+                        [
+                          wallet.account as Address,
+                          canRefundPot2PumpList.map(
+                            (pair) => pair.launchedToken?.address as Address
+                          ),
+                        ],
+                        {
+                          gas: BigInt(10000000),
+                        }
+                      )
+                      .then(() => {
+                        initPot2Pumps();
+                      });
+                  }}
+                  disabled={!wallet.account}
+                >
+                  Refund All
+                </Button>
+              )}
               <Filter
                 filtersList={[
                   {
@@ -186,28 +268,44 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                   },
                   {
                     key: 3,
-                    label: "Deposit Raised Token",
-                    category: "depositraisedtoken",
+                    label: "Pumping Percentage",
+                    category: "depositraisedtokenpercentage",
+                  },
+                  {
+                    key: 4,
+                    label: "Token",
+                    category: "raiseToken",
                   },
                 ]}
                 filters={filters}
                 setFilters={onChangeFilter}
                 pumpingProjects={pottingProjects}
               />
-              <Link
-                href="/launch-token?launchType=meme"
-                className="text-black font-bold"
-              >
-                <Button className="w-full">Launch Token</Button>
-              </Link>
             </div>
           </div>
+
+          <div
+            id="filter"
+            className="flex flex-col sm:flex-row items-center gap-2 my-4 sm:my-0"
+          >
+            <WrappedNextInputSearchBar
+              className="border border-[#FFCD4D] shadow-[1px_2px_0px_0px_#9B7D2F] placeholder:text-xs"
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
+            />
+          </div>
+
           <Tabs
-            // destroyInactiveTabPanel={false}
             aria-label="Options"
             classNames={{
               tabList: "bg-transparent",
-              tab: "flex flex-col items-center gap-2.5 border-0  backdrop-blur-[100px] p-2.5 rounded-[10px]",
+              tabContent: "text-xs sm:text-base p-0 sm:p-2",
+              tab: cn(
+                "rounded-md sm:rounded-lg",
+                "border-0 backdrop-blur-[100px]",
+                "flex flex-col items-center gap-1 sm:gap-2.5"
+              ),
             }}
             className="next-tab"
             onSelectionChange={(key) => {
@@ -234,6 +332,7 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                       pair={pair}
                       action={<></>}
                       key={pair.address}
+                      type="simple"
                     />
                   )}
                   classNames={{
@@ -243,12 +342,48 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                 />
               )}
             </Tab>
-            <Tab key="my" title="My MEMEs" href="/profile" />
-            <Tab
-              key="participated-launch"
-              title="Participated MEMEs"
-              href="/profile"
-            />
+            {wallet.isInit && (
+              <>
+                <Tab key="my" title="My MEMEs">
+                  {myProjects && (
+                    <Pagination
+                      paginationState={myProjects.myLaunches}
+                      render={(project) => (
+                        <LaunchCardV3
+                          key={project.address}
+                          pair={project}
+                          action={<></>}
+                          type="simple"
+                        />
+                      )}
+                      classNames={{
+                        itemsContainer:
+                          "grid gap-8 grid-cols-1 md:grid-cols-2 xl:gap-6 xl:grid-cols-3",
+                      }}
+                    />
+                  )}
+                </Tab>
+                <Tab key="participated-launch" title="Participated MEMEs">
+                  {myProjects && (
+                    <Pagination
+                      paginationState={myProjects.participatedPairs}
+                      render={(project) => (
+                        <LaunchCardV3
+                          key={project.address}
+                          pair={project}
+                          action={<></>}
+                          type="simple"
+                        />
+                      )}
+                      classNames={{
+                        itemsContainer:
+                          "grid gap-8 grid-cols-1 md:grid-cols-2 xl:gap-6 xl:grid-cols-3",
+                      }}
+                    />
+                  )}
+                </Tab>
+              </>
+            )}
             {/* <Tab href="/launch" title="To Fto projects->" /> */}
             {/* <Tab
               href="https://bartio.bonds.yeetit.xyz/"

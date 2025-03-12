@@ -19,7 +19,6 @@ import { useSpring, animated } from "react-spring";
 import { getTokenTop10Holders } from "@/lib/algebra/graphql/clients/token";
 import { TokenTop10HoldersQuery } from "@/lib/algebra/graphql/generated/graphql";
 import BigNumber from "bignumber.js";
-import { truncateEthAddress } from "@usecapsule/rainbowkit-wallet";
 import { poolsByTokenPair } from "@/lib/algebra/graphql/clients/pool";
 import { useRouter } from "next/router";
 import { ExternalLink } from "lucide-react";
@@ -390,7 +389,7 @@ const TopHoldersModal = observer(
                                   rel="noopener noreferrer"
                                   className="hover:text-[#FFCD4D] flex items-center gap-1"
                                 >
-                                  {truncateEthAddress(holder.account.id)}
+                                  {holder.account.id}
                                   <ExternalLink className="size-3" />
                                 </a>
                                 <Copy
@@ -432,7 +431,7 @@ const TopHoldersModal = observer(
               </ModalBody>
             </div>
 
-            <div className="bg-[url('/images/pool-detail/bottom-border.svg')] bg-left-top h-6 absolute -bottom-1 left-0 w-full bg-contain"></div>
+            <div className="bg-[url('/images/card-container/honey/bottom-border.svg')] bg-left-top h-6 absolute -bottom-1 left-0 w-full bg-contain"></div>
           </div>
         </ModalContent>
       </Modal>

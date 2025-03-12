@@ -1,15 +1,9 @@
 import { MUBAI_FTO_PAIR_ABI } from "@/lib/abis/ftoPair";
 import { MemePairABI } from "@/lib/abis/MemePair";
-import { chains, chainsMap } from "@/lib/chain";
+import { chainsMap } from "@/lib/chain";
 import { createPublicClientByChain } from "@/lib/client";
-import { exec } from "@/lib/contract";
 import { pg } from "@/lib/db";
 import DataLoader from "dataloader";
-import { Contract, ethers, providers } from "ethers";
-import { key } from "localforage";
-import { getContract } from "viem";
-import { readContract } from "viem/actions";
-import { record } from "zod";
 
 const super_api_key = process.env.FTO_API_KEY ?? "";
 
@@ -94,8 +88,14 @@ export const ftoService = {
     creator_api_key?: string;
   }) => {
     let project = await fotProjectDataloader.load({
-      pair: data.pair,
+      pair: data.pair.toLowerCase(),
       chain_id: data.chain_id.toString(),
+    });
+
+    console.log("project: ", {
+      pair: data.pair,
+      chain_id: data.chain_id,
+      project: project,
     });
     let updateFlag = false;
     const publicClient = createPublicClientByChain(chainsMap[data.chain_id]);

@@ -11,6 +11,9 @@ import {
   Pool,
   UserActivePositionsQueryResult,
   useNativePriceQuery,
+  SinglePoolQuery,
+  SinglePoolQueryVariables,
+  SinglePoolDocument,
 } from "../generated/graphql";
 import { Address, getContract } from "viem";
 import { algebraPositionManagerAddress } from "@/wagmi-generated";
@@ -18,8 +21,8 @@ import { algebraPositionManagerAbi } from "@/wagmi-generated";
 import { useEffect, useState } from "react";
 import { MAX_UINT128 } from "@/config/algebra/max-uint128";
 import { wallet } from "@/services/wallet";
-import { CurrencyAmount, Token as AlgebranToken } from "@cryptoalgebra/wasabee-sdk";
-import { unwrappedToken } from "@cryptoalgebra/wasabee-sdk";
+import { CurrencyAmount, Token as AlgebranToken } from "@cryptoalgebra/sdk";
+import { unwrappedToken } from "@cryptoalgebra/sdk";
 import BigNumber from "bignumber.js";
 import { object } from "zod";
 import { PairContract } from "@/services/contract/dex/liquidity/pair-contract";
@@ -194,4 +197,22 @@ export const useUserPools = (userAddress: string) => {
     loading: isLoading,
     refetch: refetch,
   };
+};
+
+export const poolExists = async (poolAddress: string) => {
+  const { data } = await infoClient.query<
+    SinglePoolQuery,
+    SinglePoolQueryVariables
+  >({
+    query: SinglePoolDocument,
+    variables: { poolId: poolAddress },
+  });
+
+  // console.log("poolExists", {
+  //   poolAddress,
+  //   data,
+  //   result: data?.pool !== null,
+  // });
+
+  return data?.pool !== null;
 };

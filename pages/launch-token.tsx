@@ -44,6 +44,7 @@ import AITokenGenerator, {
   TokenGeneratedSuccessValues,
 } from "@/components/AI/AITokenGenerator/AITokenGenerator";
 import { HoneyContainer } from "@/components/CardContianer";
+import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 const positiveIntegerPattern = /^[1-9]\d*$/;
 
 type FormValues = {
@@ -78,8 +79,12 @@ const FTOLaunchModal: NextLayoutPage = observer(() => {
   const router = useRouter();
   const state = useLocalObservable(() => ({
     pairAddress: "",
+    launchedTokenAddress: "",
     setPairAddress(pairAddress: string) {
       this.pairAddress = pairAddress;
+    },
+    setLaunchedTokenAddress(launchedTokenAddress: string) {
+      this.launchedTokenAddress = launchedTokenAddress;
     },
   }));
   const onSubmit = async (data: {
@@ -110,8 +115,15 @@ const FTOLaunchModal: NextLayoutPage = observer(() => {
         ),
       });
 
-      state.setPairAddress(pairAddress);
-      router.push(`/launch-detail/${pairAddress}`);
+      const pair = new MemePairContract({
+        address: pairAddress,
+      });
+
+      const launchedToken = await pair.contract.read.launchedToken();
+
+      state.setPairAddress(launchedToken);
+      state.setLaunchedTokenAddress(launchedToken);
+      router.push(`/launch-detail/${launchedToken}`);
     } catch (error) {
       console.error(error);
     }
@@ -316,17 +328,20 @@ const FTOLaunchModal: NextLayoutPage = observer(() => {
               </AccordionItem>
             </Accordion>
 
-            {(state.pairAddress && (
+            {(state.launchedTokenAddress && (
               <div className="flex items-center">
                 Pair Address:&nbsp;
                 <Link
                   className="text-primary"
-                  href={`/launch-detail/${state.pairAddress}`}
+                  href={`/launch-detail/${state.launchedTokenAddress}`}
                   target="_blank"
                 >
-                  {state.pairAddress}
+                  {state.launchedTokenAddress}
                 </Link>
-                <Copy className="ml-[8px]" value={state.pairAddress}></Copy>
+                <Copy
+                  className="ml-[8px]"
+                  value={state.launchedTokenAddress}
+                ></Copy>
               </div>
             )) || (
               <FTOButton
@@ -396,7 +411,10 @@ const MemePadInstruction = () => {
           "
         >
           {steps.map((step, idx) => (
-            <li key={idx} className="flex relative">
+            <li
+              key={idx}
+              className="flex relative"
+            >
               <div className="flex flex-col items-center ">
                 {idx !== 0 && (
                   <div className="w-[1px] flex-1 bg-[#FFCD4D]"></div>
@@ -442,10 +460,15 @@ const MEMELaunchModal: NextLayoutPage = observer(() => {
     control,
     formState: { errors },
     setValue,
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    defaultValues: {
+      logoUrl: "/images/empty-logo.png",
+    },
+  });
   const router = useRouter();
   const state = useLocalObservable(() => ({
     pairAddress: "",
+    launchedTokenAddress: "",
     setPairAddress(pairAddress: string) {
       this.pairAddress = pairAddress;
     },
@@ -457,6 +480,9 @@ const MEMELaunchModal: NextLayoutPage = observer(() => {
         (token) => token.address === raisedTokenAddress
       )?.amount;
       this.raisedTokenAmount = amount ?? BigInt(0);
+    },
+    setLaunchedTokenAddress(launchedTokenAddress: string) {
+      this.launchedTokenAddress = launchedTokenAddress;
     },
   }));
 
@@ -470,8 +496,15 @@ const MEMELaunchModal: NextLayoutPage = observer(() => {
         raisingCycle: dayjs().unix(),
       });
 
-      state.setPairAddress(pairAddress.toLowerCase());
-      router.push(`/launch-detail/${pairAddress.toLowerCase()}`);
+      const pair = new MemePairContract({
+        address: pairAddress,
+      });
+
+      const launchedToken = await pair.contract.read.launchedToken();
+
+      state.setPairAddress(launchedToken);
+      state.setLaunchedTokenAddress(launchedToken);
+      router.push(`/launch-detail/${launchedToken}`);
     } catch (error) {
       console.error(error);
     }
@@ -545,7 +578,8 @@ const MEMELaunchModal: NextLayoutPage = observer(() => {
               )}
             />
             <div className="text-black opacity-50 text-center text-sm">
-              Click icon to upload new token icon
+              Click icon to upload new token icon{" "}
+              <span className="text-red-500">*</span>
             </div>
             {errors.logoUrl && (
               <span className="text-red-500 text-center text-sm">
@@ -600,8 +634,59 @@ const MEMELaunchModal: NextLayoutPage = observer(() => {
             )}
           </div>
 
+          {wallet.isInit && (
+            <div className="flex flex-col gap-2">
+              <label className={labelBaseClass}>
+                Raise Token <span className="text-red-500">*</span>
+              </label>
+              <WarppedNextSelect
+                isRequired
+                defaultSelectedKeys={[
+                  wallet.currentChain.raisedTokenData[0].address,
+                ]}
+                items={wallet.currentChain?.raisedTokenData}
+                selectorIcon={<></>}
+                onSelectionChange={(value) => {
+                  state.setRaisedTokenAddress(value.currentKey ?? "");
+                }}
+                {...register("raisedToken")}
+              >
+                {wallet.currentChain?.raisedTokenData.map((token) => (
+                  <SelectItem
+                    key={token.address}
+                    value={token.address}
+                    startContent={
+                      <TokenLogo
+                        size={24}
+                        token={Token.getToken({
+                          address: token.address,
+                        })}
+                        addtionalClasses="rounded-full"
+                      />
+                    }
+                  >
+                    {amountFormatted(
+                      new BigNumber(token.amount.toString())
+                        .div(10 ** 18)
+                        .toString(),
+                      {
+                        prefix: "",
+                        decimals: 0,
+                        fixed: 3,
+                        symbol: ` ${token.symbol}`,
+                      }
+                    )}
+                  </SelectItem>
+                ))}
+              </WarppedNextSelect>
+            </div>
+          )}
+
           <div className="custom-dashed-less-round">
-            <Accordion variant="bordered" title="Advanced Options">
+            <Accordion
+              variant="bordered"
+              title="Advanced Options"
+            >
               <AccordionItem
                 key="advanced"
                 aria-label="advanced"
@@ -614,54 +699,6 @@ const MEMELaunchModal: NextLayoutPage = observer(() => {
                   base: "border-none",
                 }}
               >
-                {wallet.isInit && (
-                  <div className="flex flex-col gap-2">
-                    <label className={labelBaseClass}>
-                      Raise Token <span className="text-red-500">*</span>
-                    </label>
-                    <WarppedNextSelect
-                      isRequired
-                      defaultSelectedKeys={[
-                        wallet.currentChain.raisedTokenData[1].address,
-                      ]}
-                      items={wallet.currentChain?.raisedTokenData}
-                      selectorIcon={<></>}
-                      onSelectionChange={(value) => {
-                        state.setRaisedTokenAddress(value.currentKey ?? "");
-                      }}
-                      {...register("raisedToken")}
-                    >
-                      {wallet.currentChain?.raisedTokenData.map((token) => (
-                        <SelectItem
-                          key={token.address}
-                          value={token.address}
-                          startContent={
-                            <TokenLogo
-                              size={24}
-                              token={Token.getToken({
-                                address: token.address,
-                              })}
-                              addtionalClasses="rounded-full"
-                            />
-                          }
-                        >
-                          {amountFormatted(
-                            new BigNumber(token.amount.toString())
-                              .div(10 ** 18)
-                              .toString(),
-                            {
-                              prefix: "",
-                              decimals: 0,
-                              fixed: 3,
-                              symbol: ` ${token.symbol}`,
-                            }
-                          )}
-                        </SelectItem>
-                      ))}
-                    </WarppedNextSelect>
-                  </div>
-                )}
-
                 <div className="flex flex-col gap-2">
                   <label className={labelBaseClass}>
                     Description{" "}
@@ -714,17 +751,20 @@ const MEMELaunchModal: NextLayoutPage = observer(() => {
             </Accordion>
           </div>
 
-          {state.pairAddress ? (
+          {state.launchedTokenAddress ? (
             <div className="flex items-center text-black">
               Pair Address:&nbsp;
               <Link
                 className="text-primary"
-                href={`/launch-detail/${state.pairAddress}`}
+                href={`/launch-detail/${state.launchedTokenAddress}`}
                 target="_blank"
               >
-                {state.pairAddress}
+                {state.launchedTokenAddress}
               </Link>
-              <Copy className="ml-[8px]" value={state.pairAddress}></Copy>
+              <Copy
+                className="ml-[8px]"
+                value={state.launchedTokenAddress}
+              ></Copy>
             </div>
           ) : (
             <Button

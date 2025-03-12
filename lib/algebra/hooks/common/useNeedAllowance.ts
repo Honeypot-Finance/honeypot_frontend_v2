@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount } from "@cryptoalgebra/wasabee-sdk";
+import { Currency, CurrencyAmount } from "@cryptoalgebra/sdk";
 import { Address } from "viem";
 import {
   useAccount,

@@ -1,12 +1,17 @@
 import { gql } from "@apollo/client";
 
+export const GET_POT2PUMP_BY_LAUNCH_TOKEN = gql`
+  query GetPot2PumpByLaunchToken($launchToken: String!) {
+    pot2Pumps(where: { launchToken: $launchToken }) {
+      ...Pot2PumpField
+    }
+  }
+`;
+
 export const GET_POT2_PUMP_DETAIL = gql`
   query GetPot2PumpDetail($id: ID!, $accountId: ID) {
     pot2Pump(id: $id) {
       ...Pot2PumpField
-      participants(where: { account_: { id: $accountId } }) {
-        ...ParticipantFields
-      }
     }
   }
 `;
@@ -17,12 +22,51 @@ export const GET_PARTICIPANT_DETAIL = gql`
       where: { account_: { id: $accountId }, pot2Pump_: { id: $pot2PumpId } }
     ) {
       ...ParticipantFields
-      pot2Pump {
-        ...Pot2PumpField
+    }
+  }
+`;
+
+export const POT_2_PUMP_DYNAMIC_FILTER = gql`
+  query Pot2PumpDynamicFilter(
+    $first: Int
+    $skip: Int
+    $orderBy: Pot2Pump_orderBy
+    $orderDirection: OrderDirection
+    $where: Pot2Pump_filter
+    $accountId: ID
+  ) {
+    pot2Pumps(
+      first: $first
+      skip: $skip
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+      where: $where
+    ) {
+      ...Pot2PumpField
+      participants(where: { account_: { id: $accountId } }) {
+        id
+        amount
+        totalRefundAmount
+        totalclaimLqAmount
+        claimed
+        refunded
+        account {
+          id
+        }
       }
-      account {
-        ...AccountField
-      }
+    }
+  }
+`;
+
+export const POT_2_PUMP_PUMPING_POPULAR = gql`
+  query Pot2PumpPumpingPopular {
+    pot2Pumps(
+      first: 25
+      orderBy: launchToken__holderCount
+      orderDirection: desc
+      where: { raisedTokenReachingMinCap: true }
+    ) {
+      ...Pot2PumpField
     }
   }
 `;
@@ -57,7 +101,7 @@ export const POT_2_PUMP_PUMPING_HIGH_PRICE = gql`
   query Pot2PumpPottingHighPrice {
     pot2Pumps(
       first: 25
-      orderBy: LaunchTokenTVLUSD
+      orderBy: launchToken__derivedUSD
       orderDirection: desc
       where: { raisedTokenReachingMinCap: true }
     ) {
@@ -83,7 +127,7 @@ export const POT_2_PUMP_POTTING_MARKET_CAP = gql`
   query Pot2PumpPottingMarketCap {
     pot2Pumps(
       first: 25
-      orderBy: LaunchTokenMCAPUSD
+      orderBy: launchToken__marketCap
       orderDirection: desc
       where: { raisedTokenReachingMinCap: true }
     ) {
@@ -97,8 +141,8 @@ export const POT_2_PUMP_POTTING_NEW_TOKENS_BY_ENDTIME = gql`
     pot2Pumps(
       first: 25
       orderBy: endTime
-      orderDirection: asc
-      where: { raisedTokenReachingMinCap: false, endTime_gt: $endTime }
+      orderDirection: desc
+      where: { raisedTokenReachingMinCap: true }
     ) {
       ...Pot2PumpField
     }
@@ -127,8 +171,6 @@ export const POT2_PUMP_FRAGMENT = gql`
     id
     launchTokenInitialPrice
     DepositLaunchToken
-    LaunchTokenTVLUSD
-    LaunchTokenMCAPUSD
     raisedTokenMinCap
     depositRaisedTokenPercentageToMinCap
     raisedTokenReachingMinCap
@@ -152,9 +194,6 @@ export const POT2_PUMP_FRAGMENT = gql`
     participantTransactionHistorys {
       ...ParticipantTransactionHistoryFields
     }
-    # participants {
-    #   ...ParticipantFields
-    # }
   }
 `;
 
@@ -177,6 +216,17 @@ export const PARTICIPANT_FRAGMENT = gql`
     }
     pot2Pump {
       ...Pot2PumpField
+      participants(where: { account_: { id: $accountId } }) {
+        id
+        amount
+        totalRefundAmount
+        totalclaimLqAmount
+        claimed
+        refunded
+        account {
+          id
+        }
+      }
     }
   }
 `;

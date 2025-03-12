@@ -1,13 +1,9 @@
 import Link from "next/link";
-import Image from "next/image";
 import { observer } from "mobx-react-lite";
-import { wallet } from "@/services/wallet";
 import { useEffect, useState } from "react";
 import { Tab, Tabs } from "@nextui-org/react";
 import { NextLayoutPage } from "@/types/nextjs";
-import { memewarStore } from "@/services/memewar";
-import { FaExternalLinkAlt } from "react-icons/fa";
-import { Button } from "@/components/button/button-next";
+import { Button } from "@/components/button/v3";
 import Pagination from "@/components/Pagination/Pagination";
 import { LaunchCardV3 } from "@/components/LaunchCard/v3";
 import { Filter } from "@/components/pot2pump/FilterModal";
@@ -17,9 +13,9 @@ import { WrappedNextInputSearchBar } from "@/components/wrappedNextUI/SearchBar/
 import { FilterState } from "@/constants/pot2pump.type";
 import { defaultFilterState } from "@/constants/pot2pump";
 import HoneyContainer from "@/components/CardContianer/HoneyContainer";
-import { hasValue, removeEmptyFields } from "@/lib/utils";
+import { hasValue } from "@/lib/utils";
 import { PAGE_LIMIT } from "@/services/launchpad";
-import search from "./api/udf-data-feed/search";
+import { chain } from "@/services/chain";
 
 const MemeLaunchPage: NextLayoutPage = observer(() => {
   const [pumpingProjects, setPumpingProjects] =
@@ -29,7 +25,7 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (!wallet.isInit) {
+    if (!chain.isInit) {
       return;
     }
     // launchpad.setCurrentLaunchpadType("meme");
@@ -44,7 +40,7 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
     const newPumpingProjects = new Pot2PumpPumpingService();
     setPumpingProjects(newPumpingProjects);
     newPumpingProjects.projectsPage.reloadPage();
-  }, [wallet.isInit]);
+  }, [chain.isInit]);
 
   const onChangeFilter = (data: any) => {
     setFilters(data);
@@ -110,11 +106,6 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                   category: "tvl",
                 },
                 {
-                  key: 1,
-                  label: "Liquidity",
-                  category: "liquidity",
-                },
-                {
                   key: 3,
                   label: "Market cap",
                   category: "marketcap",
@@ -144,6 +135,11 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                   label: "24H change (%)",
                   category: "daychange",
                 },
+                {
+                  key: 9,
+                  label: "Raised Token",
+                  category: "raiseToken",
+                },
               ]}
               filters={filters}
               setFilters={onChangeFilter}
@@ -171,7 +167,10 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
               }
             }}
           >
-            <Tab key="all" title="All MEMEs">
+            <Tab
+              key="all"
+              title="All MEMEs"
+            >
               {pumpingProjects && (
                 <Pagination
                   paginationState={pumpingProjects.projectsPage}
@@ -180,6 +179,7 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                       pair={pair}
                       action={<></>}
                       key={pair.address}
+                      type="simple"
                     />
                   )}
                   classNames={{
@@ -189,43 +189,6 @@ const MemeLaunchPage: NextLayoutPage = observer(() => {
                 />
               )}
             </Tab>
-            <Tab key="my" title="My MEMEs" href="/profile" />
-            <Tab
-              key="participated-launch"
-              title="Participated MEMEs"
-              href="/profile"
-            />
-            {/* <Tab href="/launch" title="To Fto projects->" /> */}
-            {/* <Tab
-              href="https://bartio.bonds.yeetit.xyz/"
-              target="_blank"
-              title={
-                <div className="flex items-center text-yellow-400">
-                  <Image
-                    className="size-4"
-                    src="/images/partners/yeet_icon.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <span className="flex items-center justify-center gap-2">
-                    Try Yeet Bond <FaExternalLinkAlt className="inline-block" />
-                  </span>
-                </div>
-              }
-            /> */}
-            {/* <Tab
-              title={
-                <Link
-                  href="/memewar"
-                  className="flex items-center text-rose-600"
-                >
-                  <span className="flex items-center justify-center gap-2">
-                    Meme War ⚔️
-                  </span>
-                </Link>
-              }
-            /> */}
           </Tabs>
         </div>
       </div>

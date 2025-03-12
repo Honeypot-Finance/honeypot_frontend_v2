@@ -7,7 +7,7 @@ import { useCurrency } from "@/lib/algebra/hooks/common/useCurrency";
 import { useAccount } from "wagmi";
 import { useFarmHarvestAll } from "@/lib/algebra/hooks/farming/useFarmHarvest";
 import Loader from "@/components/algebra/common/Loader";
-import { ADDRESS_ZERO } from "@cryptoalgebra/wasabee-sdk";
+import { ADDRESS_ZERO } from "@cryptoalgebra/sdk";
 import { useFarmingAPR } from "@/lib/algebra/hooks/farming/useFarmingAPR";
 import { useFarmingUserTVL } from "@/lib/algebra/hooks/farming/useFarmingUserTVL";
 import { useFarmingRewardRates } from "@/lib/algebra/hooks/farming/useFarmingRewardRates";

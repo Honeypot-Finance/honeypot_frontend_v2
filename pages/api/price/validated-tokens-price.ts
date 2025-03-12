@@ -1,6 +1,6 @@
 import type { NextApiResponse, NextApiRequest, PageConfig } from "next";
 import { appRouter, caller } from "@/server/_app";
-import { networksMap } from "@/services/chain";
+import { networksMap } from "@/services/network";
 
 export default async function handler(
   request: NextApiRequest,

@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { infoClient } from ".";
 import {
   GetPot2PumpDetailDocument,
@@ -14,8 +13,30 @@ import {
   GetParticipantDetailQuery,
   GetParticipantDetailQueryVariables,
   GetPot2PumpDetailQueryVariables,
+  GetPot2PumpByLaunchTokenDocument,
+  GetPot2PumpByLaunchTokenQuery,
+  GetPot2PumpByLaunchTokenQueryVariables,
 } from "../generated/graphql";
 import { pot2PumpListToMemePairList, pot2PumpToMemePair } from "./pair";
+
+export const getPot2PumpContractByLaunchToken = async (launchToken: string) => {
+  const pot2Pump = await getPot2PumpByLaunchToken(launchToken);
+
+  return pot2Pump ? pot2PumpToMemePair(pot2Pump as Partial<Pot2Pump>) : null;
+};
+
+export const getPot2PumpByLaunchToken = async (launchToken: string) => {
+  const res = await infoClient.query<
+    GetPot2PumpByLaunchTokenQuery,
+    GetPot2PumpByLaunchTokenQueryVariables
+  >({
+    query: GetPot2PumpByLaunchTokenDocument,
+    variables: { launchToken: launchToken.toLowerCase() },
+    fetchPolicy: "network-only",
+  });
+
+  return res.data?.pot2Pumps[0] ?? null;
+};
 
 export const getPot2PumpDetail = async (id: string, accountId?: string) => {
   const res = await infoClient.query<

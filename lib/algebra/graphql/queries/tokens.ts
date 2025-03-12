@@ -20,6 +20,12 @@ export const TOKEN_FRAGMENT = gql`
     pot2Pump {
       id
     }
+    tokenHourData(orderBy: periodStartUnix, orderDirection: desc) {
+      periodStartUnix
+      priceUSD
+      feesUSD
+      untrackedVolumeUSD
+    }
   }
 `;
 

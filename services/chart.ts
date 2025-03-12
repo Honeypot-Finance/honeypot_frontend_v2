@@ -99,7 +99,7 @@ class Chart {
   });
 
   get currentPrice() {
-    if (this.chartData.value?.getBars.c) {
+    if (this.chartData.value?.getBars && this.chartData.value?.getBars.c) {
       return this.chartData.value.getBars.c[
         this.chartData.value.getBars.c.length - 1
       ];
@@ -109,7 +109,7 @@ class Chart {
   }
 
   get chartPricePercentageChange() {
-    if (this.chartData.value?.getBars.c) {
+    if (this.chartData.value?.getBars && this.chartData.value?.getBars.c) {
       const firstPrice = this.firstValidPrice;
       const lastPrice = this.lastValidPrice;
 
@@ -137,6 +137,7 @@ class Chart {
 
   get firstValidPrice() {
     if (
+      this.chartData.value?.getBars &&
       this.chartData.value?.getBars.c &&
       this.chartData.value.getBars.c.length > 0
     ) {
@@ -156,7 +157,11 @@ class Chart {
   }
 
   get lastValidPrice() {
-    if (this.chartData.value?.getBars.c) {
+    if (
+      this.chartData.value?.getBars &&
+      this.chartData.value?.getBars.c &&
+      this.chartData.value.getBars.c.length > 0
+    ) {
       let i = this.chartData.value.getBars.c.length - 1;
       while (
         (this.chartData.value.getBars.c[i] === undefined ||

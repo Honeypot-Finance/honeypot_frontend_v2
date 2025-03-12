@@ -4,71 +4,85 @@ import { cn } from "@/lib/tailwindcss";
 import { LoadingDisplay } from "@/components/LoadingDisplay/LoadingDisplay";
 
 interface HoneyContainerProps {
-  children: ReactNode;
-  bordered?: boolean;
-  variant?: "default" | "wide";
-  className?: string;
-  showTopBorder?: boolean;
-  showBottomBorder?: boolean;
   empty?: boolean;
   loading?: boolean;
-  type?: "primary" | "default";
+  bordered?: boolean;
+  className?: string;
+  children: ReactNode;
+  topOffset?: boolean;
+  loadingSize?: number;
   loadingText?: string;
+  showTopBorder?: boolean;
+  showBottomBorder?: boolean;
+  variant?: "default" | "dark";
+  type?: "primary" | "default";
 }
 
 function CardContainer({
   children,
   className,
+  loadingText,
+  empty = false,
+  loading = false,
   bordered = true,
+  type = "primary",
+  topOffset = false,
+  loadingSize = 100,
   variant = "default",
   showTopBorder = true,
   showBottomBorder = true,
-  empty = false,
-  loading = false,
-  type = "primary",
-  loadingText,
 }: HoneyContainerProps) {
   return (
     <div
-      style={
-        {
-          backgroundImage: bordered
-            ? `${[
-                showTopBorder
-                  ? "url('/images/card-container/honey/honey-border.png')"
-                  : "",
-                showBottomBorder
-                  ? `url('${
-                      variant === "wide"
-                        ? "/images/card-container/honey/bottom-border.svg"
-                        : "/images/card-container/dark/bottom-border.svg"
-                    }')`
-                  : "",
-              ]
-                .filter(Boolean)
-                .join(", ")}`
-            : "none",
-        } as React.CSSProperties
-      }
       className={cn(
-        "flex flex-col h-full w-full gap-y-4 justify-center items-center rounded-2xl text-[#202020]",
-        type === "primary" && "bg-[#FFCD4D]",
+        "flex flex-col w-full gap-y-4 justify-center items-center rounded-2xl text-[#202020]",
+        type === "primary"
+          ? "bg-[#FFCD4D]"
+          : bordered
+            ? "border-3 border-[#F2C34A] bg-transparent"
+            : "bg-transparent",
         bordered &&
           [
-            "px-4",
-            showTopBorder && "pt-[80px]",
-            showBottomBorder && "pb-[80px]",
-            "bg-[position:-65px_top,_left_bottom]",
-            "bg-[size:auto_70px,_auto_70px]",
-            "bg-repeat-x",
+            "px-2 sm:px-4 md:px-8 bg-repeat-x",
+            showTopBorder && showBottomBorder
+              ? [
+                  "py-12 sm:py-20",
+                  "bg-[length:auto_40px,auto_40px] sm:bg-[length:auto_70px,auto_70px]",
+                  topOffset
+                    ? `bg-[position:-65px_top,left_bottom]`
+                    : `bg-[position:left_top,left_bottom]`,
+                  variant === "default"
+                    ? "bg-[url('/images/card-container/honey/honey-border.png'),url('/images/card-container/dark/bottom-border.svg')]"
+                    : "bg-[url('/images/card-container/dark/top-border.svg'),url('/images/card-container/dark/bottom-border.svg')]",
+                ]
+              : showTopBorder
+                ? [
+                    "pt-12 sm:pt-20 pb-2 sm:pb-4",
+                    "bg-[length:auto_40px] sm:bg-[length:auto_70px]",
+                    topOffset
+                      ? `bg-[position:-65px_top]`
+                      : `bg-[position:left_top]`,
+                    variant === "default"
+                      ? "bg-[url('/images/card-container/honey/honey-border.png')]"
+                      : "bg-[url('/images/card-container/dark/top-border.svg')]",
+                  ]
+                : showBottomBorder
+                  ? [
+                      "pb-12 sm:pb-20 pt-2 sm:pt-4",
+                      "bg-left-bottom",
+                      "bg-[length:auto_40px] sm:bg-[length:auto_70px]",
+                      "bg-[url('/images/card-container/dark/bottom-border.svg')]",
+                    ]
+                  : "py-2 sm:py-4",
           ]
+            .flat()
             .filter(Boolean)
             .join(" "),
         className
       )}
     >
       {loading ? (
-        <LoadingDisplay size={100} text={loadingText} />
+        <LoadingDisplay size={loadingSize} text={loadingText} />
       ) : empty ? (
         <div className="flex flex-col justify-center items-center min-h-[200px] space-y-5">
           <Image

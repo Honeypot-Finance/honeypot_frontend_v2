@@ -2,7 +2,7 @@ import {
   Currency,
   CurrencyAmount,
   encodeRouteToPath,
-} from "@cryptoalgebra/wasabee-sdk";
+} from "@cryptoalgebra/sdk";
 import { useMemo } from "react";
 import { useContractReads } from "wagmi";
 import { useAllRoutes } from "./useAllRoutes";

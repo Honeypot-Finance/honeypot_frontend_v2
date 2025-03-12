@@ -6,17 +6,17 @@ import type { AppProps } from "next/app";
 import { Layout } from "@/components/layout";
 import { NextLayoutPage } from "@/types/nextjs";
 import { WagmiProvider, useWalletClient } from "wagmi";
-import { AvatarComponent, RainbowKitProvider } from "@usecapsule/rainbowkit";
+import { AvatarComponent, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-// import "@rainbow-me/rainbowkit/styles.css";
-import "@usecapsule/rainbowkit/styles.css";
+import "@rainbow-me/rainbowkit/styles.css";
 import { NextUIProvider } from "@nextui-org/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { config } from "@/config/wagmi";
 import { trpc, trpcQueryClient } from "../lib/trpc";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { wallet } from "@/services/wallet";
+import { chain } from "@/services/chain";
 import { DM_Sans, Inter } from "next/font/google";
 import { Inspector, InspectParams } from "react-dev-inspector";
 import { Analytics } from "@vercel/analytics/react";
@@ -24,13 +24,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { ApolloProvider } from "@apollo/client";
 import { infoClient } from "@/lib/algebra/graphql/clients";
 import Image from "next/image";
-
-import {
-  DynamicContextProvider,
-  DynamicWidget,
-} from "@dynamic-labs/sdk-react-core";
-import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
-
+import SafeProvider from "@safe-global/safe-apps-react-sdk";
+import { berachainNetwork } from "@/services/network";
 // enableStaticRendering(true)
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -53,11 +48,22 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
   const { data: walletClient } = useWalletClient({
     config,
   });
+
   useEffect(() => {
-    if (walletClient?.account) {
+    if (walletClient) {
       wallet.initWallet(walletClient);
+
+      if (walletClient.chain?.id) {
+        chain.initChain(walletClient.chain.id);
+      }
     }
   }, [walletClient]);
+
+  // Initial chain setup - will use default chain if wallet not connected
+  useEffect(() => {
+    chain.initChain();
+  }, []);
+
   return children;
 };
 
@@ -81,42 +87,60 @@ export default function App({
 }) {
   const ComponentLayout = Component.Layout || Layout;
 
+  // const [isEthereum, setIsEthereum] = useState(false);
+
+  // useEffect(() => {
+  //   if (typeof window !== "undefined" && window.ethereum) {
+  //     setIsEthereum(true);
+  //   }
+  // }, []);
+
+  // if (!isEthereum)
+  //   return (
+  //     <div className="flex h-screen w-screen items-center justify-center">
+  //       <div className="text-2xl font-bold">No wallet found</div>
+  //     </div>
+  //   );
+
   return (
     <trpc.Provider client={trpcQueryClient} queryClient={queryClient}>
       <Analytics />
-      <WagmiProvider config={config}>
-        <QueryClientProvider client={queryClient}>
-          <ApolloProvider client={infoClient}>
+      <QueryClientProvider client={queryClient}>
+        <WagmiProvider config={config}>
+          <SafeProvider>
             <RainbowKitProvider
               avatar={CustomAvatar}
+              initialChain={berachainNetwork.chain}
               // capsule={capsuleClient}
               // capsuleIntegratedProps={capsuleModalProps}
             >
-              <NextUIProvider>
-                <Provider>
-                  <Inspector
-                    keys={["Ctrl", "Shift", "Z"]}
-                    onClickElement={({ codeInfo }: InspectParams) => {
-                      if (!codeInfo) {
-                        return;
-                      }
-
-                      window.open(
-                        `cursor://file/${codeInfo.absolutePath}:${codeInfo.lineNumber}:${codeInfo.columnNumber}`,
-                        "_blank"
-                      );
-                    }}
-                  ></Inspector>
-                  <ComponentLayout className={`${dmSans.className}`}>
-                    <Component {...pageProps} />
-                  </ComponentLayout>
-                </Provider>
-                <ToastContainer></ToastContainer>
-              </NextUIProvider>
+              {" "}
+              <ApolloProvider client={infoClient}>
+                <NextUIProvider>
+                  <Provider>
+                    <Inspector
+                      keys={["Ctrl", "Shift", "Z"]}
+                      onClickElement={({ codeInfo }: InspectParams) => {
+                        if (!codeInfo) {
+                          return;
+                        }
+                        window.open(
+                          `cursor://file/${codeInfo.absolutePath}:${codeInfo.lineNumber}:${codeInfo.columnNumber}`,
+                          "_blank"
+                        );
+                      }}
+                    ></Inspector>
+                    <ComponentLayout className={`${dmSans.className}`}>
+                      <Component {...pageProps} />
+                    </ComponentLayout>
+                  </Provider>
+                  <ToastContainer></ToastContainer>
+                </NextUIProvider>
+              </ApolloProvider>
             </RainbowKitProvider>
-          </ApolloProvider>
-        </QueryClientProvider>
-      </WagmiProvider>
+          </SafeProvider>
+        </WagmiProvider>
+      </QueryClientProvider>
     </trpc.Provider>
   );
 }

@@ -6,20 +6,20 @@ import {
   Position,
   Price,
   Token,
-} from "@cryptoalgebra/wasabee-sdk";
+} from "@cryptoalgebra/sdk";
 
-import { ZERO } from "@cryptoalgebra/wasabee-sdk";
+import { ZERO } from "@cryptoalgebra/sdk";
 
-import { Bound, Field, Rounding } from "@cryptoalgebra/wasabee-sdk";
-import { tryParseAmount, tryParseTick } from "@cryptoalgebra/wasabee-sdk";
+import { Bound, Field, Rounding } from "@cryptoalgebra/sdk";
+import { tryParseAmount, tryParseTick } from "@cryptoalgebra/sdk";
 import {
   tickToPrice,
   priceToClosestTick,
   nearestUsableTick,
   encodeSqrtRatioX96,
   TickMath,
-} from "@cryptoalgebra/wasabee-sdk";
-import { getTickToPrice } from "@cryptoalgebra/wasabee-sdk";
+} from "@cryptoalgebra/sdk";
+import { getTickToPrice } from "@cryptoalgebra/sdk";
 import { useCallback, useMemo } from "react";
 import { useAccount, useBalance } from "wagmi";
 import { create } from "zustand";

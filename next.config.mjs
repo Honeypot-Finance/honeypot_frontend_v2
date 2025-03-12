@@ -64,23 +64,16 @@ const nextConfig = {
         port: "",
         hostname: "cdn.alphakek.ai",
       },
+      {
+        protocol: "https",
+        port: "",
+        hostname: "pump.mypinata.cloud",
+      },
     ],
     domains: ["cdn.alphakek.ai"],
   },
 
-  transpilePackages: [
-    "@usecapsule/rainbowkit-wallet",
-    "@usecapsule/rainbowkit",
-    "@usecapsule/core-components",
-    "@usecapsule/react-components",
-    "@usecapsule/react-sdk",
-    "@usecapsule/core-sdk",
-    "@usecapsule/web-sdk",
-    "@usecapsule/wagmi-v2-integration",
-    "@usecapsule/viem-v2-integration",
-    "@usecapsule/react-common",
-    "styled-components",
-  ],
+  transpilePackages: ["styled-components"],
 };
 
 export default nextConfig;

@@ -1,4 +1,4 @@
-import { ADDRESS_ZERO, Pool } from "@cryptoalgebra/wasabee-sdk";
+import { ADDRESS_ZERO, Pool } from "@cryptoalgebra/sdk";
 import { Address } from "viem";
 import { useCurrency } from "../common/useCurrency";
 import { useEffect, useMemo, useState } from "react";

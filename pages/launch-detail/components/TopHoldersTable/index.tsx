@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState, useMemo } from "react";
 import { Copy } from "@/components/Copy";
 import { truncate } from "@/lib/format";
 import { LoadingDisplay } from "@/components/LoadingDisplay/LoadingDisplay";
 import { getTokenTop10Holders } from "@/lib/algebra/graphql/clients/token";
 import BigNumber from "bignumber.js";
-
+import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
+import Image from "next/image";
+import pot2pumpIcon from "@/public/images/bera/smoking_bera.png";
+import poolIcon from "@/public/images/bera/beekeeperBear.png";
+import { poolExists } from "@/lib/algebra/graphql/clients/pool";
+import { shortenAddressString } from "@/lib/utils";
 interface Holder {
   rank: string;
   address: string;
@@ -23,9 +28,71 @@ interface TopHoldersTableProps {
     | null
     | undefined;
   depositedLaunchedTokenWithoutDecimals: string | number | BigNumber;
+  projectPool: MemePairContract | null | undefined;
 }
 
+const HolderAddressDisplay = ({
+  address,
+  projectPool,
+}: {
+  address: string;
+  projectPool: MemePairContract | null | undefined;
+}) => {
+  const [isPool, setIsPool] = useState(false);
+
+  useEffect(() => {
+    const checkPool = async () => {
+      const result = await poolExists(address);
+      setIsPool(result);
+    };
+    checkPool();
+  }, [address]);
+
+  if (address.toLowerCase() === projectPool?.address.toLowerCase()) {
+    return (
+      <span className="text-black flex items-center gap-2">
+        <Image
+          src="/images/empty-logo.png"
+          alt="Pot2Pump Pool"
+          width={16}
+          height={16}
+        />
+        Pot2Pump CA
+      </span>
+    );
+  } else if (isPool) {
+    return (
+      <span className="text-black flex items-center gap-2">
+        <Image
+          width={16}
+          height={16}
+          src={poolIcon}
+          alt="pot2pump"
+          className="size-4 cursor-pointer"
+        />
+        Liquidity Pool
+      </span>
+    );
+  } else if (address.toLowerCase() === projectPool?.provider.toLowerCase()) {
+    return (
+      <span className="text-black flex items-center gap-2">
+        <Image
+          width={16}
+          height={16}
+          src={pot2pumpIcon}
+          alt="pot2pump"
+          className="size-4 cursor-pointer"
+        />
+        Launcher
+      </span>
+    );
+  } else {
+    return shortenAddressString(address);
+  }
+};
+
 const TopHoldersTable = ({
+  projectPool,
   launchedToken,
   depositedLaunchedTokenWithoutDecimals,
 }: TopHoldersTableProps) => {
@@ -70,21 +137,28 @@ const TopHoldersTable = ({
   }, [launchedToken, depositedLaunchedTokenWithoutDecimals]);
 
   return (
-    <div className="custom-dashed-3xl w-full p-6 bg-white">
+    <div className="custom-dashed-3xl w-full p-6 bg-white overflow-x-auto">
       {!loading ? (
         <table className="w-full">
           <thead>
             <tr className="text-left border-b-2 border-[#202020]">
               <th className="py-4 px-6 font-gliker text-[#4D4D4D]">Rank</th>
               <th className="py-4 px-6 font-gliker text-[#4D4D4D]">Address</th>
-              <th className="py-4 px-6 font-gliker text-[#4D4D4D] text-right">Quantity</th>
-              <th className="py-4 px-6 font-gliker text-[#4D4D4D] text-right">Percentage</th>
+              <th className="py-4 px-6 font-gliker text-[#4D4D4D] text-right">
+                Quantity
+              </th>
+              <th className="py-4 px-6 font-gliker text-[#4D4D4D] text-right">
+                Percentage
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[#4D4D4D]/10">
             {!holders.length ? (
               <tr className="hover:bg-white border-white h-full">
-                <td colSpan={4} className="h-24 text-center text-black">
+                <td
+                  colSpan={4}
+                  className="h-24 text-center text-black"
+                >
                   No results.
                 </td>
               </tr>
@@ -100,13 +174,24 @@ const TopHoldersTable = ({
                     </div>
                   </td>
                   <td className="py-4 px-6">
-                    <div className="flex items-center gap-3">
+                    <a
+                      href={`https://berascan.com/address/${holder.address}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3"
+                    >
                       <Copy
-                        content="Copy address"
+                        className="hover:text-black"
+                        content={holder.address}
                         value={holder.address}
-                        displayContent={truncate(holder.address, 8)}
+                        displayContent={
+                          <HolderAddressDisplay
+                            address={holder.address}
+                            projectPool={projectPool}
+                          />
+                        }
                       />
-                    </div>
+                    </a>
                   </td>
                   <td className="py-4 px-6 text-right">
                     <div className="flex flex-col">

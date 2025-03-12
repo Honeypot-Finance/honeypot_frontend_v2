@@ -1,4 +1,4 @@
-import { Network, networks } from "./chain";
+import { Network, networks } from "./network";
 import BigNumber from "bignumber.js";
 import { Address, PublicClient, WalletClient } from "viem";
 import { RouterV2Contract } from "./contract/dex/routerv2-contract";
@@ -48,6 +48,12 @@ export class Wallet {
     makeAutoObservable(this);
     reaction(
       () => this.walletClient?.account,
+      () => {
+        this.initWallet(this.walletClient);
+      }
+    );
+    reaction(
+      () => this.walletClient?.chain,
       () => {
         this.initWallet(this.walletClient);
       }

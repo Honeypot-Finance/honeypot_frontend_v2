@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
+import Script from "next/script";
 
 export default function Document() {
   return (
@@ -6,6 +7,15 @@ export default function Document() {
       <Head />
       <body className="dark md:text-[16px] sm:text-[14px] text-[12px] [font-family:MEMEP]">
         <Main />
+
+        <Script
+          src="/charting_library/charting_library.standalone.js"
+          strategy="beforeInteractive"
+        />
+        <Script
+          src="/datafeeds/udf/dist/bundle.js"
+          strategy="beforeInteractive"
+        />
         <NextScript>
           {`;(function (c, l, a, r, i, t, y) {
             c[a] =

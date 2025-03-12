@@ -10,7 +10,7 @@ import { ModalFooter } from "@nextui-org/react";
 import { Button } from "../button";
 
 export const PopOverModal = observer(() => {
-  console.log(popmodal.shouldCloseOnInteractOutside);
+  // console.log(popmodal.shouldCloseOnInteractOutside);
   return (
     <WrappedNextModal
       data-dismissable={popmodal.shouldCloseOnInteractOutside}

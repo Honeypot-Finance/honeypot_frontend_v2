@@ -5,7 +5,7 @@ import {
   CurrencyAmount,
   maxAmountSpend,
   tryParseAmount,
-} from "@cryptoalgebra/wasabee-sdk";
+} from "@cryptoalgebra/sdk";
 import { useCallback, useMemo, useEffect } from "react";
 import TokenCard from "../TokenCard";
 import { ArrowLeftRight, ChevronsUpDownIcon } from "lucide-react";
@@ -23,22 +23,46 @@ import { ExchangeSvg } from "@/components/svg/exchange";
 import { chart } from "@/services/chart";
 import { Token } from "@/services/contract/token";
 import { PairContract } from "@/services/contract/dex/liquidity/pair-contract";
-import { Token as AlgebraToken } from "@cryptoalgebra/wasabee-sdk";
+import { Token as AlgebraToken } from "@cryptoalgebra/sdk";
 import { wallet } from "@/services/wallet";
 import { AlgebraPoolContract } from "@/services/contract/algebra/algebra-pool-contract";
+import { CartoonButton } from "@/components/atoms/CartoonButton/CartoonButton";
+
+export interface PresetPair {
+  fromToken: Token;
+  toToken: Token;
+}
 
 interface SwapPairV3Props {
+  presetPairs?: PresetPair[];
   fromTokenAddress?: string;
   toTokenAddress?: string;
   disableSelection?: boolean;
   isUpdatingPriceChart?: boolean;
+  staticFromTokenList?: Token[];
+  staticToTokenList?: Token[];
+  isInputNative?: boolean;
+  isOutputNative?: boolean;
+  disableFromSelection?: boolean;
+  disableToSelection?: boolean;
+  showPresetInput?: boolean;
+  showPresetOutput?: boolean;
 }
 
 const SwapPairV3 = ({
+  presetPairs,
   fromTokenAddress,
   toTokenAddress,
   disableSelection,
   isUpdatingPriceChart,
+  staticFromTokenList,
+  staticToTokenList,
+  isInputNative,
+  isOutputNative,
+  disableFromSelection,
+  disableToSelection,
+  showPresetInput,
+  showPresetOutput,
 }: SwapPairV3Props) => {
   const {
     toggledTrade: trade,
@@ -156,7 +180,10 @@ const SwapPairV3 = ({
   useEffect(() => {
     const initializeTokens = async () => {
       if (fromTokenAddress) {
-        const token = Token.getToken({ address: fromTokenAddress });
+        const token = Token.getToken({
+          address: fromTokenAddress,
+          isNative: isInputNative,
+        });
         // await token.init(false, {
         //   loadIndexerTokenData: true,
         //   loadLogoURI: true,
@@ -167,18 +194,27 @@ const SwapPairV3 = ({
         }
 
         handleInputSelect(
-          new AlgebraToken(
-            wallet.currentChainId,
-            token.address,
-            Number(token.decimals),
-            token.symbol,
-            token.name
+          Object.assign(
+            new AlgebraToken(
+              wallet.currentChainId,
+              token.address,
+              Number(token.decimals),
+              token.symbol,
+              token.name
+            ),
+            {
+              isNative: isInputNative,
+              isToken: !isInputNative,
+            }
           )
         );
       }
 
       if (toTokenAddress) {
-        const token = Token.getToken({ address: toTokenAddress });
+        const token = Token.getToken({
+          address: toTokenAddress,
+          isNative: isOutputNative,
+        });
         // await token.init(false, {
         //   loadIndexerTokenData: true,
         //   loadLogoURI: true,
@@ -186,21 +222,34 @@ const SwapPairV3 = ({
         if (!token) {
           return;
         }
-        console.log("token", token);
+
         handleOutputSelect(
-          new AlgebraToken(
-            wallet.currentChainId,
-            token.address,
-            Number(token.decimals),
-            token.symbol,
-            token.name
+          Object.assign(
+            new AlgebraToken(
+              wallet.currentChainId,
+              token.address,
+              Number(token.decimals),
+              token.symbol,
+              token.name
+            ),
+            {
+              isNative: isOutputNative,
+              isToken: !isOutputNative,
+            }
           )
         );
       }
     };
 
     initializeTokens();
-  }, [fromTokenAddress, toTokenAddress]);
+  }, [
+    fromTokenAddress,
+    handleInputSelect,
+    handleOutputSelect,
+    isInputNative,
+    isOutputNative,
+    toTokenAddress,
+  ]);
 
   useEffect(() => {
     if (!isUpdatingPriceChart) {
@@ -258,7 +307,54 @@ const SwapPairV3 = ({
 
   return (
     <div className="flex flex-col gap-1 relative bg-white custom-dashed px-[18px] py-6 w-full">
+      {presetPairs && presetPairs.length > 0 && (
+        <div className="flex gap-2 items-center">
+          <p className="">Quick Select:</p>
+          {presetPairs?.map((pair, index) => (
+            <CartoonButton
+              key={index}
+              onClick={() => {
+                handleInputSelect(
+                  Object.assign(
+                    new AlgebraToken(
+                      wallet.currentChainId,
+                      pair.fromToken.address,
+                      Number(pair.fromToken.decimals),
+                      pair.fromToken.symbol,
+                      pair.fromToken.name
+                    ),
+                    {
+                      isNative: pair.fromToken.isNative,
+                      isToken: !pair.fromToken.isNative,
+                    }
+                  )
+                );
+                handleOutputSelect(
+                  Object.assign(
+                    new AlgebraToken(
+                      wallet.currentChainId,
+                      pair.toToken.address,
+                      Number(pair.toToken.decimals),
+                      pair.toToken.symbol,
+                      pair.toToken.name
+                    ),
+                    {
+                      isNative: pair.toToken.isNative,
+                      isToken: !pair.toToken.isNative,
+                    }
+                  )
+                );
+              }}
+            >
+              {showPresetInput && pair.fromToken.symbol}
+              {showPresetOutput && showPresetInput && "-"}
+              {showPresetOutput && pair.toToken.symbol}
+            </CartoonButton>
+          ))}
+        </div>
+      )}
       <TokenCardV3
+        staticTokenList={staticFromTokenList}
         value={formattedAmounts[SwapField.INPUT] || ""}
         currency={baseCurrency}
         otherCurrency={quoteCurrency}
@@ -269,7 +365,7 @@ const SwapPairV3 = ({
         showMaxButton={showMaxButton}
         showBalance={true}
         label="From"
-        disableSelection={disableSelection}
+        disableSelection={disableSelection || disableFromSelection}
       />
 
       <div className="flex w-full items-center gap-[5px]">
@@ -284,6 +380,7 @@ const SwapPairV3 = ({
       </div>
 
       <TokenCardV3
+        staticTokenList={staticToTokenList}
         value={formattedAmounts[SwapField.OUTPUT] || ""}
         currency={quoteCurrency}
         otherCurrency={baseCurrency}
@@ -292,7 +389,8 @@ const SwapPairV3 = ({
         fiatValue={fiatValueOutputFormatted ?? undefined}
         showBalance={true}
         label="To"
-        disableSelection={disableSelection}
+        showSettings={false}
+        disableSelection={disableSelection || disableToSelection}
       />
     </div>
   );

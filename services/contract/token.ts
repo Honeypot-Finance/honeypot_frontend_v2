@@ -1,14 +1,14 @@
 import BigNumber from "bignumber.js";
 import { BaseContract } from ".";
 import { wallet } from "../wallet";
-import { get, makeAutoObservable } from "mobx";
+import { get, makeAutoObservable, reaction } from "mobx";
 import { Address, getContract, zeroAddress } from "viem";
 import { ContractWrite } from "../utils";
 import { amountFormatted } from "@/lib/format";
 import { ERC20ABI } from "@/lib/abis/erc20";
 import { faucetABI } from "@/lib/abis/faucet";
 import { watchAsset } from "viem/actions";
-import { networksMap } from "../chain";
+import { networksMap } from "../network";
 import { WrappedToastify } from "@/lib/wrappedToastify";
 import { trpcClient } from "@/lib/trpc";
 import NetworkManager from "../network";
@@ -66,8 +66,10 @@ export class Token implements BaseContract {
   initialUSD = "";
   totalValueLockedUSD = "";
   poolCount = 0;
+  priceChange = "";
   priceChange24hPercentage = "";
   pot2pumpAddress: Address | undefined | null = undefined;
+  isDedicatedPot2PumpPage = false;
 
   // determines the order of the token in the list
   get priority() {
@@ -118,6 +120,12 @@ export class Token implements BaseContract {
     this.setData(args);
     makeAutoObservable(this);
     this.getIsRouterToken();
+    reaction(
+      () => wallet?.account,
+      () => {
+        this.getBalance();
+      }
+    );
   }
 
   get faucet() {
@@ -269,6 +277,7 @@ export class Token implements BaseContract {
   }
 
   async loadName(force?: boolean) {
+    if (!wallet.isInit) return;
     if (this.address === zeroAddress || this.isNative) {
       this.name = wallet.currentChain.nativeToken.name;
       return;
@@ -297,6 +306,7 @@ export class Token implements BaseContract {
   }
 
   async loadSymbol(force?: boolean) {
+    if (!wallet.isInit) return;
     if (this.isNative || this.address === zeroAddress) {
       this.symbol = wallet.currentChain.nativeToken.symbol;
       return;
@@ -415,15 +425,16 @@ export class Token implements BaseContract {
   }
 
   async getBalance() {
-    if (this.isNative || this.address === zeroAddress) {
-      return wallet.balance;
-    }
+    if (!wallet.isInit) return;
     try {
-      const balance = this.isNative
-        ? await wallet.publicClient.getBalance({
-            address: wallet.account as `0x${string}`,
-          })
-        : await this.contract.read.balanceOf([wallet.account as `0x${string}`]);
+      const balance =
+        this.isNative || this.address === zeroAddress
+          ? await wallet.publicClient.getBalance({
+              address: wallet.account as `0x${string}`,
+            })
+          : await this.contract.read.balanceOf([
+              wallet.account as `0x${string}`,
+            ]);
       this.balanceWithoutDecimals = new BigNumber(balance.toString());
       return this.balanceWithoutDecimals;
     } catch (e) {
@@ -445,6 +456,8 @@ export class Token implements BaseContract {
     }
 
     const totalSupply = await this.contract.read.totalSupply();
+
+    console.log("totalSupply", totalSupply);
 
     this.totalSupplyWithoutDecimals = new BigNumber(totalSupply.toString());
 
@@ -502,17 +515,6 @@ export class Token implements BaseContract {
     if (this.indexerDataLoaded && !option?.force) {
       return;
     }
-    // const indexerTokenData =
-    //   await trpcClient.indexerFeedRouter.getPairTokenData.query({
-    //     tokenAddress: this.address,
-    //     chainId: wallet.currentChainId.toString(),
-    //   });
-
-    // //console.log("indexerTokenData", indexerTokenData);
-
-    // if (indexerTokenData.status === "success") {
-    //   Object.assign(this, indexerTokenData.data);
-    // }
 
     const indexerTokenData = await getSingleTokenData(
       this.address.toLowerCase()

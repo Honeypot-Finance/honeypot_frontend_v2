@@ -11,16 +11,24 @@ export const LEADERBOARD_QUERY = gql`
       totalValueLockedMatic
       untrackedVolumeUSD
       totalValueLockedUSDUntracked
+      totalMemeCreated
+      totalSuccessedMeme
+      totalDepositedUSD
     }
   }
 `;
 
 export const ACCOUNTS_WITH_ADDRESS_QUERY = gql`
-  query accounts($skip: Int!, $first: Int!, $address: ID!) {
+  query accounts(
+    $skip: Int!
+    $first: Int!
+    $address: ID!
+    $orderBy: Account_orderBy
+  ) {
     accounts(
       skip: $skip
       first: $first
-      orderBy: participateCount
+      orderBy: $orderBy
       orderDirection: desc
       where: { id: $address }
     ) {
@@ -31,6 +39,8 @@ export const ACCOUNTS_WITH_ADDRESS_QUERY = gql`
       platformTxCount
       participateCount
       totalSpendUSD
+      totalDepositPot2pumpUSD
+      pot2PumpLaunchCount
       transaction(first: 1, orderBy: timestamp, orderDirection: desc) {
         timestamp
       }
@@ -39,13 +49,12 @@ export const ACCOUNTS_WITH_ADDRESS_QUERY = gql`
 `;
 
 export const ACCOUNTS_WITHOUT_ADDRESS_QUERY = gql`
-  query accounts($skip: Int!, $first: Int!, $exclude: [ID!]) {
+  query accounts($skip: Int!, $first: Int!, $orderBy: Account_orderBy) {
     accounts(
       skip: $skip
       first: $first
-      orderBy: participateCount
+      orderBy: $orderBy
       orderDirection: desc
-      where: { id_not_in: $exclude }
     ) {
       id
       swapCount
@@ -54,6 +63,8 @@ export const ACCOUNTS_WITHOUT_ADDRESS_QUERY = gql`
       platformTxCount
       participateCount
       totalSpendUSD
+      totalDepositPot2pumpUSD
+      pot2PumpLaunchCount
       transaction(first: 1, orderBy: timestamp, orderDirection: desc) {
         timestamp
       }
@@ -63,14 +74,8 @@ export const ACCOUNTS_WITHOUT_ADDRESS_QUERY = gql`
 
 //just top 1 swap accounts
 export const TOP_SWAP_ACCOUNTS_QUERY = gql`
-  query topSwapAccounts($exclude: [ID!]) {
-    accounts(
-      skip: 0
-      first: 1
-      orderBy: swapCount
-      orderDirection: desc
-      where: { id_not_in: $exclude }
-    ) {
+  query topSwapAccounts {
+    accounts(skip: 0, first: 1, orderBy: swapCount, orderDirection: desc) {
       id
       swapCount
     }
@@ -103,6 +108,7 @@ export const TOP_PARTICIPATE_ACCOUNTS_QUERY = gql`
     ) {
       id
       participateCount
+      totalDepositPot2pumpUSD
     }
   }
 `;
@@ -115,6 +121,9 @@ type Factory = {
   totalValueLockedMatic: string;
   untrackedVolumeUSD: string;
   totalValueLockedUSDUntracked: string;
+  totalMemeCreated: string;
+  totalSuccessedMeme: string;
+  totalDepositedUSD: string;
 };
 
 export type FactoryData = {
@@ -130,6 +139,8 @@ export type Account = {
   participateCount: string;
   totalSpendUSD: string;
   transaction: { timestamp: string }[];
+  totalDepositPot2pumpUSD: string;
+  pot2PumpLaunchCount: string;
 };
 
 export type AccountsQueryData = {

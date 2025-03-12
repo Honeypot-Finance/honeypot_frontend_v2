@@ -43,7 +43,9 @@ export function DynamicFormatAmount({
 }): ReactNode {
   console.log("DynamicFormatAmount", amount, decimals, beginWith, endWith);
 
-  const amountStr = amount.toString();
+  const isNegative = Number(amount) < 0;
+  const absAmount = Math.abs(Number(amount));
+  const amountStr = absAmount.toString();
   const output: ReactNode =
     getFirstDecimalPlace(amountStr) < decimals
       ? formatAmountWithAlphabetSymbol(amountStr, decimals)
@@ -52,6 +54,7 @@ export function DynamicFormatAmount({
   return (
     <span>
       {beginWith ? `${beginWith} ` : ""}
+      {isNegative ? "-" : ""}
       {output}
       {endWith ? ` ${endWith}` : ""}
     </span>
@@ -91,7 +94,7 @@ export function FormatSmallDecimal({
     return (
       <>
         {first2digit}
-        <sub>{compressedCount === 0 ? "" : compressedCount}</sub>
+        <sub>{compressedCount === 0 ? "" : compressedCount + 1}</sub>
         {first2NonZero}
       </>
     );
@@ -101,7 +104,7 @@ export function FormatSmallDecimal({
 }
 
 export function getFirstDecimalPlace(amount: string): number {
-  if (Number(amount) === 0 || Number(amount) > 1) return 0;
+  if (Number(amount) === 0 || Math.abs(Number(amount)) > 1) return 0;
 
   let decimalPlaces = 0;
   if (amount.includes(".")) {

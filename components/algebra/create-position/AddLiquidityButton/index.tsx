@@ -14,7 +14,7 @@ import {
   Field,
   ZERO,
   ADDRESS_ZERO,
-} from "@cryptoalgebra/wasabee-sdk";
+} from "@cryptoalgebra/sdk";
 import { Address } from "viem";
 import JSBI from "jsbi";
 import { useMemo } from "react";

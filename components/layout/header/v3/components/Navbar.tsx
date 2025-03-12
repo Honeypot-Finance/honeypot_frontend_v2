@@ -39,8 +39,8 @@ export const CustomNavbar: React.FC<NavbarProps> = ({ menuList }) => {
         className="mb-[-20px]"
         src="/images/header/hanging-rope.svg"
       />
-      <div className="bg-[#FFCD4D] rounded-xl flex flex-col py-4 px-3 border-[1.5px] border-[#010101] shadow-[2px_4px_0px_0px_#FFF]">
-        <div className="flex gap-2 py-1">
+      <div className="bg-[#FFCD4D] rounded-xl flex flex-col py-2 px-1.5 lg:py-4 lg:px-3 border-[1.5px] border-[#010101] shadow-[2px_4px_0px_0px_#FFF]">
+        <div className="flex gap-1 lg:gap-2 lg:py-1 flex-wrap max-w-[280px] lg:max-w-none lg:flex-nowrap">
           {menuList.map((menu) =>
             Array.isArray(menu.path) ? (
               <Dropdown
@@ -106,7 +106,8 @@ export const CustomNavbar: React.FC<NavbarProps> = ({ menuList }) => {
               <Button
                 key={menu.title}
                 className={cn(
-                  "min-h-[32px] h-8 py-0 font-bold bg-transparent text-black hover:bg-[#202020]/70 hover:text-white",
+                  "h-8 py-0 font-bold bg-transparent text-sm lg:text-base text-black hover:bg-[#202020]/80 hover:text-white",
+                  menu.title === "Dex" && "hidden",
                   menu.routePath === router.pathname
                     ? "bg-[#202020] text-white"
                     : ""

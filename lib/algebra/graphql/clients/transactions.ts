@@ -64,19 +64,19 @@ export async function fetchPot2PumpTransactions(
       where: {
         or: [
           {
-            type_in: [TransactionType.Swap, TransactionType.Deposit],
+            type_in: [TransactionType.Swap],
             swaps_: {
               token0: launchTokenAddress,
             },
           },
           {
-            type_in: [TransactionType.Swap, TransactionType.Deposit],
+            type_in: [TransactionType.Swap],
             swaps_: {
               token1: launchTokenAddress,
             },
           },
           {
-            type_in: [TransactionType.Swap, TransactionType.Deposit],
+            type_in: [TransactionType.Deposit],
             depositRaisedTokens_: {
               poolAddress: pairAddress,
             },

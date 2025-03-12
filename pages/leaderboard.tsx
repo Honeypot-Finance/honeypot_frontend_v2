@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { debounce } from "lodash";
+import { debounce, endsWith } from "lodash";
 import { Link, Tooltip } from "@nextui-org/react";
 import { useTotalUsers } from "@/lib/hooks/useTotalUsers";
 import CardContainer from "@/components/CardContianer/v3";
@@ -11,6 +11,8 @@ import {
   useTopPot2PumpDeployer,
   useTopParticipateAccounts,
 } from "@/lib/hooks/useAccounts";
+import { DynamicFormatAmount } from "@/lib/algebra/utils/common/formatAmount";
+import { Account_OrderBy } from "@/lib/algebra/graphql/generated/graphql";
 
 interface LeaderboardItem {
   rank: number;
@@ -35,12 +37,15 @@ const LeaderboardPage = () => {
   const pageSize = 10;
   const { stats, loading: statsLoading } = useLeaderboard();
   const { totalUsers, loading: usersLoading } = useTotalUsers();
+  const [accountOrderBy, setAccountOrderBy] = useState<Account_OrderBy>(
+    Account_OrderBy.TotalDepositPot2pumpUsd
+  );
   const {
     accounts,
     loading: accountsLoading,
     hasMore,
     loadMore,
-  } = useAccounts(page, pageSize, searchAddress);
+  } = useAccounts(page, pageSize, searchAddress, accountOrderBy);
   const { accounts: topSwapAccounts, loading: topSwapAccountsLoading } =
     useTopParticipateAccounts();
   const {
@@ -56,24 +61,25 @@ const LeaderboardPage = () => {
     { title: "Users", value: usersLoading ? "Loading..." : totalUsers },
     stats
       ? {
-          title: stats.totalTrades.title,
-          value: stats.totalTrades.value,
+          title: stats.totalMemeCreated.title,
+          value: stats.totalMemeCreated.value,
         }
-      : { title: "Total Trades", value: "-" },
+      : { title: "Total Meme Created", value: "-" },
     stats
       ? {
-          title: stats.totalVolume.title,
-          value: stats.totalVolume.value,
-          subValue: "USD",
+          title: stats.totalSuccessedMeme.title,
+          value: stats.totalSuccessedMeme.value,
         }
-      : { title: "Total Volume", value: "-" },
+      : { title: "Total Successed Meme", value: "-" },
     stats
       ? {
-          title: stats.tvl.title,
-          value: stats.tvl.value,
-          subValue: "USD",
+          title: stats.totalDepositedUSD.title,
+          value: DynamicFormatAmount({
+            amount: stats.totalDepositedUSD.value,
+            decimals: 2,
+          }),
         }
-      : { title: "TVL", value: "-" },
+      : { title: "Total Deposited USD", value: "-" },
   ];
 
   // 将这个变量重命名为 topStats
@@ -100,16 +106,19 @@ const LeaderboardPage = () => {
       <div className="max-w-[1200px] w-full mx-auto">
         <div className="max-w-full xl:max-w-[1200px] mx-auto">
           {/* 顶部统计卡片 */}
-          {/* <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
             {statsCards.map((stat, index) => (
-              <div key={index} className="bg-[#202020] rounded-2xl p-5">
+              <div
+                key={index}
+                className="bg-[#202020] rounded-2xl p-5"
+              >
                 <div className="text-gray-400 text-sm mb-2">{stat.title}</div>
                 <div className="text-white text-xl font-medium">
                   {statsLoading ? "Loading..." : stat.value}
                 </div>
               </div>
             ))}
-          </div> */}
+          </div>
 
           {/* Top Traders/Deployers/Participants */}
           {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
@@ -177,7 +186,7 @@ const LeaderboardPage = () => {
               <h2 className="text-xl text-white font-bold">Leaderboard</h2>
             </div>
             <div className="p-6">
-              <div className="border border-[#5C5C5C] rounded-lg overflow-hidden">
+              <div className="border border-[#5C5C5C] rounded-lg overflow-auto">
                 <table className="w-full">
                   <thead className="bg-[#323232] text-white border-b border-[#5C5C5C]">
                     <tr>
@@ -196,63 +205,87 @@ const LeaderboardPage = () => {
                       {/* <th className="py-4 px-6 text-center text-base font-medium whitespace-nowrap">
                           Holding Pools
                         </th> */}
-                      {/* <th className="py-4 px-6 text-center text-base font-medium whitespace-nowrap">
-                        Meme Tokens
-                      </th> */}
-                      <th className="py-4 px-6 text-center text-base font-medium whitespace-nowrap">
+                      <th
+                        className="py-4 px-6 text-center text-base font-medium whitespace-nowrap cursor-pointer"
+                        onClick={() =>
+                          setAccountOrderBy(Account_OrderBy.Pot2PumpLaunchCount)
+                        }
+                      >
+                        Launches
+                      </th>
+                      <th
+                        className="py-4 px-6 text-center text-base font-medium whitespace-nowrap cursor-pointer"
+                        onClick={() =>
+                          setAccountOrderBy(Account_OrderBy.ParticipateCount)
+                        }
+                      >
                         Participations
+                      </th>
+                      <th
+                        className="py-4 px-6 text-center text-base font-medium whitespace-nowrap cursor-pointer"
+                        onClick={() =>
+                          setAccountOrderBy(
+                            Account_OrderBy.TotalDepositPot2pumpUsd
+                          )
+                        }
+                      >
+                        total deposite
                       </th>
                     </tr>
                   </thead>
                   <tbody className="text-white divide-y divide-[#5C5C5C]">
                     {accountsLoading ? (
                       <tr>
-                        <td colSpan={9} className="py-4 px-6 text-center">
+                        <td
+                          colSpan={9}
+                          className="py-4 px-6 text-center"
+                        >
                           Loading...
                         </td>
                       </tr>
                     ) : (
-                      accounts
-                        .sort((a, b) => b.participateCount - a.participateCount)
-                        .map((item, index) => (
-                          <tr
-                            key={item.walletAddress}
-                            className="hover:bg-[#2a2a2a] transition-colors"
-                          >
-                            <td className="py-4 px-6 text-base font-mono text-blue-400">
-                              <div className="flex items-center gap-2">
-                                <div className="w-4 h-4 bg-[#FFCD4D] rounded"></div>
-                                <Tooltip
-                                  content={item.walletAddress}
-                                  placement="top"
+                      accounts.map((item, index) => (
+                        <tr
+                          key={item.walletAddress}
+                          className="hover:bg-[#2a2a2a] transition-colors"
+                        >
+                          <td className="py-4 px-6 text-base font-mono text-blue-400">
+                            <div className="flex items-center gap-2">
+                              <div className="w-4 h-4 bg-[#FFCD4D] rounded"></div>
+                              <Tooltip
+                                content={item.walletAddress}
+                                placement="top"
+                              >
+                                <Link
+                                  href={`https://berascan.com/address/${item.walletAddress}`}
+                                  target="_blank"
+                                  className="text-blue-400"
                                 >
-                                  <Link
-                                    href={`https://berascan.com/address/${item.walletAddress}`}
-                                    target="_blank"
-                                    className="text-blue-400"
-                                  >
-                                    {item.walletAddress}
-                                  </Link>
-                                </Tooltip>
-                              </div>
-                            </td>
-                            {/* <td className="py-4 px-6 text-base">
+                                  {item.walletAddress}
+                                </Link>
+                              </Tooltip>
+                            </div>
+                          </td>
+                          {/* <td className="py-4 px-6 text-base">
                             {formatVolume(item.totalSpend)}
                           </td>
                           <td className="py-4 px-6 text-center text-base">
                             {item.swapCount}
                           </td> */}
-                            {/* <td className="py-4 px-6 text-center text-base">
-                              {item.poolHoldingCount}
-                            </td> */}
-                            {/* <td className="py-4 px-6 text-center text-base">
-                            {item.memeTokenCount}
-                          </td> */}
-                            <td className="py-4 px-6 text-center text-base">
-                              {item.participateCount}
-                            </td>
-                          </tr>
-                        ))
+                          <td className="py-4 px-6 text-center text-base">
+                            {item.pot2PumpLaunchCount}
+                          </td>
+                          <td className="py-4 px-6 text-center text-base">
+                            {item.participateCount}
+                          </td>
+                          <td className="py-4 px-6 text-center text-base">
+                            {DynamicFormatAmount({
+                              amount: item.totalDepositPot2pumpUSD,
+                              endWith: "$",
+                            })}
+                          </td>
+                        </tr>
+                      ))
                     )}
                   </tbody>
                 </table>

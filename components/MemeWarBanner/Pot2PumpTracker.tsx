@@ -56,7 +56,7 @@ export const Pot2PumpTracker = observer(() => {
           {
             x: Number(pair.token0?.holderCount) ?? 0,
             y:
-              Number(pair.token0.derivedMatic) *
+              Number(pair.token0.derivedUSD) *
               (Number(pair.token0.totalSupply) /
                 Math.pow(10, Number(pair.token0.decimals))),
             meta: { pair },
@@ -203,7 +203,7 @@ export const Pot2PumpTracker = observer(() => {
               <div class="p-2 bg-black/20 rounded-md text-center">
                 <h3>${target.token0.symbol}</h3>
                 <p>Market Cap: ${toCompactLocaleString(
-                  Number(target.token0.derivedMatic) *
+                  Number(target.token0.derivedUSD) *
                     (Number(target.token0.totalSupply) /
                       Math.pow(10, Number(target.token0.decimals))),
                   {

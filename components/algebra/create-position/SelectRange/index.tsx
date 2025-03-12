@@ -4,7 +4,7 @@ import {
   useRangeHopCallbacks,
   useMintActionHandlers,
 } from "@/lib/algebra/state/mintStore";
-import { Bound, Currency } from "@cryptoalgebra/wasabee-sdk";
+import { Bound, Currency } from "@cryptoalgebra/sdk";
 import { useMemo } from "react";
 import RangeSelector from "../RangeSelector";
 

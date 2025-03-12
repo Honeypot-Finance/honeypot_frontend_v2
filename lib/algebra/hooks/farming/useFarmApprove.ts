@@ -6,7 +6,7 @@ import {
   ALGEBRA_POSITION_MANAGER,
   FARMING_CENTER,
 } from "@/config/algebra/addresses";
-import { algebraPositionManagerABI } from "@cryptoalgebra/wasabee-sdk";
+import { algebraPositionManagerABI } from "@cryptoalgebra/sdk";
 import { TransactionType } from "../../state/pendingTransactionsStore";
 
 export function useFarmApprove(tokenId: bigint) {

@@ -251,7 +251,7 @@ const RefundAction = observer(({ pair }: { pair: MemePairContract }) => {
 const ToTokenDetailsPage = observer(
   ({ pair }: { pair: FtoPairContract | MemePairContract }) => {
     return (
-      <Link href={`/launch-detail/${pair?.address}`}>
+      <Link href={`/launch-detail/${pair?.launchedToken?.address}`}>
         <Button className="w-full">View Token</Button>
       </Link>
     );
@@ -453,7 +453,7 @@ const DetailLaunchCard = observer(
                   token: pair?.launchedToken,
                 }),
                 optionsPresets.share({
-                  shareUrl: `${window.location.origin}/launch-detail/${pair?.address}`,
+                  shareUrl: `${window.location.origin}/launch-detail/${pair?.launchedToken?.address}`,
                   displayText: "Share this project",
                   shareText:
                     projectType === "meme"
@@ -623,7 +623,7 @@ const TrendingLaunchCard = observer(
           ></Image>
         )}
         <Link
-          href={`/launch-detail/${pair.address}`}
+          href={`/launch-detail/${pair?.launchedToken?.address}`}
           className="flex w-full flex-col gap-2 justify-center items-center flex-grow-[1] basis-1"
         >
           <div className="flex flex-col gap-2 justify-center items-center flex-grow-[1] basis-1">
